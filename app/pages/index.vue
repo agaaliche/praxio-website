@@ -12,21 +12,21 @@
             Track INR values, adjust dosages, and generate prescriptions - all in one secure platform.
           </p>
           <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-            <a 
-              href="https://retroact.app/signup" 
+            <NuxtLink 
+              to="/signup" 
               class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-primary-600 text-white font-semibold hover:bg-primary-700 transition shadow-lg hover:shadow-xl"
             >
               Start Free Trial
               <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
-            </a>
-            <a 
-              href="https://retroact.app" 
+            </NuxtLink>
+            <NuxtLink 
+              to="/retroact" 
               class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-white text-primary-600 font-semibold border-2 border-primary-600 hover:bg-primary-50 transition"
             >
               Learn More
-            </a>
+            </NuxtLink>
           </div>
           <p class="mt-4 text-sm text-gray-500">
             Free for up to 10 patients. No credit card required.

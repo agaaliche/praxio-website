@@ -29,12 +29,24 @@
 
         <!-- CTA Buttons -->
         <div class="hidden md:flex items-center space-x-4">
-          <a href="https://retroact.app/signin" class="text-gray-600 hover:text-primary-600 transition">
-            Sign In
-          </a>
-          <a href="https://retroact.app/signup" class="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition">
-            Get Started
-          </a>
+          <!-- Show Sign Out if authenticated -->
+          <template v-if="isAuthenticated">
+            <NuxtLink to="/account" class="text-gray-600 hover:text-primary-600 transition">
+              Account
+            </NuxtLink>
+            <button @click="handleSignOut" class="text-gray-600 hover:text-primary-600 transition">
+              Sign Out
+            </button>
+          </template>
+          <!-- Show Sign In / Get Started if not authenticated -->
+          <template v-else>
+            <NuxtLink to="/signin" class="text-gray-600 hover:text-primary-600 transition">
+              Sign In
+            </NuxtLink>
+            <NuxtLink to="/signup" class="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition">
+              Get Started
+            </NuxtLink>
+          </template>
         </div>
 
         <!-- Mobile menu button -->
@@ -56,8 +68,14 @@
           <NuxtLink to="/about" class="text-gray-600 hover:text-primary-600" @click="mobileMenuOpen = false">About</NuxtLink>
           <NuxtLink to="/contact" class="text-gray-600 hover:text-primary-600" @click="mobileMenuOpen = false">Contact</NuxtLink>
           <hr class="my-2" />
-          <a href="https://retroact.app/signin" class="text-gray-600">Sign In</a>
-          <a href="https://retroact.app/signup" class="bg-primary-600 text-white px-4 py-2 rounded-lg text-center">Get Started</a>
+          <template v-if="isAuthenticated">
+            <NuxtLink to="/account" class="text-gray-600" @click="mobileMenuOpen = false">Account</NuxtLink>
+            <button @click="handleSignOut" class="text-gray-600 text-left">Sign Out</button>
+          </template>
+          <template v-else>
+            <NuxtLink to="/signin" class="text-gray-600" @click="mobileMenuOpen = false">Sign In</NuxtLink>
+            <NuxtLink to="/signup" class="bg-primary-600 text-white px-4 py-2 rounded-lg text-center" @click="mobileMenuOpen = false">Get Started</NuxtLink>
+          </template>
         </div>
       </div>
     </nav>
@@ -66,4 +84,10 @@
 
 <script setup>
 const mobileMenuOpen = ref(false)
+const { isAuthenticated, signOutUser } = useAuth()
+
+const handleSignOut = async () => {
+  await signOutUser()
+  mobileMenuOpen.value = false
+}
 </script>

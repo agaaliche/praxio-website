@@ -31,7 +31,16 @@ export default defineNuxtConfig({
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      ],
+      script: [
+        { src: 'https://kit.fontawesome.com/7782e74c84.js', crossorigin: 'anonymous' }
       ]
+    }
+  },
+
+  runtimeConfig: {
+    public: {
+      apiUrl: process.env.NUXT_PUBLIC_API_URL || 'https://inr-backend-pq7nv4e3fq-uk.a.run.app'
     }
   }
 })
