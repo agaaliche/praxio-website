@@ -1,40 +1,63 @@
 <template>
-  <div class="min-h-screen bg-gray-50">
-    <!-- Header -->
-    <header class="bg-white border-b border-gray-200">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-16">
-          <NuxtLink to="/" class="flex items-center gap-2">
-            <span class="text-2xl font-display font-bold text-primary-600">Praxio</span>
-          </NuxtLink>
+  <div>
+    <!-- Welcome Section -->
+    <div class="mb-8">
+      <h1 class="text-3xl font-display font-bold text-gray-900">
+        Welcome back, {{ displayName }}!
+      </h1>
+      <p class="mt-2 text-gray-600">
+        Manage your Praxio account and access your products.
+      </p>
+    </div>
 
+    <!-- Loading State -->
+    <div v-if="loading" class="text-center py-12">
+      <i class="fa-solid fa-spinner fa-spin text-2xl text-primary-600"></i>
+      <p class="mt-2 text-gray-500">Loading dashboard...</p>
+    </div>
+
+    <template v-else>
+      <!-- Quick Stats -->
+      <div class="grid md:grid-cols-3 gap-6 mb-8">
+        <div class="bg-white rounded-xl p-6 border border-gray-200">
           <div class="flex items-center gap-4">
-            <span class="text-sm text-gray-600">{{ user?.email }}</span>
-            <button
-              @click="handleSignOut"
-              class="text-sm text-gray-500 hover:text-gray-700 font-medium"
-            >
-              Sign out
-            </button>
+            <div class="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center">
+              <i class="fa-solid fa-users-medical text-primary-600 text-xl"></i>
+            </div>
+            <div>
+              <p class="text-2xl font-bold text-gray-900">{{ patientCount }}</p>
+              <p class="text-sm text-gray-500">Active Patients</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl p-6 border border-gray-200">
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 bg-secondary-100 rounded-xl flex items-center justify-center">
+              <i class="fa-solid fa-users text-secondary-600 text-xl"></i>
+            </div>
+            <div>
+              <p class="text-2xl font-bold text-gray-900">{{ teamCount }}</p>
+              <p class="text-sm text-gray-500">Team Members</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl p-6 border border-gray-200">
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+              <i class="fa-solid fa-check-circle text-green-600 text-xl"></i>
+            </div>
+            <div>
+              <p class="text-2xl font-bold text-gray-900">Active</p>
+              <p class="text-sm text-gray-500">Subscription Status</p>
+            </div>
           </div>
         </div>
       </div>
-    </header>
-
-    <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <!-- Welcome Section -->
-      <div class="mb-10">
-        <h1 class="text-3xl font-display font-bold text-gray-900">
-          Welcome back, {{ displayName }}!
-        </h1>
-        <p class="mt-2 text-gray-600">
-          Manage your Praxio account and access your products.
-        </p>
-      </div>
 
       <!-- Products Grid -->
-      <div class="mb-12">
+      <div class="mb-8">
         <h2 class="text-xl font-display font-bold text-gray-900 mb-6">Your Products</h2>
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           <!-- Retroact -->
@@ -82,7 +105,48 @@
         </div>
       </div>
 
-      <!-- Account Management -->
+      <!-- Quick Links -->
+      <div class="mb-8">
+        <h2 class="text-xl font-display font-bold text-gray-900 mb-6">Quick Actions</h2>
+        <div class="grid md:grid-cols-2 gap-6">
+          <NuxtLink 
+            to="/account/patients"
+            class="bg-white rounded-xl p-6 border border-gray-200 hover:shadow-lg hover:border-primary-300 transition group"
+          >
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="text-lg font-bold text-gray-900 group-hover:text-primary-600">
+                  Manage Patients
+                </h3>
+                <p class="mt-1 text-sm text-gray-500">
+                  View, add, and edit patient records
+                </p>
+              </div>
+              <i class="fa-solid fa-arrow-right text-gray-400 group-hover:text-primary-600 group-hover:translate-x-1 transition-all"></i>
+            </div>
+          </NuxtLink>
+
+          <NuxtLink 
+            v-if="isAccountOwner"
+            to="/account/team"
+            class="bg-white rounded-xl p-6 border border-gray-200 hover:shadow-lg hover:border-primary-300 transition group"
+          >
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="text-lg font-bold text-gray-900 group-hover:text-primary-600">
+                  Manage Team
+                </h3>
+                <p class="mt-1 text-sm text-gray-500">
+                  Invite team members and manage roles
+                </p>
+              </div>
+              <i class="fa-solid fa-arrow-right text-gray-400 group-hover:text-primary-600 group-hover:translate-x-1 transition-all"></i>
+            </div>
+          </NuxtLink>
+        </div>
+      </div>
+
+      <!-- Account Settings -->
       <div>
         <h2 class="text-xl font-display font-bold text-gray-900 mb-6">Account Settings</h2>
         <div class="bg-white rounded-2xl border border-gray-200 divide-y divide-gray-200">
@@ -121,42 +185,6 @@
             <i class="fa-solid fa-chevron-right text-gray-400"></i>
           </NuxtLink>
 
-          <!-- Team (Account Owner Only) -->
-          <NuxtLink
-            v-if="isAccountOwner"
-            to="/account/team"
-            class="flex items-center justify-between p-6 hover:bg-gray-50 transition"
-          >
-            <div class="flex items-center gap-4">
-              <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
-                <i class="fa-solid fa-users text-blue-600"></i>
-              </div>
-              <div>
-                <h3 class="font-medium text-gray-900">Team Members</h3>
-                <p class="text-sm text-gray-500">Invite and manage team access</p>
-              </div>
-            </div>
-            <i class="fa-solid fa-chevron-right text-gray-400"></i>
-          </NuxtLink>
-
-          <!-- Billing (Account Owner Only) -->
-          <NuxtLink
-            v-if="isAccountOwner"
-            to="/account/billing"
-            class="flex items-center justify-between p-6 hover:bg-gray-50 transition"
-          >
-            <div class="flex items-center gap-4">
-              <div class="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center">
-                <i class="fa-solid fa-credit-card text-green-600"></i>
-              </div>
-              <div>
-                <h3 class="font-medium text-gray-900">Billing & Subscription</h3>
-                <p class="text-sm text-gray-500">Manage your plan and payment methods</p>
-              </div>
-            </div>
-            <i class="fa-solid fa-chevron-right text-gray-400"></i>
-          </NuxtLink>
-
           <!-- Security -->
           <NuxtLink
             to="/account/security"
@@ -175,22 +203,20 @@
           </NuxtLink>
         </div>
       </div>
-    </main>
+    </template>
   </div>
 </template>
 
 <script setup lang="ts">
 definePageMeta({
-  layout: false,
-  middleware: 'auth'
+  middleware: ['auth']
 })
 
 useHead({
   title: 'Account - Praxio'
 })
 
-const router = useRouter()
-const { user, signOutUser, isAccountOwner } = useAuth()
+const { user, isAccountOwner } = useAuth()
 
 // Computed display name
 const displayName = computed(() => {
@@ -198,9 +224,37 @@ const displayName = computed(() => {
   return user.value.displayName || user.value.email?.split('@')[0] || 'there'
 })
 
-// Handle sign out
-const handleSignOut = async () => {
-  await signOutUser()
-  router.push('/signin')
-}
+const patientCount = ref(0)
+const teamCount = ref(0)
+const loading = ref(true)
+
+// Fetch counts
+onMounted(async () => {
+  try {
+    const { $auth } = useNuxtApp()
+    const token = await $auth.currentUser?.getIdToken()
+    
+    if (token) {
+      // Fetch patients
+      const patientsRes = await $fetch('/api/patients', {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      patientCount.value = Array.isArray(patientsRes) ? patientsRes.length : 0
+      
+      // Fetch team (only for account owners)
+      try {
+        const teamRes = await $fetch('/api/users/team', {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+        teamCount.value = Array.isArray(teamRes) ? teamRes.length : 0
+      } catch {
+        // Not an owner, skip
+      }
+    }
+  } catch (error) {
+    console.error('Error fetching counts:', error)
+  } finally {
+    loading.value = false
+  }
+})
 </script>
