@@ -152,7 +152,7 @@
         <div class="bg-white rounded-2xl border border-gray-200 divide-y divide-gray-200">
           <!-- Profile -->
           <NuxtLink
-            to="/account/profile"
+            to="/account/settings/profile"
             class="flex items-center justify-between p-6 hover:bg-gray-50 transition"
           >
             <div class="flex items-center gap-4">
@@ -170,7 +170,7 @@
           <!-- Organization (Account Owner Only) -->
           <NuxtLink
             v-if="isAccountOwner"
-            to="/account/organization"
+            to="/account/settings/organization"
             class="flex items-center justify-between p-6 hover:bg-gray-50 transition"
           >
             <div class="flex items-center gap-4">
@@ -187,7 +187,7 @@
 
           <!-- Security -->
           <NuxtLink
-            to="/account/security"
+            to="/account/settings/security"
             class="flex items-center justify-between p-6 hover:bg-gray-50 transition"
           >
             <div class="flex items-center gap-4">

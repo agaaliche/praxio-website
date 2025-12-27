@@ -524,6 +524,11 @@ const sendInvite = async () => {
     
     inviteSuccess.value = true
     await fetchTeam()
+    
+    // Close modal after showing success message
+    setTimeout(() => {
+      closeInviteModal()
+    }, 1500)
   } catch (e: any) {
     inviteError.value = e.data?.message || 'Failed to send invite'
   } finally {

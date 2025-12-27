@@ -1,17 +1,12 @@
 /**
  * POST /api/users/team/:id/resend
  * Resend invite to a team member
+ * Uses same magic link service as inrManager
  */
 import { queryOne, execute } from '../../../../utils/database'
 import { verifyAuth, getEffectiveAccountOwnerId, isAccountOwner } from '../../../../utils/auth'
 import { sendInviteEmail } from '../../../../utils/email'
-
-// Generate invite token
-function generateToken(): string {
-  return 'xxxx-xxxx-xxxx-xxxx'.replace(/x/g, () => 
-    Math.floor(Math.random() * 16).toString(16)
-  )
-}
+import { generateMagicLinkToken, getTokenExpiryDate, generateInviteLink } from '../../../../utils/magicLinkService'
 
 export default defineEventHandler(async (event) => {
   try {
@@ -48,19 +43,19 @@ export default defineEventHandler(async (event) => {
       })
     }
     
-    // Generate new invite token
-    const inviteToken = generateToken()
-    const tokenExpiry = new Date(Date.now() + 48 * 60 * 60 * 1000) // 48 hours
+    // Generate new magic link token (same as inrManager)
+    const inviteToken = generateMagicLinkToken(null, existing.email, accountOwnerId, existing.role)
+    const expiresAt = getTokenExpiryDate()
     
-    // Update token
+    // Update token (using inrManager column name: invite_expires_at)
     await execute(
-      'UPDATE authorized_users SET invite_token = ?, token_expiry = ?, status = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?',
-      [inviteToken, tokenExpiry, 'pending', userId]
+      'UPDATE authorized_users SET invite_token = ?, invite_expires_at = ?, status = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?',
+      [inviteToken, expiresAt, 'pending', userId]
     )
     
-    // Generate invite link and send email
+    // Generate invite link (uses /auth/magic-link like inrManager)
     const config = useRuntimeConfig()
-    const inviteLink = `${config.public.siteUrl || 'http://localhost:3000'}/auth/invite?token=${inviteToken}`
+    const inviteLink = generateInviteLink(inviteToken, config.public.siteUrl)
     
     // Send invite email
     const emailResult = await sendInviteEmail({

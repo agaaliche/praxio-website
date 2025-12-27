@@ -1,10 +1,13 @@
 /**
  * POST /api/users/team
  * Invite a new team member
+ * Copied from inrManager/backend/controllers/userManagement.controller.js - inviteUser
  */
 import { query, queryOne, execute } from '../../utils/database'
 import { verifyAuth, getEffectiveAccountOwnerId, isAccountOwner } from '../../utils/auth'
 import { sendInviteEmail } from '../../utils/email'
+import { generateMagicLinkToken, getTokenExpiryDate, generateInviteLink } from '../../utils/magicLinkService'
+import crypto from 'crypto'
 
 interface InviteUserBody {
   email: string
@@ -13,21 +16,16 @@ interface InviteUserBody {
   role: 'viewer' | 'editor'
 }
 
-// Generate a random password
-function generatePassword(length = 12): string {
+// Generate secure random password (same as inrManager)
+function generatePassword(): string {
+  const length = 12
   const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*'
   let password = ''
+  const values = crypto.randomBytes(length)
   for (let i = 0; i < length; i++) {
-    password += charset.charAt(Math.floor(Math.random() * charset.length))
+    password += charset[values[i] % charset.length]
   }
   return password
-}
-
-// Generate invite token (simple UUID-like)
-function generateToken(): string {
-  return 'xxxx-xxxx-xxxx-xxxx'.replace(/x/g, () => 
-    Math.floor(Math.random() * 16).toString(16)
-  )
 }
 
 export default defineEventHandler(async (event) => {
@@ -83,15 +81,19 @@ export default defineEventHandler(async (event) => {
       })
     }
     
-    // Generate invite token and password
-    const inviteToken = generateToken()
+    // Generate magic link token and password (same as inrManager)
+    const inviteToken = generateMagicLinkToken(null, body.email.toLowerCase(), accountOwnerId, body.role)
+    const expiresAt = getTokenExpiryDate()
     const generatedPassword = generatePassword()
-    const tokenExpiry = new Date(Date.now() + 48 * 60 * 60 * 1000) // 48 hours
     
-    // Insert the new authorized user
+    // Generate invite link (uses /auth/magic-link like inrManager)
+    const config = useRuntimeConfig()
+    const inviteLink = generateInviteLink(inviteToken, config.public.siteUrl)
+    
+    // Insert the new authorized user (using inrManager column names: password, invite_expires_at)
     const result = await execute(
       `INSERT INTO authorized_users 
-       (account_owner_id, email, first_name, last_name, generated_password, role, status, invite_token, token_expiry) 
+       (account_owner_id, email, first_name, last_name, password, role, status, invite_token, invite_expires_at) 
        VALUES (?, ?, ?, ?, ?, ?, 'pending', ?, ?)`,
       [
         accountOwnerId,
@@ -101,13 +103,9 @@ export default defineEventHandler(async (event) => {
         generatedPassword,
         body.role,
         inviteToken,
-        tokenExpiry
+        expiresAt
       ]
     )
-    
-    // Generate invite link
-    const config = useRuntimeConfig()
-    const inviteLink = `${config.public.siteUrl || 'http://localhost:3000'}/auth/invite?token=${inviteToken}`
     
     // Send invite email
     const emailResult = await sendInviteEmail({

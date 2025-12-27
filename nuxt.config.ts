@@ -31,10 +31,8 @@ export default defineNuxtConfig({
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
-      ],
-      script: [
-        { src: 'https://kit.fontawesome.com/7782e74c84.js', crossorigin: 'anonymous' }
       ]
+      // FontAwesome is loaded via client-only plugin to prevent SSR hydration issues
     }
   },
 
@@ -54,6 +52,7 @@ export default defineNuxtConfig({
     // Email (uses same Firebase Extension as inrManager)
     useFirebaseEmail: process.env.USE_FIREBASE_EMAIL || 'false',
     firebaseServiceAccount: process.env.FIREBASE_SERVICE_ACCOUNT || '',
+    siteUrl: process.env.SITE_URL || 'http://localhost:3000',
     
     // Public config (exposed to client)
     public: {

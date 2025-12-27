@@ -8,7 +8,7 @@
             <i class="fa-thin fa-hospital-user text-primary-600 text-5xl"></i>
           </div>
           <h1 class="text-3xl font-display font-bold text-gray-900 mb-4">
-            Welcome to Patient Management
+            Create your first patient
           </h1>
           <p class="text-lg text-gray-600 mb-8">
             Start by adding your first patient. You'll be able to track their health records, INR results, and more.
@@ -19,41 +19,41 @@
           >
             <i class="fa-solid fa-user-plus mr-3"></i>
             Add Your First Patient
-        </button>
+          </button>
         
-        <!-- Features Card -->
-        <div class="mt-10 bg-primary-50 rounded-2xl p-6 text-left">
-          <h3 class="font-bold text-primary-900 mb-4">What you can do:</h3>
-          <ul class="space-y-3">
-            <li class="flex items-center gap-3 text-gray-700">
-              <i class="fa-duotone fa-vial text-primary-600 w-5"></i>
-              <span>Track INR results and therapeutic range</span>
-            </li>
-            <li class="flex items-center gap-3 text-gray-700">
-              <i class="fa-duotone fa-pills text-primary-600 w-5"></i>
-              <span>Manage dosing schedules</span>
-            </li>
-            <li class="flex items-center gap-3 text-gray-700">
-              <i class="fa-duotone fa-file-prescription text-primary-600 w-5"></i>
-              <span>Generate prescriptions</span>
-            </li>
-            <li class="flex items-center gap-3 text-gray-700">
-              <i class="fa-duotone fa-chart-line-up text-primary-600 w-5"></i>
-              <span>Monitor patient progress over time</span>
-            </li>
-          </ul>
+          <!-- Features Card -->
+          <div class="mt-10 bg-primary-50 rounded-2xl p-6 text-left">
+            <h3 class="font-bold text-primary-900 mb-4">What you can do:</h3>
+            <ul class="space-y-3">
+              <li class="flex items-center gap-3 text-gray-700">
+                <i class="fa-duotone fa-vial text-primary-600 w-5"></i>
+                <span>Track INR results and therapeutic range</span>
+              </li>
+              <li class="flex items-center gap-3 text-gray-700">
+                <i class="fa-duotone fa-pills text-primary-600 w-5"></i>
+                <span>Manage dosing schedules</span>
+              </li>
+              <li class="flex items-center gap-3 text-gray-700">
+                <i class="fa-duotone fa-file-prescription text-primary-600 w-5"></i>
+                <span>Generate prescriptions</span>
+              </li>
+              <li class="flex items-center gap-3 text-gray-700">
+                <i class="fa-duotone fa-chart-line-up text-primary-600 w-5"></i>
+                <span>Monitor patient progress over time</span>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Main Content: Patient List + Form -->
-    <template v-else>
-      <!-- Left Panel: Patient List -->
-      <div 
-        v-if="patients.length > 0 || isCreatingPatient"
-        :style="{ width: `${leftPanelWidth}px`, minWidth: '300px', maxWidth: '500px' }"
-        class="h-full flex flex-col border-r border-gray-200 bg-white flex-shrink-0"
-      >
+      <!-- Main Content: Patient List + Form -->
+      <template v-else>
+        <!-- Left Panel: Patient List -->
+        <div 
+          v-if="patients.length > 0 || isCreatingPatient"
+          :style="{ width: `${leftPanelWidth}px`, minWidth: '300px', maxWidth: '500px' }"
+          class="h-full flex flex-col border-r border-gray-200 bg-white flex-shrink-0"
+        >
         <!-- List Header -->
         <div class="p-4 border-b border-gray-100">
           <div class="flex items-center justify-between mb-3">
@@ -148,6 +148,13 @@
             <i class="fa-solid fa-search text-2xl mb-2"></i>
             <p>No patients match your search</p>
           </div>
+
+          <!-- No Patients (in left pane when creating first patient) -->
+          <CommonNoDataPlaceholder 
+            v-if="patients.length === 0" 
+            :show="true" 
+            context="patients"
+          />
         </div>
       </div>
 
@@ -334,7 +341,7 @@
           </form>
         </div>
       </div>
-    </template>
+      </template>
 
     <!-- Delete Confirmation Modal -->
     <Teleport to="body">
@@ -653,9 +660,9 @@ const startResize = (e: MouseEvent) => {
 // Load on mount
 onMounted(async () => {
   await fetchPatients()
-  // Auto-select first patient
-  if (patients.value.length > 0) {
-    selectPatient(patients.value[0])
+  // Auto-select first active patient (filteredPatients respects showInactive=false)
+  if (filteredPatients.value.length > 0) {
+    selectPatient(filteredPatients.value[0])
   }
 })
 

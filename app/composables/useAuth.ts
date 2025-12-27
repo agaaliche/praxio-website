@@ -243,7 +243,7 @@ export function useAuth() {
   const resetPassword = async (email: string): Promise<AuthResult> => {
     try {
       const response = await $fetch<{ success: boolean; message: string }>(
-        `${getApiBaseUrl()}/api/auth/request-password-reset`,
+        '/api/auth/reset-password',
         {
           method: 'POST',
           body: { email }
@@ -345,6 +345,12 @@ export function useAuth() {
     }
   }
 
+  // Get auth headers for API calls (convenience function)
+  const getAuthHeaders = async (): Promise<{ Authorization: string }> => {
+    const token = await getIdToken()
+    return { Authorization: `Bearer ${token}` }
+  }
+
   // Permission helpers
   const isViewer = computed(() => userRole.value === 'viewer')
   const isEditor = computed(() => userRole.value === 'editor')
@@ -373,6 +379,7 @@ export function useAuth() {
     refreshUserClaims,
     getCurrentUser,
     getIdToken,
+    getAuthHeaders,
 
     // Permission helpers
     isViewer,

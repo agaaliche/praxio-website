@@ -1,8 +1,9 @@
 /**
  * GET /api/users/current
  * Get current user's profile
+ * If user doesn't exist in database, creates a new profile (like inrManager)
  */
-import { query, queryOne } from '../../utils/database'
+import { query, queryOne, execute } from '../../utils/database'
 import { verifyAuth, getEffectiveAccountOwnerId } from '../../utils/auth'
 
 export default defineEventHandler(async (event) => {
@@ -51,20 +52,43 @@ export default defineEventHandler(async (event) => {
     }
     
     // Account owner - get from users table
-    const userRecord = await queryOne<any>(
+    let userRecord = await queryOne<any>(
       `SELECT userId, userEmail, userName, userLastName, organizationName, organizationType,
               address, city, country, postalCode, telephone, fax, phoneNumber,
               stripeCustomerId, subscriptionId, subscriptionStatus, subscriptionPriceId,
-              subscriptionEndDate, nextBillingDate, trialStartDate, trialEndDate
+              subscriptionEndDate, nextBillingDate, trialStartDate, trialEndDate,
+              scheduledPriceId, scheduledChangeDate
        FROM users WHERE userId = ?`,
       [user.uid]
     )
     
+    // If user doesn't exist, create a new profile (like inrManager)
     if (!userRecord) {
-      throw createError({
-        statusCode: 404,
-        message: 'User not found'
-      })
+      console.log(`ℹ️ Creating new user profile for ${user.uid} (${user.email})`)
+      
+      // Parse display name into first/last name if available
+      const displayName = '' // Would need to get this from request header or Firebase
+      const userName = displayName?.split(' ')[0] || null
+      const userLastName = displayName?.split(' ').slice(1).join(' ') || null
+      
+      await execute(
+        `INSERT INTO users (userId, userEmail, userName, userLastName, createdAt, updatedAt) 
+         VALUES (?, ?, ?, ?, NOW(), NOW())`,
+        [user.uid, user.email, userName, userLastName]
+      )
+      
+      console.log(`✅ Created new user: ${user.uid} (${user.email})`)
+      
+      // Fetch the newly created user
+      userRecord = await queryOne<any>(
+        `SELECT userId, userEmail, userName, userLastName, organizationName, organizationType,
+                address, city, country, postalCode, telephone, fax, phoneNumber,
+                stripeCustomerId, subscriptionId, subscriptionStatus, subscriptionPriceId,
+                subscriptionEndDate, nextBillingDate, trialStartDate, trialEndDate,
+                scheduledPriceId, scheduledChangeDate
+         FROM users WHERE userId = ?`,
+        [user.uid]
+      )
     }
     
     return {
@@ -72,6 +96,7 @@ export default defineEventHandler(async (event) => {
       email: userRecord.userEmail,
       firstName: userRecord.userName,
       lastName: userRecord.userLastName,
+      phoneNumber: userRecord.phoneNumber,
       role: null, // Account owner has no role
       organization: {
         name: userRecord.organizationName,
@@ -91,7 +116,9 @@ export default defineEventHandler(async (event) => {
         endDate: userRecord.subscriptionEndDate,
         nextBillingDate: userRecord.nextBillingDate,
         trialStartDate: userRecord.trialStartDate,
-        trialEndDate: userRecord.trialEndDate
+        trialEndDate: userRecord.trialEndDate,
+        scheduledPriceId: userRecord.scheduledPriceId,
+        scheduledChangeDate: userRecord.scheduledChangeDate
       }
     }
   } catch (error: any) {

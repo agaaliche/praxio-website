@@ -219,7 +219,7 @@ useHead({
 })
 
 const router = useRouter()
-const { signUpWithEmail, signInWithGoogle } = useAuth()
+const { signInWithGoogle } = useAuth()
 
 // Form state
 const displayName = ref('')
@@ -248,7 +248,7 @@ const isFormValid = computed(() => {
   )
 })
 
-// Handle email/password sign up
+// Handle email/password sign up - uses backend API for custom branded emails
 const handleSignUp = async () => {
   if (!isFormValid.value) return
   
@@ -257,16 +257,30 @@ const handleSignUp = async () => {
   loading.value = true
 
   try {
-    const result = await signUpWithEmail(email.value, password.value, displayName.value)
+    // Parse display name into first/last name
+    const nameParts = displayName.value.trim().split(' ')
+    const firstName = nameParts[0] || ''
+    const lastName = nameParts.slice(1).join(' ') || ''
+    
+    // Call backend API to create user and send custom verification email
+    const result = await $fetch('/api/auth/signup', {
+      method: 'POST',
+      body: {
+        email: email.value,
+        password: password.value,
+        firstName,
+        lastName
+      }
+    })
     
     if (result.success) {
       successMessage.value = 'Account created! Please check your email to verify your account.'
       // Don't redirect immediately - let them see the verification message
     } else {
-      errorMessage.value = result.message || 'Sign up failed. Please try again.'
+      errorMessage.value = (result as any).message || 'Sign up failed. Please try again.'
     }
   } catch (error: any) {
-    errorMessage.value = error.message || 'An unexpected error occurred.'
+    errorMessage.value = error.data?.message || error.message || 'An unexpected error occurred.'
   } finally {
     loading.value = false
   }
