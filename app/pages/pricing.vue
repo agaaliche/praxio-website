@@ -1,11 +1,11 @@
 <template>
   <div>
     <!-- Hero -->
-    <section class="bg-gradient-to-br from-primary-50 to-white py-16">
+    <section class="bg-gradient-to-br from-primary-50 to-white pt-8 pb-4">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h1 class="font-display text-4xl md:text-5xl font-bold text-gray-900 mb-4">Simple, Transparent Pricing</h1>
+        <h1 class="font-display text-4xl md:text-5xl font-bold text-gray-900 mb-2">One Price. Everything Included.</h1>
         <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-          Start with a free 14-day trial. No credit card required.
+          Start your 14-day free trial today.
         </p>
       </div>
     </section>
@@ -37,15 +37,15 @@
     </section>
 
     <!-- Pricing Cards -->
-    <section class="py-20">
+    <section class="pt-14 pb-10">
       <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <ClientOnly>
         <div class="grid md:grid-cols-3 gap-8">
           
           <!-- Free Trial -->
           <div :class="[
-            'rounded-2xl shadow-lg p-8 relative',
-            isTrialDisabled ? 'bg-gray-50 border-2 border-gray-200 opacity-75' : 'bg-white border-2 border-green-200'
+            'rounded-2xl shadow-lg p-8 relative flex flex-col',
+            isTrialDisabled ? 'bg-gray-50 border-2 border-gray-200 opacity-75' : 'bg-white border-2 border-green-500'
           ]">
             <div class="absolute -top-[14px] left-1/2 transform -translate-x-1/2">
               <span :class="[
@@ -91,6 +91,7 @@
                 <span class="text-gray-600">Upgrade anytime</span>
               </li>
             </ul>
+            <div class="mt-auto">
             <button 
               v-if="isTrialDisabled"
               disabled
@@ -106,11 +107,12 @@
             >
               <i class="fa-regular fa-play mr-2"></i> Start Free Trial
             </NuxtLink>
+            </div>
           </div>
 
           <!-- Monthly Flex -->
           <div :class="[
-            'rounded-2xl shadow-lg p-8 relative',
+            'rounded-2xl shadow-lg p-8 relative flex flex-col',
             isMonthlyDisabled ? 'bg-gray-50 border border-gray-200 opacity-75' : 'bg-white border border-gray-200'
           ]">
             <!-- Current Plan Badge -->
@@ -133,7 +135,7 @@
               </li>
               <li class="flex items-center">
                 <i class="fa-regular fa-circle-check text-primary-500 mr-3"></i>
-                <span class="text-gray-600">Full tracking & analytics</span>
+                <span class="text-gray-600">All features included</span>
               </li>
               <li class="flex items-center">
                 <i class="fa-regular fa-circle-check text-primary-500 mr-3"></i>
@@ -141,13 +143,10 @@
               </li>
               <li class="flex items-center">
                 <i class="fa-regular fa-circle-check text-primary-500 mr-3"></i>
-                <span class="text-gray-600">Advanced reports</span>
-              </li>
-              <li class="flex items-center">
-                <i class="fa-regular fa-circle-check text-primary-500 mr-3"></i>
                 <span class="text-gray-600">Cancel anytime</span>
               </li>
             </ul>
+            <div class="mt-auto">
             <button 
               v-if="isMonthlyDisabled"
               disabled
@@ -160,16 +159,17 @@
               v-else
               @click="handleSubscribe('monthly_flex')"
               :disabled="checkoutLoading !== null"
-              class="w-full text-center bg-gray-100 text-gray-800 px-6 py-3 rounded-lg font-semibold hover:bg-gray-200 transition disabled:opacity-50 flex items-center justify-center gap-2"
+              class="w-full text-center bg-white text-gray-700 border border-gray-300 px-6 py-3 rounded-lg font-semibold hover:bg-gray-50 transition disabled:opacity-50 flex items-center justify-center gap-2"
             >
               <i v-if="checkoutLoading === 'monthly_flex'" class="fa-solid fa-spinner fa-spin"></i>
               Get Started
             </button>
+            </div>
           </div>
 
           <!-- Annual Plan - Best Value -->
           <div :class="[
-            'rounded-2xl shadow-xl p-8 relative transform md:scale-105',
+            'rounded-2xl shadow-xl p-8 relative transform md:scale-105 flex flex-col',
             isOnAnnual ? 'bg-gray-100 border-2 border-gray-300' : 'bg-primary-600'
           ]">
             <div class="absolute -top-[14px] left-1/2 transform -translate-x-1/2">
@@ -200,10 +200,6 @@
               </li>
               <li class="flex items-center">
                 <i :class="['fa-regular fa-circle-check mr-3', isOnAnnual ? 'text-primary-500' : 'text-secondary-400']"></i>
-                <span :class="isOnAnnual ? 'text-gray-600' : 'text-white'">Custom integrations</span>
-              </li>
-              <li class="flex items-center">
-                <i :class="['fa-regular fa-circle-check mr-3', isOnAnnual ? 'text-primary-500' : 'text-secondary-400']"></i>
                 <span :class="isOnAnnual ? 'text-gray-600' : 'text-white'">Best value – Save $10/month</span>
               </li>
               <li class="flex items-center">
@@ -212,6 +208,7 @@
               </li>
             </ul>
             
+            <div class="mt-auto">
             <!-- Already on annual -->
             <button 
               v-if="isOnAnnual"
@@ -245,6 +242,7 @@
               <i v-else class="fa-regular fa-rocket"></i>
               Get Started
             </button>
+            </div>
           </div>
         </div>
 

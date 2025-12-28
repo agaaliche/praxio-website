@@ -1,9 +1,9 @@
 <template>
   <div>
     <!-- Hero -->
-    <section class="bg-gradient-to-br from-primary-50 to-white py-16">
+    <section class="bg-gradient-to-br from-primary-50 to-white pt-8 pb-4">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h1 class="font-display text-4xl md:text-5xl font-bold text-gray-900 mb-4">Contact Us</h1>
+        <h1 class="font-display text-4xl md:text-5xl font-bold text-gray-900 mb-2">Contact Us</h1>
         <p class="text-xl text-gray-600 max-w-2xl mx-auto">
           Have questions? We'd love to hear from you.
         </p>
@@ -11,7 +11,7 @@
     </section>
 
     <!-- Contact Form -->
-    <section class="py-20">
+    <section class="pb-10">
       <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="bg-white rounded-2xl shadow-lg p-8 md:p-12">
           <form @submit.prevent="handleSubmit" class="space-y-6">

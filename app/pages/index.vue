@@ -88,7 +88,7 @@
           <!-- Content -->
           <div>
             <h2 class="text-3xl md:text-4xl font-display font-bold text-gray-900 mb-2">
-              <img src="https://retroact-fb.web.app/img/logo_company.png" alt="Retroact" class="h-10 md:h-12" />
+              <i class="fa-kit-duotone fa-logo text-primary-600 text-4xl md:text-5xl"></i>
             </h2>
             <p class="text-lg text-primary-600 font-medium mb-4">
               INR Management for Pharmacies, Labs & Clinics
@@ -194,7 +194,7 @@
               <div>
                 <h3 class="text-xl font-bold text-gray-900 mb-2">Leave anytime</h3>
                 <p class="text-gray-600">
-                  No annual contracts, no lock-in. Export your data and cancel whenever you want. We stay because you choose to.
+                  No mandatory commitment, no lock-in. Export your data and cancel whenever you want with a monthly subscription.
                 </p>
               </div>
             </div>
@@ -209,7 +209,7 @@
               <div>
                 <h3 class="text-xl font-bold text-gray-900 mb-2">Who needs sales reps?</h3>
                 <p class="text-gray-600">
-                  We skip the demo theater. Sign up, explore, decide for yourself.
+                  We skip the demo theater. Sign up, explore, decide for yourself with a <NuxtLink to="/pricing" class="text-primary-600 hover:text-primary-700 underline">free trial</NuxtLink>.
                 </p>
               </div>
             </div>

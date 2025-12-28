@@ -1,5 +1,5 @@
 <template>
-  <header :class="['bg-white sticky top-0 z-50 transition-shadow duration-200', isScrolled ? 'shadow-lg' : '']">
+  <header :class="['bg-white sticky top-0 z-50 transition-shadow duration-200', showShadow ? 'shadow-lg' : '']">
     <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between h-16">
         <!-- Logo -->
@@ -19,12 +19,14 @@
           <NuxtLink to="/pricing" class="text-gray-600 hover:text-primary-600 transition px-3 py-1.5 rounded-lg" active-class="!text-primary-600 font-medium border border-primary-600">
             Pricing
           </NuxtLink>
-          <NuxtLink to="/about" class="text-gray-600 hover:text-primary-600 transition px-3 py-1.5 rounded-lg" active-class="!text-primary-600 font-medium border border-primary-600">
-            About
-          </NuxtLink>
           <NuxtLink to="/contact" class="text-gray-600 hover:text-primary-600 transition px-3 py-1.5 rounded-lg" active-class="!text-primary-600 font-medium border border-primary-600">
             Contact
           </NuxtLink>
+          <ClientOnly>
+            <NuxtLink v-if="isAuthenticated" to="/account" class="text-gray-600 hover:text-primary-600 transition px-3 py-1.5 rounded-lg" active-class="!text-primary-600 font-medium border border-primary-600">
+              Account
+            </NuxtLink>
+          </ClientOnly>
         </div>
 
         <!-- CTA Buttons -->
@@ -54,14 +56,6 @@
                       <p class="text-sm font-medium text-gray-900">{{ user?.displayName || 'User' }}</p>
                       <p class="text-sm text-gray-500 truncate">{{ user?.email }}</p>
                     </div>
-                    <NuxtLink 
-                      to="/account" 
-                      class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition"
-                      @click="dropdownOpen = false"
-                    >
-                      <i class="fa-solid fa-user-gear text-gray-400"></i>
-                      Account
-                    </NuxtLink>
                     <button 
                       @click="handleSignOut" 
                       class="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition text-left"
@@ -115,7 +109,6 @@
           </ClientOnly>
           <NuxtLink to="/retroact" class="text-gray-600 hover:text-primary-600" @click="mobileMenuOpen = false">Products</NuxtLink>
           <NuxtLink to="/pricing" class="text-gray-600 hover:text-primary-600" @click="mobileMenuOpen = false">Pricing</NuxtLink>
-          <NuxtLink to="/about" class="text-gray-600 hover:text-primary-600" @click="mobileMenuOpen = false">About</NuxtLink>
           <NuxtLink to="/contact" class="text-gray-600 hover:text-primary-600" @click="mobileMenuOpen = false">Contact</NuxtLink>
           <hr class="my-2" />
           <ClientOnly>
@@ -147,11 +140,32 @@ const dropdownOpen = ref(false)
 const dropdownRef = ref(null)
 const { isAuthenticated, user, signOutUser } = useAuth()
 const router = useRouter()
+const route = useRoute()
+const { subHeaderVisible } = useSubHeaderState()
 
-// Compute user initial for avatar
+// Pages that have a Level 2 sub-header bar
+const hasSubHeader = computed(() => {
+  return route.path.startsWith('/account') || route.path.startsWith('/retroact')
+})
+
+// Show shadow when:
+// - Scrolled AND no sub-header on this page, OR
+// - Scrolled AND sub-header is hidden (hide-on-scroll-down)
+const showShadow = computed(() => {
+  if (!isScrolled.value) return false
+  if (!hasSubHeader.value) return true
+  // Has sub-header: show shadow when sub-header is hidden
+  return !subHeaderVisible.value
+})
+
+// Compute user initials for avatar
 const userInitial = computed(() => {
   if (user.value?.displayName) {
-    return user.value.displayName.charAt(0).toUpperCase()
+    const parts = user.value.displayName.trim().split(/\s+/)
+    if (parts.length >= 2) {
+      return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase()
+    }
+    return parts[0].charAt(0).toUpperCase()
   }
   if (user.value?.email) {
     return user.value.email.charAt(0).toUpperCase()

@@ -1,17 +1,41 @@
 <template>
   <div>
-    <!-- Hero Section -->
-    <section class="bg-gradient-to-br from-primary-50 to-white py-20">
+    <!-- Level 2 Navigation Bar -->
+    <TheSubHeader :hide-on-scroll-down="true">
+      <button 
+        @click="activeTab = 'retroact'"
+        class="text-sm font-medium border-b-2 h-full flex items-center transition"
+        :class="activeTab === 'retroact' ? 'border-primary-600 text-primary-600' : 'border-transparent text-gray-600 hover:text-primary-600'"
+      >
+        Retroact
+      </button>
+      <button 
+        @click="activeTab = 'overview'"
+        class="text-sm font-medium border-b-2 h-full flex items-center transition"
+        :class="activeTab === 'overview' ? 'border-primary-600 text-primary-600' : 'border-transparent text-gray-600 hover:text-primary-600'"
+      >
+        <i class="fa-solid fa-grid-2 mr-2"></i>
+        Feature Overview
+      </button>
+      <button 
+        @click="activeTab = 'action'"
+        class="text-sm font-medium border-b-2 h-full flex items-center transition"
+        :class="activeTab === 'action' ? 'border-primary-600 text-primary-600' : 'border-transparent text-gray-600 hover:text-primary-600'"
+      >
+        <i class="fa-solid fa-play mr-2"></i>
+        In Action
+      </button>
+    </TheSubHeader>
+
+    <!-- Hero Section - Only shown in Retroact tab -->
+    <section v-show="activeTab === 'retroact'" class="bg-gradient-to-br from-primary-50 to-white py-20">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center max-w-3xl mx-auto">
-          <div class="inline-flex items-center px-4 py-2 bg-primary-100 text-primary-700 rounded-full text-sm font-medium mb-6">
-            INR Management Made Simple
-          </div>
           <h1 class="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-gray-900 leading-tight">
-            Retroact
+            <i class="fa-kit-duotone fa-logo text-primary-600"></i>
           </h1>
           <p class="mt-6 text-xl text-gray-600 leading-relaxed">
-            The complete solution for healthcare professionals managing anticoagulant therapy. 
+            <span class="text-primary-600">INR Management Made Simple.</span> The complete solution for healthcare professionals managing anticoagulant therapy. 
             See how Retroact simplifies your daily workflow.
           </p>
           <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
@@ -32,101 +56,15 @@
       </div>
     </section>
 
-    <!-- Feature Sections -->
-    <section class="py-20">
+    <!-- Feature Overview Tab -->
+    <section v-show="activeTab === 'overview'" class="py-20 bg-gray-50">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
           <h2 class="text-3xl md:text-4xl font-display font-bold text-gray-900">
-            See Retroact in Action
+            Dosing Done Right
           </h2>
           <p class="mt-4 text-xl text-gray-600">
-            Explore how each feature helps streamline your INR management workflow
-          </p>
-        </div>
-
-        <!-- Feature Navigation -->
-        <div class="flex flex-wrap justify-center gap-3 mb-12">
-          <button 
-            v-for="feature in features" 
-            :key="feature.id"
-            @click="activeFeature = feature.id"
-            :class="[
-              'px-6 py-3 rounded-full font-medium transition',
-              activeFeature === feature.id 
-                ? 'bg-primary-600 text-white shadow-lg' 
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-            ]"
-          >
-            {{ feature.title }}
-          </button>
-        </div>
-
-        <!-- Feature Content -->
-        <div v-for="feature in features" :key="feature.id" v-show="activeFeature === feature.id">
-          <div class="grid lg:grid-cols-2 gap-12 items-center">
-            <!-- Description -->
-            <div :class="feature.reverse ? 'lg:order-2' : ''">
-              <div class="w-20 h-20 rounded-2xl flex items-center justify-center mb-6" :class="feature.iconBg">
-                <span :class="feature.iconColor" v-html="feature.iconSvg"></span>
-              </div>
-              <h3 class="text-2xl md:text-3xl font-display font-bold text-gray-900 mb-4">
-                {{ feature.title }}
-              </h3>
-              <p class="text-lg text-gray-600 mb-6">
-                {{ feature.description }}
-              </p>
-              <ul class="space-y-3">
-                <li v-for="(point, index) in feature.points" :key="index" class="flex items-start">
-                  <svg class="w-6 h-6 text-green-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                  </svg>
-                  <span class="text-gray-600">{{ point }}</span>
-                </li>
-              </ul>
-            </div>
-
-            <!-- Media (Screenshot/Video placeholder) -->
-            <div :class="feature.reverse ? 'lg:order-1' : ''">
-              <div class="bg-gray-100 rounded-2xl overflow-hidden shadow-2xl">
-                <!-- Video placeholder -->
-                <div v-if="feature.hasVideo" class="relative aspect-video bg-gray-200 flex items-center justify-center group cursor-pointer" @click="playVideo(feature.id)">
-                  <div class="absolute inset-0 bg-gradient-to-br from-primary-600/20 to-primary-800/30"></div>
-                  <div class="relative z-10 w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-xl group-hover:scale-110 transition">
-                    <svg class="w-8 h-8 text-primary-600 ml-1" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M8 5v14l11-7z" />
-                    </svg>
-                  </div>
-                  <span class="absolute bottom-4 left-4 text-white font-medium bg-black/50 px-3 py-1 rounded-full text-sm">
-                    Watch demo
-                  </span>
-                </div>
-                <!-- Screenshot placeholder -->
-                <div v-else class="aspect-video bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-                  <div class="text-center p-8">
-                    <div class="w-16 h-16 bg-primary-100 rounded-xl flex items-center justify-center mx-auto mb-4">
-                      <svg class="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                      </svg>
-                    </div>
-                    <p class="text-gray-500 text-sm">Screenshot coming soon</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- All Features Grid -->
-    <section class="py-20 bg-gray-50">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16">
-          <h2 class="text-3xl md:text-4xl font-display font-bold text-gray-900">
-            Complete Feature Overview
-          </h2>
-          <p class="mt-4 text-xl text-gray-600">
-            Everything you need to manage INR therapy efficiently
+            Powerful features for consistent dosing decisions
           </p>
         </div>
 
@@ -135,7 +73,7 @@
             v-for="feature in features" 
             :key="feature.id"
             class="bg-white rounded-2xl p-8 shadow-sm hover:shadow-lg transition cursor-pointer"
-            @click="activeFeature = feature.id; scrollToFeature()"
+            @click="activeFeature = feature.id; activeTab = 'action'"
           >
             <div class="w-16 h-16 rounded-xl flex items-center justify-center mb-4" :class="feature.iconBg">
               <span :class="feature.iconColor" v-html="feature.iconSvg"></span>
@@ -147,14 +85,155 @@
       </div>
     </section>
 
+    <!-- In Action Tab - Side Navigation Style -->
+    <section v-show="activeTab === 'action'" class="h-[calc(100vh-8rem)]">
+      <div class="h-full flex gap-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <!-- Left Sidebar - Feature Navigation (matches account settings style) -->
+        <aside class="w-56 shrink-0 hidden lg:block">
+          <div class="bg-white rounded-2xl border border-gray-200 p-3 sticky top-4">
+            <nav class="space-y-1">
+              <button 
+                v-for="(feature, index) in features" 
+                :key="feature.id"
+                @click="activeFeatureIndex = index"
+                class="w-full flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-xl transition text-left"
+                :class="activeFeatureIndex === index 
+                  ? 'bg-primary-50 text-primary-700 border border-primary-100' 
+                  : 'text-gray-600 hover:bg-gray-50'"
+              >
+                <i :class="[feature.iconClass, 'w-5 text-center']"></i>
+                {{ feature.title }}
+              </button>
+            </nav>
+          </div>
+        </aside>
+
+        <!-- Mobile Feature Selector -->
+        <div class="lg:hidden absolute top-0 left-0 right-0 bg-white border-b border-gray-200 p-3 z-10">
+          <select 
+            v-model="activeFeatureIndex" 
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+          >
+            <option v-for="(feature, index) in features" :key="feature.id" :value="index">
+              {{ feature.title }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="flex-1 relative">
+          <div ref="scrollContainer" class="absolute inset-0 overflow-y-auto custom-scrollbar bg-white rounded-2xl">
+            <div class="p-6 lg:p-8 pt-16 lg:pt-8">
+            <!-- Feature Header with Navigation -->
+            <div class="flex items-center justify-between mb-6">
+              <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-xl flex items-center justify-center" :class="currentFeature.iconBg">
+                  <span :class="currentFeature.iconColor" v-html="currentFeature.iconSvg"></span>
+                </div>
+                <div>
+                  <h2 class="text-xl lg:text-2xl font-display font-bold text-gray-900">
+                    {{ currentFeature.title }}
+                  </h2>
+                  <p class="text-gray-500 text-sm">{{ currentFeature.shortDesc }}</p>
+                </div>
+              </div>
+              <!-- Navigation Arrows -->
+              <div class="flex items-center gap-2">
+                <button 
+                  @click="prevFeature"
+                  class="w-9 h-9 rounded-lg border border-gray-200 flex items-center justify-center text-gray-500 hover:text-primary-600 hover:border-primary-300 transition"
+                  :class="{ 'opacity-40 cursor-not-allowed': activeFeatureIndex === 0 }"
+                  :disabled="activeFeatureIndex === 0"
+                >
+                  <i class="fa-solid fa-chevron-left text-sm"></i>
+                </button>
+                <button 
+                  @click="nextFeature"
+                  class="w-9 h-9 rounded-lg border border-gray-200 flex items-center justify-center text-gray-500 hover:text-primary-600 hover:border-primary-300 transition"
+                  :class="{ 'opacity-40 cursor-not-allowed': activeFeatureIndex === features.length - 1 }"
+                  :disabled="activeFeatureIndex === features.length - 1"
+                >
+                  <i class="fa-solid fa-chevron-right text-sm"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Media Area -->
+            <div class="relative aspect-video bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl overflow-hidden shadow-lg mb-8">
+              <template v-if="currentFeature.hasVideo">
+                <div class="absolute inset-0 flex items-center justify-center cursor-pointer group" @click="playVideo(currentFeature.id)">
+                  <div class="absolute inset-0 bg-gradient-to-br from-primary-600/10 to-primary-800/20"></div>
+                  <div class="relative z-10 w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition">
+                    <svg class="w-8 h-8 text-primary-600 ml-1" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </div>
+                  <span class="absolute bottom-4 left-4 text-white font-medium bg-black/50 px-3 py-1.5 rounded-full text-sm">
+                    Watch demo
+                  </span>
+                </div>
+              </template>
+              <template v-else>
+                <div class="absolute inset-0 flex items-center justify-center">
+                  <div class="text-center">
+                    <div class="w-16 h-16 bg-primary-100 rounded-xl flex items-center justify-center mx-auto mb-3">
+                      <svg class="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                    <p class="text-gray-500">Screenshot coming soon</p>
+                  </div>
+                </div>
+              </template>
+            </div>
+
+            <!-- Description -->
+            <p class="text-gray-600 leading-relaxed mb-6">
+              {{ currentFeature.description }}
+            </p>
+
+            <!-- Feature Points - Horizontal Chips -->
+            <div class="flex flex-wrap gap-2">
+              <span 
+                v-for="(point, index) in currentFeature.points" 
+                :key="index" 
+                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium"
+                :class="[currentFeature.iconBg, currentFeature.iconColor]"
+              >
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                {{ point }}
+              </span>
+            </div>
+            </div>
+          </div>
+
+          <!-- Overlay Scrollbar -->
+          <div 
+            v-if="isScrollable"
+            class="overlay-scrollbar-track"
+            :class="{ visible: scrollbarVisible || isDragging }"
+            @click="handleTrackClick"
+          >
+            <div 
+              class="overlay-scrollbar-thumb"
+              :style="{ height: thumbHeight + 'px', top: thumbTop + 'px' }"
+              @mousedown="handleThumbMouseDown"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- CTA Section -->
     <section class="py-20 bg-primary-600">
       <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2 class="text-3xl md:text-4xl font-display font-bold text-white">
-          Ready to simplify your INR management?
+          Join healthcare professionals who work smarter.
         </h2>
         <p class="mt-4 text-xl text-primary-100">
-          Start your free trial today. No credit card required.
+          Start your free trial — no credit card required.
         </p>
         <a 
           href="https://retroact.app/signup" 
@@ -171,12 +250,43 @@
 </template>
 
 <script setup>
+import { useOverlayScrollbar } from '~/composables/useOverlayScrollbar'
+
 useSeoMeta({
   title: 'Retroact - INR Management Software | Praxio',
   description: 'Discover how Retroact simplifies INR management for healthcare professionals. Track INR values, generate prescriptions, schedule appointments, and more.'
 })
 
-const activeFeature = ref('results')
+const activeTab = ref('retroact')
+const activeFeatureIndex = ref(0)
+
+// Custom scrollbar for In Action content
+const scrollContainer = ref(null)
+const { 
+  scrollbarVisible, 
+  isDragging, 
+  thumbHeight, 
+  thumbTop, 
+  isScrollable, 
+  handleThumbMouseDown, 
+  handleTrackClick 
+} = useOverlayScrollbar(scrollContainer)
+
+// Computed property for current feature in carousel
+const currentFeature = computed(() => features[activeFeatureIndex.value])
+
+// Carousel navigation
+const prevFeature = () => {
+  if (activeFeatureIndex.value > 0) {
+    activeFeatureIndex.value--
+  }
+}
+
+const nextFeature = () => {
+  if (activeFeatureIndex.value < features.length - 1) {
+    activeFeatureIndex.value++
+  }
+}
 
 const features = [
   {
@@ -398,9 +508,61 @@ const playVideo = (featureId) => {
   // TODO: Implement video modal/player
   console.log('Play video for:', featureId)
 }
-
-const scrollToFeature = () => {
-  // Scroll to feature section
-  window.scrollTo({ top: 400, behavior: 'smooth' })
-}
 </script>
+<style scoped>
+/* Hide the capsule pill (primary layer), keep only the round tablet */
+.retroact-tablet-icon {
+  --fa-primary-opacity: 0;
+  --fa-secondary-opacity: 1;
+}
+
+/* Hide native scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.custom-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Overlay scrollbar track */
+.overlay-scrollbar-track {
+  position: absolute;
+  top: 8px;
+  right: 4px;
+  bottom: 8px;
+  width: 10px;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  pointer-events: none;
+  z-index: 100;
+  border-radius: 5px;
+}
+
+.overlay-scrollbar-track.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Overlay scrollbar thumb */
+.overlay-scrollbar-thumb {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 10px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  pointer-events: auto;
+}
+
+.overlay-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.overlay-scrollbar-thumb:active {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+</style>
