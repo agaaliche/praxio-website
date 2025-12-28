@@ -39,6 +39,7 @@
     <!-- Pricing Cards -->
     <section class="py-20">
       <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <ClientOnly>
         <div class="grid md:grid-cols-3 gap-8">
           
           <!-- Free Trial -->
@@ -46,7 +47,7 @@
             'rounded-2xl shadow-lg p-8 relative',
             isTrialDisabled ? 'bg-gray-50 border-2 border-gray-200 opacity-75' : 'bg-white border-2 border-green-200'
           ]">
-            <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
+            <div class="absolute -top-[14px] left-1/2 transform -translate-x-1/2">
               <span :class="[
                 'px-4 py-1 rounded-full text-sm font-medium',
                 isTrialDisabled ? 'bg-gray-400 text-white' : 'bg-green-500 text-white'
@@ -59,7 +60,13 @@
             <div class="mb-6">
               <span class="text-4xl font-bold text-green-600">FREE</span>
               <div class="text-gray-500 text-sm mt-1">
-                <i class="fa-regular fa-clock mr-1"></i> 14 days full access
+                <i class="fa-regular fa-clock mr-1"></i> 
+                <template v-if="isOnTrial">
+                  {{ trialDaysLeft }} day{{ trialDaysLeft === 1 ? '' : 's' }} left (ends {{ trialEndFormatted }})
+                </template>
+                <template v-else>
+                  14 days full access
+                </template>
               </div>
             </div>
             <ul class="space-y-4 mb-8">
@@ -90,7 +97,7 @@
               class="w-full text-center bg-gray-300 text-gray-500 px-6 py-3 rounded-lg font-semibold cursor-not-allowed flex items-center justify-center gap-2"
             >
               <i class="fa-regular fa-circle-check"></i>
-              {{ isOnTrial ? 'Current Plan' : 'Not Available' }}
+              {{ isOnTrial ? 'Current Plan' : (isTrialExpired ? 'Trial Expired' : 'Not Available') }}
             </button>
             <NuxtLink 
               v-else
@@ -107,7 +114,7 @@
             isMonthlyDisabled ? 'bg-gray-50 border border-gray-200 opacity-75' : 'bg-white border border-gray-200'
           ]">
             <!-- Current Plan Badge -->
-            <div v-if="isOnMonthly" class="absolute -top-4 left-1/2 transform -translate-x-1/2">
+            <div v-if="isOnMonthly" class="absolute -top-[14px] left-1/2 transform -translate-x-1/2">
               <span class="bg-primary-600 text-white px-4 py-1 rounded-full text-sm font-medium">
                 <i class="fa-regular fa-circle-check mr-1"></i> Current Plan
               </span>
@@ -165,7 +172,7 @@
             'rounded-2xl shadow-xl p-8 relative transform md:scale-105',
             isOnAnnual ? 'bg-gray-100 border-2 border-gray-300' : 'bg-primary-600'
           ]">
-            <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
+            <div class="absolute -top-[14px] left-1/2 transform -translate-x-1/2">
               <span v-if="isOnAnnual" class="bg-primary-600 text-white px-4 py-1 rounded-full text-sm font-medium">
                 <i class="fa-regular fa-circle-check mr-1"></i> Current Plan
               </span>
@@ -240,6 +247,42 @@
             </button>
           </div>
         </div>
+
+        <template #fallback>
+          <div class="grid md:grid-cols-3 gap-8">
+            <div class="rounded-2xl shadow-lg p-8 bg-white border-2 border-gray-200 animate-pulse">
+              <div class="h-8 bg-gray-200 rounded w-2/3 mb-4"></div>
+              <div class="h-4 bg-gray-200 rounded w-1/2 mb-6"></div>
+              <div class="h-12 bg-gray-200 rounded w-1/3 mb-6"></div>
+              <div class="space-y-4">
+                <div class="h-4 bg-gray-200 rounded"></div>
+                <div class="h-4 bg-gray-200 rounded"></div>
+                <div class="h-4 bg-gray-200 rounded"></div>
+              </div>
+            </div>
+            <div class="rounded-2xl shadow-lg p-8 bg-white border border-gray-200 animate-pulse">
+              <div class="h-8 bg-gray-200 rounded w-2/3 mb-4"></div>
+              <div class="h-4 bg-gray-200 rounded w-1/2 mb-6"></div>
+              <div class="h-12 bg-gray-200 rounded w-1/3 mb-6"></div>
+              <div class="space-y-4">
+                <div class="h-4 bg-gray-200 rounded"></div>
+                <div class="h-4 bg-gray-200 rounded"></div>
+                <div class="h-4 bg-gray-200 rounded"></div>
+              </div>
+            </div>
+            <div class="rounded-2xl shadow-xl p-8 bg-primary-600 animate-pulse md:scale-105">
+              <div class="h-8 bg-primary-400 rounded w-2/3 mb-4"></div>
+              <div class="h-4 bg-primary-400 rounded w-1/2 mb-6"></div>
+              <div class="h-12 bg-primary-400 rounded w-1/3 mb-6"></div>
+              <div class="space-y-4">
+                <div class="h-4 bg-primary-400 rounded"></div>
+                <div class="h-4 bg-primary-400 rounded"></div>
+                <div class="h-4 bg-primary-400 rounded"></div>
+              </div>
+            </div>
+          </div>
+        </template>
+        </ClientOnly>
 
         <!-- Error Message -->
         <div v-if="error" class="mt-8 max-w-lg mx-auto p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-center">
@@ -362,6 +405,8 @@ const currentSubscription = ref<{
   status: string | null
   priceId: string | null
   nextBillingDate: string | null
+  trialStartDate: string | null
+  trialEndDate: string | null
   scheduledPriceId: string | null
   scheduledChangeDate: string | null
 } | null>(null)
@@ -381,7 +426,32 @@ const isTrialOrNone = computed(() => {
 
 const isOnTrial = computed(() => {
   if (!mounted.value) return false
-  return currentSubscription.value?.status === 'trialing'
+  // User is on trial if they have status trialing OR have a valid trialEndDate without a subscription
+  if (currentSubscription.value?.status === 'trialing') return true
+  if (currentSubscription.value?.trialEndDate && !currentSubscription.value?.subscriptionId) {
+    const trialEnd = new Date(currentSubscription.value.trialEndDate)
+    return trialEnd >= new Date()
+  }
+  return false
+})
+
+const trialDaysLeft = computed(() => {
+  if (!mounted.value || !currentSubscription.value?.trialEndDate) return 0
+  const trialEnd = new Date(currentSubscription.value.trialEndDate)
+  const now = new Date()
+  return Math.max(0, Math.ceil((trialEnd.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)))
+})
+
+const trialEndFormatted = computed(() => {
+  if (!currentSubscription.value?.trialEndDate) return ''
+  return formatDate(currentSubscription.value.trialEndDate)
+})
+
+const isTrialExpired = computed(() => {
+  if (!mounted.value) return false
+  if (!currentSubscription.value?.trialEndDate) return false
+  const trialEnd = new Date(currentSubscription.value.trialEndDate)
+  return trialEnd < new Date() && !currentSubscription.value?.subscriptionId
 })
 
 const isOnMonthly = computed(() => {
@@ -398,8 +468,8 @@ const isOnAnnual = computed(() => {
 
 const isTrialDisabled = computed(() => {
   if (!mounted.value) return false // SSR-safe
-  // Disable trial if user has any subscription (active, trialing, or canceled)
-  return !!currentSubscription.value?.subscriptionId || isOnTrial.value
+  // Disable trial if user has any subscription (active, trialing, or canceled) OR is on trial OR trial has expired
+  return !!currentSubscription.value?.subscriptionId || isOnTrial.value || isTrialExpired.value
 })
 
 const isMonthlyDisabled = computed(() => {
@@ -423,13 +493,18 @@ function formatDate(dateStr: string | null | undefined): string {
 }
 
 async function fetchSubscription() {
-  if (!user.value) return
+  if (!user.value) {
+    console.log('[Pricing] fetchSubscription: No user, skipping')
+    return
+  }
   
   try {
+    console.log('[Pricing] Fetching subscription for user:', user.value.uid)
     const token = await getIdToken()
     const response = await $fetch<{ subscription: typeof currentSubscription.value }>('/api/users/current', {
       headers: { Authorization: `Bearer ${token}` }
     })
+    console.log('[Pricing] Subscription response:', response.subscription)
     currentSubscription.value = response.subscription
   } catch (err) {
     console.error('Failed to fetch subscription:', err)
@@ -505,6 +580,13 @@ onMounted(async () => {
   if (urlParams.get('canceled') === 'true') {
     error.value = 'Checkout was canceled. You can try again when ready.'
     window.history.replaceState({}, '', '/pricing')
+  }
+})
+
+// Watch for user auth state changes to fetch subscription when user becomes available
+watch(user, async (newUser) => {
+  if (mounted.value && newUser && !currentSubscription.value) {
+    await fetchSubscription()
   }
 })
 

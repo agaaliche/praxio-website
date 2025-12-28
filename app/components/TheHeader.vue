@@ -1,5 +1,5 @@
 <template>
-  <header class="bg-white shadow-sm sticky top-0 z-50">
+  <header :class="['bg-white sticky top-0 z-50 transition-shadow duration-200', isScrolled ? 'shadow-lg' : '']">
     <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between h-16">
         <!-- Logo -->
@@ -13,16 +13,16 @@
 
         <!-- Desktop Navigation -->
         <div class="hidden md:flex items-center space-x-8">
-          <NuxtLink to="/retroact" class="text-gray-600 hover:text-primary-600 transition" active-class="!text-primary-600 font-medium">
-            Retroact
+          <NuxtLink to="/retroact" class="text-gray-600 hover:text-primary-600 transition px-3 py-1.5 rounded-lg" active-class="!text-primary-600 font-medium border border-primary-600">
+            Products
           </NuxtLink>
-          <NuxtLink to="/pricing" class="text-gray-600 hover:text-primary-600 transition" active-class="!text-primary-600 font-medium">
+          <NuxtLink to="/pricing" class="text-gray-600 hover:text-primary-600 transition px-3 py-1.5 rounded-lg" active-class="!text-primary-600 font-medium border border-primary-600">
             Pricing
           </NuxtLink>
-          <NuxtLink to="/about" class="text-gray-600 hover:text-primary-600 transition" active-class="!text-primary-600 font-medium">
+          <NuxtLink to="/about" class="text-gray-600 hover:text-primary-600 transition px-3 py-1.5 rounded-lg" active-class="!text-primary-600 font-medium border border-primary-600">
             About
           </NuxtLink>
-          <NuxtLink to="/contact" class="text-gray-600 hover:text-primary-600 transition" active-class="!text-primary-600 font-medium">
+          <NuxtLink to="/contact" class="text-gray-600 hover:text-primary-600 transition px-3 py-1.5 rounded-lg" active-class="!text-primary-600 font-medium border border-primary-600">
             Contact
           </NuxtLink>
         </div>
@@ -32,7 +32,7 @@
           <ClientOnly>
             <!-- Show Sign Out if authenticated -->
             <template v-if="isAuthenticated">
-              <NuxtLink to="/account" class="text-gray-600 hover:text-primary-600 transition" active-class="!text-primary-600 font-medium">
+              <NuxtLink to="/account" class="text-gray-600 hover:text-primary-600 transition px-3 py-1.5 rounded-lg" active-class="!text-primary-600 font-medium border border-primary-600">
                 Account
               </NuxtLink>
               <button @click="handleSignOut" class="text-gray-600 hover:text-primary-600 transition">
@@ -65,7 +65,7 @@
       <!-- Mobile Navigation -->
       <div v-if="mobileMenuOpen" class="md:hidden py-4 border-t">
         <div class="flex flex-col space-y-4">
-          <NuxtLink to="/retroact" class="text-gray-600 hover:text-primary-600" @click="mobileMenuOpen = false">Retroact</NuxtLink>
+          <NuxtLink to="/retroact" class="text-gray-600 hover:text-primary-600" @click="mobileMenuOpen = false">Products</NuxtLink>
           <NuxtLink to="/pricing" class="text-gray-600 hover:text-primary-600" @click="mobileMenuOpen = false">Pricing</NuxtLink>
           <NuxtLink to="/about" class="text-gray-600 hover:text-primary-600" @click="mobileMenuOpen = false">About</NuxtLink>
           <NuxtLink to="/contact" class="text-gray-600 hover:text-primary-600" @click="mobileMenuOpen = false">Contact</NuxtLink>
@@ -88,8 +88,21 @@
 
 <script setup>
 const mobileMenuOpen = ref(false)
+const isScrolled = ref(false)
 const { isAuthenticated, signOutUser } = useAuth()
 const router = useRouter()
+
+onMounted(() => {
+  const handleScroll = () => {
+    isScrolled.value = window.scrollY > 0
+  }
+  window.addEventListener('scroll', handleScroll)
+  handleScroll() // Check initial state
+  
+  onUnmounted(() => {
+    window.removeEventListener('scroll', handleScroll)
+  })
+})
 
 const handleSignOut = async () => {
   await signOutUser()

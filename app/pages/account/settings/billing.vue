@@ -8,7 +8,7 @@
 
     <!-- Loading State -->
     <div v-if="loading" class="flex justify-center py-12">
-      <i class="fa-solid fa-spinner fa-spin text-2xl text-primary-600"></i>
+      <div class="w-8 h-8 border-4 border-primary-200 border-t-primary-600 rounded-full animate-spin"></div>
     </div>
 
     <template v-else>
@@ -34,9 +34,29 @@
           </button>
         </div>
         <div v-else class="text-center py-6 text-gray-500">
-          <i class="fa-light fa-credit-card text-3xl mb-2"></i>
+          <i class="fa-regular fa-credit-card text-3xl mb-2"></i>
           <p>No payment method on file</p>
           <p class="text-sm mt-1">Add a payment method when you subscribe to a plan</p>
+        </div>
+      </div>
+
+      <!-- Next Billing Date -->
+      <div v-if="hasActiveSubscription" class="bg-white rounded-xl border border-gray-200 p-6 mb-6">
+        <h2 class="text-lg font-bold text-gray-900 mb-4">Next Billing</h2>
+        <div class="flex items-center gap-4 p-4 bg-primary-50 rounded-lg">
+          <div class="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center">
+            <i class="fa-regular fa-calendar text-primary-600 text-xl"></i>
+          </div>
+          <div class="flex-1">
+            <p class="font-medium text-gray-900">{{ formatBillingDate(subscription?.nextBillingDate) }}</p>
+            <p class="text-sm text-gray-600">{{ subscription?.planName || 'Subscription' }} · {{ formatBillingAmount(subscription?.amount, subscription?.currency) }}</p>
+          </div>
+          <div class="text-right">
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+              <i class="fa-solid fa-circle-check mr-1"></i>
+              Active
+            </span>
+          </div>
         </div>
       </div>
 
@@ -44,19 +64,60 @@
       <div class="bg-white rounded-xl border border-gray-200 p-6">
         <h2 class="text-lg font-bold text-gray-900 mb-4">Billing History</h2>
         
-        <div v-if="hasActiveSubscription" class="text-center py-6">
-          <button 
-            @click="openBillingPortal"
-            :disabled="portalLoading"
-            class="text-primary-600 hover:text-primary-700 font-medium flex items-center gap-2 mx-auto"
-          >
-            <i v-if="portalLoading" class="fa-solid fa-spinner fa-spin"></i>
-            <i v-else class="fa-light fa-external-link"></i>
-            View invoices in Stripe Portal
-          </button>
+        <!-- Loading invoices -->
+        <div v-if="invoicesLoading" class="flex justify-center py-6">
+          <i class="fa-solid fa-spinner fa-spin text-xl text-primary-600"></i>
         </div>
+        
+        <!-- Invoices table -->
+        <div v-else-if="invoices.length > 0" class="overflow-x-auto">
+          <table class="w-full">
+            <thead>
+              <tr class="border-b border-gray-200">
+                <th class="text-left py-3 px-2 text-sm font-medium text-gray-500">Date</th>
+                <th class="text-left py-3 px-2 text-sm font-medium text-gray-500">Invoice</th>
+                <th class="text-left py-3 px-2 text-sm font-medium text-gray-500">Description</th>
+                <th class="text-right py-3 px-2 text-sm font-medium text-gray-500">Amount</th>
+                <th class="text-center py-3 px-2 text-sm font-medium text-gray-500">Status</th>
+                <th class="text-right py-3 px-2 text-sm font-medium text-gray-500"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="invoice in invoices" :key="invoice.id" class="border-b border-gray-100 hover:bg-gray-50">
+                <td class="py-3 px-2 text-sm text-gray-900">{{ formatDate(invoice.date) }}</td>
+                <td class="py-3 px-2 text-sm text-gray-600">{{ invoice.number || '—' }}</td>
+                <td class="py-3 px-2 text-sm text-gray-600 max-w-xs truncate">{{ invoice.description || 'Subscription' }}</td>
+                <td class="py-3 px-2 text-sm text-gray-900 text-right font-medium">{{ formatAmount(invoice.amount, invoice.currency) }}</td>
+                <td class="py-3 px-2 text-center">
+                  <span 
+                    :class="[
+                      'inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium',
+                      getStatusClass(invoice.status)
+                    ]"
+                  >
+                    <i :class="['mr-1 text-[10px]', getStatusIcon(invoice.status)]"></i>
+                    {{ getStatusLabel(invoice.status) }}
+                  </span>
+                </td>
+                <td class="py-3 px-2 text-right">
+                  <a 
+                    v-if="invoice.pdfUrl"
+                    :href="invoice.pdfUrl"
+                    target="_blank"
+                    class="text-primary-600 hover:text-primary-700 text-sm font-medium inline-flex items-center gap-1"
+                  >
+                    <i class="fa-regular fa-file-pdf"></i>
+                    PDF
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <!-- No invoices -->
         <div v-else class="text-center py-8 text-gray-500">
-          <i class="fa-light fa-receipt text-3xl mb-2"></i>
+          <i class="fa-solid fa-receipt text-3xl mb-2"></i>
           <p>No invoices yet</p>
         </div>
       </div>
@@ -82,11 +143,27 @@ const { getIdToken } = useAuth()
 // State
 const loading = ref(true)
 const portalLoading = ref(false)
+const invoicesLoading = ref(false)
 const error = ref('')
 const subscription = ref<{
   subscriptionId: string | null
   status: string | null
+  nextBillingDate: string | null
+  priceId: string | null
+  planName: string | null
+  amount: number | null
+  currency: string | null
 } | null>(null)
+const invoices = ref<{
+  id: string
+  number: string | null
+  date: number
+  amount: number
+  currency: string
+  status: string
+  pdfUrl: string | null
+  description: string | null
+}[]>([])
 
 // Computed
 const hasActiveSubscription = computed(() => {
@@ -100,6 +177,21 @@ async function fetchSubscription() {
     error.value = ''
     
     const token = await getIdToken()
+    
+    // Try to get detailed subscription info from Stripe
+    try {
+      const stripeResponse = await $fetch<{ subscription: typeof subscription.value }>('/api/stripe/subscription', {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      if (stripeResponse.subscription) {
+        subscription.value = stripeResponse.subscription
+        return
+      }
+    } catch {
+      // Fall back to basic user info if Stripe call fails
+    }
+    
+    // Fallback: get from user profile
     const response = await $fetch<{ subscription: typeof subscription.value }>('/api/users/current', {
       headers: { Authorization: `Bearer ${token}` }
     })
@@ -110,6 +202,83 @@ async function fetchSubscription() {
     error.value = err.data?.message || 'Failed to load billing information'
   } finally {
     loading.value = false
+  }
+}
+
+async function fetchInvoices() {
+  try {
+    invoicesLoading.value = true
+    
+    const token = await getIdToken()
+    const response = await $fetch<{ invoices: typeof invoices.value }>('/api/stripe/invoices', {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    
+    invoices.value = response.invoices
+  } catch (err: any) {
+    console.error('Failed to fetch invoices:', err)
+    // Don't show error for invoices, just leave empty
+  } finally {
+    invoicesLoading.value = false
+  }
+}
+
+function formatDate(timestamp: number): string {
+  const date = new Date(timestamp * 1000)
+  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+}
+
+function formatBillingDate(dateStr: string | null | undefined): string {
+  if (!dateStr) return '—'
+  const date = new Date(dateStr)
+  return date.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })
+}
+
+function formatBillingAmount(amount: number | null | undefined, currency: string | null | undefined): string {
+  if (!amount || !currency) return ''
+  return new Intl.NumberFormat('en-CA', {
+    style: 'currency',
+    currency: currency.toUpperCase()
+  }).format(amount / 100)
+}
+
+function formatAmount(amount: number, currency: string): string {
+  return new Intl.NumberFormat('en-CA', {
+    style: 'currency',
+    currency: currency.toUpperCase()
+  }).format(amount / 100)
+}
+
+function getStatusClass(status: string): string {
+  switch (status) {
+    case 'paid': return 'bg-green-100 text-green-800'
+    case 'open': return 'bg-yellow-100 text-yellow-800'
+    case 'draft': return 'bg-gray-100 text-gray-800'
+    case 'void': return 'bg-red-100 text-red-800'
+    case 'uncollectible': return 'bg-red-100 text-red-800'
+    default: return 'bg-gray-100 text-gray-800'
+  }
+}
+
+function getStatusIcon(status: string): string {
+  switch (status) {
+    case 'paid': return 'fa-solid fa-circle-check'
+    case 'open': return 'fa-solid fa-clock'
+    case 'draft': return 'fa-solid fa-file'
+    case 'void': return 'fa-solid fa-ban'
+    case 'uncollectible': return 'fa-solid fa-triangle-exclamation'
+    default: return 'fa-solid fa-circle-question'
+  }
+}
+
+function getStatusLabel(status: string): string {
+  switch (status) {
+    case 'paid': return 'Paid'
+    case 'open': return 'Open'
+    case 'draft': return 'Draft'
+    case 'void': return 'Void'
+    case 'uncollectible': return 'Uncollectible'
+    default: return status.charAt(0).toUpperCase() + status.slice(1)
   }
 }
 
@@ -136,7 +305,8 @@ async function openBillingPortal() {
 }
 
 // Lifecycle
-onMounted(() => {
-  fetchSubscription()
+onMounted(async () => {
+  await fetchSubscription()
+  await fetchInvoices()
 })
 </script>

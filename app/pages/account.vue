@@ -57,4 +57,8 @@
 
 <script setup lang="ts">
 const { isAccountOwner } = useAuth()
+
+definePageMeta({
+  middleware: ['auth', 'subscription']
+})
 </script>

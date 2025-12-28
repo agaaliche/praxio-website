@@ -211,6 +211,15 @@ export function useAuth() {
       userRole.value = null
       userClaims.value = null
       isAuthenticated.value = false
+      
+      // Clear subscription state
+      try {
+        const { clearSubscription } = useSubscription()
+        clearSubscription()
+      } catch (e) {
+        // Ignore if subscription composable not available
+      }
+      
       return { success: true }
     } catch (error: any) {
       return {

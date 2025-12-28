@@ -23,5 +23,12 @@
     "@nuxtjs/google-fonts": "^3.2.0",
     "@nuxtjs/tailwindcss": "^6.14.0",
     "@vueuse/nuxt": "^14.1.0"
+  },
+  "overrides": {
+    "tailwind-config-viewer": {
+      "koa": "^3.0.0",
+      "@koa/router": "^15.0.0"
+    },
+    "glob": "^10.0.0"
   }
 }

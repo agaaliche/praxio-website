@@ -100,7 +100,7 @@
 
         <!-- Loading -->
         <div v-if="loading" class="flex-1 flex items-center justify-center">
-          <i class="fa-solid fa-spinner fa-spin text-2xl text-primary-600"></i>
+          <div class="w-8 h-8 border-4 border-primary-200 border-t-primary-600 rounded-full animate-spin"></div>
         </div>
 
         <!-- Patient List -->

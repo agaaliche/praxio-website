@@ -25,10 +25,21 @@ export function getFirebaseApp(): App | null {
   
   const config = useRuntimeConfig()
   
-  // Option 1: Service account from environment variable (JSON string) - Recommended
-  if (config.firebaseServiceAccount) {
+  // Option 1: Service account from environment variable (JSON string or base64) - Recommended
+  let serviceAccountJson = config.firebaseServiceAccount
+  
+  // Check for base64 encoded version
+  if (!serviceAccountJson && process.env.FIREBASE_SERVICE_ACCOUNT_BASE64) {
     try {
-      const serviceAccount = JSON.parse(config.firebaseServiceAccount)
+      serviceAccountJson = Buffer.from(process.env.FIREBASE_SERVICE_ACCOUNT_BASE64, 'base64').toString('utf8')
+    } catch (e) {
+      console.error('❌ Error decoding FIREBASE_SERVICE_ACCOUNT_BASE64')
+    }
+  }
+  
+  if (serviceAccountJson) {
+    try {
+      const serviceAccount = JSON.parse(serviceAccountJson)
       adminApp = initializeApp({
         credential: cert(serviceAccount),
         projectId: serviceAccount.project_id

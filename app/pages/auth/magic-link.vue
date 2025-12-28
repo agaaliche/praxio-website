@@ -10,7 +10,7 @@
 
       <!-- Loading State -->
       <div v-if="loading" class="bg-white rounded-2xl shadow-xl p-8 text-center">
-        <i class="fa-solid fa-spinner fa-spin text-4xl text-primary-600 mb-4"></i>
+        <div class="w-10 h-10 border-4 border-primary-200 border-t-primary-600 rounded-full animate-spin mx-auto mb-4"></div>
         <h2 class="text-xl font-display font-bold text-gray-900 mb-2">
           {{ loadingMessage }}
         </h2>

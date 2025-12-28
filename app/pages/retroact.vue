@@ -354,87 +354,39 @@ const features = [
     iconColor: 'text-green-600',
     hasVideo: false,
     reverse: true
+  },
+  {
+    id: 'data-residency',
+    title: 'Data Residency & Compliance',
+    shortDesc: 'Choose where your data is stored with country-specific options.',
+    description: 'Meet local regulatory requirements with country-specific data residency. Your patient data stays within your jurisdiction, ensuring compliance with regional healthcare regulations.',
+    points: [
+      'Country-specific data storage',
+      'Regional compliance support',
+      'Data sovereignty guaranteed',
+      'Multi-region availability'
+    ],
+    iconBg: 'bg-indigo-100',
+    iconColor: 'text-indigo-600',
+    hasVideo: false,
+    reverse: false
   }
 ]
 
 // SVG illustrations - clean, minimal monochrome style
 const icons = {
-  'results': `<svg class="w-12 h-12" viewBox="0 0 48 48" fill="none">
-    <rect x="8" y="6" width="24" height="32" rx="3" fill="currentColor" opacity="0.2"/>
-    <rect x="12" y="12" width="14" height="2" rx="1" fill="currentColor"/>
-    <rect x="12" y="18" width="10" height="2" rx="1" fill="currentColor" opacity="0.5"/>
-    <rect x="12" y="24" width="12" height="2" rx="1" fill="currentColor" opacity="0.5"/>
-    <circle cx="36" cy="34" r="8" fill="currentColor"/>
-    <path d="M33 34h6M36 31v6" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-  </svg>`,
-  'doses': `<svg class="w-12 h-12" viewBox="0 0 48 48" fill="none">
-    <rect x="6" y="8" width="36" height="32" rx="3" fill="currentColor" opacity="0.15"/>
-    <rect x="6" y="8" width="36" height="8" rx="3" fill="currentColor" opacity="0.3"/>
-    <rect x="10" y="20" width="6" height="6" rx="1" fill="currentColor" opacity="0.3"/>
-    <rect x="21" y="20" width="6" height="6" rx="1" fill="currentColor" opacity="0.5"/>
-    <rect x="32" y="20" width="6" height="6" rx="1" fill="currentColor"/>
-    <rect x="10" y="30" width="6" height="6" rx="1" fill="currentColor" opacity="0.4"/>
-    <rect x="21" y="30" width="6" height="6" rx="1" fill="currentColor" opacity="0.6"/>
-    <rect x="32" y="30" width="6" height="6" rx="1" fill="currentColor" opacity="0.3"/>
-  </svg>`,
-  'prescriptions': `<svg class="w-12 h-12" viewBox="0 0 48 48" fill="none">
-    <rect x="8" y="4" width="28" height="36" rx="3" fill="currentColor" opacity="0.2"/>
-    <path d="M36 12H8V4a3 3 0 013-3h22a3 3 0 013 3v8z" fill="currentColor" opacity="0.1"/>
-    <rect x="14" y="18" width="18" height="2" rx="1" fill="currentColor"/>
-    <rect x="14" y="24" width="14" height="2" rx="1" fill="currentColor" opacity="0.5"/>
-    <rect x="14" y="30" width="16" height="2" rx="1" fill="currentColor" opacity="0.5"/>
-    <circle cx="36" cy="36" r="8" fill="currentColor"/>
-    <path d="M33 36h6M36 33v6" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-  </svg>`,
-  'appointments': `<svg class="w-12 h-12" viewBox="0 0 48 48" fill="none">
-    <rect x="6" y="10" width="36" height="32" rx="4" fill="currentColor" opacity="0.2"/>
-    <rect x="6" y="10" width="36" height="10" fill="currentColor" opacity="0.3"/>
-    <rect x="14" y="6" width="3" height="8" rx="1.5" fill="currentColor"/>
-    <rect x="31" y="6" width="3" height="8" rx="1.5" fill="currentColor"/>
-    <circle cx="17" cy="28" r="2" fill="currentColor" opacity="0.5"/>
-    <circle cx="24" cy="28" r="2" fill="currentColor"/>
-    <circle cx="31" cy="28" r="2" fill="currentColor" opacity="0.5"/>
-    <circle cx="17" cy="36" r="2" fill="currentColor" opacity="0.3"/>
-    <circle cx="24" cy="36" r="2" fill="currentColor" opacity="0.5"/>
-    <circle cx="31" cy="36" r="2" fill="currentColor" opacity="0.3"/>
-  </svg>`,
+  'results': `<i class="fa-duotone fa-vial-circle-check w-12 h-12 text-3xl flex items-center justify-center"></i>`,
+  'doses': `<i class="fa-duotone fa-prescription-bottle-pill w-12 h-12 text-3xl flex items-center justify-center"></i>`,
+  'prescriptions': `<i class="fa-duotone fa-file-pdf w-12 h-12 text-3xl flex items-center justify-center"></i>`,
+  'appointments': `<i class="fa-duotone fa-calendar-day w-12 h-12 text-3xl flex items-center justify-center"></i>`,
   'patients': `<i class="fa-duotone fa-users-medical w-12 h-12 text-3xl flex items-center justify-center"></i>`,
-  'analytics': `<svg class="w-12 h-12" viewBox="0 0 48 48" fill="none">
-    <rect x="8" y="28" width="6" height="14" rx="2" fill="currentColor" opacity="0.4"/>
-    <rect x="18" y="20" width="6" height="22" rx="2" fill="currentColor" opacity="0.6"/>
-    <rect x="28" y="12" width="6" height="30" rx="2" fill="currentColor"/>
-    <rect x="38" y="22" width="6" height="20" rx="2" fill="currentColor" opacity="0.5"/>
-    <circle cx="11" cy="18" r="2" fill="currentColor"/>
-    <circle cx="21" cy="12" r="2" fill="currentColor"/>
-    <circle cx="31" cy="6" r="2" fill="currentColor"/>
-    <path d="M11 18l10-6 10-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-  </svg>`,
-  'ai-recommendations': `<svg class="w-12 h-12" viewBox="0 0 48 48" fill="none">
-    <path d="M24 6l2.5 7.5L34 16l-7.5 2.5L24 26l-2.5-7.5L14 16l7.5-2.5z" fill="currentColor"/>
-    <path d="M38 24l1.5 4.5L44 30l-4.5 1.5L38 36l-1.5-4.5L32 30l4.5-1.5z" fill="currentColor" opacity="0.6"/>
-    <path d="M14 32l1 3 3 1-3 1-1 3-1-3-3-1 3-1z" fill="currentColor" opacity="0.4"/>
-  </svg>`,
-  'user-management': `<i class="fa-duotone fa-users w-12 h-12 text-3xl flex items-center justify-center"></i>`,
-  'notes': `<svg class="w-12 h-12" viewBox="0 0 48 48" fill="none">
-    <rect x="8" y="6" width="26" height="34" rx="3" fill="currentColor" opacity="0.2"/>
-    <rect x="14" y="14" width="14" height="2" rx="1" fill="currentColor"/>
-    <rect x="14" y="20" width="10" height="2" rx="1" fill="currentColor" opacity="0.5"/>
-    <rect x="14" y="26" width="12" height="2" rx="1" fill="currentColor" opacity="0.5"/>
-    <rect x="14" y="32" width="8" height="2" rx="1" fill="currentColor" opacity="0.5"/>
-    <circle cx="38" cy="36" r="8" fill="currentColor"/>
-    <path d="M35 36l2 2 4-4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>`,
-  'export': `<svg class="w-12 h-12" viewBox="0 0 48 48" fill="none">
-    <rect x="10" y="22" width="28" height="20" rx="3" fill="currentColor" opacity="0.2"/>
-    <rect x="16" y="28" width="16" height="10" rx="2" fill="currentColor" opacity="0.3"/>
-    <path d="M24 6v18" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-    <path d="M17 17l7 7 7-7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>`,
-  'security': `<svg class="w-12 h-12" viewBox="0 0 48 48" fill="none">
-    <path d="M24 4L8 12v12c0 11 6.8 20.4 16 24 9.2-3.6 16-13 16-24V12L24 4z" fill="currentColor" opacity="0.2"/>
-    <path d="M24 10l-12 6v9c0 8.25 5.1 15.3 12 18 6.9-2.7 12-9.75 12-18v-9L24 10z" fill="currentColor" opacity="0.4"/>
-    <path d="M18 26l4 4 8-8" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>`
+  'analytics': `<i class="fa-duotone fa-chart-column w-12 h-12 text-3xl flex items-center justify-center"></i>`,
+  'ai-recommendations': `<i class="fa-duotone fa-sparkles w-12 h-12 text-3xl flex items-center justify-center"></i>`,
+  'user-management': `<i class="fa-duotone fa-user-doctor w-12 h-12 text-3xl flex items-center justify-center"></i>`,
+  'notes': `<i class="fa-duotone fa-note w-12 h-12 text-3xl flex items-center justify-center"></i>`,
+  'export': `<i class="fa-duotone fa-floppy-disk w-12 h-12 text-3xl flex items-center justify-center"></i>`,
+  'security': `<i class="fa-duotone fa-shield-check w-12 h-12 text-3xl flex items-center justify-center"></i>`,
+  'data-residency': `<i class="fa-duotone fa-file-certificate w-12 h-12 text-3xl flex items-center justify-center"></i>`
 }
 
 // Assign icon SVG strings to features

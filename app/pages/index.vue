@@ -1,152 +1,251 @@
 <template>
   <div>
     <!-- Hero Section -->
-    <section class="bg-gradient-to-br from-primary-50 to-white py-20">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center max-w-3xl mx-auto">
-          <h1 class="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-gray-900 leading-tight">
-            Simplify Your INR Management
-          </h1>
-          <p class="mt-6 text-xl text-gray-600 leading-relaxed">
-            Retroact helps healthcare professionals manage anticoagulant therapy with ease. 
-            Track INR values, adjust dosages, and generate prescriptions - all in one secure platform.
+    <section class="relative overflow-hidden bg-white py-20 lg:py-28">
+      <div class="absolute inset-0 bg-gradient-to-br from-primary-50/50 via-transparent to-secondary-50/30"></div>
+      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-3xl">
+          <p class="text-primary-600 font-semibold tracking-wide uppercase text-sm mb-4">
+            Healthcare Software, Reimagined
           </p>
-          <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-gray-900 leading-[1.1]">
+            One problem.<br />
+            One app.<br />
+            <span class="text-primary-600">Done right.</span>
+          </h1>
+          <p class="mt-8 text-xl text-gray-600 leading-relaxed max-w-2xl">
+            We build small, focused tools for healthcare professionals. No bloat, no complexity — just software that works the way you do.
+          </p>
+          <div class="mt-10 flex flex-wrap gap-4">
             <NuxtLink 
-              to="/signup" 
-              class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-primary-600 text-white font-semibold hover:bg-primary-700 transition shadow-lg hover:shadow-xl"
+              to="/retroact"
+              class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-primary-600 text-white font-semibold hover:bg-primary-700 transition shadow-lg shadow-primary-600/20"
             >
-              Start Free Trial
-              <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
+              See Our Products
+              <i class="fa-solid fa-arrow-right ml-2"></i>
             </NuxtLink>
             <NuxtLink 
-              to="/retroact" 
-              class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-white text-primary-600 font-semibold border-2 border-primary-600 hover:bg-primary-50 transition"
+              to="/about"
+              class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-gray-100 text-gray-700 font-semibold hover:bg-gray-200 transition"
             >
-              Learn More
+              Learn About Us
             </NuxtLink>
           </div>
-          <p class="mt-4 text-sm text-gray-500">
-            Free for up to 10 patients. No credit card required.
-          </p>
         </div>
       </div>
     </section>
 
-    <!-- Product Showcase -->
+    <!-- Anti-Bloat Manifesto -->
+    <section class="py-20 bg-gray-900 text-white">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-display font-bold">
+            We're not building the next EHR
+          </h2>
+          <p class="mt-4 text-xl text-gray-400">
+            And that's exactly the point.
+          </p>
+        </div>
+        
+        <div class="grid md:grid-cols-3 gap-8 mt-12">
+          <div class="text-center">
+            <div class="w-16 h-16 bg-red-500/10 border border-red-500/30 rounded-2xl flex items-center justify-center mx-auto mb-5">
+              <i class="fa-duotone fa-bullseye-arrow text-2xl text-red-400"></i>
+            </div>
+            <h3 class="font-bold text-lg mb-2">No fluff</h3>
+            <p class="text-gray-400 text-sm">
+              Clinician-built, clinician-approved. Every feature follows your natural workflow — no learning curve.
+            </p>
+          </div>
+          
+          <div class="text-center">
+            <div class="w-16 h-16 bg-amber-500/10 border border-amber-500/30 rounded-2xl flex items-center justify-center mx-auto mb-5">
+              <i class="fa-duotone fa-hands-bound text-2xl text-amber-400"></i>
+            </div>
+            <h3 class="font-bold text-lg mb-2">No vendor lock-in</h3>
+            <p class="text-gray-400 text-sm">
+              Month-to-month billing. Backup all your data to .csv anytime. You're always in control.
+            </p>
+          </div>
+          
+          <div class="text-center">
+            <div class="w-16 h-16 bg-emerald-500/10 border border-emerald-500/30 rounded-2xl flex items-center justify-center mx-auto mb-5">
+              <i class="fa-duotone fa-sack-dollar text-2xl text-emerald-400"></i>
+            </div>
+            <h3 class="font-bold text-lg mb-2">Affordable</h3>
+            <p class="text-gray-400 text-sm">
+              No sticker shock here. We build lean, we price fair, and we pass the savings to you.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Product - Retroact -->
     <section class="py-20 bg-white">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div>
+          <!-- Content -->
+          <div>
+            <h2 class="text-3xl md:text-4xl font-display font-bold text-gray-900 mb-2">
+              <img src="https://retroact-fb.web.app/img/logo_company.png" alt="Retroact" class="h-10 md:h-12" />
+            </h2>
+            <p class="text-lg text-primary-600 font-medium mb-4">
+              INR Management for Pharmacies, Labs & Clinics
+            </p>
+            <p class="text-lg text-gray-600 mb-6 leading-relaxed">
+              Everything you need to manage anticoagulant therapy — patient tracking, dose adjustments, PDF prescriptions, and smart scheduling — in one clean interface.
+            </p>
+            
+            <div class="flex flex-wrap gap-3 mb-8">
+              <span class="inline-flex items-center px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg text-sm">
+                <i class="fa-duotone fa-users-medical text-primary-500 mr-2"></i>
+                Patient Management
+              </span>
+              <span class="inline-flex items-center px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg text-sm">
+                <i class="fa-duotone fa-prescription-bottle-pill text-primary-500 mr-2"></i>
+                Dose Management
+              </span>
+              <span class="inline-flex items-center px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg text-sm">
+                <i class="fa-duotone fa-file-pdf text-primary-500 mr-2"></i>
+                PDF Prescriptions
+              </span>
+              <span class="inline-flex items-center px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg text-sm">
+                <i class="fa-duotone fa-calendar-day text-primary-500 mr-2"></i>
+                Scheduling
+              </span>
+              <span class="inline-flex items-center px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg text-sm">
+                <i class="fa-duotone fa-sparkles text-primary-500 mr-2"></i>
+                AI Insights
+              </span>
+            </div>
+
+            <div class="flex flex-wrap gap-4">
+              <a 
+                href="https://retroact.app" 
+                target="_blank"
+                class="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-primary-600 text-white font-semibold hover:bg-primary-700 transition shadow-lg shadow-primary-600/20"
+              >
+                Try It Free
+                <i class="fa-solid fa-arrow-up-right-from-square ml-2"></i>
+              </a>
+              <NuxtLink 
+                to="/retroact" 
+                class="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-gray-100 text-gray-700 font-semibold hover:bg-gray-200 transition"
+              >
+                See All Features
+                <i class="fa-solid fa-arrow-right ml-2"></i>
+              </NuxtLink>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- The Praxio Difference -->
+    <section class="py-20 bg-gradient-to-b from-gray-50 to-white">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
           <h2 class="text-3xl md:text-4xl font-display font-bold text-gray-900">
-            Everything You Need for INR Management
+            Built different, on purpose
           </h2>
-          <p class="mt-4 text-xl text-gray-600 max-w-2xl mx-auto">
-            Retroact combines powerful features with an intuitive interface designed for busy healthcare professionals.
+          <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
+            We questioned everything about how healthcare software is made.
           </p>
         </div>
 
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <!-- Feature 1 -->
-          <div class="bg-gray-50 rounded-2xl p-8 hover:shadow-lg transition">
-            <div class="w-14 h-14 bg-primary-100 rounded-xl flex items-center justify-center mb-6">
-              <svg class="w-7 h-7 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-              </svg>
+        <div class="grid md:grid-cols-2 gap-6">
+          <!-- Card 1 -->
+          <div class="group bg-white rounded-2xl p-8 border border-gray-200 hover:border-primary-200 hover:shadow-lg transition-all duration-300">
+            <div class="flex items-start gap-5">
+              <div class="w-14 h-14 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg shadow-emerald-500/20">
+                <i class="fa-solid fa-stopwatch text-xl text-white"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">5-minute setup</h3>
+                <p class="text-gray-600">
+                  No IT department needed. No weeks of training. Create your account and start working immediately.
+                </p>
+              </div>
             </div>
-            <h3 class="text-xl font-display font-bold text-gray-900 mb-3">INR Tracking</h3>
-            <p class="text-gray-600">
-              Visual graphs and history of all INR measurements. Quickly identify trends and adjust treatment accordingly.
-            </p>
           </div>
 
-          <!-- Feature 2 -->
-          <div class="bg-gray-50 rounded-2xl p-8 hover:shadow-lg transition">
-            <div class="w-14 h-14 bg-secondary-100 rounded-xl flex items-center justify-center mb-6">
-              <svg class="w-7 h-7 text-secondary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
+          <!-- Card 2 -->
+          <div class="group bg-white rounded-2xl p-8 border border-gray-200 hover:border-primary-200 hover:shadow-lg transition-all duration-300">
+            <div class="flex items-start gap-5">
+              <div class="w-14 h-14 bg-gradient-to-br from-amber-400 to-orange-500 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg shadow-amber-500/20">
+                <i class="fa-solid fa-euro-sign text-xl text-white"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Honest pricing</h3>
+                <p class="text-gray-600">
+                  One price, everything included. No per-user fees, no module upsells, no surprise invoices.
+                </p>
+              </div>
             </div>
-            <h3 class="text-xl font-display font-bold text-gray-900 mb-3">PDF Prescriptions</h3>
-            <p class="text-gray-600">
-              Generate professional prescription PDFs with dosage calendars. Print or share digitally with patients.
-            </p>
           </div>
 
-          <!-- Feature 3 -->
-          <div class="bg-gray-50 rounded-2xl p-8 hover:shadow-lg transition">
-            <div class="w-14 h-14 bg-primary-100 rounded-xl flex items-center justify-center mb-6">
-              <svg class="w-7 h-7 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-              </svg>
+          <!-- Card 3 -->
+          <div class="group bg-white rounded-2xl p-8 border border-gray-200 hover:border-primary-200 hover:shadow-lg transition-all duration-300">
+            <div class="flex items-start gap-5">
+              <div class="w-14 h-14 bg-gradient-to-br from-violet-400 to-purple-600 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg shadow-violet-500/20">
+                <i class="fa-solid fa-door-open text-xl text-white"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Leave anytime</h3>
+                <p class="text-gray-600">
+                  No annual contracts, no lock-in. Export your data and cancel whenever you want. We stay because you choose to.
+                </p>
+              </div>
             </div>
-            <h3 class="text-xl font-display font-bold text-gray-900 mb-3">Patient Management</h3>
-            <p class="text-gray-600">
-              Organize all your patients in one place. Quick search, filtering, and easy access to complete history.
-            </p>
           </div>
 
-          <!-- Feature 4 -->
-          <div class="bg-gray-50 rounded-2xl p-8 hover:shadow-lg transition">
-            <div class="w-14 h-14 bg-secondary-100 rounded-xl flex items-center justify-center mb-6">
-              <svg class="w-7 h-7 text-secondary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
+          <!-- Card 4 -->
+          <div class="group bg-white rounded-2xl p-8 border border-gray-200 hover:border-primary-200 hover:shadow-lg transition-all duration-300">
+            <div class="flex items-start gap-5">
+              <div class="w-14 h-14 bg-gradient-to-br from-sky-400 to-blue-600 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg shadow-sky-500/20">
+                <i class="fa-solid fa-lock text-xl text-white"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Privacy first</h3>
+                <p class="text-gray-600">
+                  GDPR compliant. Data hosted in Europe. End-to-end encryption. Your patients' data is never monetized.
+                </p>
+              </div>
             </div>
-            <h3 class="text-xl font-display font-bold text-gray-900 mb-3">Appointment Scheduling</h3>
-            <p class="text-gray-600">
-              Schedule next INR checks and get reminders. Never miss a follow-up appointment.
-            </p>
-          </div>
-
-          <!-- Feature 5 -->
-          <div class="bg-gray-50 rounded-2xl p-8 hover:shadow-lg transition">
-            <div class="w-14 h-14 bg-primary-100 rounded-xl flex items-center justify-center mb-6">
-              <svg class="w-7 h-7 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-              </svg>
-            </div>
-            <h3 class="text-xl font-display font-bold text-gray-900 mb-3">Secure & Private</h3>
-            <p class="text-gray-600">
-              GDPR compliant with encrypted data storage. Your patients' data is always protected.
-            </p>
-          </div>
-
-          <!-- Feature 6 -->
-          <div class="bg-gray-50 rounded-2xl p-8 hover:shadow-lg transition">
-            <div class="w-14 h-14 bg-secondary-100 rounded-xl flex items-center justify-center mb-6">
-              <svg class="w-7 h-7 text-secondary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
-              </svg>
-            </div>
-            <h3 class="text-xl font-display font-bold text-gray-900 mb-3">Mobile Friendly</h3>
-            <p class="text-gray-600">
-              Access from any device - desktop, tablet, or smartphone. Your data syncs automatically.
-            </p>
           </div>
         </div>
       </div>
     </section>
 
     <!-- CTA Section -->
-    <section class="py-20 bg-primary-600">
+    <section class="py-20 bg-white border-t border-gray-100">
       <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 class="text-3xl md:text-4xl font-display font-bold text-white">
-          Ready to simplify your INR management?
+        <div class="inline-flex items-center justify-center w-16 h-16 bg-primary-100 rounded-2xl mb-6">
+          <i class="fa-duotone fa-lightbulb text-3xl text-primary-600"></i>
+        </div>
+        <h2 class="text-3xl md:text-4xl font-display font-bold text-gray-900">
+          Ready to try something different?
         </h2>
-        <p class="mt-4 text-xl text-primary-100">
-          Join healthcare professionals who trust Retroact for their anticoagulant therapy management.
+        <p class="mt-4 text-xl text-gray-600 max-w-2xl mx-auto">
+          Join healthcare professionals who chose focused tools over feature overload.
         </p>
-        <a 
-          href="https://retroact.app/signup" 
-          class="mt-8 inline-flex items-center justify-center px-8 py-4 rounded-xl bg-white text-primary-600 font-semibold hover:bg-gray-100 transition shadow-lg"
-        >
-          Start Your Free Trial
-          <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-          </svg>
-        </a>
+        <div class="mt-10 flex flex-wrap justify-center gap-4">
+          <a 
+            href="https://retroact.app" 
+            target="_blank"
+            class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-primary-600 text-white font-semibold hover:bg-primary-700 transition shadow-lg shadow-primary-600/20"
+          >
+            Try Retroact Free
+            <i class="fa-solid fa-arrow-up-right-from-square ml-2"></i>
+          </a>
+          <NuxtLink 
+            to="/contact"
+            class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-gray-100 text-gray-700 font-semibold hover:bg-gray-200 transition"
+          >
+            Get in Touch
+          </NuxtLink>
+        </div>
       </div>
     </section>
   </div>

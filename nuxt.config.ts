@@ -31,8 +31,11 @@ export default defineNuxtConfig({
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      ],
+      script: [
+        { src: 'https://kit.fontawesome.com/7782e74c84.js', crossorigin: 'anonymous' }
       ]
-      // FontAwesome is loaded via client-only plugin to prevent SSR hydration issues
+      // FontAwesome Kit for custom Retroact logo icon
     }
   },
 

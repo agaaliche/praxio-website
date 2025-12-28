@@ -12,7 +12,7 @@
 
     <!-- Loading State -->
     <div v-if="loading" class="text-center py-12">
-      <i class="fa-solid fa-spinner fa-spin text-2xl text-primary-600"></i>
+      <div class="w-8 h-8 border-4 border-primary-200 border-t-primary-600 rounded-full animate-spin mx-auto"></div>
       <p class="mt-2 text-gray-500">Loading dashboard...</p>
     </div>
 
