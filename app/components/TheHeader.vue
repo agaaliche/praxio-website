@@ -30,14 +30,48 @@
         <!-- CTA Buttons -->
         <div class="hidden md:flex items-center space-x-4">
           <ClientOnly>
-            <!-- Show Sign Out if authenticated -->
+            <!-- Show Avatar dropdown if authenticated -->
             <template v-if="isAuthenticated">
-              <NuxtLink to="/account" class="text-gray-600 hover:text-primary-600 transition px-3 py-1.5 rounded-lg" active-class="!text-primary-600 font-medium border border-primary-600">
-                Account
-              </NuxtLink>
-              <button @click="handleSignOut" class="text-gray-600 hover:text-primary-600 transition">
-                Sign Out
-              </button>
+              <div class="relative" ref="dropdownRef">
+                <button 
+                  @click="dropdownOpen = !dropdownOpen" 
+                  class="flex items-center justify-center w-10 h-10 rounded-full bg-primary-100 text-primary-600 font-semibold hover:bg-primary-200 transition focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+                  :title="user?.email || 'Account'"
+                >
+                  {{ userInitial }}
+                </button>
+                <!-- Dropdown menu -->
+                <Transition
+                  enter-active-class="transition ease-out duration-100"
+                  enter-from-class="transform opacity-0 scale-95"
+                  enter-to-class="transform opacity-100 scale-100"
+                  leave-active-class="transition ease-in duration-75"
+                  leave-from-class="transform opacity-100 scale-100"
+                  leave-to-class="transform opacity-0 scale-95"
+                >
+                  <div v-if="dropdownOpen" class="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-lg border border-gray-200 py-2 z-50">
+                    <div class="px-4 py-3 border-b border-gray-100">
+                      <p class="text-sm font-medium text-gray-900">{{ user?.displayName || 'User' }}</p>
+                      <p class="text-sm text-gray-500 truncate">{{ user?.email }}</p>
+                    </div>
+                    <NuxtLink 
+                      to="/account" 
+                      class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition"
+                      @click="dropdownOpen = false"
+                    >
+                      <i class="fa-solid fa-user-gear text-gray-400"></i>
+                      Account
+                    </NuxtLink>
+                    <button 
+                      @click="handleSignOut" 
+                      class="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition text-left"
+                    >
+                      <i class="fa-solid fa-arrow-right-from-bracket text-gray-400"></i>
+                      Sign Out
+                    </button>
+                  </div>
+                </Transition>
+              </div>
             </template>
             <!-- Show Sign In / Get Started if not authenticated -->
             <template v-else>
@@ -65,6 +99,20 @@
       <!-- Mobile Navigation -->
       <div v-if="mobileMenuOpen" class="md:hidden py-4 border-t">
         <div class="flex flex-col space-y-4">
+          <ClientOnly>
+            <!-- Show user info at top of mobile menu when authenticated -->
+            <template v-if="isAuthenticated">
+              <div class="flex items-center gap-3 pb-3 border-b border-gray-100">
+                <div class="flex items-center justify-center w-10 h-10 rounded-full bg-primary-100 text-primary-600 font-semibold">
+                  {{ userInitial }}
+                </div>
+                <div class="min-w-0">
+                  <p class="text-sm font-medium text-gray-900 truncate">{{ user?.displayName || 'User' }}</p>
+                  <p class="text-xs text-gray-500 truncate">{{ user?.email }}</p>
+                </div>
+              </div>
+            </template>
+          </ClientOnly>
           <NuxtLink to="/retroact" class="text-gray-600 hover:text-primary-600" @click="mobileMenuOpen = false">Products</NuxtLink>
           <NuxtLink to="/pricing" class="text-gray-600 hover:text-primary-600" @click="mobileMenuOpen = false">Pricing</NuxtLink>
           <NuxtLink to="/about" class="text-gray-600 hover:text-primary-600" @click="mobileMenuOpen = false">About</NuxtLink>
@@ -72,8 +120,14 @@
           <hr class="my-2" />
           <ClientOnly>
             <template v-if="isAuthenticated">
-              <NuxtLink to="/account" class="text-gray-600" @click="mobileMenuOpen = false">Account</NuxtLink>
-              <button @click="handleSignOut" class="text-gray-600 text-left">Sign Out</button>
+              <NuxtLink to="/account" class="flex items-center gap-2 text-gray-600" @click="mobileMenuOpen = false">
+                <i class="fa-solid fa-user-gear text-gray-400"></i>
+                Account
+              </NuxtLink>
+              <button @click="handleSignOut" class="flex items-center gap-2 text-gray-600 text-left">
+                <i class="fa-solid fa-arrow-right-from-bracket text-gray-400"></i>
+                Sign Out
+              </button>
             </template>
             <template v-else>
               <NuxtLink to="/signin" class="text-gray-600" @click="mobileMenuOpen = false">Sign In</NuxtLink>
@@ -89,18 +143,40 @@
 <script setup>
 const mobileMenuOpen = ref(false)
 const isScrolled = ref(false)
-const { isAuthenticated, signOutUser } = useAuth()
+const dropdownOpen = ref(false)
+const dropdownRef = ref(null)
+const { isAuthenticated, user, signOutUser } = useAuth()
 const router = useRouter()
+
+// Compute user initial for avatar
+const userInitial = computed(() => {
+  if (user.value?.displayName) {
+    return user.value.displayName.charAt(0).toUpperCase()
+  }
+  if (user.value?.email) {
+    return user.value.email.charAt(0).toUpperCase()
+  }
+  return 'U'
+})
+
+// Close dropdown when clicking outside
+const handleClickOutside = (event) => {
+  if (dropdownRef.value && !dropdownRef.value.contains(event.target)) {
+    dropdownOpen.value = false
+  }
+}
 
 onMounted(() => {
   const handleScroll = () => {
     isScrolled.value = window.scrollY > 0
   }
   window.addEventListener('scroll', handleScroll)
+  document.addEventListener('click', handleClickOutside)
   handleScroll() // Check initial state
   
   onUnmounted(() => {
     window.removeEventListener('scroll', handleScroll)
+    document.removeEventListener('click', handleClickOutside)
   })
 })
 

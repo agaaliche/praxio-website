@@ -49,22 +49,22 @@
         
         <div class="grid md:grid-cols-3 gap-8 mt-12">
           <div class="text-center">
-            <div class="w-16 h-16 bg-red-500/10 border border-red-500/30 rounded-2xl flex items-center justify-center mx-auto mb-5">
-              <i class="fa-duotone fa-bullseye-arrow text-2xl text-red-400"></i>
-            </div>
-            <h3 class="font-bold text-lg mb-2">No fluff</h3>
-            <p class="text-gray-400 text-sm">
-              Clinician-built, clinician-approved. Every feature follows your natural workflow — no learning curve.
-            </p>
-          </div>
-          
-          <div class="text-center">
             <div class="w-16 h-16 bg-amber-500/10 border border-amber-500/30 rounded-2xl flex items-center justify-center mx-auto mb-5">
               <i class="fa-duotone fa-hands-bound text-2xl text-amber-400"></i>
             </div>
             <h3 class="font-bold text-lg mb-2">No vendor lock-in</h3>
             <p class="text-gray-400 text-sm">
               Month-to-month billing. Backup all your data to .csv anytime. You're always in control.
+            </p>
+          </div>
+          
+          <div class="text-center">
+            <div class="w-16 h-16 bg-red-500/10 border border-red-500/30 rounded-2xl flex items-center justify-center mx-auto mb-5">
+              <i class="fa-duotone fa-bullseye-arrow text-2xl text-red-400"></i>
+            </div>
+            <h3 class="font-bold text-lg mb-2">No fluff</h3>
+            <p class="text-gray-400 text-sm">
+              Clinician-built, clinician-approved. Every feature follows your natural workflow — no learning curve.
             </p>
           </div>
           
@@ -158,13 +158,13 @@
           <!-- Card 1 -->
           <div class="group bg-white rounded-2xl p-8 border border-gray-200 hover:border-primary-200 hover:shadow-lg transition-all duration-300">
             <div class="flex items-start gap-5">
-              <div class="w-14 h-14 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg shadow-emerald-500/20">
-                <i class="fa-solid fa-stopwatch text-xl text-white"></i>
+              <div class="w-14 h-14 bg-sky-100 rounded-2xl flex items-center justify-center flex-shrink-0">
+                <i class="fa-duotone fa-user-doctor text-3xl text-sky-600"></i>
               </div>
               <div>
-                <h3 class="text-xl font-bold text-gray-900 mb-2">5-minute setup</h3>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Built for teams</h3>
                 <p class="text-gray-600">
-                  No IT department needed. No weeks of training. Create your account and start working immediately.
+                  Add team members with view or edit access in seconds.
                 </p>
               </div>
             </div>
@@ -173,13 +173,13 @@
           <!-- Card 2 -->
           <div class="group bg-white rounded-2xl p-8 border border-gray-200 hover:border-primary-200 hover:shadow-lg transition-all duration-300">
             <div class="flex items-start gap-5">
-              <div class="w-14 h-14 bg-gradient-to-br from-amber-400 to-orange-500 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg shadow-amber-500/20">
-                <i class="fa-solid fa-euro-sign text-xl text-white"></i>
+              <div class="w-14 h-14 bg-amber-100 rounded-2xl flex items-center justify-center flex-shrink-0">
+                <i class="fa-duotone fa-dollar-sign text-3xl text-amber-600"></i>
               </div>
               <div>
-                <h3 class="text-xl font-bold text-gray-900 mb-2">Honest pricing</h3>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Affordable</h3>
                 <p class="text-gray-600">
-                  One price, everything included. No per-user fees, no module upsells, no surprise invoices.
+                  One price, everything included. No per-user fees.
                 </p>
               </div>
             </div>
@@ -188,8 +188,8 @@
           <!-- Card 3 -->
           <div class="group bg-white rounded-2xl p-8 border border-gray-200 hover:border-primary-200 hover:shadow-lg transition-all duration-300">
             <div class="flex items-start gap-5">
-              <div class="w-14 h-14 bg-gradient-to-br from-violet-400 to-purple-600 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg shadow-violet-500/20">
-                <i class="fa-solid fa-door-open text-xl text-white"></i>
+              <div class="w-14 h-14 bg-violet-100 rounded-2xl flex items-center justify-center flex-shrink-0">
+                <i class="fa-duotone fa-door-open text-3xl text-violet-600"></i>
               </div>
               <div>
                 <h3 class="text-xl font-bold text-gray-900 mb-2">Leave anytime</h3>
@@ -203,13 +203,13 @@
           <!-- Card 4 -->
           <div class="group bg-white rounded-2xl p-8 border border-gray-200 hover:border-primary-200 hover:shadow-lg transition-all duration-300">
             <div class="flex items-start gap-5">
-              <div class="w-14 h-14 bg-gradient-to-br from-sky-400 to-blue-600 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg shadow-sky-500/20">
-                <i class="fa-solid fa-lock text-xl text-white"></i>
+              <div class="w-14 h-14 bg-emerald-100 rounded-2xl flex items-center justify-center flex-shrink-0">
+                <i class="fa-duotone fa-phone-volume text-3xl text-emerald-600"></i>
               </div>
               <div>
-                <h3 class="text-xl font-bold text-gray-900 mb-2">Privacy first</h3>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Who needs sales reps?</h3>
                 <p class="text-gray-600">
-                  GDPR compliant. Data hosted in Europe. End-to-end encryption. Your patients' data is never monetized.
+                  We skip the demo theater. Sign up, explore, decide for yourself.
                 </p>
               </div>
             </div>
