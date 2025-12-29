@@ -7,7 +7,7 @@
     ]"
   >
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <nav class="flex items-center gap-8 h-12">
+      <nav class="flex items-center gap-4 sm:gap-8 h-12 overflow-x-auto scrollbar-hide">
         <slot />
       </nav>
     </div>

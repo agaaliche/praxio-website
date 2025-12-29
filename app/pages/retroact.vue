@@ -4,14 +4,14 @@
     <TheSubHeader :hide-on-scroll-down="true">
       <button 
         @click="activeTab = 'retroact'"
-        class="text-sm font-medium border-b-2 h-full flex items-center transition"
+        class="text-sm font-medium border-b-2 h-full flex items-center transition whitespace-nowrap"
         :class="activeTab === 'retroact' ? 'border-primary-600 text-primary-600' : 'border-transparent text-gray-600 hover:text-primary-600'"
       >
         Retroact
       </button>
       <button 
         @click="activeTab = 'overview'"
-        class="text-sm font-medium border-b-2 h-full flex items-center transition"
+        class="text-sm font-medium border-b-2 h-full flex items-center transition whitespace-nowrap"
         :class="activeTab === 'overview' ? 'border-primary-600 text-primary-600' : 'border-transparent text-gray-600 hover:text-primary-600'"
       >
         <i class="fa-solid fa-grid-2 mr-2"></i>
@@ -19,7 +19,7 @@
       </button>
       <button 
         @click="activeTab = 'action'"
-        class="text-sm font-medium border-b-2 h-full flex items-center transition"
+        class="text-sm font-medium border-b-2 h-full flex items-center transition whitespace-nowrap"
         :class="activeTab === 'action' ? 'border-primary-600 text-primary-600' : 'border-transparent text-gray-600 hover:text-primary-600'"
       >
         <i class="fa-solid fa-play mr-2"></i>
@@ -86,8 +86,20 @@
     </section>
 
     <!-- In Action Tab - Side Navigation Style -->
-    <section v-show="activeTab === 'action'" class="h-[calc(100vh-8rem)]">
-      <div class="h-full flex gap-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <section v-show="activeTab === 'action'" class="lg:h-[calc(100vh-8rem)]">
+      <!-- Mobile Feature Selector -->
+      <div class="lg:hidden bg-white border-b border-gray-200 px-4 py-3">
+        <select 
+          v-model="activeFeatureIndex" 
+          class="w-full px-3 py-2.5 border border-gray-300 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary-500"
+        >
+          <option v-for="(feature, index) in features" :key="feature.id" :value="index">
+            {{ feature.title }}
+          </option>
+        </select>
+      </div>
+
+      <div class="h-full flex gap-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-6">
         <!-- Left Sidebar - Feature Navigation (matches account settings style) -->
         <aside class="w-56 shrink-0 hidden lg:block">
           <div class="bg-white rounded-2xl border border-gray-200 p-3 sticky top-4">
@@ -108,37 +120,25 @@
           </div>
         </aside>
 
-        <!-- Mobile Feature Selector -->
-        <div class="lg:hidden absolute top-0 left-0 right-0 bg-white border-b border-gray-200 p-3 z-10">
-          <select 
-            v-model="activeFeatureIndex" 
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
-          >
-            <option v-for="(feature, index) in features" :key="feature.id" :value="index">
-              {{ feature.title }}
-            </option>
-          </select>
-        </div>
-
         <!-- Main Content Area -->
         <div class="flex-1 relative">
-          <div ref="scrollContainer" class="absolute inset-0 overflow-y-auto custom-scrollbar bg-white rounded-2xl">
-            <div class="p-6 lg:p-8 pt-16 lg:pt-8">
+          <div ref="scrollContainer" class="lg:absolute lg:inset-0 overflow-y-auto custom-scrollbar bg-white rounded-2xl">
+            <div class="p-4 sm:p-6 lg:p-8">
             <!-- Feature Header with Navigation -->
-            <div class="flex items-center justify-between mb-6">
-              <div class="flex items-center gap-4">
-                <div class="w-12 h-12 rounded-xl flex items-center justify-center" :class="currentFeature.iconBg">
+            <div class="flex items-start sm:items-center justify-between gap-4 mb-6">
+              <div class="flex items-center gap-3 sm:gap-4 min-w-0">
+                <div class="w-10 h-10 sm:w-12 sm:h-12 shrink-0 rounded-xl flex items-center justify-center" :class="currentFeature.iconBg">
                   <span :class="currentFeature.iconColor" v-html="currentFeature.iconSvg"></span>
                 </div>
-                <div>
-                  <h2 class="text-xl lg:text-2xl font-display font-bold text-gray-900">
+                <div class="min-w-0">
+                  <h2 class="text-lg sm:text-xl lg:text-2xl font-display font-bold text-gray-900 truncate">
                     {{ currentFeature.title }}
                   </h2>
-                  <p class="text-gray-500 text-sm">{{ currentFeature.shortDesc }}</p>
+                  <p class="text-gray-500 text-xs sm:text-sm truncate">{{ currentFeature.shortDesc }}</p>
                 </div>
               </div>
-              <!-- Navigation Arrows -->
-              <div class="flex items-center gap-2">
+              <!-- Navigation Arrows - Hidden on mobile since we have dropdown -->
+              <div class="hidden sm:flex items-center gap-2 shrink-0">
                 <button 
                   @click="prevFeature"
                   class="w-9 h-9 rounded-lg border border-gray-200 flex items-center justify-center text-gray-500 hover:text-primary-600 hover:border-primary-300 transition"

@@ -13,21 +13,21 @@
     <!-- Current Plan Banner (if logged in with subscription) -->
     <section v-if="currentSubscription && !isTrialOrNone" class="py-4">
       <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="bg-primary-50 border border-primary-200 rounded-xl p-4 flex items-center justify-between">
+        <div class="bg-primary-50 border border-primary-200 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div class="flex items-center gap-3">
-            <i class="fa-regular fa-circle-check text-primary-600 text-xl"></i>
+            <i class="fa-regular fa-circle-check text-primary-600 text-xl shrink-0"></i>
             <div>
-              <p class="font-medium text-gray-900">
+              <p class="font-medium text-gray-900 text-sm sm:text-base">
                 You're currently on the <strong>{{ currentPlanName }}</strong> plan
               </p>
-              <p v-if="currentSubscription.nextBillingDate" class="text-sm text-gray-600">
+              <p v-if="currentSubscription.nextBillingDate" class="text-xs sm:text-sm text-gray-600">
                 Next billing: {{ formatDate(currentSubscription.nextBillingDate) }}
               </p>
             </div>
           </div>
           <NuxtLink 
             to="/account/settings/billing"
-            class="text-primary-600 hover:text-primary-700 font-medium text-sm flex items-center gap-1"
+            class="text-primary-600 hover:text-primary-700 font-medium text-sm flex items-center gap-1 ml-8 sm:ml-0"
           >
             <i class="fa-regular fa-gear"></i>
             Manage
