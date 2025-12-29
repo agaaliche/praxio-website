@@ -13,15 +13,16 @@ export interface DatabaseConfig {
 }
 
 function getConfig(): DatabaseConfig {
-  const config = useRuntimeConfig()
+  // Read directly from process.env at runtime (not from runtimeConfig which is set at build time)
+  const socketPath = process.env.DB_SOCKET_PATH || ''
   
   return {
-    host: config.dbHost || 'localhost',
-    user: config.dbUser || 'root',
-    password: config.dbPassword || '',
-    database: config.dbName || 'master',
-    port: parseInt(config.dbPort || '3306'),
-    socketPath: config.dbSocketPath || undefined
+    host: process.env.DB_HOST || 'localhost',
+    user: process.env.DB_USER || 'root',
+    password: process.env.DB_PASSWORD || '',
+    database: process.env.DB_NAME || 'master',
+    port: parseInt(process.env.DB_PORT || '3306'),
+    socketPath: socketPath || undefined
   }
 }
 
