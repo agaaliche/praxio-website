@@ -4,9 +4,11 @@
  */
 
 export interface SubscriptionState {
+  customerId: string | null
   subscriptionId: string | null
   status: string | null
   priceId: string | null
+  endDate: string | null
   trialStartDate: string | null
   trialEndDate: string | null
   nextBillingDate: string | null
@@ -53,8 +55,20 @@ export function useSubscription() {
   })
 
   const needsSubscription = computed(() => {
-    // User needs to subscribe if trial expired and no active subscription
-    return isTrialExpired.value && !hasActiveSubscription.value
+    // User needs to subscribe if:
+    // 1. Trial expired and no active subscription, OR
+    // 2. No trial dates at all and no subscription (never started trial)
+    if (!subscription.value) return true // Not fetched yet, assume needs subscription
+    
+    const hasNoSubscription = !subscription.value.subscriptionId
+    const hasNoTrial = !subscription.value.trialEndDate
+    const trialExpired = isTrialExpired.value
+    
+    // No trial and no subscription = needs subscription
+    if (hasNoTrial && hasNoSubscription) return true
+    
+    // Trial expired and no active subscription = needs subscription
+    return trialExpired && !hasActiveSubscription.value
   })
 
   const trialDaysLeft = computed(() => {

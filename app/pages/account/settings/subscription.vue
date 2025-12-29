@@ -13,8 +13,8 @@
       </div>
 
       <template v-else>
-      <!-- Current Plan -->
-      <div class="bg-white rounded-xl border border-gray-200 p-6 mb-6">
+      <!-- Current Plan - only show if has active subscription -->
+      <div v-if="hasActiveSubscription && !isTrialOrNone && !isTrialExpired" class="bg-white rounded-xl border border-gray-200 p-6 mb-6">
         <div class="flex items-start justify-between">
           <div>
             <h2 class="text-lg font-bold text-gray-900">Current Plan</h2>
@@ -93,7 +93,7 @@
               :disabled="reactivateLoading"
               class="px-4 py-2 bg-primary-600 text-white font-medium rounded-lg hover:bg-primary-700 transition disabled:opacity-50 flex items-center gap-2 whitespace-nowrap"
             >
-              <i v-if="reactivateLoading" class="fa-solid fa-spinner fa-spin"></i>
+              <SpinnerIcon v-if="reactivateLoading" />
               <i v-else class="fa-solid fa-rotate-left"></i>
               Undo Cancellation
             </button>
@@ -138,7 +138,7 @@
             :disabled="cancelScheduledLoading"
             class="px-4 py-2 text-red-600 font-medium border border-red-200 rounded-lg hover:bg-red-50 transition disabled:opacity-50 flex items-center gap-2"
           >
-            <i v-if="cancelScheduledLoading" class="fa-solid fa-spinner fa-spin"></i>
+            <SpinnerIcon v-if="cancelScheduledLoading" />
             <i v-else class="fa-regular fa-xmark"></i>
             Cancel Change
           </button>
@@ -229,7 +229,7 @@
               :disabled="cancelLoading"
               class="flex-1 px-4 py-2 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 transition disabled:opacity-50 flex items-center justify-center gap-2"
             >
-              <i v-if="cancelLoading" class="fa-solid fa-spinner fa-spin"></i>
+              <SpinnerIcon v-if="cancelLoading" />
               Cancel Subscription
             </button>
           </div>

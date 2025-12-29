@@ -3,7 +3,7 @@
     <Transition name="slide-down">
       <div
         v-if="notificationStore.show.value"
-        class="fixed top-4 right-4 z-[9999] max-w-md"
+        class="fixed top-4 left-1/2 -translate-x-1/2 z-[9999] max-w-md"
       >
         <div
           :class="[
@@ -62,18 +62,26 @@ const iconClass = computed(() => {
 </script>
 
 <style scoped>
-.slide-down-enter-active,
+.slide-down-enter-active {
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
 .slide-down-leave-active {
   transition: all 0.3s ease;
 }
 
 .slide-down-enter-from {
   opacity: 0;
-  transform: translateY(-20px);
+  transform: translate(-50%, -100%);
+}
+
+.slide-down-enter-to {
+  opacity: 1;
+  transform: translate(-50%, 0);
 }
 
 .slide-down-leave-to {
   opacity: 0;
-  transform: translateY(-20px);
+  transform: translate(-50%, -20px);
 }
 </style>

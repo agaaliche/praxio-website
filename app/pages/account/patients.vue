@@ -4,8 +4,8 @@
       <!-- No Patients Landing -->
       <div v-if="!loading && patients.length === 0 && !isCreatingPatient" class="flex-1 flex items-center justify-center">
         <div class="max-w-2xl mx-auto text-center px-6">
-          <div class="w-24 h-24 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <i class="fa-thin fa-hospital-user text-primary-600 text-5xl"></i>
+          <div class="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6">
+            <i class="fa-duotone fa-hospital-user text-primary-600 text-5xl"></i>
           </div>
           <h1 class="text-3xl font-display font-bold text-gray-900 mb-4">
             Create your first patient
@@ -313,7 +313,7 @@
                 :disabled="deleting"
                 class="px-4 py-2 text-red-600 hover:bg-red-50 font-medium rounded-xl transition"
               >
-                <i v-if="deleting" class="fa-solid fa-spinner fa-spin mr-2"></i>
+                <SpinnerIcon v-if="deleting" class="mr-2" />
                 <i v-else class="fa-solid fa-trash mr-2"></i>
                 Delete
               </button>
@@ -333,7 +333,7 @@
                   :disabled="saving"
                   class="px-6 py-2 bg-primary-600 text-white font-medium rounded-xl hover:bg-primary-700 transition disabled:opacity-50"
                 >
-                  <i :class="['fa-solid fa-spinner fa-spin mr-2', { 'hidden': !saving }]"></i>
+                  <SpinnerIcon v-if="saving" class="mr-2" />
                   {{ isCreatingPatient ? 'Create Patient' : 'Save Changes' }}
                 </button>
               </div>
@@ -371,7 +371,7 @@
                   :disabled="deleting"
                   class="px-4 py-2 bg-red-600 text-white font-medium rounded-xl hover:bg-red-700 transition disabled:opacity-50"
                 >
-                  <i v-if="deleting" class="fa-solid fa-spinner fa-spin mr-2"></i>
+                  <SpinnerIcon v-if="deleting" class="mr-2" />
                   Delete
                 </button>
               </div>

@@ -17,14 +17,15 @@
             Products
           </NuxtLink>
           <NuxtLink to="/pricing" class="text-gray-600 hover:text-primary-600 transition px-3 py-1.5 rounded-lg" active-class="!text-primary-600 font-medium border border-primary-600">
-            Pricing
+            Plans
           </NuxtLink>
           <NuxtLink to="/contact" class="text-gray-600 hover:text-primary-600 transition px-3 py-1.5 rounded-lg" active-class="!text-primary-600 font-medium border border-primary-600">
             Contact
           </NuxtLink>
           <ClientOnly>
-            <NuxtLink v-if="isAuthenticated" to="/account" class="text-gray-600 hover:text-primary-600 transition px-3 py-1.5 rounded-lg" active-class="!text-primary-600 font-medium border border-primary-600">
+            <NuxtLink v-if="isAuthenticated" to="/account" class="text-gray-600 hover:text-primary-600 transition px-3 py-1.5 rounded-lg flex items-center gap-2" active-class="!text-primary-600 font-medium border border-primary-600">
               Account
+              <i v-if="isTrialExpired" class="fa-solid fa-info-circle"></i>
             </NuxtLink>
           </ClientOnly>
         </div>
@@ -108,7 +109,7 @@
             </template>
           </ClientOnly>
           <NuxtLink to="/retroact" class="text-gray-600 hover:text-primary-600" @click="mobileMenuOpen = false">Products</NuxtLink>
-          <NuxtLink to="/pricing" class="text-gray-600 hover:text-primary-600" @click="mobileMenuOpen = false">Pricing</NuxtLink>
+          <NuxtLink to="/pricing" class="text-gray-600 hover:text-primary-600" @click="mobileMenuOpen = false">Plans</NuxtLink>
           <NuxtLink to="/contact" class="text-gray-600 hover:text-primary-600" @click="mobileMenuOpen = false">Contact</NuxtLink>
           <hr class="my-2" />
           <ClientOnly>
@@ -116,6 +117,7 @@
               <NuxtLink to="/account" class="flex items-center gap-2 text-gray-600" @click="mobileMenuOpen = false">
                 <i class="fa-solid fa-user-gear text-gray-400"></i>
                 Account
+                <i v-if="isTrialExpired" class="fa-solid fa-info-circle ml-auto"></i>
               </NuxtLink>
               <button @click="handleSignOut" class="flex items-center gap-2 text-gray-600 text-left">
                 <i class="fa-solid fa-arrow-right-from-bracket text-gray-400"></i>
@@ -139,6 +141,7 @@ const isScrolled = ref(false)
 const dropdownOpen = ref(false)
 const dropdownRef = ref(null)
 const { isAuthenticated, user, signOutUser } = useAuth()
+const { isTrialExpired } = useSubscription()
 const router = useRouter()
 const route = useRoute()
 const { subHeaderVisible } = useSubHeaderState()

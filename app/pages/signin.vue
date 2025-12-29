@@ -92,7 +92,7 @@
             class="w-full flex justify-center items-center px-6 py-3 rounded-xl bg-primary-600 text-white font-semibold hover:bg-primary-700 transition shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <span v-if="loading" class="flex items-center">
-              <i class="fa-solid fa-spinner fa-spin mr-2"></i>
+              <SpinnerIcon class="mr-2" />
               Signing in...
             </span>
             <span v-else>Sign in</span>
@@ -116,7 +116,7 @@
             class="w-full flex justify-center items-center px-6 py-3 rounded-xl bg-white text-gray-700 font-semibold border-2 border-gray-300 hover:bg-gray-50 transition"
           >
             <span v-if="loadingGoogle" class="flex items-center">
-              <i class="fa-solid fa-spinner fa-spin mr-2"></i>
+              <SpinnerIcon class="mr-2" />
               Connecting...
             </span>
             <span v-else class="flex items-center">
@@ -199,7 +199,7 @@
                 class="flex-1 px-6 py-3 rounded-xl bg-primary-600 text-white font-semibold hover:bg-primary-700 transition disabled:opacity-50"
               >
                 <span v-if="loadingReset">
-                  <i class="fa-solid fa-spinner fa-spin mr-1"></i>
+                  <SpinnerIcon class="mr-1" size="xs" />
                 </span>
                 Send link
               </button>

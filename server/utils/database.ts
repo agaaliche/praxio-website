@@ -16,6 +16,14 @@ function getConfig(): DatabaseConfig {
   // Read directly from process.env at runtime (not from runtimeConfig which is set at build time)
   const socketPath = process.env.DB_SOCKET_PATH || ''
   
+  console.log('🔧 Database config:', {
+    DB_SOCKET_PATH: process.env.DB_SOCKET_PATH,
+    DB_HOST: process.env.DB_HOST,
+    DB_USER: process.env.DB_USER,
+    DB_NAME: process.env.DB_NAME,
+    hasPassword: !!process.env.DB_PASSWORD
+  })
+  
   return {
     host: process.env.DB_HOST || 'localhost',
     user: process.env.DB_USER || 'root',

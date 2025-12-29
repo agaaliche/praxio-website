@@ -77,7 +77,7 @@
             class="w-full flex justify-center items-center px-6 py-3 rounded-xl bg-primary-600 text-white font-semibold hover:bg-primary-700 transition shadow-lg hover:shadow-xl disabled:opacity-50"
           >
             <span v-if="resetting" class="flex items-center">
-              <i class="fa-solid fa-spinner fa-spin mr-2"></i>
+              <SpinnerIcon class="mr-2" />
               Resetting...
             </span>
             <span v-else>
@@ -105,7 +105,7 @@
           class="w-full flex justify-center items-center px-6 py-3 rounded-xl bg-primary-600 text-white font-semibold hover:bg-primary-700 transition shadow-lg hover:shadow-xl disabled:opacity-50 mb-3"
         >
           <span v-if="resending" class="flex items-center">
-            <i class="fa-solid fa-spinner fa-spin mr-2"></i>
+            <SpinnerIcon class="mr-2" />
             Sending...
           </span>
           <span v-else>

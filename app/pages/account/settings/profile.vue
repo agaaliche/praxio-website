@@ -81,7 +81,7 @@
             :disabled="!isValidNewEmail || emailChangeLoading"
             class="px-4 py-2 bg-primary-100 text-primary-700 font-medium rounded-xl hover:bg-primary-200 transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <i v-if="emailChangeLoading" class="fa-solid fa-spinner fa-spin mr-2"></i>
+            <SpinnerIcon v-if="emailChangeLoading" class="mr-2" />
             <i v-else class="fa-light fa-envelope mr-2"></i>
             Send Verification Email
           </button>
@@ -139,8 +139,8 @@
           :disabled="saving"
           class="px-6 py-2.5 bg-primary-600 text-white font-medium rounded-xl hover:bg-primary-700 transition disabled:opacity-50"
         >
-          <span v-if="saving">
-            <i class="fa-solid fa-spinner fa-spin mr-2"></i>
+          <span v-if="saving" class="inline-flex items-center">
+            <SpinnerIcon class="mr-2" />
             Saving...
           </span>
           <span v-else>Save Changes</span>

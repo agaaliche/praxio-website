@@ -29,7 +29,7 @@
             :disabled="portalLoading"
             class="ml-auto text-primary-600 hover:text-primary-700 font-medium text-sm flex items-center gap-1"
           >
-            <i v-if="portalLoading" class="fa-solid fa-spinner fa-spin"></i>
+            <SpinnerIcon v-if="portalLoading" />
             Update
           </button>
         </div>
@@ -66,7 +66,7 @@
         
         <!-- Loading invoices -->
         <div v-if="invoicesLoading" class="flex justify-center py-6">
-          <i class="fa-solid fa-spinner fa-spin text-xl text-primary-600"></i>
+          <SpinnerIcon size="lg" class="text-primary-600" />
         </div>
         
         <!-- Invoices table -->

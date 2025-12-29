@@ -100,13 +100,16 @@
               <i class="fa-regular fa-circle-check"></i>
               {{ isOnTrial ? 'Current Plan' : (isTrialExpired ? 'Trial Expired' : 'Not Available') }}
             </button>
-            <NuxtLink 
+            <button 
               v-else
-              to="/retroact" 
-              class="block text-center bg-green-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-600 transition"
+              @click="startTrial"
+              :disabled="trialLoading"
+              class="w-full text-center bg-green-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-600 transition disabled:opacity-50 flex items-center justify-center"
             >
-              <i class="fa-regular fa-play mr-2"></i> Start Free Trial
-            </NuxtLink>
+              <SpinnerIcon v-if="trialLoading" class="mr-2" />
+              <i v-else class="fa-regular fa-play mr-2"></i>
+              {{ trialLoading ? 'Starting...' : 'Start Free Trial' }}
+            </button>
             </div>
           </div>
 
@@ -161,7 +164,7 @@
               :disabled="checkoutLoading !== null"
               class="w-full text-center bg-white text-gray-700 border border-gray-300 px-6 py-3 rounded-lg font-semibold hover:bg-gray-50 transition disabled:opacity-50 flex items-center justify-center gap-2"
             >
-              <i v-if="checkoutLoading === 'monthly_flex'" class="fa-solid fa-spinner fa-spin"></i>
+              <SpinnerIcon v-if="checkoutLoading === 'monthly_flex'" />
               Get Started
             </button>
             </div>
@@ -226,7 +229,7 @@
               :disabled="checkoutLoading !== null"
               class="w-full text-center bg-white text-primary-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition disabled:opacity-50 flex items-center justify-center gap-2"
             >
-              <i v-if="checkoutLoading === 'annual'" class="fa-solid fa-spinner fa-spin"></i>
+              <SpinnerIcon v-if="checkoutLoading === 'annual'" />
               <i v-else class="fa-regular fa-arrow-up"></i>
               Upgrade to Annual
             </button>
@@ -238,7 +241,7 @@
               :disabled="checkoutLoading !== null"
               class="w-full text-center bg-white text-primary-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition disabled:opacity-50 flex items-center justify-center gap-2"
             >
-              <i v-if="checkoutLoading === 'annual'" class="fa-solid fa-spinner fa-spin"></i>
+              <SpinnerIcon v-if="checkoutLoading === 'annual'" />
               <i v-else class="fa-regular fa-rocket"></i>
               Get Started
             </button>
@@ -374,7 +377,7 @@
               :disabled="upgradeLoading"
               class="flex-1 px-4 py-2 bg-primary-600 text-white font-medium rounded-lg hover:bg-primary-700 transition disabled:opacity-50 flex items-center justify-center gap-2"
             >
-              <i v-if="upgradeLoading" class="fa-solid fa-spinner fa-spin"></i>
+              <SpinnerIcon v-if="upgradeLoading" />
               <i v-else class="fa-regular fa-circle-check"></i>
               Confirm Upgrade
             </button>
@@ -387,8 +390,10 @@
 
 <script setup lang="ts">
 import { useAuth } from '~/composables/useAuth'
+import { showNotification } from '~/stores/notification'
 
 const { user, getIdToken } = useAuth()
+const { refreshSubscription } = useSubscription()
 const router = useRouter()
 
 // State
@@ -398,6 +403,7 @@ const error = ref('')
 const successMessage = ref('')
 const showUpgradeConfirm = ref(false)
 const mounted = ref(false)
+const trialLoading = ref(false)
 const currentSubscription = ref<{
   subscriptionId: string | null
   status: string | null
@@ -466,8 +472,15 @@ const isOnAnnual = computed(() => {
 
 const isTrialDisabled = computed(() => {
   if (!mounted.value) return false // SSR-safe
-  // Disable trial if user has any subscription (active, trialing, or canceled) OR is on trial OR trial has expired
-  return !!currentSubscription.value?.subscriptionId || isOnTrial.value || isTrialExpired.value
+  // Disable trial if:
+  // 1. User has any subscription (active, trialing, or canceled)
+  // 2. User is currently on trial
+  // 3. User's trial has expired (they already used their trial)
+  // 4. User has ever had a trial (trialStartDate exists)
+  return !!currentSubscription.value?.subscriptionId || 
+         isOnTrial.value || 
+         isTrialExpired.value ||
+         !!currentSubscription.value?.trialStartDate
 })
 
 const isMonthlyDisabled = computed(() => {
@@ -569,6 +582,41 @@ async function handleScheduleUpgrade() {
   }
 }
 
+async function startTrial() {
+  if (!user.value) {
+    // Redirect to signup if not logged in
+    router.push('/signup')
+    return
+  }
+
+  try {
+    trialLoading.value = true
+    error.value = ''
+
+    const token = await getIdToken()
+    const response = await $fetch<{ success: boolean; trialEndDate: string }>('/api/users/start-trial', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` }
+    })
+
+    if (response.success) {
+      // Show success notification at top center
+      showNotification('Your 14-day free trial has started! Enjoy full access to all features.', 'success', 5000)
+      // Force refresh global subscription state so tabs update
+      await refreshSubscription()
+      // Small delay to ensure state propagates
+      await new Promise(resolve => setTimeout(resolve, 100))
+      // Redirect to subscription settings to show current plan
+      router.push('/account/settings/subscription')
+    }
+  } catch (err: any) {
+    console.error('Start trial error:', err)
+    error.value = err.data?.message || 'Failed to start trial. Please try again.'
+  } finally {
+    trialLoading.value = false
+  }
+}
+
 // Lifecycle
 onMounted(async () => {
   mounted.value = true
@@ -589,7 +637,7 @@ watch(user, async (newUser) => {
 })
 
 useSeoMeta({
-  title: 'Pricing - Praxio',
+  title: 'Plans - Praxio',
   description: 'Simple, transparent pricing for Praxio. Start with a free 14-day trial, no credit card required. Monthly Flex at $45/mo or save 22% with our Annual Plan.'
 })
 </script>

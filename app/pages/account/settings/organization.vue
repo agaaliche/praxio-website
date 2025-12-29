@@ -123,16 +123,19 @@
         </div>
       </div>
 
-      <!-- Error Message -->
-      <div v-if="error" class="bg-red-50 border border-red-200 rounded-xl p-4 flex items-start gap-2">
-        <i class="fa-solid fa-exclamation-circle text-red-500 mt-0.5"></i>
-        <p class="text-sm text-red-700">{{ error }}</p>
-      </div>
+      <!-- Messages Container -->
+      <div class="min-h-[52px]">
+        <!-- Error Message -->
+        <div v-if="error" class="bg-red-50 border border-red-200 rounded-xl p-4 flex items-start gap-2">
+          <i class="fa-solid fa-exclamation-circle text-red-500 mt-0.5"></i>
+          <p class="text-sm text-red-700">{{ error }}</p>
+        </div>
 
-      <!-- Success Message -->
-      <div v-if="success" class="bg-green-50 border border-green-200 rounded-xl p-4 flex items-start gap-2">
-        <i class="fa-solid fa-circle-check text-green-500 mt-0.5"></i>
-        <p class="text-sm text-green-700">Organization updated successfully!</p>
+        <!-- Success Message -->
+        <div v-else-if="success" class="bg-green-50 border border-green-200 rounded-xl p-4 flex items-start gap-2">
+          <i class="fa-solid fa-circle-check text-green-500 mt-0.5"></i>
+          <p class="text-sm text-green-700">Organization updated successfully!</p>
+        </div>
       </div>
 
       <!-- Save Button -->
@@ -140,9 +143,9 @@
         <button
           type="submit"
           :disabled="saving"
-          class="px-6 py-2.5 bg-primary-600 text-white font-medium rounded-xl hover:bg-primary-700 transition disabled:opacity-50"
+          class="px-6 py-2.5 bg-primary-600 text-white font-medium rounded-xl hover:bg-primary-700 transition disabled:opacity-50 inline-flex items-center"
         >
-          <i v-if="saving" class="fa-solid fa-spinner fa-spin mr-2"></i>
+          <SpinnerIcon v-if="saving" class="mr-2" />
           {{ saving ? 'Saving...' : 'Save Changes' }}
         </button>
       </div>

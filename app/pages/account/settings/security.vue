@@ -115,7 +115,7 @@
               :disabled="changingPassword"
               class="px-4 py-2 bg-primary-600 text-white font-medium rounded-xl hover:bg-primary-700 transition disabled:opacity-50"
             >
-              <i v-if="changingPassword" class="fa-solid fa-spinner fa-spin mr-2"></i>
+              <SpinnerIcon v-if="changingPassword" class="mr-2" />
               Update Password
             </button>
           </div>
@@ -210,7 +210,7 @@
                 :disabled="deleteConfirmText !== 'DELETE' || deleting"
                 class="flex-1 px-4 py-2.5 bg-red-600 text-white font-medium rounded-xl hover:bg-red-700 transition disabled:opacity-50"
               >
-                <i v-if="deleting" class="fa-solid fa-spinner fa-spin mr-2"></i>
+                <SpinnerIcon v-if="deleting" class="mr-2" />
                 Delete Forever
               </button>
             </div>

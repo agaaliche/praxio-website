@@ -4,6 +4,7 @@
     <TheSubHeader :hide-on-scroll-down="true">
       <ClientOnly>
         <NuxtLink 
+          v-if="hasAccess"
           to="/account" 
           class="text-sm font-medium border-b-2 h-full flex items-center transition"
           :class="$route.path === '/account' ? 'border-primary-600 text-primary-600' : 'border-transparent text-gray-600 hover:text-primary-600'"
@@ -11,7 +12,16 @@
           <i class="fa-solid fa-house mr-2"></i>
           Dashboard
         </NuxtLink>
+        <span 
+          v-else
+          class="text-sm font-medium border-b-2 border-transparent h-full flex items-center text-gray-300 cursor-not-allowed"
+          title="Subscribe to access Dashboard"
+        >
+          <i class="fa-solid fa-house mr-2"></i>
+          Dashboard
+        </span>
         <NuxtLink 
+          v-if="hasAccess"
           to="/account/patients" 
           class="text-sm font-medium border-b-2 h-full flex items-center transition"
           :class="$route.path.startsWith('/account/patients') ? 'border-primary-600 text-primary-600' : 'border-transparent text-gray-600 hover:text-primary-600'"
@@ -19,8 +29,16 @@
           <i class="fa-solid fa-users-medical mr-2"></i>
           Patients
         </NuxtLink>
+        <span 
+          v-else
+          class="text-sm font-medium border-b-2 border-transparent h-full flex items-center text-gray-300 cursor-not-allowed"
+          title="Subscribe to access Patients"
+        >
+          <i class="fa-solid fa-users-medical mr-2"></i>
+          Patients
+        </span>
         <NuxtLink 
-          v-if="isAccountOwner"
+          v-if="isAccountOwner && hasAccess"
           to="/account/team" 
           class="text-sm font-medium border-b-2 h-full flex items-center transition"
           :class="$route.path.startsWith('/account/team') ? 'border-primary-600 text-primary-600' : 'border-transparent text-gray-600 hover:text-primary-600'"
@@ -28,6 +46,14 @@
           <i class="fa-solid fa-users mr-2"></i>
           Team
         </NuxtLink>
+        <span 
+          v-else-if="isAccountOwner && !hasAccess"
+          class="text-sm font-medium border-b-2 border-transparent h-full flex items-center text-gray-300 cursor-not-allowed"
+          title="Subscribe to access Team"
+        >
+          <i class="fa-solid fa-users mr-2"></i>
+          Team
+        </span>
         <NuxtLink 
           to="/account/settings" 
           class="text-sm font-medium border-b-2 h-full flex items-center transition"
@@ -51,6 +77,17 @@
 
 <script setup lang="ts">
 const { isAccountOwner } = useAuth()
+const { needsSubscription, isTrialExpired, subscriptionFetched, fetchSubscription } = useSubscription()
+
+// Has access = trial active OR has subscription
+const hasAccess = computed(() => !needsSubscription.value)
+
+// Fetch subscription on mount
+onMounted(async () => {
+  if (!subscriptionFetched.value) {
+    await fetchSubscription()
+  }
+})
 
 definePageMeta({
   middleware: ['auth', 'subscription']

@@ -1,53 +1,87 @@
 <template>
   <ClientOnly>
-  <div>
-    <!-- Header -->
-    <div class="flex items-center justify-between mb-8">
-      <div>
-        <h1 class="text-3xl font-display font-bold text-gray-900">Team</h1>
-        <p class="mt-2 text-gray-600">Invite and manage team members</p>
+  <div class="h-[calc(100vh-13rem)] flex">
+    <!-- No Team Members Landing -->
+    <div v-if="!loading && !error && teamMembers.length === 0" class="flex-1 flex items-center justify-center">
+      <div class="max-w-2xl mx-auto text-center px-6">
+        <div class="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6">
+          <i class="fa-duotone fa-user-doctor text-primary-600 text-5xl"></i>
+        </div>
+        <h1 class="text-3xl font-display font-bold text-gray-900 mb-4">
+          Invite your first team member
+        </h1>
+        <p class="text-lg text-gray-600 mb-8">
+          Collaborate with colleagues on patient care. Invite team members to share access and work together.
+        </p>
+        <button
+          @click="openInviteModal"
+          class="inline-flex items-center px-6 py-3 bg-primary-600 text-white font-medium text-lg rounded-xl hover:bg-primary-700 transition shadow-lg shadow-primary-600/25"
+        >
+          <i class="fa-solid fa-user-plus mr-3"></i>
+          Invite Your First Member
+        </button>
+      
+        <!-- Features Card -->
+        <div class="mt-10 bg-primary-50 rounded-2xl p-6 text-left">
+          <h3 class="font-bold text-primary-900 mb-4">What team members can do:</h3>
+          <ul class="space-y-3">
+            <li class="flex items-center gap-3 text-gray-700">
+              <i class="fa-duotone fa-users text-primary-600 w-5"></i>
+              <span>View and manage shared patients</span>
+            </li>
+            <li class="flex items-center gap-3 text-gray-700">
+              <i class="fa-duotone fa-vial text-primary-600 w-5"></i>
+              <span>Add INR results and notes</span>
+            </li>
+            <li class="flex items-center gap-3 text-gray-700">
+              <i class="fa-duotone fa-pills text-primary-600 w-5"></i>
+              <span>Adjust dosing schedules</span>
+            </li>
+            <li class="flex items-center gap-3 text-gray-700">
+              <i class="fa-duotone fa-shield-check text-primary-600 w-5"></i>
+              <span>Work under your subscription</span>
+            </li>
+          </ul>
+        </div>
       </div>
-      <button
-        @click="openInviteModal"
-        class="w-10 h-10 flex items-center justify-center rounded-full bg-primary-600 text-white hover:bg-primary-700 transition"
-      >
-        <i class="fa-solid fa-plus"></i>
-      </button>
     </div>
 
-    <!-- Loading State -->
-    <div v-if="loading" class="text-center py-12">
-      <div class="w-8 h-8 border-4 border-primary-200 border-t-primary-600 rounded-full animate-spin mx-auto"></div>
-      <p class="mt-2 text-gray-500">Loading team members...</p>
-    </div>
+    <!-- Main Content -->
+    <template v-else>
+      <div class="flex-1 overflow-y-auto p-6">
+        <!-- Header -->
+        <div class="flex items-center justify-between mb-8">
+          <div>
+            <h1 class="text-3xl font-display font-bold text-gray-900">Team</h1>
+            <p class="mt-2 text-gray-600">Invite and manage team members</p>
+          </div>
+          <button
+            @click="openInviteModal"
+            class="w-10 h-10 flex items-center justify-center rounded-full bg-primary-600 text-white hover:bg-primary-700 transition"
+          >
+            <i class="fa-solid fa-plus"></i>
+          </button>
+        </div>
 
-    <!-- Error State (inline) -->
-    <div v-if="error && !loading" class="bg-red-50 border border-red-200 rounded-xl p-4 mb-4 flex items-center justify-between">
-      <div class="flex items-center gap-2">
-        <i class="fa-solid fa-exclamation-circle text-red-500"></i>
-        <p class="text-red-700">{{ error }}</p>
-      </div>
-      <button @click="error = ''" class="text-red-400 hover:text-red-600">
-        <i class="fa-solid fa-times"></i>
-      </button>
-    </div>
+        <!-- Loading State -->
+        <div v-if="loading" class="text-center py-12">
+          <div class="w-8 h-8 border-4 border-primary-200 border-t-primary-600 rounded-full animate-spin mx-auto"></div>
+          <p class="mt-2 text-gray-500">Loading team members...</p>
+        </div>
 
-    <!-- Empty State -->
-    <div v-if="!loading && !error && teamMembers.length === 0" class="bg-white rounded-xl border border-gray-200 p-12 text-center">
-      <i class="fa-solid fa-user-group text-gray-300 text-5xl mb-4"></i>
-      <h3 class="text-lg font-medium text-gray-900">No team members yet</h3>
-      <p class="mt-1 text-gray-500">Invite colleagues to collaborate on patient care</p>
-      <button
-        @click="openInviteModal"
-        class="mt-4 inline-flex items-center px-4 py-2 bg-primary-600 text-white font-medium rounded-lg hover:bg-primary-700 transition"
-      >
-        <i class="fa-solid fa-user-plus mr-2"></i>
-        Invite Member
-      </button>
-    </div>
+        <!-- Error State (inline) -->
+        <div v-if="error && !loading" class="bg-red-50 border border-red-200 rounded-xl p-4 mb-4 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-exclamation-circle text-red-500"></i>
+            <p class="text-red-700">{{ error }}</p>
+          </div>
+          <button @click="error = ''" class="text-red-400 hover:text-red-600">
+            <i class="fa-solid fa-times"></i>
+          </button>
+        </div>
 
-    <!-- Team Members List -->
-    <div v-if="!loading && teamMembers.length > 0" class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+        <!-- Team Members List -->
+        <div v-if="!loading && teamMembers.length > 0" class="bg-white rounded-xl border border-gray-200 overflow-hidden">
       <div 
         v-for="(member, index) in teamMembers" 
         :key="member.id"
@@ -68,7 +102,9 @@
             ]"
             :disabled="refreshingStatus === member.id"
           >
-            <i :class="getStatusButtonIcon(member)"></i>
+            <SpinnerIcon v-if="refreshingStatus === member.id" />
+            <i v-else-if="hoveredMember === member.id" class="fa-regular fa-arrows-rotate"></i>
+            <i v-else :class="getStatusIcon(member.status)"></i>
           </button>
 
           <div>
@@ -106,7 +142,7 @@
             class="w-9 h-9 rounded-lg flex items-center justify-center text-green-600 hover:bg-green-50 transition"
             title="Resend invite"
           >
-            <i v-if="resendingEmail === member.email" class="fa-solid fa-spinner fa-spin"></i>
+            <SpinnerIcon v-if="resendingEmail === member.email" />
             <i v-else class="fa-regular fa-paper-plane"></i>
           </button>
 
@@ -139,6 +175,8 @@
         </div>
       </div>
     </div>
+      </div>
+    </template>
 
     <!-- Invite Modal -->
     <Teleport to="body">
@@ -219,7 +257,7 @@
                   :disabled="sending || inviteSuccess"
                   class="px-4 py-2 bg-primary-600 text-white font-medium rounded-lg hover:bg-primary-700 transition disabled:opacity-50"
                 >
-                  <i v-if="sending" class="fa-solid fa-spinner fa-spin mr-2"></i>
+                  <SpinnerIcon v-if="sending" class="mr-2" />
                   Send Invite
                 </button>
               </div>
@@ -261,7 +299,7 @@
                 :disabled="updatingRole"
                 class="px-4 py-2 bg-primary-600 text-white font-medium rounded-lg hover:bg-primary-700 transition disabled:opacity-50"
               >
-                <i v-if="updatingRole" class="fa-solid fa-spinner fa-spin mr-2"></i>
+                <SpinnerIcon v-if="updatingRole" class="mr-2" />
                 Save
               </button>
             </div>
@@ -298,7 +336,7 @@
                   :disabled="removing"
                   class="px-4 py-2 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 transition disabled:opacity-50"
                 >
-                  <i v-if="removing" class="fa-solid fa-spinner fa-spin mr-2"></i>
+                  <SpinnerIcon v-if="removing" class="mr-2" />
                   Remove
                 </button>
               </div>
@@ -389,17 +427,6 @@ const getStatusChipClass = (status: string) => {
     case 'expired': return 'bg-red-100 text-red-700'
     default: return 'bg-gray-100 text-gray-600'
   }
-}
-
-// Get the icon class for the status button (combines all states into one)
-const getStatusButtonIcon = (member: TeamMember) => {
-  if (refreshingStatus.value === member.id) {
-    return 'fa-solid fa-spinner fa-spin'
-  }
-  if (hoveredMember.value === member.id) {
-    return 'fa-regular fa-arrows-rotate'
-  }
-  return getStatusIcon(member.status)
 }
 
 const formatDate = (dateStr: string) => {

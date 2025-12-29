@@ -22,7 +22,7 @@
         <div class="bg-white rounded-xl p-6 border border-gray-200">
           <div class="flex items-center gap-4">
             <div class="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center">
-              <i class="fa-solid fa-users-medical text-primary-600 text-xl"></i>
+              <i class="fa-duotone fa-users-medical text-primary-600 text-2xl"></i>
             </div>
             <div>
               <p class="text-2xl font-bold text-gray-900">{{ patientCount }}</p>
@@ -34,7 +34,7 @@
         <div class="bg-white rounded-xl p-6 border border-gray-200">
           <div class="flex items-center gap-4">
             <div class="w-12 h-12 bg-secondary-100 rounded-xl flex items-center justify-center">
-              <i class="fa-solid fa-users text-secondary-600 text-xl"></i>
+              <i class="fa-duotone fa-user-doctor text-secondary-600 text-2xl"></i>
             </div>
             <div>
               <p class="text-2xl font-bold text-gray-900">{{ teamCount }}</p>
@@ -46,7 +46,7 @@
         <div class="bg-white rounded-xl p-6 border border-gray-200">
           <div class="flex items-center gap-4">
             <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
-              <i class="fa-solid fa-check-circle text-green-600 text-xl"></i>
+              <i class="fa-duotone fa-check-circle text-green-600 text-2xl"></i>
             </div>
             <div>
               <p class="text-2xl font-bold text-gray-900">Active</p>
@@ -66,16 +66,17 @@
             class="bg-white rounded-2xl p-6 border border-gray-200 hover:shadow-lg hover:border-primary-300 transition group"
           >
             <div class="flex items-start justify-between mb-4">
-              <div class="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center">
-                <i class="fa-solid fa-droplet text-primary-600 text-xl"></i>
+              <i class="fa-kit-duotone fa-logo text-primary-600 text-4xl"></i>
+              <div class="flex items-center gap-2">
+                <span v-if="subscriptionLabel" :class="subscriptionBadgeClass">
+                  {{ subscriptionLabel }}
+                </span>
+                <span v-if="daysLeft !== null" class="flex items-center gap-1 text-xs text-gray-500">
+                  <i class="fa-regular fa-stopwatch"></i>
+                  {{ daysLeft }}d
+                </span>
               </div>
-              <span class="text-xs font-medium text-green-600 bg-green-50 px-2 py-1 rounded-full">
-                Active
-              </span>
             </div>
-            <h3 class="text-lg font-display font-bold text-gray-900 group-hover:text-primary-600 transition">
-              Retroact
-            </h3>
             <p class="mt-2 text-sm text-gray-600">
               INR management for anticoagulant therapy. Track results, generate prescriptions, manage patients.
             </p>
@@ -86,19 +87,16 @@
           </a>
 
           <!-- More Products Coming Soon -->
-          <div class="bg-gray-100 rounded-2xl p-6 border border-dashed border-gray-300">
+          <div class="bg-white rounded-2xl p-6 border border-dashed border-gray-300">
             <div class="flex items-start justify-between mb-4">
-              <div class="w-12 h-12 bg-gray-200 rounded-xl flex items-center justify-center">
-                <i class="fa-solid fa-puzzle-piece text-gray-400 text-xl"></i>
-              </div>
-              <span class="text-xs font-medium text-gray-500 bg-gray-200 px-2 py-1 rounded-full">
+              <h3 class="text-lg font-display font-bold text-gray-400">
+                More Products
+              </h3>
+              <span class="text-xs font-medium text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
                 Coming Soon
               </span>
             </div>
-            <h3 class="text-lg font-display font-bold text-gray-500">
-              More Products
-            </h3>
-            <p class="mt-2 text-sm text-gray-500">
+            <p class="mt-2 text-sm text-gray-400">
               We're working on new medical software solutions. Stay tuned for updates!
             </p>
           </div>
@@ -157,7 +155,7 @@
           >
             <div class="flex items-center gap-4">
               <div class="w-10 h-10 bg-primary-100 rounded-xl flex items-center justify-center">
-                <i class="fa-solid fa-user text-primary-600"></i>
+                <i class="fa-light fa-user text-primary-600 text-lg"></i>
               </div>
               <div>
                 <h3 class="font-medium text-gray-900">Profile</h3>
@@ -175,7 +173,7 @@
           >
             <div class="flex items-center gap-4">
               <div class="w-10 h-10 bg-secondary-100 rounded-xl flex items-center justify-center">
-                <i class="fa-solid fa-building text-secondary-600"></i>
+                <i class="fa-light fa-building text-secondary-600 text-lg"></i>
               </div>
               <div>
                 <h3 class="font-medium text-gray-900">Organization</h3>
@@ -192,11 +190,50 @@
           >
             <div class="flex items-center gap-4">
               <div class="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center">
-                <i class="fa-solid fa-shield text-amber-600"></i>
+                <i class="fa-light fa-shield text-amber-600 text-lg"></i>
               </div>
               <div>
                 <h3 class="font-medium text-gray-900">Security</h3>
                 <p class="text-sm text-gray-500">Password and authentication settings</p>
+              </div>
+            </div>
+            <i class="fa-solid fa-chevron-right text-gray-400"></i>
+          </NuxtLink>
+
+          <!-- Your Plan (Account Owner Only) -->
+          <NuxtLink
+            v-if="isAccountOwner"
+            to="/account/settings/subscription"
+            class="flex items-center justify-between p-6 hover:bg-gray-50 transition"
+          >
+            <div class="flex items-center gap-4">
+              <div class="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center">
+                <i class="fa-light fa-box-heart text-purple-600 text-lg"></i>
+              </div>
+              <div>
+                <h3 class="font-medium text-gray-900">Your Plan</h3>
+                <p class="text-sm text-gray-500">Manage your subscription</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <i v-if="isTrialExpired" class="fa-solid fa-info-circle text-red-500"></i>
+              <i class="fa-solid fa-chevron-right text-gray-400"></i>
+            </div>
+          </NuxtLink>
+
+          <!-- Billing (Account Owner Only) -->
+          <NuxtLink
+            v-if="isAccountOwner"
+            to="/account/settings/billing"
+            class="flex items-center justify-between p-6 hover:bg-gray-50 transition"
+          >
+            <div class="flex items-center gap-4">
+              <div class="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center">
+                <i class="fa-light fa-credit-card text-green-600 text-lg"></i>
+              </div>
+              <div>
+                <h3 class="font-medium text-gray-900">Billing</h3>
+                <p class="text-sm text-gray-500">Payment methods and invoices</p>
               </div>
             </div>
             <i class="fa-solid fa-chevron-right text-gray-400"></i>
@@ -217,6 +254,7 @@ useHead({
 })
 
 const { user, isAccountOwner } = useAuth()
+const { subscription, isTrialExpired } = useSubscription()
 
 // Computed display name
 const displayName = computed(() => {
@@ -227,6 +265,70 @@ const displayName = computed(() => {
 const patientCount = ref(0)
 const teamCount = ref(0)
 const loading = ref(true)
+
+// Subscription label and badge
+const subscriptionLabel = computed(() => {
+  if (!subscription.value) return null
+  
+  // Check if user has a trial (trial dates exist but no Stripe subscription)
+  const hasTrial = subscription.value.trialEndDate && !subscription.value.subscriptionId
+  
+  if (hasTrial) {
+    return 'Free Trial'
+  }
+  
+  // Stripe subscription status
+  const status = subscription.value.status
+  const priceId = subscription.value.priceId || ''
+  
+  if (status === 'trialing' || status === 'trial') return 'Free Trial'
+  if (status === 'active') {
+    // Check price ID to determine plan type
+    if (priceId.includes('price_1SYzfRP4c4Gc3Rfa')) return 'Annual Plan'
+    if (priceId.includes('price_1SOJ4XP4c4Gc3Rfa')) return 'Monthly Flex'
+    return 'Active'
+  }
+  if (status === 'canceled' || status === 'cancel_at_period_end') return 'Canceling'
+  
+  return null
+})
+
+const subscriptionBadgeClass = computed(() => {
+  const label = subscriptionLabel.value
+  if (label === 'Annual Plan') return 'text-xs font-medium text-white bg-primary-600 px-2 py-1 rounded-full'
+  if (label === 'Monthly Flex') return 'text-xs font-medium text-white bg-secondary-600 px-2 py-1 rounded-full'
+  if (label === 'Canceling') return 'text-xs font-medium text-white bg-orange-500 px-2 py-1 rounded-full'
+  return 'text-xs font-medium text-white bg-amber-500 px-2 py-1 rounded-full' // Free Trial
+})
+
+// Days left (for trial or canceling subscriptions)
+const daysLeft = computed(() => {
+  if (!subscription.value) return null
+  
+  // Check user's trial end date (for non-Stripe trials)
+  const trialEnd = subscription.value.trialEndDate
+  if (trialEnd && !subscription.value.subscriptionId) {
+    const endDate = new Date(trialEnd)
+    const now = new Date()
+    const diffTime = endDate.getTime() - now.getTime()
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+    return diffDays > 0 ? diffDays : 0
+  }
+  
+  // Check Stripe subscription status
+  const status = subscription.value.status
+  if (status === 'trialing' || status === 'trial' || status === 'cancel_at_period_end') {
+    const endDate = subscription.value.endDate || subscription.value.nextBillingDate
+    if (endDate) {
+      const end = new Date(endDate)
+      const now = new Date()
+      const diffTime = end.getTime() - now.getTime()
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+      return diffDays > 0 ? diffDays : 0
+    }
+  }
+  return null
+})
 
 // Fetch counts
 onMounted(async () => {
