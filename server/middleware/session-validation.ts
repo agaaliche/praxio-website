@@ -32,7 +32,32 @@ export default defineEventHandler(async (event) => {
     const userId = decodedToken.uid
 
     if (!sessionId) {
-      // No session ID in token - create one automatically for existing users
+      // No session ID in token - check if a recent session exists, otherwise create one
+      
+      // Check for existing recent session (created in last 2 minutes)
+      const existingSession = await queryOne<any>(
+        `SELECT sessionId FROM sessions 
+         WHERE userId = ? 
+         AND isRevoked = FALSE 
+         AND loginTime > DATE_SUB(NOW(), INTERVAL 2 MINUTE)
+         ORDER BY loginTime DESC
+         LIMIT 1`,
+        [userId]
+      )
+      
+      if (existingSession) {
+        // Use existing recent session
+        console.log(`Using existing session ${existingSession.sessionId} for user ${userId}`)
+        
+        await admin.auth().setCustomUserClaims(userId, {
+          ...decodedToken,
+          sessionId: existingSession.sessionId
+        })
+        
+        return
+      }
+      
+      // No recent session found - create a new one
       console.log(`Creating auto-session for existing user: ${userId}`)
       
       const userAgent = getHeader(event, 'user-agent') || ''
