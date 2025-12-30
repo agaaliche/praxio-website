@@ -16,7 +16,7 @@
           <NuxtLink to="/retroact" class="text-gray-600 hover:text-primary-600 transition px-3 py-1.5 rounded-lg" active-class="!text-primary-600 font-medium border border-primary-600">
             Products
           </NuxtLink>
-          <NuxtLink to="/pricing" class="text-gray-600 hover:text-primary-600 transition px-3 py-1.5 rounded-lg" active-class="!text-primary-600 font-medium border border-primary-600">
+          <NuxtLink v-if="!userRole" to="/pricing" class="text-gray-600 hover:text-primary-600 transition px-3 py-1.5 rounded-lg" active-class="!text-primary-600 font-medium border border-primary-600">
             Plans
           </NuxtLink>
           <NuxtLink to="/contact" class="text-gray-600 hover:text-primary-600 transition px-3 py-1.5 rounded-lg" active-class="!text-primary-600 font-medium border border-primary-600">
@@ -25,7 +25,7 @@
           <ClientOnly>
             <NuxtLink v-if="isAuthenticated" to="/account" class="text-gray-600 hover:text-primary-600 transition px-3 py-1.5 rounded-lg flex items-center gap-2" active-class="!text-primary-600 font-medium border border-primary-600">
               Account
-              <i v-if="isTrialExpired" class="fa-solid fa-info-circle"></i>
+              <i v-if="isTrialExpired" class="fa-solid fa-triangle-exclamation"></i>
             </NuxtLink>
           </ClientOnly>
         </div>
@@ -56,6 +56,9 @@
                     <div class="px-4 py-3 border-b border-gray-100">
                       <p class="text-sm font-medium text-gray-900">{{ user?.displayName || 'User' }}</p>
                       <p class="text-sm text-gray-500 truncate">{{ user?.email }}</p>
+                      <span v-if="userRole" :class="roleChipClass" class="inline-block mt-2 px-2 py-0.5 text-xs font-medium rounded-full">
+                        {{ userRole === 'editor' ? 'Editor' : 'Viewer' }}
+                      </span>
                     </div>
                     <button 
                       @click="handleSignOut" 
@@ -109,7 +112,7 @@
             </template>
           </ClientOnly>
           <NuxtLink to="/retroact" class="text-gray-600 hover:text-primary-600" @click="mobileMenuOpen = false">Products</NuxtLink>
-          <NuxtLink to="/pricing" class="text-gray-600 hover:text-primary-600" @click="mobileMenuOpen = false">Plans</NuxtLink>
+          <NuxtLink v-if="!userRole" to="/pricing" class="text-gray-600 hover:text-primary-600" @click="mobileMenuOpen = false">Plans</NuxtLink>
           <NuxtLink to="/contact" class="text-gray-600 hover:text-primary-600" @click="mobileMenuOpen = false">Contact</NuxtLink>
           <hr class="my-2" />
           <ClientOnly>
@@ -117,7 +120,7 @@
               <NuxtLink to="/account" class="flex items-center gap-2 text-gray-600" @click="mobileMenuOpen = false">
                 <i class="fa-solid fa-user-gear text-gray-400"></i>
                 Account
-                <i v-if="isTrialExpired" class="fa-solid fa-info-circle ml-auto"></i>
+                <i v-if="isTrialExpired" class="fa-solid fa-triangle-exclamation ml-auto"></i>
               </NuxtLink>
               <button @click="handleSignOut" class="flex items-center gap-2 text-gray-600 text-left">
                 <i class="fa-solid fa-arrow-right-from-bracket text-gray-400"></i>
@@ -145,6 +148,20 @@ const { isTrialExpired } = useSubscription()
 const router = useRouter()
 const route = useRoute()
 const { subHeaderVisible } = useSubHeaderState()
+
+// User role for invited users
+const userRole = computed(() => user.value?.role || null)
+
+// Role chip styling
+const roleChipClass = computed(() => {
+  if (userRole.value === 'editor') {
+    return 'bg-gray-100 text-blue-600 border border-blue-600'
+  }
+  if (userRole.value === 'viewer') {
+    return 'bg-gray-100 text-blue-600 border border-blue-600'
+  }
+  return ''
+})
 
 // Pages that have a Level 2 sub-header bar
 const hasSubHeader = computed(() => {

@@ -34,6 +34,12 @@ export default defineEventHandler(async (event) => {
       throw createError({ statusCode: 400, message: 'Subscription is not scheduled for cancellation' })
     }
 
+    // Check if subscription is managed by a schedule
+    if (currentSubscription.schedule) {
+      // Release the subscription from the schedule to allow direct updates
+      await stripe.subscriptionSchedules.release(currentSubscription.schedule as string)
+    }
+
     // Reactivate subscription by removing cancel_at_period_end
     const subscription = await stripe.subscriptions.update(userRecord.subscriptionId, {
       cancel_at_period_end: false

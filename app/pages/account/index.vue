@@ -5,6 +5,9 @@
       <h1 class="text-3xl font-display font-bold text-gray-900">
         Welcome back, {{ displayName }}!
       </h1>
+      <p v-if="organizationName" class="mt-1 text-lg text-primary-600 font-medium">
+        {{ organizationName }}
+      </p>
       <p class="mt-2 text-gray-600">
         Manage your Praxio account and access your products.
       </p>
@@ -43,7 +46,7 @@
           </div>
         </div>
 
-        <div class="bg-white rounded-xl p-6 border border-gray-200">
+        <div v-if="isAccountOwner" class="bg-white rounded-xl p-6 border border-gray-200">
           <div class="flex items-center gap-4">
             <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
               <i class="fa-duotone fa-check-circle text-green-600 text-2xl"></i>
@@ -87,7 +90,7 @@
           </a>
 
           <!-- More Products Coming Soon -->
-          <div class="bg-white rounded-2xl p-6 border border-dashed border-gray-300">
+          <div v-if="isAccountOwner" class="bg-white rounded-2xl p-6 border border-dashed border-gray-300">
             <div class="flex items-start justify-between mb-4">
               <h3 class="text-lg font-display font-bold text-gray-400">
                 More Products
@@ -165,9 +168,8 @@
             <i class="fa-solid fa-chevron-right text-gray-400"></i>
           </NuxtLink>
 
-          <!-- Organization (Account Owner Only) -->
+          <!-- Organization -->
           <NuxtLink
-            v-if="isAccountOwner"
             to="/account/settings/organization"
             class="flex items-center justify-between p-6 hover:bg-gray-50 transition"
           >
@@ -177,7 +179,7 @@
               </div>
               <div>
                 <h3 class="font-medium text-gray-900">Organization</h3>
-                <p class="text-sm text-gray-500">Manage your practice details</p>
+                <p class="text-sm text-gray-500">{{ organizationName || 'Set up your practice details' }}</p>
               </div>
             </div>
             <i class="fa-solid fa-chevron-right text-gray-400"></i>
@@ -200,9 +202,8 @@
             <i class="fa-solid fa-chevron-right text-gray-400"></i>
           </NuxtLink>
 
-          <!-- Your Plan (Account Owner Only) -->
+          <!-- Your Plan -->
           <NuxtLink
-            v-if="isAccountOwner"
             to="/account/settings/subscription"
             class="flex items-center justify-between p-6 hover:bg-gray-50 transition"
           >
@@ -212,11 +213,11 @@
               </div>
               <div>
                 <h3 class="font-medium text-gray-900">Your Plan</h3>
-                <p class="text-sm text-gray-500">Manage your subscription</p>
+                <p class="text-sm text-gray-500">{{ isAccountOwner ? 'Manage your subscription' : 'View organization plan' }}</p>
               </div>
             </div>
             <div class="flex items-center gap-2">
-              <i v-if="isTrialExpired" class="fa-solid fa-info-circle text-red-500"></i>
+              <i v-if="isTrialExpired" class="fa-solid fa-triangle-exclamation text-red-600"></i>
               <i class="fa-solid fa-chevron-right text-gray-400"></i>
             </div>
           </NuxtLink>
@@ -264,6 +265,7 @@ const displayName = computed(() => {
 
 const patientCount = ref(0)
 const teamCount = ref(0)
+const organizationName = ref('')
 const loading = ref(true)
 
 // Subscription label and badge
@@ -297,7 +299,7 @@ const subscriptionBadgeClass = computed(() => {
   const label = subscriptionLabel.value
   if (label === 'Annual Plan') return 'text-xs font-medium text-white bg-primary-600 px-2 py-1 rounded-full'
   if (label === 'Monthly Flex') return 'text-xs font-medium text-white bg-secondary-600 px-2 py-1 rounded-full'
-  if (label === 'Canceling') return 'text-xs font-medium text-white bg-orange-500 px-2 py-1 rounded-full'
+  if (label === 'Canceling') return 'text-xs font-medium text-white bg-red-600 px-2 py-1 rounded-full'
   return 'text-xs font-medium text-white bg-amber-500 px-2 py-1 rounded-full' // Free Trial
 })
 
@@ -337,6 +339,18 @@ onMounted(async () => {
     const token = await $auth.currentUser?.getIdToken()
     
     if (token) {
+      // Fetch current user data (includes organization)
+      try {
+        const userData = await $fetch('/api/users/current', {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+        if (userData.organization?.name) {
+          organizationName.value = userData.organization.name
+        }
+      } catch (err) {
+        console.error('Error fetching user data:', err)
+      }
+      
       // Fetch patients
       const patientsRes = await $fetch('/api/patients', {
         headers: { Authorization: `Bearer ${token}` }

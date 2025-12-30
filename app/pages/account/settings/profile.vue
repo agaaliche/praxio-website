@@ -72,7 +72,7 @@
                 <i class="fa-solid fa-xmark"></i>
               </button>
             </div>
-            <p v-if="emailChangeError" class="text-xs text-red-500 mt-1">{{ emailChangeError }}</p>
+            <p v-if="emailChangeError" class="text-xs text-red-600 mt-1">{{ emailChangeError }}</p>
           </div>
           
           <button
@@ -112,18 +112,18 @@
       </div>
 
       <!-- Viewer Notice -->
-      <div v-if="isViewer" class="bg-blue-50 border border-blue-200 rounded-xl p-4 flex items-start gap-3">
-        <i class="fa-solid fa-info-circle text-blue-500 mt-0.5"></i>
+      <div v-if="isViewer" class="bg-blue-50 border border-blue-600 rounded-xl p-4 flex items-start gap-3">
+        <i class="fa-solid fa-info-circle text-blue-600 mt-0.5"></i>
         <div>
-          <p class="font-medium text-blue-900">View Only Access</p>
-          <p class="text-sm text-blue-700">You have viewer permissions. Contact an administrator to make changes.</p>
+          <p class="font-medium text-blue-600">View Only Access</p>
+          <p class="text-sm text-blue-600">You have viewer permissions. Contact an administrator to make changes.</p>
         </div>
       </div>
 
       <!-- Error Message -->
-      <div v-if="error" class="bg-red-50 border border-red-200 rounded-xl p-4 flex items-start gap-2">
-        <i class="fa-solid fa-exclamation-circle text-red-500 mt-0.5"></i>
-        <p class="text-sm text-red-700">{{ error }}</p>
+      <div v-if="error" class="bg-red-50 border border-red-600 rounded-xl p-4 flex items-start gap-2">
+        <i class="fa-solid fa-exclamation-circle text-red-600 mt-0.5"></i>
+        <p class="text-sm text-red-600">{{ error }}</p>
       </div>
 
       <!-- Success Message -->

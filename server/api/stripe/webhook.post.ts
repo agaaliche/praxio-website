@@ -138,16 +138,19 @@ async function handleSubscriptionUpdated(subscription: any) {
     console.log('   Subscription ID:', subscription.id)
     console.log('   Customer ID:', subscription.customer)
     console.log('   Status:', subscription.status)
+    console.log('   Cancel at period end:', subscription.cancel_at_period_end)
     console.log('   Price ID:', subscription.items?.data?.[0]?.price?.id)
     
     const customerId = subscription.customer
-    const status = subscription.status
+    // If cancel_at_period_end is true, use 'canceling' status instead of 'active'
+    const status = subscription.cancel_at_period_end ? 'canceling' : subscription.status
     const priceId = subscription.items?.data?.[0]?.price?.id || null
     const currentPeriodEnd = subscription.current_period_end 
       ? new Date(subscription.current_period_end * 1000)
       : null
 
     console.log('   Current Period End:', currentPeriodEnd)
+    console.log('   Effective Status:', status)
     
     // Determine plan type and calculate subscription end date
     const plan = Object.values(PLANS).find(p => p.stripePriceId === priceId)

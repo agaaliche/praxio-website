@@ -21,6 +21,7 @@ const subscription = ref<SubscriptionState | null>(null)
 const subscriptionLoading = ref(false)
 const subscriptionError = ref<string | null>(null)
 const subscriptionFetched = ref(false)
+let roleCheckInterval: NodeJS.Timeout | null = null
 
 export function useSubscription() {
   const { user, getIdToken, isAuthenticated } = useAuth()
@@ -118,12 +119,43 @@ export function useSubscription() {
 
     try {
       const token = await getIdToken()
-      const response = await $fetch<{ subscription: SubscriptionState }>('/api/users/current', {
+      const response = await $fetch<{ subscription: SubscriptionState, roleChanged?: boolean }>('/api/users/current', {
         headers: { Authorization: `Bearer ${token}` }
       })
       
       subscription.value = response.subscription
       subscriptionFetched.value = true
+      
+      // Check if role has changed - notify user to refresh
+      if (response.roleChanged) {
+        const { showNotification } = await import('~/stores/notification')
+        const { refreshUserClaims } = useAuth()
+        
+        // Refresh claims in background
+        await refreshUserClaims()
+        
+        // Show countdown notification
+        let countdown = 10
+        const notificationMessage = ref(`Your role has been updated by the account owner. Page will refresh in ${countdown} seconds...`)
+        showNotification(notificationMessage.value, 'info', 11000)
+        
+        // Update countdown every second
+        const countdownInterval = setInterval(() => {
+          countdown--
+          if (countdown > 0) {
+            notificationMessage.value = `Your role has been updated by the account owner. Page will refresh in ${countdown} seconds...`
+            showNotification(notificationMessage.value, 'info', 1100)
+          } else {
+            clearInterval(countdownInterval)
+          }
+        }, 1000)
+        
+        // Auto-reload after 10 seconds
+        setTimeout(() => {
+          clearInterval(countdownInterval)
+          window.location.reload()
+        }, 10000)
+      }
     } catch (error: any) {
       console.error('Failed to fetch subscription:', error)
       subscriptionError.value = error.message || 'Failed to fetch subscription'
@@ -137,6 +169,36 @@ export function useSubscription() {
     subscription.value = null
     subscriptionFetched.value = false
     subscriptionError.value = null
+    
+    // Stop role checking
+    if (roleCheckInterval) {
+      clearInterval(roleCheckInterval)
+      roleCheckInterval = null
+    }
+  }
+
+  // Start periodic role checking for invited users
+  const startRoleChecking = () => {
+    // Only for invited users (those with a role)
+    if (!user.value?.role) return
+    
+    // Don't start multiple intervals
+    if (roleCheckInterval) return
+    
+    // Check every 15 seconds
+    roleCheckInterval = setInterval(() => {
+      if (isAuthenticated.value && user.value?.role) {
+        fetchSubscription(true)
+      }
+    }, 15000)
+  }
+
+  // Stop periodic role checking
+  const stopRoleChecking = () => {
+    if (roleCheckInterval) {
+      clearInterval(roleCheckInterval)
+      roleCheckInterval = null
+    }
   }
 
   // Refresh subscription (after purchase, etc.)
@@ -162,6 +224,8 @@ export function useSubscription() {
     // Methods
     fetchSubscription,
     refreshSubscription,
-    clearSubscription
+    clearSubscription,
+    startRoleChecking,
+    stopRoleChecking
   }
 }

@@ -10,8 +10,8 @@
       </div>
     </section>
 
-    <!-- Current Plan Banner (if logged in with subscription) -->
-    <section v-if="currentSubscription && !isTrialOrNone" class="py-4">
+    <!-- Current Plan Banner (if logged in with trial or paid subscription) -->
+    <section v-if="currentSubscription && (isOnTrial || isOnMonthly || isOnAnnual)" class="py-4">
       <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="bg-primary-50 border border-primary-200 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div class="flex items-center gap-3">
@@ -20,8 +20,8 @@
               <p class="font-medium text-gray-900 text-sm sm:text-base">
                 You're currently on the <strong>{{ currentPlanName }}</strong> plan
               </p>
-              <p v-if="currentSubscription.nextBillingDate" class="text-xs sm:text-sm text-gray-600">
-                Next billing: {{ formatDate(currentSubscription.nextBillingDate) }}
+              <p v-if="currentSubscription.nextBillingDate && (isOnTrial || currentSubscription.status === 'active')" class="text-xs sm:text-sm text-gray-600">
+                {{ isOnTrial ? 'Trial ends' : 'Next billing' }}: {{ formatDate(currentSubscription.nextBillingDate) }}
               </p>
             </div>
           </div>
@@ -150,14 +150,14 @@
               </li>
             </ul>
             <div class="mt-auto">
-            <button 
+            <NuxtLink 
               v-if="isMonthlyDisabled"
-              disabled
-              class="w-full text-center bg-gray-300 text-gray-500 px-6 py-3 rounded-lg font-semibold cursor-not-allowed flex items-center justify-center gap-2"
+              to="/account/settings/subscription"
+              class="w-full text-center bg-gray-300 text-gray-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-400 transition flex items-center justify-center gap-2"
             >
               <i class="fa-regular fa-circle-check"></i>
               Current Plan
-            </button>
+            </NuxtLink>
             <button 
               v-else
               @click="handleSubscribe('monthly_flex')"
@@ -213,25 +213,31 @@
             
             <div class="mt-auto">
             <!-- Already on annual -->
-            <button 
+            <NuxtLink 
               v-if="isOnAnnual"
-              disabled
-              class="w-full text-center bg-gray-300 text-gray-500 px-6 py-3 rounded-lg font-semibold cursor-not-allowed flex items-center justify-center gap-2"
+              to="/account/settings/subscription"
+              class="w-full text-center bg-gray-300 text-gray-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-400 transition flex items-center justify-center gap-2"
             >
               <i class="fa-regular fa-circle-check"></i>
               Current Plan
-            </button>
+            </NuxtLink>
             
             <!-- Upgrade from monthly to annual -->
             <button 
               v-else-if="isOnMonthly"
               @click="showUpgradeConfirm = true"
-              :disabled="checkoutLoading !== null"
+              :disabled="checkoutLoading !== null || isScheduledAnnual"
               class="w-full text-center bg-white text-primary-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition disabled:opacity-50 flex items-center justify-center gap-2"
             >
               <SpinnerIcon v-if="checkoutLoading === 'annual'" />
-              <i v-else class="fa-regular fa-arrow-up"></i>
-              Upgrade to Annual
+              <template v-else-if="isScheduledAnnual">
+                <i class="fa-regular fa-calendar-check"></i>
+                Upgrade Scheduled
+              </template>
+              <template v-else>
+                <i class="fa-regular fa-arrow-up"></i>
+                Upgrade to Annual
+              </template>
             </button>
             
             <!-- New subscription -->
@@ -286,7 +292,7 @@
         </ClientOnly>
 
         <!-- Error Message -->
-        <div v-if="error" class="mt-8 max-w-lg mx-auto p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-center">
+        <div v-if="error" class="mt-8 max-w-lg mx-auto p-4 bg-red-50 border border-red-600 rounded-lg text-red-600 text-center">
           <i class="fa-solid fa-circle-exclamation mr-2"></i>
           {{ error }}
         </div>
@@ -343,7 +349,7 @@
             Upgrade to Annual Plan
           </h3>
           
-          <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+          <div class="bg-blue-50 border border-blue-600 rounded-lg p-4 mb-6">
             <p class="text-gray-700">
               <i class="fa-regular fa-info-circle text-blue-600 mr-2"></i>
               Your <strong>Annual Plan</strong> will start on <strong>{{ formatDate(currentSubscription?.nextBillingDate) }}</strong>, 
@@ -460,14 +466,19 @@ const isTrialExpired = computed(() => {
 
 const isOnMonthly = computed(() => {
   if (!mounted.value) return false
-  return currentSubscription.value?.status === 'active' && 
+  return (currentSubscription.value?.status === 'active' || currentSubscription.value?.status === 'canceling') && 
          currentSubscription.value?.priceId === PRICE_IDS.monthly_flex
 })
 
 const isOnAnnual = computed(() => {
   if (!mounted.value) return false
-  return currentSubscription.value?.status === 'active' && 
+  return (currentSubscription.value?.status === 'active' || currentSubscription.value?.status === 'canceling') && 
          currentSubscription.value?.priceId === PRICE_IDS.annual
+})
+
+const isScheduledAnnual = computed(() => {
+  if (!mounted.value) return false
+  return currentSubscription.value?.scheduledPriceId?.includes('price_1SYzfRP4c4Gc3Rfa') || false
 })
 
 const isTrialDisabled = computed(() => {
@@ -541,11 +552,13 @@ async function handleSubscribe(planId: 'monthly_flex' | 'annual') {
       headers: { Authorization: `Bearer ${token}` },
       body: {
         priceId,
-        successUrl: `${window.location.origin}/account/settings/billing?success=true`,
+        successUrl: `${window.location.origin}/account/settings/subscription?success=true`,
         cancelUrl: `${window.location.origin}/pricing?canceled=true`
       }
     })
 
+    // Wait for DOM updates before redirecting
+    await nextTick()
     window.location.href = response.url
   } catch (err: any) {
     console.error('Checkout error:', err)
@@ -569,15 +582,11 @@ async function handleScheduleUpgrade() {
       }
     })
 
-    showUpgradeConfirm.value = false
-    successMessage.value = `Your upgrade to the Annual Plan is scheduled for ${formatDate(currentSubscription.value?.nextBillingDate)}. You can cancel this anytime from your billing settings.`
-    
-    // Refresh subscription data
-    await fetchSubscription()
+    // Use full page navigation to avoid Teleport/Vue DOM issues
+    window.location.href = '/account/settings/subscription'
   } catch (err: any) {
     console.error('Schedule upgrade error:', err)
     error.value = err.data?.message || 'Failed to schedule upgrade. Please try again.'
-  } finally {
     upgradeLoading.value = false
   }
 }

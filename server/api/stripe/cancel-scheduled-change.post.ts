@@ -44,25 +44,12 @@ export default defineEventHandler(async (event) => {
 
     // Get the subscription from Stripe
     const subscription = await stripe.subscriptions.retrieve(userRecord.subscriptionId)
-    const subscriptionItemId = subscription.items.data[0]?.id
-
-    if (!subscriptionItemId) {
-      throw createError({ statusCode: 500, message: 'Could not find subscription item' })
+    
+    // Check if there's a subscription schedule
+    if (subscription.schedule) {
+      // Release the subscription from the schedule, returning it to normal subscription
+      await stripe.subscriptionSchedules.release(subscription.schedule as string)
     }
-
-    // Revert the subscription to the original price
-    await stripe.subscriptions.update(userRecord.subscriptionId, {
-      items: [{
-        id: subscriptionItemId,
-        price: originalPriceId
-      }],
-      proration_behavior: 'none',
-      metadata: {
-        scheduled_price_id: null,
-        scheduled_at: null,
-        original_price_id: null
-      }
-    })
 
     // Clear the scheduled change from database
     await execute(

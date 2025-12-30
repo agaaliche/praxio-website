@@ -126,9 +126,9 @@
       <!-- Messages Container -->
       <div class="min-h-[52px]">
         <!-- Error Message -->
-        <div v-if="error" class="bg-red-50 border border-red-200 rounded-xl p-4 flex items-start gap-2">
-          <i class="fa-solid fa-exclamation-circle text-red-500 mt-0.5"></i>
-          <p class="text-sm text-red-700">{{ error }}</p>
+        <div v-if="error" class="bg-red-50 border border-red-600 rounded-xl p-4 flex items-start gap-2">
+          <i class="fa-solid fa-exclamation-circle text-red-600 mt-0.5"></i>
+          <p class="text-sm text-red-600">{{ error }}</p>
         </div>
 
         <!-- Success Message -->

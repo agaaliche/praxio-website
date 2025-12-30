@@ -59,8 +59,8 @@
           </div>
           
           <div class="text-center">
-            <div class="w-16 h-16 bg-red-500/10 border border-red-500/30 rounded-2xl flex items-center justify-center mx-auto mb-5">
-              <i class="fa-duotone fa-bullseye-arrow text-2xl text-red-400"></i>
+            <div class="w-16 h-16 bg-red-50 border border-red-600 rounded-2xl flex items-center justify-center mx-auto mb-5">
+              <i class="fa-duotone fa-bullseye-arrow text-2xl text-red-600"></i>
             </div>
             <h3 class="font-bold text-lg mb-2">No fluff</h3>
             <p class="text-gray-400 text-sm">

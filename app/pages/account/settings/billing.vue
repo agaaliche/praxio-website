@@ -124,7 +124,7 @@
     </template>
 
     <!-- Error Message -->
-    <div v-if="error" class="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
+    <div v-if="error" class="mt-4 p-4 bg-red-50 border border-red-600 rounded-lg text-red-600">
       <i class="fa-solid fa-circle-exclamation mr-2"></i>
       {{ error }}
     </div>
@@ -254,8 +254,8 @@ function getStatusClass(status: string): string {
     case 'paid': return 'bg-green-100 text-green-800'
     case 'open': return 'bg-yellow-100 text-yellow-800'
     case 'draft': return 'bg-gray-100 text-gray-800'
-    case 'void': return 'bg-red-100 text-red-800'
-    case 'uncollectible': return 'bg-red-100 text-red-800'
+    case 'void': return 'bg-red-50 text-red-600'
+    case 'uncollectible': return 'bg-red-50 text-red-600'
     default: return 'bg-gray-100 text-gray-800'
   }
 }

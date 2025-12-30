@@ -13,8 +13,64 @@
       </div>
 
       <template v-else>
-      <!-- Current Plan - only show if has active subscription -->
-      <div v-if="hasActiveSubscription && !isTrialOrNone && !isTrialExpired" class="bg-white rounded-xl border border-gray-200 p-6 mb-6">
+      <!-- Invited User - Shared Plan Notice -->
+      <div v-if="!isAccountOwner" class="mb-6">
+        <!-- Access Revoked Warning (when plan expired) -->
+        <div v-if="isTrialExpired || (!hasActiveSubscription && !isOnTrial)" class="bg-red-50 border-2 border-red-600 rounded-xl p-6 mb-6">
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 bg-red-50 rounded-full flex items-center justify-center flex-shrink-0">
+              <i class="fa-solid fa-ban text-red-600 text-xl"></i>
+            </div>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-red-600">Access Revoked</h3>
+              <p class="text-red-600 mt-2">
+                Your access has been temporarily suspended because {{ organizationName || 'the organization' }}'s subscription has expired.
+              </p>
+              <p class="text-red-600 mt-2 text-sm">
+                Please contact the account owner to renew the organization's plan and restore your access.
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Active Shared Plan Notice -->
+        <div v-else class="bg-primary-50 border border-primary-200 rounded-xl p-6">
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center flex-shrink-0">
+              <i class="fa-solid fa-users text-primary-600 text-xl"></i>
+            </div>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-primary-600">Shared Organization Plan</h3>
+              <p class="text-primary-700 mt-2">
+                You are part of <strong>{{ organizationName || 'this organization' }}</strong> and share the same subscription plan as the account owner.
+              </p>
+              <div v-if="subscription" class="mt-4 grid md:grid-cols-3 gap-4">
+                <div class="bg-white rounded-lg p-3 border border-primary-100">
+                  <p class="text-xs text-primary-600 font-medium">Current Plan</p>
+                  <p class="text-sm font-bold text-gray-900 mt-1">{{ isOnTrial ? 'Free Trial' : currentPlanName }}</p>
+                </div>
+                <div v-if="!isTrialOrNone" class="bg-white rounded-lg p-3 border border-primary-100">
+                  <p class="text-xs text-primary-600 font-medium">Status</p>
+                  <p class="text-sm font-bold text-gray-900 mt-1">{{ statusLabel }}</p>
+                </div>
+                <div v-if="(isOnTrial && subscription?.trialEndDate) || (nextBillingDateFormatted && subscription?.status !== 'canceling' && !isOnTrial)" class="bg-white rounded-lg p-3 border border-primary-100">
+                  <p class="text-xs text-primary-600 font-medium">{{ isOnTrial ? 'Trial Ends' : 'Renews On' }}</p>
+                  <p class="text-sm font-bold text-gray-900 mt-1">{{ isOnTrial ? formatDate(subscription.trialEndDate) : nextBillingDateFormatted }}</p>
+                </div>
+              </div>
+              <p class="text-sm text-primary-600 mt-4">
+                <i class="fa-regular fa-circle-info mr-1"></i>
+                Only the account owner can manage the subscription.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Account Owner Content -->
+      <template v-if="isAccountOwner">
+      <!-- Current Plan - show if has subscription (active, canceling, or trialing) -->
+      <div v-if="hasActiveSubscription" class="bg-white rounded-xl border border-gray-200 p-6 mb-6">
         <div class="flex items-start justify-between">
           <div>
             <h2 class="text-lg font-bold text-gray-900">Current Plan</h2>
@@ -30,7 +86,7 @@
             <p class="text-sm text-gray-500">Plan</p>
             <p class="text-lg font-bold text-gray-900">{{ currentPlanName }}</p>
           </div>
-          <div>
+          <div v-if="nextBillingDateFormatted">
             <p class="text-sm text-gray-500">{{ isTrialExpired ? 'Trial Expired' : (isTrialOrNone ? 'Trial Ends' : 'Next Billing Date') }}</p>
             <p class="text-lg font-bold text-gray-900">{{ nextBillingDateFormatted }}</p>
           </div>
@@ -42,11 +98,11 @@
 
         <div class="mt-6 flex flex-wrap items-center justify-between gap-3">
           <!-- Show different buttons based on subscription status -->
-          <template v-if="hasActiveSubscription && !isTrialOrNone">
-            <!-- Left side: Upgrade button (only if on Monthly) -->
+          <template v-if="!isTrialOrNone && !isTrialExpired">
+            <!-- Left side: Upgrade button (only if on Monthly and not scheduled for annual) -->
             <div>
               <NuxtLink 
-                v-if="isOnMonthly"
+                v-if="isOnMonthly && !isScheduledAnnual"
                 to="/pricing"
                 class="px-4 py-2 bg-primary-600 text-white font-medium rounded-lg hover:bg-primary-700 transition inline-flex items-center gap-2"
               >
@@ -55,19 +111,19 @@
               </NuxtLink>
             </div>
             
-            <!-- Right side: Cancel button (only if not already canceling) -->
+            <!-- Right side: Cancel button (only if not already canceling and not scheduled for annual) -->
             <div>
               <button 
-                v-if="!isCanceling"
+                v-if="!isCanceling && !isScheduledAnnual"
                 @click="showCancelConfirm = true"
-                class="px-4 py-2 text-red-600 font-medium border border-red-200 rounded-lg hover:bg-red-50 transition flex items-center gap-2"
+                class="px-4 py-2 text-red-600 font-medium border border-red-600 rounded-lg hover:bg-red-50 transition flex items-center gap-2"
               >
                 <i class="fa-regular fa-circle-xmark"></i>
                 Cancel Subscription
               </button>
             </div>
           </template>
-          <template v-else>
+          <template v-if="isTrialOrNone || isTrialExpired">
             <NuxtLink 
               to="/pricing"
               class="px-4 py-2 bg-primary-600 text-white font-medium rounded-lg hover:bg-primary-700 transition flex items-center gap-2"
@@ -79,13 +135,13 @@
         </div>
         
         <!-- Cancellation Notice -->
-        <div v-if="isCanceling" class="mt-4 p-4 bg-orange-50 border border-orange-200 rounded-lg">
+        <div v-if="isCanceling" class="mt-4 p-4 bg-red-50 border border-red-600 rounded-lg">
           <div class="flex items-start justify-between gap-4">
             <div class="flex items-start gap-3">
-              <i class="fa-solid fa-triangle-exclamation text-orange-600 mt-0.5"></i>
+              <i class="fa-solid fa-triangle-exclamation text-red-600 mt-0.5"></i>
               <div>
-                <p class="font-medium text-orange-800">Your subscription will end on {{ nextBillingDateFormatted }}</p>
-                <p class="text-sm text-orange-700 mt-1">You'll continue to have access until then. After that, you'll need to subscribe again to use the service.</p>
+                <p class="font-medium text-red-600">Your subscription will end on {{ nextBillingDateFormatted }}</p>
+                <p class="text-sm text-red-600 mt-1">You'll continue to have access until then. After that, you'll need to subscribe again to use the service.</p>
               </div>
             </div>
             <button 
@@ -102,7 +158,7 @@
       </div>
 
       <!-- Upcoming Plan Change -->
-      <div v-if="subscription?.scheduledPriceId" class="bg-white rounded-xl border-2 border-blue-200 p-6 mb-6">
+      <div v-if="subscription?.scheduledPriceId" class="bg-white rounded-xl border-2 border-blue-600 p-6 mb-6">
         <div class="flex items-start justify-between">
           <div>
             <h2 class="text-lg font-bold text-gray-900 flex items-center gap-2">
@@ -111,7 +167,7 @@
             </h2>
             <p class="text-gray-500">Scheduled change to your subscription</p>
           </div>
-          <span class="px-3 py-1 text-sm font-medium rounded-full bg-blue-100 text-blue-700">
+          <span class="px-3 py-1 text-sm font-medium rounded-full bg-blue-50 text-blue-600">
             Scheduled
           </span>
         </div>
@@ -136,7 +192,7 @@
           <button 
             @click="cancelScheduledChange"
             :disabled="cancelScheduledLoading"
-            class="px-4 py-2 text-red-600 font-medium border border-red-200 rounded-lg hover:bg-red-50 transition disabled:opacity-50 flex items-center gap-2"
+            class="px-4 py-2 text-red-600 font-medium border border-red-600 rounded-lg hover:bg-red-50 transition disabled:opacity-50 flex items-center gap-2"
           >
             <SpinnerIcon v-if="cancelScheduledLoading" />
             <i v-else class="fa-regular fa-xmark"></i>
@@ -145,10 +201,10 @@
         </div>
       </div>
 
-      <!-- No Subscription / Trial Expired Banner -->
-      <div v-if="isTrialOrNone || isTrialExpired" :class="isTrialExpired ? 'bg-gradient-to-r from-red-50 to-orange-50 border-red-200' : 'bg-gradient-to-r from-primary-50 to-blue-50 border-primary-200'" class="rounded-xl border p-6">
+      <!-- No Subscription / Trial Banner - only show if no active subscription -->
+      <div v-if="!hasActiveSubscription && (isTrialOrNone || isTrialExpired)" :class="isTrialExpired ? 'bg-gradient-to-r from-red-50 to-red-50 border-red-600' : 'bg-gradient-to-r from-primary-50 to-blue-50 border-primary-200'" class="rounded-xl border p-6">
         <div class="flex items-start gap-4">
-          <div :class="isTrialExpired ? 'bg-red-100' : 'bg-primary-100'" class="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">
+          <div :class="isTrialExpired ? 'bg-red-50' : 'bg-primary-100'" class="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">
             <i :class="isTrialExpired ? 'fa-solid fa-clock-rotate-left text-red-600' : 'fa-solid fa-wand-magic-sparkles text-primary-600'" class="text-xl"></i>
           </div>
           <div>
@@ -166,10 +222,9 @@
           </div>
         </div>
       </div>
-    </template>
-
+    </template>      </template>
       <!-- Error Message -->
-      <div v-if="error" class="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
+      <div v-if="error" class="mt-4 p-4 bg-red-50 border border-red-600 rounded-lg text-red-600">
         <i class="fa-solid fa-circle-exclamation mr-2"></i>
         {{ error }}
       </div>
@@ -192,7 +247,7 @@
       <div v-if="showCancelConfirm" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
         <div class="bg-white rounded-xl shadow-xl max-w-md w-full p-6">
           <div class="flex items-center gap-3 mb-4">
-            <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
+            <div class="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center">
               <i class="fa-solid fa-triangle-exclamation text-red-600"></i>
             </div>
             <h3 class="text-lg font-bold text-gray-900">Cancel Subscription?</h3>
@@ -204,11 +259,11 @@
 
           <ul class="space-y-2 mb-6 text-sm text-gray-600">
             <li class="flex items-start gap-2">
-              <i class="fa-solid fa-circle-xmark text-red-500 mt-0.5"></i>
+              <i class="fa-solid fa-circle-xmark text-red-600 mt-0.5"></i>
               <span>You will lose access to all features</span>
             </li>
             <li class="flex items-start gap-2">
-              <i class="fa-solid fa-circle-xmark text-red-500 mt-0.5"></i>
+              <i class="fa-solid fa-circle-xmark text-red-600 mt-0.5"></i>
               <span>Your data will be retained for 30 days</span>
             </li>
             <li class="flex items-start gap-2">
@@ -227,7 +282,7 @@
             <button 
               @click="cancelSubscription"
               :disabled="cancelLoading"
-              class="flex-1 px-4 py-2 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 transition disabled:opacity-50 flex items-center justify-center gap-2"
+              class="flex-1 px-4 py-2 bg-red-600 text-white font-medium rounded-lg hover:bg-red-600 transition disabled:opacity-50 flex items-center justify-center gap-2"
             >
               <SpinnerIcon v-if="cancelLoading" />
               Cancel Subscription
@@ -246,7 +301,8 @@ definePageMeta({
   middleware: ['auth']
 })
 
-const { getIdToken } = useAuth()
+const { getIdToken, user, isAccountOwner } = useAuth()
+const organizationName = ref('')
 
 // State
 const loading = ref(true)
@@ -280,6 +336,9 @@ const isOnMonthly = computed(() => {
 })
 
 const isCanceling = computed(() => {
+  // Don't show cancellation notice if there's a scheduled plan change
+  // because the scheduled change means they're not really canceling - they're upgrading
+  if (subscription.value?.scheduledPriceId) return false
   return subscription.value?.status === 'canceling'
 })
 
@@ -290,7 +349,14 @@ const isTrialExpired = computed(() => {
 })
 
 const isTrialOrNone = computed(() => {
-  return !subscription.value?.subscriptionId || subscription.value?.status === 'trialing'
+  return !subscription.value?.subscriptionId || subscription.value?.status === 'trialing' || subscription.value?.status === 'incomplete'
+})
+
+const isOnTrial = computed(() => {
+  if (!subscription.value?.trialEndDate) return false
+  const trialEnd = new Date(subscription.value.trialEndDate)
+  // User is on trial if trial hasn't expired and either has no subscription ID or has incomplete status
+  return trialEnd >= new Date() && (!subscription.value?.subscriptionId || subscription.value?.status === 'incomplete')
 })
 
 const currentPlanName = computed(() => {
@@ -344,20 +410,20 @@ const statusBadgeClass = computed(() => {
   if (!status) {
     if (subscription.value?.trialEndDate) {
       if (isTrialExpired.value) {
-        return `${base} bg-red-100 text-red-700`
+        return `${base} bg-red-50 text-red-600`
       }
-      return `${base} bg-blue-100 text-blue-700`
+      return `${base} bg-blue-50 text-blue-600`
     }
     return `${base} bg-gray-100 text-gray-700`
   }
   
   const classes: Record<string, string> = {
     active: `${base} bg-green-100 text-green-700`,
-    trialing: `${base} bg-blue-100 text-blue-700`,
+    trialing: `${base} bg-blue-50 text-blue-600`,
     past_due: `${base} bg-yellow-100 text-yellow-700`,
-    canceled: `${base} bg-red-100 text-red-700`,
-    canceling: `${base} bg-orange-100 text-orange-700`,
-    pending_cancellation: `${base} bg-orange-100 text-orange-700`
+    canceled: `${base} bg-red-50 text-red-600`,
+    canceling: `${base} bg-red-50 text-red-600`,
+    pending_cancellation: `${base} bg-red-50 text-red-600`
   }
   return classes[status] || `${base} bg-gray-100 text-gray-700`
 })
@@ -407,6 +473,10 @@ const trialMessage = computed(() => {
   return 'Start your subscription today'
 })
 
+const isScheduledAnnual = computed(() => {
+  return subscription.value?.scheduledPriceId?.includes('price_1SYzfRP4c4Gc3Rfa') || false
+})
+
 const scheduledPlanName = computed(() => {
   if (!subscription.value?.scheduledPriceId) return ''
   if (subscription.value.scheduledPriceId.includes('price_1SYzfRP4c4Gc3Rfa')) {
@@ -434,11 +504,16 @@ async function fetchSubscription() {
     error.value = ''
     
     const token = await getIdToken()
-    const response = await $fetch<{ subscription: typeof subscription.value }>('/api/users/current', {
+    const response = await $fetch<{ subscription: typeof subscription.value, organization?: { name?: string } }>('/api/users/current', {
       headers: { Authorization: `Bearer ${token}` }
     })
     
     subscription.value = response.subscription
+    
+    // Get organization name for invited users
+    if (response.organization?.name) {
+      organizationName.value = response.organization.name
+    }
   } catch (err: any) {
     console.error('Failed to fetch subscription:', err)
     error.value = err.data?.message || 'Failed to load subscription information'

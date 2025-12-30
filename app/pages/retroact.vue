@@ -380,7 +380,7 @@ const features = [
       'Trend analysis',
       'Export data for reports'
     ],
-    iconBg: 'bg-blue-100',
+    iconBg: 'bg-blue-50',
     iconColor: 'text-blue-600',
     hasVideo: false,
     reverse: false
@@ -412,8 +412,8 @@ const features = [
       'Granular permission control',
       'Audit trail of user actions'
     ],
-    iconBg: 'bg-orange-100',
-    iconColor: 'text-orange-600',
+    iconBg: 'bg-red-50',
+    iconColor: 'text-red-600',
     hasVideo: false,
     reverse: false
   },

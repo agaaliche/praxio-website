@@ -70,12 +70,12 @@
         </div>
 
         <!-- Error State (inline) -->
-        <div v-if="error && !loading" class="bg-red-50 border border-red-200 rounded-xl p-4 mb-4 flex items-center justify-between">
-          <div class="flex items-center gap-2">
-            <i class="fa-solid fa-exclamation-circle text-red-500"></i>
-            <p class="text-red-700">{{ error }}</p>
+        <div v-if="error && !loading" class="bg-red-50 border border-red-600 rounded-xl p-4 mb-4 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <i class="fa-solid fa-exclamation-circle text-red-600"></i>
+            <p class="text-red-600">{{ error }}</p>
           </div>
-          <button @click="error = ''" class="text-red-400 hover:text-red-600">
+          <button @click="error = ''" class="text-red-600 hover:text-red-600">
             <i class="fa-solid fa-times"></i>
           </button>
         </div>
@@ -93,6 +93,7 @@
         <div class="flex items-center gap-4">
           <!-- Status Button / Refresh on hover -->
           <button
+            :key="`status-${member.id}-${memberRefreshKeys[member.id] || 0}`"
             @click="hoveredMember === member.id ? refreshMemberStatus(member) : null"
             :class="[
               'w-10 h-10 rounded-full flex items-center justify-center transition-all',
@@ -102,9 +103,8 @@
             ]"
             :disabled="refreshingStatus === member.id"
           >
-            <SpinnerIcon v-if="refreshingStatus === member.id" />
-            <i v-else-if="hoveredMember === member.id" class="fa-regular fa-arrows-rotate"></i>
-            <i v-else :class="getStatusIcon(member.status)"></i>
+            <SpinnerIcon v-if="getButtonIcon(member) === 'spinner'" />
+            <i v-else :class="getButtonIcon(member)"></i>
           </button>
 
           <div>
@@ -236,7 +236,7 @@
                 </select>
               </div>
 
-              <div v-if="inviteError" class="bg-red-50 border border-red-200 rounded-lg p-3 text-sm text-red-700">
+              <div v-if="inviteError" class="bg-red-50 border border-red-600 rounded-lg p-3 text-sm text-red-600">
                 {{ inviteError }}
               </div>
 
@@ -316,7 +316,7 @@
           
           <div class="relative bg-white rounded-2xl shadow-xl max-w-md w-full p-6">
             <div class="text-center">
-              <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div class="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4">
                 <i class="fa-solid fa-user-minus text-red-600 text-2xl"></i>
               </div>
               <h2 class="text-xl font-bold text-gray-900 mb-2">Remove Team Member?</h2>
@@ -334,7 +334,7 @@
                 <button
                   @click="removeMember"
                   :disabled="removing"
-                  class="px-4 py-2 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 transition disabled:opacity-50"
+                  class="px-4 py-2 bg-red-600 text-white font-medium rounded-lg hover:bg-red-600 transition disabled:opacity-50"
                 >
                   <SpinnerIcon v-if="removing" class="mr-2" />
                   Remove
@@ -377,6 +377,7 @@ const error = ref('')
 const hoveredMember = ref<number | null>(null)
 const refreshingStatus = ref<number | null>(null)
 const resendingEmail = ref<string | null>(null)
+const memberRefreshKeys = ref<Record<number, number>>({})
 
 // Invite modal state
 const showInviteModal = ref(false)
@@ -406,7 +407,7 @@ const getStatusBgClass = (status: string) => {
   switch (status) {
     case 'active': return 'bg-green-100 text-green-600'
     case 'pending': return 'bg-yellow-100 text-yellow-600'
-    case 'expired': return 'bg-red-100 text-red-600'
+    case 'expired': return 'bg-red-50 text-red-600'
     default: return 'bg-gray-100 text-gray-600'
   }
 }
@@ -424,7 +425,7 @@ const getStatusChipClass = (status: string) => {
   switch (status) {
     case 'active': return 'bg-green-100 text-green-700'
     case 'pending': return 'bg-yellow-100 text-yellow-700'
-    case 'expired': return 'bg-red-100 text-red-700'
+    case 'expired': return 'bg-red-50 text-red-600'
     default: return 'bg-gray-100 text-gray-600'
   }
 }
@@ -445,6 +446,17 @@ const getInitial = (member: TeamMember): string => {
     return email.charAt(0).toUpperCase()
   }
   return '?'
+}
+
+// Get button icon based on state
+const getButtonIcon = (member: TeamMember): string => {
+  if (refreshingStatus.value === member.id) {
+    return 'spinner'
+  }
+  if (hoveredMember.value === member.id) {
+    return 'fa-regular fa-arrows-rotate'
+  }
+  return getStatusIcon(member.status)
 }
 
 // API helpers
@@ -473,8 +485,10 @@ const fetchTeam = async () => {
 // Refresh member status
 const refreshMemberStatus = async (member: TeamMember) => {
   refreshingStatus.value = member.id
+  hoveredMember.value = null // Clear hover to show new status after refresh
   try {
     await fetchTeam()
+    memberRefreshKeys.value[member.id] = (memberRefreshKeys.value[member.id] || 0) + 1
     showNotification('Status refreshed', 'success')
   } finally {
     refreshingStatus.value = null
@@ -584,11 +598,13 @@ const updateRole = async () => {
       body: { role: selectedRole.value }
     })
     
+    showNotification(`Role updated to ${selectedRole.value}. User will see changes after signing out and back in.`, 'success', 6000)
     showEditRoleModal.value = false
     editingMember.value = null
     await fetchTeam()
   } catch (e: any) {
     console.error('Failed to update role:', e)
+    showNotification('Failed to update role', 'error')
   } finally {
     updatingRole.value = false
   }

@@ -3,8 +3,13 @@
  * Get current user's profile
  * If user doesn't exist in database, creates a new profile (like inrManager)
  */
+import Stripe from 'stripe'
 import { query, queryOne, execute } from '../../utils/database'
 import { verifyAuth, getEffectiveAccountOwnerId } from '../../utils/auth'
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: '2024-12-18.acacia'
+})
 
 export default defineEventHandler(async (event) => {
   try {
@@ -27,12 +32,31 @@ export default defineEventHandler(async (event) => {
         })
       }
       
-      // Also get the account owner's organization info
+      // Check if role in database differs from token role
+      const roleChanged = authorizedUser.role !== user.role
+      
+      // Also get the account owner's organization info and subscription
       const owner = await queryOne<any>(
-        `SELECT organizationName, organizationType, address, city, country
+        `SELECT organizationName, organizationType, address, city, country,
+                stripeCustomerId, subscriptionId, subscriptionStatus, subscriptionPriceId,
+                subscriptionEndDate, nextBillingDate, trialStartDate, trialEndDate,
+                scheduledPriceId, scheduledChangeDate
          FROM users WHERE userId = ?`,
         [accountOwnerId]
       )
+      
+      // Check Stripe for cancel_at_period_end flag if there's a subscription
+      let effectiveStatus = owner?.subscriptionStatus
+      if (owner?.subscriptionId) {
+        try {
+          const stripeSubscription = await stripe.subscriptions.retrieve(owner.subscriptionId)
+          if (stripeSubscription.cancel_at_period_end) {
+            effectiveStatus = 'canceling'
+          }
+        } catch (err) {
+          console.error('Failed to fetch Stripe subscription for invited user:', err)
+        }
+      }
       
       return {
         id: authorizedUser.id,
@@ -41,12 +65,25 @@ export default defineEventHandler(async (event) => {
         lastName: authorizedUser.last_name,
         role: authorizedUser.role,
         status: authorizedUser.status,
+        roleChanged, // Indicates if token needs refresh
         organization: owner ? {
           name: owner.organizationName,
           type: owner.organizationType,
           address: owner.address,
           city: owner.city,
           country: owner.country
+        } : null,
+        subscription: owner ? {
+          customerId: owner.stripeCustomerId,
+          subscriptionId: owner.subscriptionId,
+          status: effectiveStatus,
+          priceId: owner.subscriptionPriceId,
+          endDate: owner.subscriptionEndDate,
+          nextBillingDate: owner.nextBillingDate,
+          trialStartDate: owner.trialStartDate,
+          trialEndDate: owner.trialEndDate,
+          scheduledPriceId: owner.scheduledPriceId,
+          scheduledChangeDate: owner.scheduledChangeDate
         } : null
       }
     }
@@ -91,6 +128,19 @@ export default defineEventHandler(async (event) => {
       )
     }
     
+    // Check Stripe for cancel_at_period_end flag if there's a subscription
+    let effectiveStatus = userRecord.subscriptionStatus
+    if (userRecord.subscriptionId) {
+      try {
+        const stripeSubscription = await stripe.subscriptions.retrieve(userRecord.subscriptionId)
+        if (stripeSubscription.cancel_at_period_end) {
+          effectiveStatus = 'canceling'
+        }
+      } catch (err) {
+        console.error('Failed to fetch Stripe subscription for account owner:', err)
+      }
+    }
+    
     return {
       id: userRecord.userId,
       email: userRecord.userEmail,
@@ -111,7 +161,7 @@ export default defineEventHandler(async (event) => {
       subscription: {
         customerId: userRecord.stripeCustomerId,
         subscriptionId: userRecord.subscriptionId,
-        status: userRecord.subscriptionStatus,
+        status: effectiveStatus,
         priceId: userRecord.subscriptionPriceId,
         endDate: userRecord.subscriptionEndDate,
         nextBillingDate: userRecord.nextBillingDate,

@@ -131,7 +131,7 @@
                     {{ patient.firstName }} {{ patient.name }}
                   </span>
                   <i 
-                    :class="patient.gender === 'M' ? 'fa-regular fa-mars text-blue-500' : 'fa-regular fa-venus text-pink-500'"
+                    :class="patient.gender === 'M' ? 'fa-regular fa-mars text-blue-600' : 'fa-regular fa-venus text-pink-500'"
                     class="text-sm"
                   ></i>
                   <span class="text-sm text-gray-500">{{ calculateAge(patient.birthDate) }}</span>
@@ -299,9 +299,9 @@
             </div>
 
             <!-- Form Error -->
-            <div v-if="formError" class="bg-red-50 border border-red-200 rounded-xl p-4 flex items-start gap-2">
-              <i class="fa-solid fa-exclamation-circle text-red-500 mt-0.5"></i>
-              <p class="text-sm text-red-700">{{ formError }}</p>
+            <div v-if="formError" class="bg-red-50 border border-red-600 rounded-xl p-4 flex items-start gap-2">
+              <i class="fa-solid fa-exclamation-circle text-red-600 mt-0.5"></i>
+              <p class="text-sm text-red-600">{{ formError }}</p>
             </div>
 
             <!-- Form Actions -->
@@ -351,7 +351,7 @@
           
           <div class="relative bg-white rounded-2xl shadow-xl max-w-md w-full p-6">
             <div class="text-center">
-              <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div class="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4">
                 <i class="fa-solid fa-exclamation-triangle text-red-600 text-2xl"></i>
               </div>
               <h2 class="text-xl font-bold text-gray-900 mb-2">Delete Patient?</h2>
@@ -369,7 +369,7 @@
                 <button
                   @click="deletePatient"
                   :disabled="deleting"
-                  class="px-4 py-2 bg-red-600 text-white font-medium rounded-xl hover:bg-red-700 transition disabled:opacity-50"
+                  class="px-4 py-2 bg-red-600 text-white font-medium rounded-xl hover:bg-red-600 transition disabled:opacity-50"
                 >
                   <SpinnerIcon v-if="deleting" class="mr-2" />
                   Delete

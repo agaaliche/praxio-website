@@ -4,8 +4,8 @@
       <!-- Card -->
       <div class="bg-white rounded-2xl shadow-xl p-8 text-center">
         <!-- Icon -->
-        <div class="w-20 h-20 bg-gradient-to-br from-red-100 to-orange-100 rounded-full flex items-center justify-center mx-auto mb-6">
-          <i class="fa-regular fa-clock text-4xl text-red-500"></i>
+        <div class="w-20 h-20 bg-gradient-to-br from-red-50 to-red-50 rounded-full flex items-center justify-center mx-auto mb-6">
+          <i class="fa-regular fa-clock text-4xl text-red-600"></i>
         </div>
 
         <!-- Title -->

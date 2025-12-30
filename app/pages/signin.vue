@@ -80,7 +80,7 @@
           <!-- Error Message -->
           <div
             v-if="errorMessage"
-            class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm"
+            class="bg-red-50 border border-red-600 text-red-600 px-4 py-3 rounded-xl text-sm"
           >
             {{ errorMessage }}
           </div>
@@ -120,7 +120,7 @@
               Connecting...
             </span>
             <span v-else class="flex items-center">
-              <i class="fa-brands fa-google text-red-500 mr-2"></i>
+              <i class="fa-brands fa-google text-red-600 mr-2"></i>
               Sign in with Google
             </span>
           </button>
@@ -179,7 +179,7 @@
               v-if="resetMessage"
               :class="[
                 'px-4 py-3 rounded-xl text-sm',
-                resetSuccess ? 'bg-green-50 border border-green-200 text-green-700' : 'bg-red-50 border border-red-200 text-red-700'
+                resetSuccess ? 'bg-green-50 border border-green-200 text-green-700' : 'bg-red-50 border border-red-600 text-red-600'
               ]"
             >
               {{ resetMessage }}

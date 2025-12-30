@@ -66,7 +66,7 @@
               class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition"
               placeholder="••••••••"
             />
-            <p v-if="passwordMismatch" class="mt-1 text-xs text-red-500">
+            <p v-if="passwordMismatch" class="mt-1 text-xs text-red-600">
               Passwords don't match
             </p>
           </div>
@@ -90,7 +90,7 @@
 
       <!-- Error State -->
       <div v-else class="bg-white rounded-2xl shadow-xl p-8 text-center">
-        <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <div class="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4">
           <i class="fa-solid fa-exclamation-triangle text-3xl text-red-600"></i>
         </div>
         <h2 class="text-xl font-display font-bold text-gray-900 mb-2">

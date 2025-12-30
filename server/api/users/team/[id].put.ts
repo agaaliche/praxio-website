@@ -4,6 +4,7 @@
  */
 import { queryOne, execute } from '../../../utils/database'
 import { verifyAuth, getEffectiveAccountOwnerId, isAccountOwner } from '../../../utils/auth'
+import { getFirebaseAdmin } from '../../../utils/firebase-admin'
 
 interface UpdateUserBody {
   role?: 'viewer' | 'editor'
@@ -42,7 +43,7 @@ export default defineEventHandler(async (event) => {
     
     // Check user exists and belongs to this account
     const existing = await queryOne<any>(
-      'SELECT id FROM authorized_users WHERE id = ? AND account_owner_id = ?',
+      'SELECT id, email, first_name, last_name FROM authorized_users WHERE id = ? AND account_owner_id = ?',
       [userId, accountOwnerId]
     )
     
@@ -59,10 +60,29 @@ export default defineEventHandler(async (event) => {
         'UPDATE authorized_users SET role = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?',
         [body.role, userId]
       )
+      
+      // Update Firebase custom claims
+      const firebaseUid = `user_${userId}_${accountOwnerId}`
+      const admin = getFirebaseAdmin()
+      const auth = admin.auth()
+      
+      try {
+        // Get existing claims
+        const userRecord = await auth.getUser(firebaseUid)
+        const currentClaims = userRecord.customClaims || {}
+        
+        // Update role claim
+        await auth.setCustomUserClaims(firebaseUid, {
+          ...currentClaims,
+          role: body.role
+        })
+        
+        console.log(`✅ Updated Firebase custom claims for ${firebaseUid}: role=${body.role}`)
+      } catch (firebaseError: any) {
+        console.error(`⚠️ Failed to update Firebase claims for ${firebaseUid}:`, firebaseError)
+        // Don't fail the whole request if Firebase update fails
+      }
     }
-    
-    // TODO: Update Firebase custom claims for the user
-    // This requires the Firebase Admin SDK
     
     return { success: true, id: parseInt(userId), role: body.role }
   } catch (error: any) {

@@ -108,7 +108,7 @@
                 placeholder="••••••••"
               />
             </div>
-            <p v-if="passwordMismatch" class="mt-1 text-xs text-red-500">
+            <p v-if="passwordMismatch" class="mt-1 text-xs text-red-600">
               Passwords don't match
             </p>
           </div>
@@ -142,7 +142,7 @@
           <!-- Error Message -->
           <div
             v-if="errorMessage"
-            class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm"
+            class="bg-red-50 border border-red-600 text-red-600 px-4 py-3 rounded-xl text-sm"
           >
             {{ errorMessage }}
           </div>
@@ -182,7 +182,7 @@
               Connecting...
             </span>
             <span v-else class="flex items-center">
-              <i class="fa-brands fa-google text-red-500 mr-2"></i>
+              <i class="fa-brands fa-google text-red-600 mr-2"></i>
               Sign up with Google
             </span>
           </button>

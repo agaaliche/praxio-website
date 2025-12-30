@@ -91,9 +91,9 @@
           </div>
 
           <!-- Password Error -->
-          <div v-if="passwordError" class="bg-red-50 border border-red-200 rounded-xl p-3 flex items-start gap-2">
-            <i class="fa-solid fa-exclamation-circle text-red-500 mt-0.5"></i>
-            <p class="text-sm text-red-700">{{ passwordError }}</p>
+          <div v-if="passwordError" class="bg-red-50 border border-red-600 rounded-xl p-3 flex items-start gap-2">
+            <i class="fa-solid fa-exclamation-circle text-red-600 mt-0.5"></i>
+            <p class="text-sm text-red-600">{{ passwordError }}</p>
           </div>
 
           <!-- Password Success -->
@@ -129,24 +129,77 @@
           Active Sessions
         </h2>
         
-        <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-xl">
-          <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-            <i class="fa-solid fa-check text-green-600"></i>
-          </div>
-          <div class="flex-1">
-            <p class="font-medium text-gray-900">Current Session</p>
-            <p class="text-sm text-gray-500">This device • Active now</p>
+        <!-- Loading sessions -->
+        <div v-if="sessionsLoading" class="flex justify-center py-4">
+          <div class="w-6 h-6 border-4 border-primary-200 border-t-primary-600 rounded-full animate-spin"></div>
+        </div>
+
+        <!-- Sessions list -->
+        <div v-else-if="sessions.length > 0" class="space-y-3">
+          <div
+            v-for="session in sessions"
+            :key="session.sessionId"
+            class="flex items-center gap-4 p-4 rounded-xl"
+            :class="session.isCurrent ? 'bg-green-50 border border-green-200' : 'bg-gray-50'"
+          >
+            <div class="w-10 h-10 rounded-full flex items-center justify-center" :class="session.isCurrent ? 'bg-green-100' : 'bg-gray-200'">
+              <i :class="session.isCurrent ? 'fa-solid fa-check text-green-600' : getDeviceIcon(session.deviceType) + ' text-gray-600'"></i>
+            </div>
+            <div class="flex-1">
+              <p class="font-medium text-gray-900">
+                {{ session.deviceName }}
+                <span v-if="session.isCurrent" class="text-sm font-normal text-green-600 ml-2">(This device)</span>
+              </p>
+              <p class="text-sm text-gray-500">
+                {{ session.browser }} {{ session.browserVersion }} • {{ formatSessionTime(session.lastActiveTime) }}
+              </p>
+              <p class="text-xs text-gray-400 mt-1">{{ session.ipAddress }}</p>
+            </div>
+            <button
+              v-if="!session.isCurrent"
+              @click="revokeSession(session.sessionId)"
+              :disabled="revokingSession === session.sessionId"
+              class="px-3 py-1.5 text-sm text-red-600 hover:bg-red-50 border border-red-600 rounded-lg transition disabled:opacity-50"
+            >
+              <SpinnerIcon v-if="revokingSession === session.sessionId" class="w-4 h-4" />
+              <span v-else>Sign Out</span>
+            </button>
           </div>
         </div>
+
+        <!-- No other sessions -->
+        <div v-else class="text-center py-4 text-gray-500">
+          <p>You're only signed in on this device</p>
+        </div>
         
-        <p class="text-sm text-gray-500 mt-4">
-          Sign out on other devices by changing your password.
-        </p>
+        <!-- Revoke all button -->
+        <div v-if="sessions.length > 1" class="mt-4 pt-4 border-t border-gray-200">
+          <button
+            @click="revokeAllSessions"
+            :disabled="revokingAll"
+            class="w-full px-4 py-2 text-red-600 hover:bg-red-50 border border-red-600 font-medium rounded-xl transition disabled:opacity-50"
+          >
+            <SpinnerIcon v-if="revokingAll" class="mr-2" />
+            Sign Out All Other Devices
+          </button>
+        </div>
+
+        <!-- Session error -->
+        <div v-if="sessionError" class="mt-4 bg-red-50 border border-red-600 rounded-xl p-3 flex items-start gap-2">
+          <i class="fa-solid fa-exclamation-circle text-red-600 mt-0.5"></i>
+          <p class="text-sm text-red-600">{{ sessionError }}</p>
+        </div>
+
+        <!-- Session success -->
+        <div v-if="sessionSuccess" class="mt-4 bg-green-50 border border-green-200 rounded-xl p-3 flex items-start gap-2">
+          <i class="fa-solid fa-circle-check text-green-500 mt-0.5"></i>
+          <p class="text-sm text-green-700">{{ sessionSuccess }}</p>
+        </div>
       </div>
 
       <!-- Danger Zone -->
-      <div class="bg-white rounded-2xl border border-red-200 p-6">
-        <h2 class="text-lg font-bold text-red-700 flex items-center gap-2 mb-4">
+      <div class="bg-white rounded-2xl border border-red-600 p-6">
+        <h2 class="text-lg font-bold text-red-600 flex items-center gap-2 mb-4">
           <i class="fa-light fa-triangle-exclamation text-red-600"></i>
           Danger Zone
         </h2>
@@ -157,7 +210,7 @@
         
         <button
           @click="showDeleteConfirm = true"
-          class="px-4 py-2 border border-red-300 text-red-700 font-medium rounded-xl hover:bg-red-50 transition"
+          class="px-4 py-2 border border-red-600 text-red-600 font-medium rounded-xl hover:bg-red-50 transition"
         >
           <i class="fa-solid fa-trash mr-2"></i>
           Delete Account
@@ -172,7 +225,7 @@
           <div class="fixed inset-0 bg-black/50" @click="showDeleteConfirm = false"></div>
           <div class="relative bg-white rounded-2xl shadow-xl max-w-md w-full p-6">
             <div class="text-center mb-6">
-              <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div class="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4">
                 <i class="fa-solid fa-triangle-exclamation text-red-600 text-2xl"></i>
               </div>
               <h3 class="text-xl font-bold text-gray-900 mb-2">Delete Account?</h3>
@@ -190,12 +243,12 @@
                 v-model="deleteConfirmText"
                 type="text"
                 placeholder="DELETE"
-                class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-600 focus:border-transparent"
               />
             </div>
 
-            <div v-if="deleteError" class="bg-red-50 border border-red-200 rounded-xl p-3 mb-4">
-              <p class="text-sm text-red-700">{{ deleteError }}</p>
+            <div v-if="deleteError" class="bg-red-50 border border-red-600 rounded-xl p-3 mb-4">
+              <p class="text-sm text-red-600">{{ deleteError }}</p>
             </div>
             
             <div class="flex gap-3">
@@ -208,7 +261,7 @@
               <button
                 @click="deleteAccount"
                 :disabled="deleteConfirmText !== 'DELETE' || deleting"
-                class="flex-1 px-4 py-2.5 bg-red-600 text-white font-medium rounded-xl hover:bg-red-700 transition disabled:opacity-50"
+                class="flex-1 px-4 py-2.5 bg-red-600 text-white font-medium rounded-xl hover:bg-red-600 transition disabled:opacity-50"
               >
                 <SpinnerIcon v-if="deleting" class="mr-2" />
                 Delete Forever
@@ -235,6 +288,14 @@ definePageMeta({
 const { user, getAuthHeaders, signOutUser } = useAuth()
 
 const loading = ref(false)
+
+// Sessions
+const sessions = ref<any[]>([])
+const sessionsLoading = ref(false)
+const revokingSession = ref<string | null>(null)
+const revokingAll = ref(false)
+const sessionError = ref('')
+const sessionSuccess = ref('')
 
 // Password change
 const showPasswordForm = ref(false)
@@ -338,5 +399,102 @@ const deleteAccount = async () => {
   } finally {
     deleting.value = false
   }
+}
+
+// Load sessions on mount
+onMounted(async () => {
+  await fetchSessions()
+})
+
+async function fetchSessions() {
+  sessionsLoading.value = true
+  sessionError.value = ''
+  
+  try {
+    const headers = await getAuthHeaders()
+    const response = await $fetch<{ sessions: any[] }>('/api/sessions/list', {
+      headers
+    })
+    sessions.value = response.sessions
+  } catch (e: any) {
+    sessionError.value = e.data?.message || 'Failed to load sessions'
+  } finally {
+    sessionsLoading.value = false
+  }
+}
+
+async function revokeSession(sessionId: string) {
+  revokingSession.value = sessionId
+  sessionError.value = ''
+  sessionSuccess.value = ''
+  
+  try {
+    const headers = await getAuthHeaders()
+    await $fetch('/api/sessions/revoke', {
+      method: 'POST',
+      headers,
+      body: { sessionId }
+    })
+    
+    sessionSuccess.value = 'Session signed out successfully'
+    await fetchSessions()
+    
+    setTimeout(() => {
+      sessionSuccess.value = ''
+    }, 3000)
+  } catch (e: any) {
+    sessionError.value = e.data?.message || 'Failed to sign out session'
+  } finally {
+    revokingSession.value = null
+  }
+}
+
+async function revokeAllSessions() {
+  revokingAll.value = true
+  sessionError.value = ''
+  sessionSuccess.value = ''
+  
+  try {
+    const headers = await getAuthHeaders()
+    const response = await $fetch<{ revokedCount: number }>('/api/sessions/revoke-all', {
+      method: 'POST',
+      headers
+    })
+    
+    sessionSuccess.value = `Signed out ${response.revokedCount} device${response.revokedCount === 1 ? '' : 's'} successfully`
+    await fetchSessions()
+    
+    setTimeout(() => {
+      sessionSuccess.value = ''
+    }, 3000)
+  } catch (e: any) {
+    sessionError.value = e.data?.message || 'Failed to sign out all sessions'
+  } finally {
+    revokingAll.value = false
+  }
+}
+
+function getDeviceIcon(deviceType: string) {
+  if (deviceType === 'Mobile') return 'fa-solid fa-mobile'
+  if (deviceType === 'Tablet') return 'fa-solid fa-tablet'
+  return 'fa-solid fa-desktop'
+}
+
+function formatSessionTime(dateStr: string) {
+  const date = new Date(dateStr)
+  const now = new Date()
+  const diffMs = now.getTime() - date.getTime()
+  const diffMins = Math.floor(diffMs / 60000)
+  
+  if (diffMins < 1) return 'Active now'
+  if (diffMins < 60) return `${diffMins} min ago`
+  
+  const diffHours = Math.floor(diffMins / 60)
+  if (diffHours < 24) return `${diffHours} hour${diffHours === 1 ? '' : 's'} ago`
+  
+  const diffDays = Math.floor(diffHours / 24)
+  if (diffDays < 7) return `${diffDays} day${diffDays === 1 ? '' : 's'} ago`
+  
+  return date.toLocaleDateString()
 }
 </script>

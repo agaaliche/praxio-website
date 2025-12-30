@@ -31,7 +31,7 @@
 
       <!-- Error State -->
       <div v-else-if="error" class="bg-white rounded-2xl shadow-xl p-8 text-center">
-        <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <div class="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4">
           <i class="fa-solid fa-exclamation-triangle text-3xl text-red-600"></i>
         </div>
         <h2 class="text-xl font-display font-bold text-gray-900 mb-2">

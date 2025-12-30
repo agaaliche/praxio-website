@@ -170,6 +170,21 @@ export function useAuth() {
     try {
       const auth = getAuthInstance()
       const userCredential = await signInWithEmailAndPassword(auth, email, password)
+      
+      // Create session on server
+      try {
+        const token = await userCredential.user.getIdToken()
+        await $fetch('/api/sessions/create', {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${token}` }
+        })
+        // Force token refresh to get new custom claims with sessionId
+        await userCredential.user.getIdToken(true)
+      } catch (sessionError) {
+        console.error('Failed to create session:', sessionError)
+        // Don't fail login if session creation fails
+      }
+      
       return {
         success: true,
         user: userCredential.user
@@ -189,6 +204,21 @@ export function useAuth() {
       const auth = getAuthInstance()
       const provider = new GoogleAuthProvider()
       const result = await signInWithPopup(auth, provider)
+      
+      // Create session on server
+      try {
+        const token = await result.user.getIdToken()
+        await $fetch('/api/sessions/create', {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${token}` }
+        })
+        // Force token refresh to get new custom claims with sessionId
+        await result.user.getIdToken(true)
+      } catch (sessionError) {
+        console.error('Failed to create session:', sessionError)
+        // Don't fail login if session creation fails
+      }
+      
       return {
         success: true,
         user: result.user

@@ -20,7 +20,6 @@
               Profile
             </NuxtLink>
             <NuxtLink 
-              v-if="isAccountOwner"
               to="/account/settings/organization"
               class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-xl transition"
               :class="isActive('/account/settings/organization') 
@@ -41,7 +40,6 @@
               Security
             </NuxtLink>
             <NuxtLink 
-              v-if="isAccountOwner"
               to="/account/settings/subscription"
               class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-xl transition"
               :class="isActive('/account/settings/subscription') 
@@ -50,6 +48,7 @@
             >
               <i class="fa-light fa-box-heart w-5 text-center"></i>
               Your Plan
+              <i v-if="isTrialExpired" class="fa-solid fa-triangle-exclamation text-red-600 ml-auto"></i>
             </NuxtLink>
             <NuxtLink 
               v-if="isAccountOwner"
@@ -114,6 +113,7 @@
 <script setup lang="ts">
 const route = useRoute()
 const { isAccountOwner } = useAuth()
+const { isTrialExpired } = useSubscription()
 
 const isCollapsed = ref(false)
 
