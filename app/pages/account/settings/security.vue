@@ -155,45 +155,12 @@
               </p>
               <p class="text-xs text-gray-400 mt-1">{{ session.ipAddress }}</p>
             </div>
-            <button
-              v-if="!session.isCurrent"
-              @click="revokeSession(session.sessionId)"
-              :disabled="revokingSession === session.sessionId"
-              class="px-3 py-1.5 text-sm text-red-600 hover:bg-red-50 border border-red-600 rounded-lg transition disabled:opacity-50"
-            >
-              <SpinnerIcon v-if="revokingSession === session.sessionId" class="w-4 h-4" />
-              <span v-else>Sign Out</span>
-            </button>
           </div>
         </div>
 
         <!-- No other sessions -->
         <div v-else class="text-center py-4 text-gray-500">
           <p>You're only signed in on this device</p>
-        </div>
-        
-        <!-- Revoke all button -->
-        <div v-if="sessions.length > 1" class="mt-4 pt-4 border-t border-gray-200">
-          <button
-            @click="revokeAllSessions"
-            :disabled="revokingAll"
-            class="w-full px-4 py-2 text-red-600 hover:bg-red-50 border border-red-600 font-medium rounded-xl transition disabled:opacity-50"
-          >
-            <SpinnerIcon v-if="revokingAll" class="mr-2" />
-            Sign Out All Other Devices
-          </button>
-        </div>
-
-        <!-- Session error -->
-        <div v-if="sessionError" class="mt-4 bg-red-50 border border-red-600 rounded-xl p-3 flex items-start gap-2">
-          <i class="fa-solid fa-exclamation-circle text-red-600 mt-0.5"></i>
-          <p class="text-sm text-red-600">{{ sessionError }}</p>
-        </div>
-
-        <!-- Session success -->
-        <div v-if="sessionSuccess" class="mt-4 bg-green-50 border border-green-200 rounded-xl p-3 flex items-start gap-2">
-          <i class="fa-solid fa-circle-check text-green-500 mt-0.5"></i>
-          <p class="text-sm text-green-700">{{ sessionSuccess }}</p>
         </div>
       </div>
 
