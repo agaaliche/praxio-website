@@ -12,8 +12,8 @@ export default defineEventHandler(async (event) => {
     return
   }
 
-  // Skip for auth-related endpoints
-  if (event.path?.includes('/api/auth/') || event.path?.includes('/api/sessions/create')) {
+  // Skip for auth-related and session management endpoints
+  if (event.path?.includes('/api/auth/') || event.path?.startsWith('/api/sessions/')) {
     return
   }
 
