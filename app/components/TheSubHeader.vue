@@ -1,8 +1,7 @@
 <template>
   <div 
     :class="[
-      'bg-white border-b border-gray-200 sticky z-40 transition-all duration-300',
-      visible ? 'top-16 opacity-100' : '-top-12 opacity-0 pointer-events-none',
+      'bg-white border-b border-gray-200 sticky top-16 z-40 transition-all duration-300',
       isScrolled ? 'shadow-lg' : ''
     ]"
   >

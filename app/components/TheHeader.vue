@@ -1,5 +1,5 @@
 <template>
-  <header :class="['bg-white sticky top-0 z-50 transition-shadow duration-200', showShadow ? 'shadow-lg' : '']">
+  <header :class="['bg-white sticky top-0 z-50 transition-shadow duration-200 shadow-mobile', showShadow ? 'shadow-lg' : '']">
     <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between h-16">
         <!-- Logo -->
@@ -111,7 +111,13 @@
               </div>
             </template>
           </ClientOnly>
-          <NuxtLink to="/retroact" class="text-gray-600 hover:text-primary-600" @click="mobileMenuOpen = false">Products</NuxtLink>
+          <NuxtLink to="/retroact" class="text-gray-600 hover:text-primary-600 font-medium" @click="mobileMenuOpen = false">Products</NuxtLink>
+          <NuxtLink to="/retroact#feature-overview" class="text-gray-600 hover:text-primary-600 pl-4 text-sm" @click="mobileMenuOpen = false">
+            <i class="fa-solid fa-grid-2 mr-2"></i>Feature Overview
+          </NuxtLink>
+          <NuxtLink to="/retroact#in-action" class="text-gray-600 hover:text-primary-600 pl-4 text-sm" @click="mobileMenuOpen = false">
+            <i class="fa-solid fa-play mr-2"></i>In Action
+          </NuxtLink>
           <NuxtLink v-if="!userRole" to="/pricing" class="text-gray-600 hover:text-primary-600" @click="mobileMenuOpen = false">Plans</NuxtLink>
           <NuxtLink to="/contact" class="text-gray-600 hover:text-primary-600" @click="mobileMenuOpen = false">Contact</NuxtLink>
           <hr class="my-2" />
@@ -169,12 +175,17 @@ const hasSubHeader = computed(() => {
 })
 
 // Show shadow when:
-// - Scrolled AND no sub-header on this page, OR
-// - Scrolled AND sub-header is hidden (hide-on-scroll-down)
+// - On mobile: Always show shadow
+// - On desktop: Scrolled AND (no sub-header OR sub-header is hidden)
 const showShadow = computed(() => {
+  // On mobile (< 768px), always show shadow
+  if (typeof window !== 'undefined' && window.innerWidth < 768) {
+    return true
+  }
+  
+  // On desktop, use sub-header logic
   if (!isScrolled.value) return false
   if (!hasSubHeader.value) return true
-  // Has sub-header: show shadow when sub-header is hidden
   return !subHeaderVisible.value
 })
 
@@ -220,3 +231,12 @@ const handleSignOut = async () => {
   await navigateTo('/')
 }
 </script>
+
+<style scoped>
+/* Always show shadow on mobile screens */
+@media (max-width: 767px) {
+  .shadow-mobile {
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  }
+}
+</style>

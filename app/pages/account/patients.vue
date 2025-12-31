@@ -104,10 +104,11 @@
         </div>
 
         <!-- Patient List -->
-        <div v-else class="flex-1 overflow-y-auto custom-scrollbar">
-          <div
-            v-for="patient in filteredPatients"
-            :key="patient.id"
+        <div v-else class="flex-1 relative">
+          <div ref="patientListScrollContainer" class="absolute inset-0 overflow-y-auto custom-scrollbar">
+            <div
+              v-for="patient in filteredPatients"
+              :key="patient.id"
             @click="selectPatient(patient)"
             class="px-4 py-3 cursor-pointer border-b border-gray-100 transition-colors"
             :class="{
@@ -155,6 +156,21 @@
             :show="true" 
             context="patients"
           />
+          </div>
+          
+          <!-- Overlay Scrollbar (outside scroll container) -->
+          <div
+            v-if="isScrollable"
+            class="overlay-scrollbar-track"
+            :class="{ visible: scrollbarVisible || isDragging }"
+            @click="handleTrackClick"
+          >
+            <div
+              class="overlay-scrollbar-thumb"
+              :style="{ height: thumbHeight + 'px', top: thumbTop + 'px' }"
+              @mousedown="handleThumbMouseDown"
+            ></div>
+          </div>
         </div>
       </div>
 
@@ -167,7 +183,7 @@
 
       <!-- Right Panel: Patient Form -->
       <div class="flex-1 h-full overflow-y-auto bg-gray-50 custom-scrollbar">
-        <div class="max-w-2xl mx-auto p-6">
+        <div class="max-w-4xl p-6">
           <!-- Form Header -->
           <div class="mb-6">
             <h2 class="text-xl font-bold text-gray-900">
@@ -385,6 +401,8 @@
 </template>
 
 <script setup lang="ts">
+import { useOverlayScrollbar } from '~/composables/useOverlayScrollbar'
+
 definePageMeta({
   middleware: ['auth']
 })
@@ -418,6 +436,18 @@ const isCreatingPatient = ref(false)
 const loading = ref(true)
 const saving = ref(false)
 const deleting = ref(false)
+const patientListScrollContainer = ref<HTMLElement | null>(null)
+
+// Initialize overlay scrollbar for patient list (will be set up after mount)
+const { 
+  scrollbarVisible, 
+  isDragging, 
+  thumbHeight, 
+  thumbTop, 
+  isScrollable, 
+  handleThumbMouseDown, 
+  handleTrackClick 
+} = useOverlayScrollbar(patientListScrollContainer)
 const formError = ref('')
 const showDeleteModal = ref(false)
 
@@ -706,27 +736,52 @@ watch(filteredPatients, (newList) => {
   max-height: 100px;
 }
 
-/* Custom scrollbar */
+/* Hide native scrollbar */
 .custom-scrollbar::-webkit-scrollbar {
-  width: 6px;
+  display: none;
 }
 
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #d1d5db;
-  border-radius: 3px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #9ca3af;
-}
-
-/* Firefox */
 .custom-scrollbar {
-  scrollbar-width: thin;
-  scrollbar-color: #d1d5db transparent;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Overlay scrollbar track */
+.overlay-scrollbar-track {
+  position: absolute;
+  top: 8px;
+  right: 4px;
+  bottom: 8px;
+  width: 10px;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  pointer-events: none;
+  z-index: 100;
+  border-radius: 5px;
+}
+
+.overlay-scrollbar-track.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Overlay scrollbar thumb */
+.overlay-scrollbar-thumb {
+  position: absolute !important;
+  right: 0;
+  width: 10px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  pointer-events: auto;
+}
+
+.overlay-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.overlay-scrollbar-thumb:active {
+  background-color: rgba(0, 0, 0, 0.7);
 }
 </style>

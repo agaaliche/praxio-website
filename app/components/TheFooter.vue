@@ -33,9 +33,6 @@
           <h3 class="font-display font-semibold text-white mb-4">Company</h3>
           <ul class="space-y-3">
             <li>
-              <NuxtLink to="/about" class="hover:text-white transition">About</NuxtLink>
-            </li>
-            <li>
               <NuxtLink to="/contact" class="hover:text-white transition">Contact</NuxtLink>
             </li>
             <li>

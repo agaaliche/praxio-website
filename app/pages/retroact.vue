@@ -1,34 +1,33 @@
 <template>
   <div>
-    <!-- Level 2 Navigation Bar -->
-    <TheSubHeader :hide-on-scroll-down="true">
-      <button 
-        @click="activeTab = 'retroact'"
-        class="text-sm font-medium border-b-2 h-full flex items-center transition whitespace-nowrap"
-        :class="activeTab === 'retroact' ? 'border-primary-600 text-primary-600' : 'border-transparent text-gray-600 hover:text-primary-600'"
-      >
-        Retroact
-      </button>
-      <button 
-        @click="activeTab = 'overview'"
-        class="text-sm font-medium border-b-2 h-full flex items-center transition whitespace-nowrap"
-        :class="activeTab === 'overview' ? 'border-primary-600 text-primary-600' : 'border-transparent text-gray-600 hover:text-primary-600'"
-      >
-        <i class="fa-solid fa-grid-2 mr-2"></i>
-        Feature Overview
-      </button>
-      <button 
-        @click="activeTab = 'action'"
-        class="text-sm font-medium border-b-2 h-full flex items-center transition whitespace-nowrap"
-        :class="activeTab === 'action' ? 'border-primary-600 text-primary-600' : 'border-transparent text-gray-600 hover:text-primary-600'"
-      >
-        <i class="fa-solid fa-play mr-2"></i>
-        In Action
-      </button>
+    <!-- Sticky Navigation Bar (appears when hero scrolls out) - Hidden on mobile -->
+    <TheSubHeader class="hidden md:block" :class="showStickyNav ? 'opacity-100' : 'opacity-0 pointer-events-none'">
+      <div class="flex items-center gap-4">
+        <NuxtLink 
+          to="/pricing" 
+          class="inline-flex items-center px-4 py-2 rounded-lg bg-primary-600 text-white text-sm font-semibold hover:bg-primary-700 transition"
+        >
+          Start Free Trial
+        </NuxtLink>
+        <button 
+          @click="scrollToSection('feature-overview')"
+          class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-600 hover:text-primary-600 transition"
+        >
+          <i class="fa-solid fa-grid-2"></i>
+          Feature Overview
+        </button>
+        <button 
+          @click="scrollToSection('in-action')"
+          class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-600 hover:text-primary-600 transition"
+        >
+          <i class="fa-solid fa-play"></i>
+          In Action
+        </button>
+      </div>
     </TheSubHeader>
 
-    <!-- Hero Section - Only shown in Retroact tab -->
-    <section v-show="activeTab === 'retroact'" class="bg-gradient-to-br from-primary-50 to-white py-20">
+    <!-- Hero Section -->
+    <section id="hero-section" class="bg-gradient-to-br from-primary-50 to-white py-20 md:py-28">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center max-w-3xl mx-auto">
           <h1 class="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-gray-900 leading-tight">
@@ -39,25 +38,33 @@
             See how Retroact simplifies your daily workflow.
           </p>
           <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-            <a 
-              href="https://retroact.app/signup" 
+            <NuxtLink 
+              to="/pricing" 
               class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-primary-600 text-white font-semibold hover:bg-primary-700 transition shadow-lg"
             >
               Start Free Trial
-            </a>
-            <a 
-              href="https://retroact.app" 
+            </NuxtLink>
+            <button 
+              @click="scrollToSection('feature-overview')"
               class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-white text-primary-600 font-semibold border-2 border-primary-200 hover:border-primary-300 transition"
             >
-              Visit Retroact.app
-            </a>
+              <i class="fa-solid fa-grid-2 mr-2"></i>
+              Feature Overview
+            </button>
+            <button 
+              @click="scrollToSection('in-action')"
+              class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-white text-primary-600 font-semibold border-2 border-primary-200 hover:border-primary-300 transition"
+            >
+              <i class="fa-solid fa-play mr-2"></i>
+              In Action
+            </button>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Feature Overview Tab -->
-    <section v-show="activeTab === 'overview'" class="py-20 bg-gray-50">
+    <!-- Feature Overview -->
+    <section id="feature-overview" class="py-16 bg-gray-50 scroll-mt-20">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
           <h2 class="text-3xl md:text-4xl font-display font-bold text-gray-900">
@@ -73,7 +80,7 @@
             v-for="feature in features" 
             :key="feature.id"
             class="bg-white rounded-2xl p-8 shadow-sm hover:shadow-lg transition cursor-pointer"
-            @click="activeFeature = feature.id; activeTab = 'action'"
+            @click="scrollToFeature(feature.id)"
           >
             <div class="w-16 h-16 rounded-xl flex items-center justify-center mb-4" :class="feature.iconBg">
               <span :class="feature.iconColor" v-html="feature.iconSvg"></span>
@@ -85,8 +92,19 @@
       </div>
     </section>
 
-    <!-- In Action Tab - Side Navigation Style -->
-    <section v-show="activeTab === 'action'" class="lg:h-[calc(100vh-8rem)]">
+    <!-- In Action -->
+    <section id="in-action" class="py-20 scroll-mt-20">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+        <div class="text-center">
+          <h2 class="text-3xl md:text-4xl font-display font-bold text-gray-900">
+            See It In Action
+          </h2>
+          <p class="mt-4 text-xl text-gray-600">
+            Explore each feature in detail with interactive demos
+          </p>
+        </div>
+      </div>
+      
       <!-- Mobile Feature Selector -->
       <div class="lg:hidden bg-white border-b border-gray-200 px-4 py-3">
         <select 
@@ -99,7 +117,7 @@
         </select>
       </div>
 
-      <div class="h-full flex gap-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-6">
+      <div class="h-full flex gap-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-6 overflow-x-hidden">
         <!-- Left Sidebar - Feature Navigation (matches account settings style) -->
         <aside class="w-56 shrink-0 hidden lg:block">
           <div class="bg-white rounded-2xl border border-gray-200 p-3 sticky top-4">
@@ -121,9 +139,9 @@
         </aside>
 
         <!-- Main Content Area -->
-        <div class="flex-1 relative">
-          <div ref="scrollContainer" class="lg:absolute lg:inset-0 overflow-y-auto custom-scrollbar bg-white rounded-2xl">
-            <div class="p-4 sm:p-6 lg:p-8">
+        <div class="flex-1 relative min-w-0">
+          <div ref="scrollContainer" class="lg:absolute lg:inset-0 overflow-y-auto custom-scrollbar bg-white rounded-2xl overflow-x-hidden w-full">
+            <div class="p-4 sm:p-6 lg:p-8 max-w-full w-full">
             <!-- Feature Header with Navigation -->
             <div class="flex items-start sm:items-center justify-between gap-4 mb-6">
               <div class="flex items-center gap-3 sm:gap-4 min-w-0">
@@ -159,7 +177,7 @@
             </div>
 
             <!-- Media Area -->
-            <div class="relative aspect-video bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl overflow-hidden shadow-lg mb-8">
+            <div class="relative aspect-video bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl overflow-hidden shadow-lg mb-8 w-full max-w-full">
               <template v-if="currentFeature.hasVideo">
                 <div class="absolute inset-0 flex items-center justify-center cursor-pointer group" @click="playVideo(currentFeature.id)">
                   <div class="absolute inset-0 bg-gradient-to-br from-primary-600/10 to-primary-800/20"></div>
@@ -235,15 +253,15 @@
         <p class="mt-4 text-xl text-primary-100">
           Start your free trial — no credit card required.
         </p>
-        <a 
-          href="https://retroact.app/signup" 
+        <NuxtLink 
+          to="/pricing" 
           class="mt-8 inline-flex items-center justify-center px-8 py-4 rounded-xl bg-white text-primary-600 font-semibold hover:bg-gray-100 transition shadow-lg"
         >
           Get Started Free
           <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
           </svg>
-        </a>
+        </NuxtLink>
       </div>
     </section>
   </div>
@@ -257,8 +275,102 @@ useSeoMeta({
   description: 'Discover how Retroact simplifies INR management for healthcare professionals. Track INR values, generate prescriptions, schedule appointments, and more.'
 })
 
-const activeTab = ref('retroact')
 const activeFeatureIndex = ref(0)
+const showStickyNav = ref(false)
+const heroSection = ref(null)
+const { setVisible } = useSubHeaderState()
+
+// Sync showStickyNav with global sub-header state
+watch(showStickyNav, (newVal) => {
+  setVisible(newVal)
+})
+
+// Detect when hero section scrolls out of view
+onMounted(() => {
+  let isScrolling = false
+  
+  const observer = new IntersectionObserver(
+    (entries) => {
+      // Don't update during smooth scroll
+      if (isScrolling) return
+      
+      entries.forEach((entry) => {
+        // Show sticky nav when hero is not visible
+        showStickyNav.value = !entry.isIntersecting
+      })
+    },
+    {
+      threshold: 0.1, // Trigger when 10% of hero is visible
+      rootMargin: '-80px 0px 0px 0px' // Account for header height
+    }
+  )
+  
+  // Observe the hero section
+  const heroEl = document.querySelector('#hero-section')
+  if (heroEl) {
+    observer.observe(heroEl)
+  }
+  
+  // Detect when smooth scrolling starts and ends
+  let scrollTimeout
+  window.addEventListener('scroll', () => {
+    isScrolling = true
+    clearTimeout(scrollTimeout)
+    scrollTimeout = setTimeout(() => {
+      isScrolling = false
+      // Manually check visibility after scroll ends to match IntersectionObserver behavior
+      if (heroEl) {
+        const rect = heroEl.getBoundingClientRect()
+        const viewportTop = 80 // rootMargin adjustment
+        const viewportBottom = window.innerHeight
+        const elementHeight = rect.height
+        
+        // Calculate visible portion
+        const visibleTop = Math.max(rect.top, viewportTop)
+        const visibleBottom = Math.min(rect.bottom, viewportBottom)
+        const visibleHeight = Math.max(0, visibleBottom - visibleTop)
+        const visibleRatio = elementHeight > 0 ? visibleHeight / elementHeight : 0
+        
+        // Show sticky nav when less than 10% of hero is visible (matching threshold: 0.1)
+        showStickyNav.value = visibleRatio < 0.1
+      }
+    }, 100)
+  }, { passive: true })
+  
+  onUnmounted(() => {
+    if (heroEl) {
+      observer.unobserve(heroEl)
+    }
+  })
+})
+
+// Function to smooth scroll to a section
+const scrollToSection = (sectionId) => {
+  const section = document.getElementById(sectionId)
+  if (section) {
+    // Temporarily disable observer to prevent flickering
+    const heroEl = document.querySelector('#hero-section')
+    const currentObserver = heroEl?._observer
+    
+    const offset = 80 // Account for header height
+    const elementPosition = section.getBoundingClientRect().top
+    const offsetPosition = elementPosition + window.pageYOffset - offset
+    
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: 'smooth'
+    })
+  }
+}
+
+// Function to scroll to In Action section and select feature
+const scrollToFeature = (featureId) => {
+  const index = features.findIndex(f => f.id === featureId)
+  if (index !== -1) {
+    activeFeatureIndex.value = index
+  }
+  scrollToSection('in-action')
+}
 
 // Custom scrollbar for In Action content
 const scrollContainer = ref(null)
