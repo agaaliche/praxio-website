@@ -1,5 +1,20 @@
 <template>
   <div>
+    <!-- Breadcrumbs (Mobile Only) -->
+    <nav class="pt-4 mb-4 md:hidden px-4 sm:px-6 lg:px-8">
+      <ol class="flex items-center gap-2 text-sm text-primary-600">
+        <li>
+          <NuxtLink to="/" class="hover:text-primary-700 transition">Home</NuxtLink>
+        </li>
+        <li class="text-primary-400">
+          <i class="fa-solid fa-chevron-right text-xs"></i>
+        </li>
+        <li class="font-medium">
+          Products
+        </li>
+      </ol>
+    </nav>
+    
     <!-- Sticky Navigation Bar (appears when hero scrolls out) - Hidden on mobile -->
     <TheSubHeader class="hidden md:block" :class="showStickyNav ? 'opacity-100' : 'opacity-0 pointer-events-none'">
       <div class="flex items-center gap-4">
@@ -106,15 +121,102 @@
       </div>
       
       <!-- Mobile Feature Selector -->
-      <div class="lg:hidden bg-white border-b border-gray-200 px-4 py-3">
-        <select 
-          v-model="activeFeatureIndex" 
-          class="w-full px-3 py-2.5 border border-gray-300 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary-500"
-        >
-          <option v-for="(feature, index) in features" :key="feature.id" :value="index">
-            {{ feature.title }}
-          </option>
-        </select>
+      <div class="lg:hidden bg-gradient-to-r from-gray-50 to-white border-b border-gray-200 px-4 pt-0 pb-4 mt-0">
+        <!-- Navigation Arrows (Mobile) -->
+        <div class="flex items-start sm:items-center justify-between gap-4 mb-4">
+          <div class="flex items-center gap-2 shrink-0">
+            <button 
+              @click="prevFeature"
+              class="w-9 h-9 rounded-lg border border-gray-200 flex items-center justify-center text-gray-500 hover:text-primary-600 hover:border-primary-300 transition"
+              :disabled="activeFeatureIndex === 0"
+              :class="{ 'opacity-50 cursor-not-allowed': activeFeatureIndex === 0 }"
+            >
+              <i class="fa-solid fa-chevron-left text-sm"></i>
+            </button>
+            <button 
+              @click="nextFeature"
+              class="w-9 h-9 rounded-lg border border-gray-200 flex items-center justify-center text-gray-500 hover:text-primary-600 hover:border-primary-300 transition"
+              :disabled="activeFeatureIndex === features.length - 1"
+              :class="{ 'opacity-50 cursor-not-allowed': activeFeatureIndex === features.length - 1 }"
+            >
+              <i class="fa-solid fa-chevron-right text-sm"></i>
+            </button>
+          </div>
+        </div>
+        
+        <div class="relative">
+          <!-- Custom Dropdown Button -->
+          <button
+            @click="mobileDropdownOpen = !mobileDropdownOpen"
+            class="w-full flex items-center justify-between px-4 py-3 bg-white border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition shadow-sm hover:border-primary-300"
+          >
+            <span class="flex items-center gap-3 min-w-0 flex-1">
+              <span :class="[currentMobileFeature.iconBg, currentMobileFeature.iconColor, 'w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0']" v-html="currentMobileFeature.iconSvg"></span>
+              <div class="text-left min-w-0 flex-1">
+                <div class="text-sm font-semibold text-gray-900">{{ currentMobileFeature.title }}</div>
+                <div class="text-xs text-gray-500 mt-0.5 truncate">{{ currentMobileFeature.shortDesc }}</div>
+              </div>
+            </span>
+            <svg 
+              class="w-5 h-5 text-primary-600 transition-transform flex-shrink-0 ml-2" 
+              :class="{ 'rotate-180': mobileDropdownOpen }"
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          
+          <!-- Custom Dropdown Menu -->
+          <Transition
+            enter-active-class="transition ease-out duration-200"
+            enter-from-class="transform opacity-0"
+            enter-to-class="transform opacity-100"
+            leave-active-class="transition ease-in duration-150"
+            leave-from-class="transform opacity-100"
+            leave-to-class="transform opacity-0"
+          >
+            <div 
+              v-if="mobileDropdownOpen"
+              class="fixed inset-0 z-50 flex items-start justify-center p-2.5 bg-primary-600/25"
+              @click.self="mobileDropdownOpen = false"
+            >
+              <div class="w-full max-w-2xl bg-white rounded-xl shadow-2xl overflow-hidden my-2">
+                <!-- Header with Close Button -->
+                <div class="sticky top-0 bg-white border-b border-gray-200 px-4 py-4 flex items-center justify-between">
+                  <h3 class="text-lg font-semibold text-gray-900">Select Feature</h3>
+                  <button 
+                    @click="mobileDropdownOpen = false"
+                    class="w-9 h-9 rounded-lg flex items-center justify-center text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition"
+                  >
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                  </button>
+                </div>
+                
+                <!-- Feature List -->
+                <div class="overflow-y-auto" style="max-height: calc(100vh - 101px);">
+                  <button
+                    v-for="(feature, index) in mobileFeatures"
+                    :key="feature.id"
+                    @click="selectFeature(index)"
+                    class="w-full flex items-center gap-3 px-4 py-4 text-left transition hover:bg-gray-50 border-b border-gray-100"
+                    :class="activeFeatureIndex === index ? 'bg-primary-50' : ''"
+                  >
+                    <span :class="[feature.iconBg, feature.iconColor, 'w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0']" v-html="feature.iconSvg"></span>
+                    <div class="flex-1 min-w-0">
+                      <div class="text-sm font-medium" :class="activeFeatureIndex === index ? 'text-primary-700' : 'text-gray-900'">
+                        {{ feature.title }}
+                      </div>
+                      <div class="text-xs text-gray-500 mt-0.5">{{ feature.shortDesc }}</div>
+                    </div>
+                    <i v-if="activeFeatureIndex === index" class="fa-solid fa-check text-primary-600 flex-shrink-0"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </Transition>
+        </div>
       </div>
 
       <div class="h-full flex gap-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-6 overflow-x-hidden">
@@ -141,41 +243,8 @@
         <!-- Main Content Area -->
         <div class="flex-1 relative min-w-0">
           <div ref="scrollContainer" class="lg:absolute lg:inset-0 overflow-y-auto custom-scrollbar bg-white rounded-2xl overflow-x-hidden w-full">
-            <div class="p-4 sm:p-6 lg:p-8 max-w-full w-full">
-            <!-- Feature Header with Navigation -->
-            <div class="flex items-start sm:items-center justify-between gap-4 mb-6">
-              <div class="flex items-center gap-3 sm:gap-4 min-w-0">
-                <div class="w-10 h-10 sm:w-12 sm:h-12 shrink-0 rounded-xl flex items-center justify-center" :class="currentFeature.iconBg">
-                  <span :class="currentFeature.iconColor" v-html="currentFeature.iconSvg"></span>
-                </div>
-                <div class="min-w-0">
-                  <h2 class="text-lg sm:text-xl lg:text-2xl font-display font-bold text-gray-900 truncate">
-                    {{ currentFeature.title }}
-                  </h2>
-                  <p class="text-gray-500 text-xs sm:text-sm truncate">{{ currentFeature.shortDesc }}</p>
-                </div>
-              </div>
-              <!-- Navigation Arrows - Hidden on mobile since we have dropdown -->
-              <div class="hidden sm:flex items-center gap-2 shrink-0">
-                <button 
-                  @click="prevFeature"
-                  class="w-9 h-9 rounded-lg border border-gray-200 flex items-center justify-center text-gray-500 hover:text-primary-600 hover:border-primary-300 transition"
-                  :class="{ 'opacity-40 cursor-not-allowed': activeFeatureIndex === 0 }"
-                  :disabled="activeFeatureIndex === 0"
-                >
-                  <i class="fa-solid fa-chevron-left text-sm"></i>
-                </button>
-                <button 
-                  @click="nextFeature"
-                  class="w-9 h-9 rounded-lg border border-gray-200 flex items-center justify-center text-gray-500 hover:text-primary-600 hover:border-primary-300 transition"
-                  :class="{ 'opacity-40 cursor-not-allowed': activeFeatureIndex === features.length - 1 }"
-                  :disabled="activeFeatureIndex === features.length - 1"
-                >
-                  <i class="fa-solid fa-chevron-right text-sm"></i>
-                </button>
-              </div>
-            </div>
-
+            <div class="pt-0 px-4 pb-4 sm:px-6 sm:pb-6 lg:px-8 lg:pb-8 max-w-full w-full">
+            
             <!-- Media Area -->
             <div class="relative aspect-video bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl overflow-hidden shadow-lg mb-8 w-full max-w-full">
               <template v-if="currentFeature.hasVideo">
@@ -277,6 +346,7 @@ useSeoMeta({
 
 const activeFeatureIndex = ref(0)
 const showStickyNav = ref(false)
+const mobileDropdownOpen = ref(false)
 const heroSection = ref(null)
 const { setVisible } = useSubHeaderState()
 
@@ -386,6 +456,36 @@ const {
 
 // Computed property for current feature in carousel
 const currentFeature = computed(() => features[activeFeatureIndex.value])
+
+// Computed property for mobile dropdown with smaller icons
+const mobileFeatures = computed(() => 
+  features.map(f => ({
+    ...f,
+    iconSvg: icons[f.id]?.replace('w-12 h-12 text-3xl', 'text-[1.85rem]') || icons['results'].replace('w-12 h-12 text-3xl', 'text-[1.85rem]')
+  }))
+)
+
+const currentMobileFeature = computed(() => mobileFeatures.value[activeFeatureIndex.value])
+
+// Select feature and close dropdown
+const selectFeature = (index) => {
+  activeFeatureIndex.value = index
+  mobileDropdownOpen.value = false
+}
+
+// Prevent background scrolling when dropdown is open
+watch(mobileDropdownOpen, (isOpen) => {
+  if (isOpen) {
+    document.body.style.overflow = 'hidden'
+  } else {
+    document.body.style.overflow = ''
+  }
+})
+
+// Clean up on unmount
+onUnmounted(() => {
+  document.body.style.overflow = ''
+})
 
 // Carousel navigation
 const prevFeature = () => {

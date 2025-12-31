@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen bg-gray-50">
-    <!-- Sub-header with tabs -->
-    <TheSubHeader :hide-on-scroll-down="true">
+    <!-- Sub-header with tabs (hidden on mobile) -->
+    <TheSubHeader :hide-on-scroll-down="true" class="hidden md:block">
       <ClientOnly>
         <NuxtLink 
           v-if="hasAccess"
@@ -69,7 +69,7 @@
     </TheSubHeader>
 
     <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-8">
       <NuxtPage />
     </main>
   </div>

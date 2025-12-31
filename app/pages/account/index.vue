@@ -1,5 +1,26 @@
 <template>
-  <div>
+  <ClientOnly>
+    <!-- Breadcrumbs (Mobile Only) -->
+    <nav class="mb-4 md:hidden">
+      <ol class="flex items-center gap-2 text-sm text-primary-600">
+        <li>
+          <NuxtLink to="/" class="hover:text-primary-700 transition">Home</NuxtLink>
+        </li>
+        <li class="text-primary-400">
+          <i class="fa-solid fa-chevron-right text-xs"></i>
+        </li>
+        <li>
+          <NuxtLink to="/account" class="hover:text-primary-700 transition">Account</NuxtLink>
+        </li>
+        <li class="text-primary-400">
+          <i class="fa-solid fa-chevron-right text-xs"></i>
+        </li>
+        <li class="font-medium">
+          Dashboard
+        </li>
+      </ol>
+    </nav>
+    
     <!-- Welcome Section -->
     <div class="mb-8">
       <h1 class="text-3xl font-display font-bold text-gray-900">
@@ -242,7 +263,7 @@
         </div>
       </div>
     </template>
-  </div>
+  </ClientOnly>
 </template>
 
 <script setup lang="ts">

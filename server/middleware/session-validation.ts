@@ -50,7 +50,6 @@ export default defineEventHandler(async (event) => {
         console.log(`Using existing session ${existingSession.sessionId} for user ${userId}`)
         
         await admin.auth().setCustomUserClaims(userId, {
-          ...decodedToken,
           sessionId: existingSession.sessionId
         })
         
@@ -87,7 +86,6 @@ export default defineEventHandler(async (event) => {
         
         // Set custom claim with session ID
         await admin.auth().setCustomUserClaims(userId, {
-          ...decodedToken,
           sessionId: newSessionId
         })
         

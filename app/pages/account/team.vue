@@ -1,5 +1,20 @@
 <template>
   <ClientOnly>
+  <!-- Breadcrumbs (Mobile Only) -->
+  <nav class="mb-4 md:hidden">
+    <ol class="flex items-center gap-2 text-sm text-primary-600">
+      <li>
+        <NuxtLink to="/account" class="hover:text-primary-700 transition">Account</NuxtLink>
+      </li>
+      <li class="text-primary-400">
+        <i class="fa-solid fa-chevron-right text-xs"></i>
+      </li>
+      <li class="font-medium">
+        Team
+      </li>
+    </ol>
+  </nav>
+  
   <div class="h-[calc(100vh-13rem)] flex">
     <!-- No Team Members Landing -->
     <div v-if="!loading && !error && teamMembers.length === 0" class="flex-1 flex items-center justify-center">
@@ -85,18 +100,18 @@
       <div 
         v-for="(member, index) in teamMembers" 
         :key="member.id"
-        class="team-member-row flex items-center justify-between px-4 py-3 transition-colors"
+        class="team-member-row flex flex-col md:flex-row md:items-center justify-between px-4 py-3 transition-colors gap-3 md:gap-0"
         :class="{ 'bg-gray-50': index % 2 === 0 }"
         @mouseenter="hoveredMember = member.id"
         @mouseleave="hoveredMember = null"
       >
-        <div class="flex items-center gap-4">
+        <div class="flex items-start md:items-center gap-4">
           <!-- Status Button / Refresh on hover -->
           <button
             :key="`status-${member.id}-${memberRefreshKeys[member.id] || 0}`"
             @click="hoveredMember === member.id ? refreshMemberStatus(member) : null"
             :class="[
-              'w-10 h-10 rounded-full flex items-center justify-center transition-all',
+              'w-10 h-10 rounded-full flex items-center justify-center transition-all shrink-0',
               hoveredMember === member.id 
                 ? 'bg-primary-100 text-primary-600 hover:bg-primary-200' 
                 : getStatusBgClass(member.status)
@@ -111,7 +126,7 @@
             <h3 class="font-medium text-gray-900">
               {{ member.firstName }} {{ member.lastName }}
             </h3>
-            <div class="flex items-center gap-2 mt-0.5">
+            <div class="flex items-center gap-2 mt-0.5 flex-wrap">
               <span class="text-sm text-gray-500">{{ member.email }}</span>
               <span 
                 :class="member.role === 'editor' ? 'bg-primary-100 text-primary-700' : 'bg-gray-100 text-gray-600'"
@@ -132,8 +147,8 @@
           </div>
         </div>
 
-        <!-- Action Buttons - hidden until hover -->
-        <div class="action-buttons flex items-center gap-1">
+        <!-- Action Buttons - hidden until hover on desktop, always visible on mobile -->
+        <div class="action-buttons flex items-center gap-2 md:gap-1 md:ml-auto pl-14 md:pl-0">
           <!-- Resend Invite (only for pending) -->
           <button
             v-if="member.status === 'pending'"
@@ -167,7 +182,7 @@
           <!-- Remove User -->
           <button
             @click="confirmRemove(member)"
-            class="w-9 h-9 rounded-lg flex items-center justify-center text-red-600 hover:bg-red-50 transition"
+            class="w-9 h-9 rounded-lg flex items-center justify-center text-red-600 hover:bg-red-50 transition ml-auto md:ml-0"
             title="Remove"
           >
             <i class="fa-regular fa-trash"></i>
@@ -644,12 +659,19 @@ onMounted(fetchTeam)
 </script>
 
 <style scoped>
+/* Action buttons: always visible on mobile, hidden until hover on desktop */
 .team-member-row .action-buttons {
-  opacity: 0;
+  opacity: 1;
   transition: opacity 0.2s ease;
 }
 
-.team-member-row:hover .action-buttons {
-  opacity: 1;
+@media (min-width: 768px) {
+  .team-member-row .action-buttons {
+    opacity: 0;
+  }
+  
+  .team-member-row:hover .action-buttons {
+    opacity: 1;
+  }
 }
 </style>

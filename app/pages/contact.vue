@@ -1,5 +1,20 @@
 <template>
   <div>
+    <!-- Breadcrumbs (Mobile Only) -->
+    <nav class="pt-4 mb-4 md:hidden px-4 sm:px-6 lg:px-8">
+      <ol class="flex items-center gap-2 text-sm text-primary-600">
+        <li>
+          <NuxtLink to="/" class="hover:text-primary-700 transition">Home</NuxtLink>
+        </li>
+        <li class="text-primary-400">
+          <i class="fa-solid fa-chevron-right text-xs"></i>
+        </li>
+        <li class="font-medium">
+          Contact
+        </li>
+      </ol>
+    </nav>
+    
     <!-- Hero -->
     <section class="bg-gradient-to-br from-primary-50 to-white pt-8 pb-4">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">

@@ -1,6 +1,22 @@
 <template>
-  <div class="py-20">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div>
+    <!-- Breadcrumbs (Mobile Only) -->
+    <nav class="pt-4 mb-4 md:hidden px-4 sm:px-6 lg:px-8">
+      <ol class="flex items-center gap-2 text-sm text-primary-600">
+        <li>
+          <NuxtLink to="/" class="hover:text-primary-700 transition">Home</NuxtLink>
+        </li>
+        <li class="text-primary-400">
+          <i class="fa-solid fa-chevron-right text-xs"></i>
+        </li>
+        <li class="font-medium">
+          Terms of Service
+        </li>
+      </ol>
+    </nav>
+    
+    <div class="py-20">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
       <h1 class="text-4xl font-display font-bold text-gray-900 mb-8">Terms of Service</h1>
       
       <div class="prose prose-lg max-w-none">
@@ -75,6 +91,7 @@
           </p>
         </section>
       </div>
+    </div>
     </div>
   </div>
 </template>

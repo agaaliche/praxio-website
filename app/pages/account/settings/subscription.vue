@@ -184,7 +184,7 @@
           </div>
         </div>
 
-        <div class="mt-4 flex items-center justify-between">
+        <div class="mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <p class="text-sm text-gray-500">
             <i class="fa-regular fa-info-circle mr-1"></i>
             You can cancel this change before it takes effect
@@ -192,7 +192,7 @@
           <button 
             @click="cancelScheduledChange"
             :disabled="cancelScheduledLoading"
-            class="px-4 py-2 text-red-600 font-medium border border-red-600 rounded-lg hover:bg-red-50 transition disabled:opacity-50 flex items-center gap-2"
+            class="px-4 py-2 text-red-600 font-medium border border-red-600 rounded-lg hover:bg-red-50 transition disabled:opacity-50 flex items-center gap-2 justify-center sm:justify-start"
           >
             <SpinnerIcon v-if="cancelScheduledLoading" />
             <i v-else class="fa-regular fa-xmark"></i>

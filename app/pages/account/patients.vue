@@ -1,6 +1,124 @@
 <template>
   <ClientOnly>
+    <!-- Breadcrumbs (Mobile Only) -->
+    <nav class="mb-4 md:hidden">
+      <ol class="flex items-center gap-2 text-sm text-primary-600">
+        <li>
+          <NuxtLink to="/account" class="hover:text-primary-700 transition">Account</NuxtLink>
+        </li>
+        <li class="text-primary-400">
+          <i class="fa-solid fa-chevron-right text-xs"></i>
+        </li>
+        <li class="font-medium">
+          Patients
+        </li>
+      </ol>
+    </nav>
+    
     <div class="h-[calc(100vh-13rem)] flex">
+      <!-- Mobile Patient Selector (visible only on mobile when patients exist) -->
+      <div v-if="patients.length > 0 && !isCreatingPatient" class="lg:hidden bg-gradient-to-r from-gray-50 to-white border-b border-gray-200 px-4 pt-0 pb-4 mt-0 absolute top-32 left-0 right-0 z-30">
+        <div class="relative">
+          <!-- Custom Dropdown Button -->
+          <button @click="mobileDropdownOpen = !mobileDropdownOpen" class="w-full flex items-center justify-between px-4 py-3 bg-white border-2 border-gray-200 rounded-xl hover:border-primary-300 transition-colors">
+            <span v-if="selectedPatient" class="flex items-center gap-3 min-w-0 flex-1">
+              <span class="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center flex-shrink-0">
+                <span class="text-primary-600 font-medium">
+                  {{ (selectedPatient.firstName?.[0] || '') + (selectedPatient.name?.[0] || '') }}
+                </span>
+              </span>
+              <div class="text-left min-w-0 flex-1">
+                <div class="text-sm font-semibold text-gray-900 flex items-center gap-2">
+                  {{ selectedPatient.firstName }} {{ selectedPatient.name }}
+                  <i 
+                    :class="selectedPatient.gender === 'M' ? 'fa-regular fa-mars text-blue-600' : 'fa-regular fa-venus text-pink-500'"
+                    class="text-sm"
+                  ></i>
+                </div>
+                <div class="text-xs text-gray-500 mt-0.5 truncate">{{ selectedPatient.healthInsuranceNb }}</div>
+              </div>
+            </span>
+            <svg class="w-5 h-5 text-primary-600 transition-transform ml-2 flex-shrink-0" :class="{ 'rotate-180': mobileDropdownOpen }" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          
+          <!-- Full-Screen Overlay Dropdown -->
+          <Teleport to="body">
+            <Transition enter-active-class="transition ease-out duration-200" enter-from-class="transform opacity-0" enter-to-class="transform opacity-100" leave-active-class="transition ease-in duration-150" leave-from-class="transform opacity-100" leave-to-class="transform opacity-0">
+              <div v-if="mobileDropdownOpen" class="fixed inset-0 z-[100] flex items-start justify-center p-2.5 bg-primary-600/25" @click.self="mobileDropdownOpen = false">
+                <div class="w-full max-w-2xl bg-white rounded-xl shadow-2xl overflow-hidden my-2">
+                <!-- Header with Close Button and Search -->
+                <div class="sticky top-0 bg-white border-b border-gray-200">
+                  <div class="px-4 py-4 flex items-center justify-between">
+                    <h3 class="text-lg font-semibold text-gray-900">Select Patient</h3>
+                    <button @click="mobileDropdownOpen = false" class="w-9 h-9 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 transition">
+                      <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                  </div>
+                  
+                  <!-- Search in dropdown -->
+                  <div class="px-4 pb-4">
+                    <div class="relative">
+                      <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                      <input
+                        v-model="searchQuery"
+                        type="text"
+                        placeholder="Search patients..."
+                        class="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      />
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Patient List -->
+                <div class="overflow-y-auto" style="max-height: calc(100vh - 180px);">
+                  <button 
+                    v-for="patient in filteredPatients" 
+                    :key="patient.id"
+                    @click="selectPatientMobile(patient)" 
+                    class="w-full flex items-center gap-3 px-4 py-4 hover:bg-gray-50 transition-colors border-b border-gray-100"
+                    :class="{ 'bg-primary-50': selectedPatient?.id === patient.id }"
+                  >
+                    <span 
+                      class="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center flex-shrink-0"
+                      :class="{ 'opacity-40': !patient.isActive }"
+                    >
+                      <span class="text-primary-600 font-medium">
+                        {{ (patient.firstName?.[0] || '') + (patient.name?.[0] || '') }}
+                      </span>
+                    </span>
+                    <div class="flex-1 min-w-0 text-left">
+                      <div class="flex items-center gap-2" :class="{ 'opacity-40': !patient.isActive }">
+                        <span class="text-sm font-medium text-gray-900 truncate">
+                          {{ patient.firstName }} {{ patient.name }}
+                        </span>
+                        <i 
+                          :class="patient.gender === 'M' ? 'fa-regular fa-mars text-blue-600' : 'fa-regular fa-venus text-pink-500'"
+                          class="text-sm"
+                        ></i>
+                        <span class="text-sm text-gray-500">{{ calculateAge(patient.birthDate) }}</span>
+                      </div>
+                      <div class="text-xs text-gray-500 mt-0.5" :class="{ 'opacity-40': !patient.isActive }">
+                        {{ patient.healthInsuranceNb }}
+                      </div>
+                    </div>
+                    <i v-if="selectedPatient?.id === patient.id" class="fa-solid fa-check text-primary-600"></i>
+                  </button>
+                  
+                  <!-- Empty Search -->
+                  <div v-if="filteredPatients.length === 0" class="p-8 text-center text-gray-500">
+                    <i class="fa-solid fa-search text-2xl mb-2"></i>
+                    <p>No patients match your search</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Transition>
+          </Teleport>
+        </div>
+      </div>
+      
       <!-- No Patients Landing -->
       <div v-if="!loading && patients.length === 0 && !isCreatingPatient" class="flex-1 flex items-center justify-center">
         <div class="max-w-2xl mx-auto text-center px-6">
@@ -48,11 +166,11 @@
 
       <!-- Main Content: Patient List + Form -->
       <template v-else>
-        <!-- Left Panel: Patient List -->
+        <!-- Left Panel: Patient List (hidden on mobile) -->
         <div 
           v-if="patients.length > 0 || isCreatingPatient"
           :style="{ width: `${leftPanelWidth}px`, minWidth: '300px', maxWidth: '500px' }"
-          class="h-full flex flex-col border-r border-gray-200 bg-white flex-shrink-0"
+          class="h-full flex-col border-r border-gray-200 bg-white flex-shrink-0 hidden lg:flex"
         >
         <!-- List Header -->
         <div class="p-4 border-b border-gray-100">
@@ -174,18 +292,18 @@
         </div>
       </div>
 
-      <!-- Resize Handle -->
+      <!-- Resize Handle (hidden on mobile) -->
       <div
         v-if="patients.length > 0"
-        class="w-1 bg-gray-200 hover:bg-primary-300 cursor-col-resize transition-colors flex-shrink-0"
+        class="w-1 bg-gray-200 hover:bg-primary-300 cursor-col-resize transition-colors flex-shrink-0 hidden lg:block"
         @mousedown="startResize"
       ></div>
 
       <!-- Right Panel: Patient Form -->
-      <div class="flex-1 h-full overflow-y-auto bg-gray-50 custom-scrollbar">
-        <div class="max-w-4xl p-6">
-          <!-- Form Header -->
-          <div class="mb-6">
+      <div class="flex-1 h-full flex flex-col bg-gray-50" :class="{ 'pt-[75px] lg:pt-0': patients.length > 0 && !isCreatingPatient }">
+        <div class="max-w-4xl p-6 lg:p-6 px-0 md:px-6 flex-1 overflow-y-auto custom-scrollbar">
+          <!-- Form Header (hidden on mobile) -->
+          <div class="mb-6 hidden lg:block">
             <h2 class="text-xl font-bold text-gray-900">
               {{ isCreatingPatient ? 'New Patient' : (selectedPatient ? `${selectedPatient.firstName} ${selectedPatient.name}` : 'Select a patient') }}
             </h2>
@@ -455,6 +573,9 @@ const showDeleteModal = ref(false)
 const searchQuery = ref('')
 const showInactive = ref(false)
 
+// Mobile dropdown
+const mobileDropdownOpen = ref(false)
+
 // Panel resize
 const leftPanelWidth = ref(350)
 const isResizing = ref(false)
@@ -538,6 +659,12 @@ const selectPatient = (patient: Patient) => {
   }
   selectedPatient.value = patient
   populateForm(patient)
+}
+
+// Select patient on mobile and close dropdown
+const selectPatientMobile = (patient: Patient) => {
+  selectPatient(patient)
+  mobileDropdownOpen.value = false
 }
 
 // Populate form
@@ -694,6 +821,19 @@ onMounted(async () => {
   if (filteredPatients.value.length > 0) {
     selectPatient(filteredPatients.value[0])
   }
+})
+
+// Prevent background scrolling when dropdown is open
+watch(mobileDropdownOpen, (isOpen) => {
+  if (isOpen) {
+    document.body.style.overflow = 'hidden'
+  } else {
+    document.body.style.overflow = ''
+  }
+})
+
+onUnmounted(() => {
+  document.body.style.overflow = ''
 })
 
 // Ensure a patient is always selected when list changes

@@ -49,7 +49,6 @@ export default defineEventHandler(async (event) => {
 
     // Set custom claim with session ID (so we can validate it)
     await admin.auth().setCustomUserClaims(userId, {
-      ...decodedToken,
       sessionId
     })
 

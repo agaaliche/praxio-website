@@ -95,51 +95,124 @@
       </div>
 
       <!-- Mobile Navigation -->
-      <div v-if="mobileMenuOpen" class="md:hidden py-4 border-t">
-        <div class="flex flex-col space-y-4">
-          <ClientOnly>
-            <!-- Show user info at top of mobile menu when authenticated -->
-            <template v-if="isAuthenticated">
-              <div class="flex items-center gap-3 pb-3 border-b border-gray-100">
-                <div class="flex items-center justify-center w-10 h-10 rounded-full bg-primary-100 text-primary-600 font-semibold">
-                  {{ userInitial }}
+      <Transition
+        enter-active-class="transition ease-out duration-200"
+        enter-from-class="opacity-0 -translate-y-2"
+        enter-to-class="opacity-100 translate-y-0"
+        leave-active-class="transition ease-in duration-150"
+        leave-from-class="opacity-100 translate-y-0"
+        leave-to-class="opacity-0 -translate-y-2"
+      >
+        <div v-if="mobileMenuOpen" class="md:hidden border-t border-gray-100 absolute left-0 right-0">
+          <div class="py-4 px-4 space-y-1 bg-white">
+            <ClientOnly>
+              <!-- Show user info at top of mobile menu when authenticated -->
+              <template v-if="isAuthenticated">
+                <div class="flex items-center gap-3 p-3 mb-3 bg-gradient-to-r from-primary-50 to-white rounded-xl border border-primary-100">
+                  <div class="flex items-center justify-center w-12 h-12 rounded-full bg-primary-600 text-white font-semibold text-lg">
+                    {{ userInitial }}
+                  </div>
+                  <div class="min-w-0 flex-1">
+                    <p class="text-sm font-semibold text-gray-900 truncate">{{ user?.displayName || 'User' }}</p>
+                    <p class="text-xs text-gray-500 truncate">{{ user?.email }}</p>
+                    <span v-if="userRole" :class="roleChipClass" class="inline-block mt-1 px-2 py-0.5 text-xs font-medium rounded-full">
+                      {{ userRole === 'editor' ? 'Editor' : 'Viewer' }}
+                    </span>
+                  </div>
                 </div>
-                <div class="min-w-0">
-                  <p class="text-sm font-medium text-gray-900 truncate">{{ user?.displayName || 'User' }}</p>
-                  <p class="text-xs text-gray-500 truncate">{{ user?.email }}</p>
-                </div>
-              </div>
-            </template>
-          </ClientOnly>
-          <NuxtLink to="/retroact" class="text-gray-600 hover:text-primary-600 font-medium" @click="mobileMenuOpen = false">Products</NuxtLink>
-          <NuxtLink to="/retroact#feature-overview" class="text-gray-600 hover:text-primary-600 pl-4 text-sm" @click="mobileMenuOpen = false">
-            <i class="fa-solid fa-grid-2 mr-2"></i>Feature Overview
-          </NuxtLink>
-          <NuxtLink to="/retroact#in-action" class="text-gray-600 hover:text-primary-600 pl-4 text-sm" @click="mobileMenuOpen = false">
-            <i class="fa-solid fa-play mr-2"></i>In Action
-          </NuxtLink>
-          <NuxtLink v-if="!userRole" to="/pricing" class="text-gray-600 hover:text-primary-600" @click="mobileMenuOpen = false">Plans</NuxtLink>
-          <NuxtLink to="/contact" class="text-gray-600 hover:text-primary-600" @click="mobileMenuOpen = false">Contact</NuxtLink>
-          <hr class="my-2" />
-          <ClientOnly>
-            <template v-if="isAuthenticated">
-              <NuxtLink to="/account" class="flex items-center gap-2 text-gray-600" @click="mobileMenuOpen = false">
-                <i class="fa-solid fa-user-gear text-gray-400"></i>
-                Account
-                <i v-if="isTrialExpired" class="fa-solid fa-triangle-exclamation ml-auto"></i>
-              </NuxtLink>
-              <button @click="handleSignOut" class="flex items-center gap-2 text-gray-600 text-left">
-                <i class="fa-solid fa-arrow-right-from-bracket text-gray-400"></i>
-                Sign Out
-              </button>
-            </template>
-            <template v-else>
-              <NuxtLink to="/signin" class="text-gray-600" @click="mobileMenuOpen = false">Sign In</NuxtLink>
-              <NuxtLink to="/signup" class="bg-primary-600 text-white px-4 py-2 rounded-lg text-center" @click="mobileMenuOpen = false">Get Started</NuxtLink>
-            </template>
-          </ClientOnly>
+              </template>
+            </ClientOnly>
+            
+            <NuxtLink to="/retroact" class="flex items-center gap-3 px-3 py-2.5 text-gray-700 hover:bg-primary-50 hover:text-primary-700 rounded-lg font-medium transition" @click="mobileMenuOpen = false">
+              <i class="fa-solid fa-box-open w-5 text-center text-primary-600"></i>
+              Products
+            </NuxtLink>
+            <NuxtLink to="/retroact#feature-overview" class="flex items-center gap-3 px-3 py-2.5 pl-11 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg text-sm transition" @click="mobileMenuOpen = false">
+              <i class="fa-solid fa-grid-2 w-4 text-center"></i>
+              Feature Overview
+            </NuxtLink>
+            <NuxtLink to="/retroact#in-action" class="flex items-center gap-3 px-3 py-2.5 pl-11 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg text-sm transition" @click="mobileMenuOpen = false">
+              <i class="fa-solid fa-play w-4 text-center"></i>
+              In Action
+            </NuxtLink>
+            
+            <NuxtLink v-if="!userRole" to="/pricing" class="flex items-center gap-3 px-3 py-2.5 text-gray-700 hover:bg-primary-50 hover:text-primary-700 rounded-lg font-medium transition" @click="mobileMenuOpen = false">
+              <i class="fa-solid fa-tags w-5 text-center text-primary-600"></i>
+              Plans
+            </NuxtLink>
+            <NuxtLink to="/contact" class="flex items-center gap-3 px-3 py-2.5 text-gray-700 hover:bg-primary-50 hover:text-primary-700 rounded-lg font-medium transition" @click="mobileMenuOpen = false">
+              <i class="fa-solid fa-envelope w-5 text-center text-primary-600"></i>
+              Contact
+            </NuxtLink>
+            
+            <div class="my-3 border-t border-gray-200"></div>
+            
+            <ClientOnly>
+              <template v-if="isAuthenticated">
+                <NuxtLink to="/account" class="flex items-center gap-3 px-3 py-2.5 text-gray-700 hover:bg-primary-50 hover:text-primary-700 rounded-lg font-medium transition" @click="mobileMenuOpen = false">
+                  <i class="fa-solid fa-user-gear w-5 text-center text-primary-600"></i>
+                  Account
+                  <i v-if="isTrialExpired" class="fa-solid fa-triangle-exclamation ml-auto text-orange-500"></i>
+                </NuxtLink>
+                
+                <!-- Account sub-navigation -->
+                <NuxtLink 
+                  v-if="hasAccess"
+                  to="/account" 
+                  class="flex items-center gap-3 px-3 py-2.5 pl-11 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg text-sm transition"
+                  @click="mobileMenuOpen = false"
+                >
+                  <i class="fa-solid fa-house w-4 text-center"></i>
+                  Dashboard
+                </NuxtLink>
+                <NuxtLink 
+                  v-if="hasAccess"
+                  to="/account/patients" 
+                  class="flex items-center gap-3 px-3 py-2.5 pl-11 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg text-sm transition"
+                  @click="mobileMenuOpen = false"
+                >
+                  <i class="fa-solid fa-users-medical w-4 text-center"></i>
+                  Patients
+                </NuxtLink>
+                <NuxtLink 
+                  v-if="isAccountOwner && hasAccess"
+                  to="/account/team" 
+                  class="flex items-center gap-3 px-3 py-2.5 pl-11 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg text-sm transition"
+                  @click="mobileMenuOpen = false"
+                >
+                  <i class="fa-solid fa-users w-4 text-center"></i>
+                  Team
+                </NuxtLink>
+                <NuxtLink 
+                  to="/account/settings" 
+                  class="flex items-center gap-3 px-3 py-2.5 pl-11 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg text-sm transition"
+                  @click="mobileMenuOpen = false"
+                >
+                  <i class="fa-solid fa-gear w-4 text-center"></i>
+                  Settings
+                </NuxtLink>
+                
+                <button @click="handleSignOut" class="w-full flex items-center gap-3 px-3 py-2.5 text-gray-700 hover:bg-red-50 hover:text-red-700 rounded-lg font-medium transition text-left">
+                  <i class="fa-solid fa-arrow-right-from-bracket w-5 text-center text-red-600"></i>
+                  Sign Out
+                </button>
+              </template>
+              <template v-else>
+                <NuxtLink to="/signin" class="flex items-center gap-3 px-3 py-2.5 text-gray-700 hover:bg-primary-50 hover:text-primary-700 rounded-lg font-medium transition" @click="mobileMenuOpen = false">
+                  <i class="fa-solid fa-arrow-right-to-bracket w-5 text-center text-primary-600"></i>
+                  Sign In
+                </NuxtLink>
+                <NuxtLink to="/signup" class="flex items-center justify-center gap-2 bg-gradient-to-r from-primary-600 to-primary-700 text-white px-4 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition mt-2" @click="mobileMenuOpen = false">
+                  <i class="fa-solid fa-sparkles"></i>
+                  Get Started
+                </NuxtLink>
+              </template>
+            </ClientOnly>
+          </div>
+          <!-- Blue spacer from menu bottom to window bottom -->
+          <div class="bg-primary-600 min-h-[calc(100vh-100%)]"></div>
         </div>
-      </div>
+      </Transition>
     </nav>
   </header>
 </template>
@@ -149,11 +222,14 @@ const mobileMenuOpen = ref(false)
 const isScrolled = ref(false)
 const dropdownOpen = ref(false)
 const dropdownRef = ref(null)
-const { isAuthenticated, user, signOutUser } = useAuth()
-const { isTrialExpired } = useSubscription()
+const { isAuthenticated, user, signOutUser, isAccountOwner } = useAuth()
+const { isTrialExpired, needsSubscription } = useSubscription()
 const router = useRouter()
 const route = useRoute()
 const { subHeaderVisible } = useSubHeaderState()
+
+// Check if user has access to account features
+const hasAccess = computed(() => !needsSubscription.value)
 
 // User role for invited users
 const userRole = computed(() => user.value?.role || null)
