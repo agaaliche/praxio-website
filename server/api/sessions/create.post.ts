@@ -52,9 +52,6 @@ export default defineEventHandler(async (event) => {
       sessionId
     })
 
-    // Force token refresh on client
-    await admin.auth().revokeRefreshTokens(userId)
-
     return {
       success: true,
       sessionId,

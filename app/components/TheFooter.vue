@@ -10,44 +10,47 @@
             </svg>
           </div>
           <p class="text-gray-400 max-w-md">
-            Building modern software solutions for healthcare professionals. 
-            Our mission is to simplify clinical workflows and improve patient care.
+            {{ t('footer.brandDescription') }}
           </p>
         </div>
 
         <!-- Product -->
         <div>
-          <h3 class="font-display font-semibold text-white mb-4">Product</h3>
+          <h3 class="font-display font-semibold text-white mb-4">{{ t('footer.products') }}</h3>
           <ul class="space-y-3">
             <li>
               <NuxtLink to="/retroact" class="hover:text-white transition">Retroact</NuxtLink>
             </li>
             <li>
-              <NuxtLink to="/pricing" class="hover:text-white transition">Pricing</NuxtLink>
+              <NuxtLink to="/pricing" class="hover:text-white transition">{{ t('header.plans') }}</NuxtLink>
             </li>
           </ul>
         </div>
 
         <!-- Company -->
         <div>
-          <h3 class="font-display font-semibold text-white mb-4">Company</h3>
+          <h3 class="font-display font-semibold text-white mb-4">{{ t('footer.company') }}</h3>
           <ul class="space-y-3">
             <li>
-              <NuxtLink to="/contact" class="hover:text-white transition">Contact</NuxtLink>
+              <NuxtLink to="/contact" class="hover:text-white transition">{{ t('header.contact') }}</NuxtLink>
             </li>
             <li>
-              <NuxtLink to="/privacy" class="hover:text-white transition">Privacy Policy</NuxtLink>
+              <NuxtLink to="/privacy" class="hover:text-white transition">{{ t('footer.privacy') }}</NuxtLink>
             </li>
             <li>
-              <NuxtLink to="/terms" class="hover:text-white transition">Terms of Service</NuxtLink>
+              <NuxtLink to="/terms" class="hover:text-white transition">{{ t('footer.terms') }}</NuxtLink>
             </li>
           </ul>
         </div>
       </div>
 
       <div class="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
-        <p>&copy; {{ new Date().getFullYear() }} Praxio. All rights reserved.</p>
+        <p>&copy; {{ new Date().getFullYear() }} Praxio. {{ t('footer.allRightsReserved') }}</p>
       </div>
     </div>
   </footer>
 </template>
+
+<script setup>
+const { t } = useI18n()
+</script>

@@ -14,7 +14,7 @@ import {
   type User as FirebaseUser,
   type Auth
 } from 'firebase/auth'
-import { getFirebaseAuth } from '~/plugins/firebase.client'
+import { getFirebaseAuth } from '~/plugins/01.firebase.client'
 
 // Types
 export interface AuthUser {
@@ -178,8 +178,7 @@ export function useAuth() {
           method: 'POST',
           headers: { Authorization: `Bearer ${token}` }
         })
-        // Force token refresh to get new custom claims with sessionId
-        await userCredential.user.getIdToken(true)
+        // Session created - custom claims will be picked up on next token refresh
       } catch (sessionError) {
         console.error('Failed to create session:', sessionError)
         // Don't fail login if session creation fails
@@ -212,8 +211,7 @@ export function useAuth() {
           method: 'POST',
           headers: { Authorization: `Bearer ${token}` }
         })
-        // Force token refresh to get new custom claims with sessionId
-        await result.user.getIdToken(true)
+        // Session created - custom claims will be picked up on next token refresh
       } catch (sessionError) {
         console.error('Failed to create session:', sessionError)
         // Don't fail login if session creation fails

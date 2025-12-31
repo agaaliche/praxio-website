@@ -4,13 +4,13 @@
     <nav class="mb-4 md:hidden">
       <ol class="flex items-center gap-2 text-sm text-primary-600">
         <li>
-          <NuxtLink to="/account" class="hover:text-primary-700 transition">Account</NuxtLink>
+          <NuxtLink to="/account" class="hover:text-primary-700 transition">{{ t('account.title') }}</NuxtLink>
         </li>
         <li class="text-primary-400">
           <i class="fa-solid fa-chevron-right text-xs"></i>
         </li>
         <li>
-          <NuxtLink to="/account/settings" class="hover:text-primary-700 transition">Settings</NuxtLink>
+          <NuxtLink to="/account/settings" class="hover:text-primary-700 transition">{{ t('account.settings.title') }}</NuxtLink>
         </li>
         <li class="text-primary-400">
           <i class="fa-solid fa-chevron-right text-xs"></i>
@@ -46,7 +46,7 @@
                 <!-- Header with Close Button -->
                 <div class="sticky top-0 bg-white border-b border-gray-200">
                   <div class="px-4 py-4 flex items-center justify-between">
-                    <h3 class="text-lg font-semibold text-gray-900">Settings</h3>
+                    <h3 class="text-lg font-semibold text-gray-900">{{ t('account.settings.title') }}</h3>
                     <button @click="mobileDropdownOpen = false" class="w-9 h-9 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 transition">
                       <i class="fa-solid fa-xmark text-xl"></i>
                     </button>
@@ -63,7 +63,7 @@
                   >
                     <i class="fa-light fa-user-vneck w-5 text-center text-primary-600"></i>
                     <div class="flex-1 min-w-0 text-left">
-                      <div class="text-sm font-medium text-gray-900">Profile</div>
+                      <div class="text-sm font-medium text-gray-900">{{ t('account.dashboard.profile') }}</div>
                     </div>
                     <i v-if="isActive('/account/settings/profile') || $route.path === '/account/settings'" class="fa-solid fa-check text-primary-600"></i>
                   </NuxtLink>
@@ -76,7 +76,7 @@
                   >
                     <i class="fa-light fa-building-circle-check w-5 text-center text-primary-600"></i>
                     <div class="flex-1 min-w-0 text-left">
-                      <div class="text-sm font-medium text-gray-900">Organization</div>
+                      <div class="text-sm font-medium text-gray-900">{{ t('account.dashboard.organization') }}</div>
                     </div>
                     <i v-if="isActive('/account/settings/organization')" class="fa-solid fa-check text-primary-600"></i>
                   </NuxtLink>
@@ -89,7 +89,7 @@
                   >
                     <i class="fa-light fa-shield-keyhole w-5 text-center text-primary-600"></i>
                     <div class="flex-1 min-w-0 text-left">
-                      <div class="text-sm font-medium text-gray-900">Security</div>
+                      <div class="text-sm font-medium text-gray-900">{{ t('account.dashboard.security') }}</div>
                     </div>
                     <i v-if="isActive('/account/settings/security')" class="fa-solid fa-check text-primary-600"></i>
                   </NuxtLink>
@@ -103,7 +103,7 @@
                     <i class="fa-light fa-box-heart w-5 text-center text-primary-600"></i>
                     <div class="flex-1 min-w-0 text-left">
                       <div class="flex items-center gap-2">
-                        <span class="text-sm font-medium text-gray-900">Your Plan</span>
+                        <span class="text-sm font-medium text-gray-900">{{ t('account.dashboard.yourPlan') }}</span>
                         <i v-if="isTrialExpired" class="fa-solid fa-triangle-exclamation text-red-600"></i>
                       </div>
                     </div>
@@ -119,7 +119,7 @@
                   >
                     <i class="fa-light fa-credit-card w-5 text-center text-primary-600"></i>
                     <div class="flex-1 min-w-0 text-left">
-                      <div class="text-sm font-medium text-gray-900">Billing</div>
+                      <div class="text-sm font-medium text-gray-900">{{ t('account.dashboard.billing') }}</div>
                     </div>
                     <i v-if="isActive('/account/settings/billing')" class="fa-solid fa-check text-primary-600"></i>
                   </NuxtLink>
@@ -148,7 +148,7 @@
                 : 'text-gray-600 hover:bg-gray-50'"
             >
               <i class="fa-light fa-user-vneck w-5 text-center"></i>
-              Profile
+              {{ t('account.dashboard.profile') }}
             </NuxtLink>
             <NuxtLink 
               to="/account/settings/organization"
@@ -158,7 +158,7 @@
                 : 'text-gray-600 hover:bg-gray-50'"
             >
               <i class="fa-light fa-building-circle-check w-5 text-center"></i>
-              Organization
+              {{ t('account.dashboard.organization') }}
             </NuxtLink>
             <NuxtLink 
               to="/account/settings/security"
@@ -168,7 +168,7 @@
                 : 'text-gray-600 hover:bg-gray-50'"
             >
               <i class="fa-light fa-shield-keyhole w-5 text-center"></i>
-              Security
+              {{ t('account.dashboard.security') }}
             </NuxtLink>
             <NuxtLink 
               to="/account/settings/subscription"
@@ -178,7 +178,7 @@
                 : 'text-gray-600 hover:bg-gray-50'"
             >
               <i class="fa-light fa-box-heart w-5 text-center"></i>
-              Your Plan
+              {{ t('account.dashboard.yourPlan') }}
               <i v-if="isTrialExpired" class="fa-solid fa-triangle-exclamation text-red-600 ml-auto"></i>
             </NuxtLink>
             <NuxtLink 
@@ -190,7 +190,7 @@
                 : 'text-gray-600 hover:bg-gray-50'"
             >
               <i class="fa-light fa-credit-card w-5 text-center"></i>
-              Billing
+              {{ t('account.dashboard.billing') }}
             </NuxtLink>
             
             <!-- Collapse Button (last item) -->
@@ -243,6 +243,7 @@
 </template>
 
 <script setup lang="ts">
+const { t } = useI18n()
 const route = useRoute()
 const { isAccountOwner } = useAuth()
 const { isTrialExpired } = useSubscription()
@@ -259,14 +260,14 @@ const toggleCollapse = () => {
 // Computed properties for mobile dropdown
 const settingsPages = computed(() => {
   const pages = [
-    { path: '/account/settings/profile', title: 'Profile', icon: 'fa-light fa-user-vneck' },
-    { path: '/account/settings/organization', title: 'Organization', icon: 'fa-light fa-building-circle-check' },
-    { path: '/account/settings/security', title: 'Security', icon: 'fa-light fa-shield-keyhole' },
-    { path: '/account/settings/subscription', title: 'Your Plan', icon: 'fa-light fa-box-heart' }
+    { path: '/account/settings/profile', title: t('account.dashboard.profile'), icon: 'fa-light fa-user-vneck' },
+    { path: '/account/settings/organization', title: t('account.dashboard.organization'), icon: 'fa-light fa-building-circle-check' },
+    { path: '/account/settings/security', title: t('account.dashboard.security'), icon: 'fa-light fa-shield-keyhole' },
+    { path: '/account/settings/subscription', title: t('account.dashboard.yourPlan'), icon: 'fa-light fa-box-heart' }
   ]
   
   if (isAccountOwner.value) {
-    pages.push({ path: '/account/settings/billing', title: 'Billing', icon: 'fa-light fa-credit-card' })
+    pages.push({ path: '/account/settings/billing', title: t('account.dashboard.billing'), icon: 'fa-light fa-credit-card' })
   }
   
   return pages
@@ -275,10 +276,10 @@ const settingsPages = computed(() => {
 const currentPageTitle = computed(() => {
   const currentPath = route.path
   if (currentPath === '/account/settings') {
-    return 'Profile'
+    return t('account.dashboard.profile')
   }
   const page = settingsPages.value.find(p => p.path === currentPath)
-  return page?.title || 'Settings'
+  return page?.title || t('account.settings.title')
 })
 
 const currentPageIcon = computed(() => {

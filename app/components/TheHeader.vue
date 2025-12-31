@@ -1,5 +1,9 @@
 <template>
-  <header :class="['bg-white sticky top-0 z-50 transition-shadow duration-200 shadow-mobile', showShadow ? 'shadow-lg' : '']">
+  <header :class="[
+    'bg-white sticky top-0 z-50 transition-shadow duration-200',
+    !route.path.startsWith('/account') && 'shadow-mobile',
+    showShadow && 'shadow-lg'
+  ]">
     <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between h-16">
         <!-- Logo -->
@@ -14,17 +18,17 @@
         <!-- Desktop Navigation -->
         <div class="hidden md:flex items-center space-x-8">
           <NuxtLink to="/retroact" class="text-gray-600 hover:text-primary-600 transition px-3 py-1.5 rounded-lg" active-class="!text-primary-600 font-medium border border-primary-600">
-            Products
+            {{ t('header.products') }}
           </NuxtLink>
           <NuxtLink v-if="!userRole" to="/pricing" class="text-gray-600 hover:text-primary-600 transition px-3 py-1.5 rounded-lg" active-class="!text-primary-600 font-medium border border-primary-600">
-            Plans
+            {{ t('header.plans') }}
           </NuxtLink>
           <NuxtLink to="/contact" class="text-gray-600 hover:text-primary-600 transition px-3 py-1.5 rounded-lg" active-class="!text-primary-600 font-medium border border-primary-600">
-            Contact
+            {{ t('header.contact') }}
           </NuxtLink>
           <ClientOnly>
             <NuxtLink v-if="isAuthenticated" to="/account" class="text-gray-600 hover:text-primary-600 transition px-3 py-1.5 rounded-lg flex items-center gap-2" active-class="!text-primary-600 font-medium border border-primary-600">
-              Account
+              {{ t('header.account') }}
               <i v-if="isTrialExpired" class="fa-solid fa-triangle-exclamation"></i>
             </NuxtLink>
           </ClientOnly>
@@ -32,6 +36,11 @@
 
         <!-- CTA Buttons -->
         <div class="hidden md:flex items-center space-x-4">
+          <!-- Language Selector -->
+          <ClientOnly>
+            <LanguageSelector />
+          </ClientOnly>
+          
           <ClientOnly>
             <!-- Show Avatar dropdown if authenticated -->
             <template v-if="isAuthenticated">
@@ -57,7 +66,7 @@
                       <p class="text-sm font-medium text-gray-900">{{ user?.displayName || 'User' }}</p>
                       <p class="text-sm text-gray-500 truncate">{{ user?.email }}</p>
                       <span v-if="userRole" :class="roleChipClass" class="inline-block mt-2 px-2 py-0.5 text-xs font-medium rounded-full">
-                        {{ userRole === 'editor' ? 'Editor' : 'Viewer' }}
+                        {{ userRole === 'editor' ? t('roles.editor') : t('roles.viewer') }}
                       </span>
                     </div>
                     <button 
@@ -65,7 +74,7 @@
                       class="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition text-left"
                     >
                       <i class="fa-solid fa-arrow-right-from-bracket text-gray-400"></i>
-                      Sign Out
+                      {{ t('header.signOut') }}
                     </button>
                   </div>
                 </Transition>
@@ -74,10 +83,10 @@
             <!-- Show Sign In / Get Started if not authenticated -->
             <template v-else>
               <NuxtLink to="/signin" class="text-gray-600 hover:text-primary-600 transition">
-                Sign In
+                {{ t('header.signIn') }}
               </NuxtLink>
               <NuxtLink to="/signup" class="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition">
-                Get Started
+                {{ t('header.getStarted') }}
               </NuxtLink>
             </template>
           </ClientOnly>
@@ -116,7 +125,7 @@
                     <p class="text-sm font-semibold text-gray-900 truncate">{{ user?.displayName || 'User' }}</p>
                     <p class="text-xs text-gray-500 truncate">{{ user?.email }}</p>
                     <span v-if="userRole" :class="roleChipClass" class="inline-block mt-1 px-2 py-0.5 text-xs font-medium rounded-full">
-                      {{ userRole === 'editor' ? 'Editor' : 'Viewer' }}
+                      {{ userRole === 'editor' ? t('roles.editor') : t('roles.viewer') }}
                     </span>
                   </div>
                 </div>
@@ -125,24 +134,24 @@
             
             <NuxtLink to="/retroact" class="flex items-center gap-3 px-3 py-2.5 text-gray-700 hover:bg-primary-50 hover:text-primary-700 rounded-lg font-medium transition" @click="mobileMenuOpen = false">
               <i class="fa-solid fa-box-open w-5 text-center text-primary-600"></i>
-              Products
+              {{ t('header.products') }}
             </NuxtLink>
             <NuxtLink to="/retroact#feature-overview" class="flex items-center gap-3 px-3 py-2.5 pl-11 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg text-sm transition" @click="mobileMenuOpen = false">
               <i class="fa-solid fa-grid-2 w-4 text-center"></i>
-              Feature Overview
+              {{ t('header.featureOverview') }}
             </NuxtLink>
             <NuxtLink to="/retroact#in-action" class="flex items-center gap-3 px-3 py-2.5 pl-11 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg text-sm transition" @click="mobileMenuOpen = false">
               <i class="fa-solid fa-play w-4 text-center"></i>
-              In Action
+              {{ t('header.inAction') }}
             </NuxtLink>
             
             <NuxtLink v-if="!userRole" to="/pricing" class="flex items-center gap-3 px-3 py-2.5 text-gray-700 hover:bg-primary-50 hover:text-primary-700 rounded-lg font-medium transition" @click="mobileMenuOpen = false">
               <i class="fa-solid fa-tags w-5 text-center text-primary-600"></i>
-              Plans
+              {{ t('header.plans') }}
             </NuxtLink>
             <NuxtLink to="/contact" class="flex items-center gap-3 px-3 py-2.5 text-gray-700 hover:bg-primary-50 hover:text-primary-700 rounded-lg font-medium transition" @click="mobileMenuOpen = false">
               <i class="fa-solid fa-envelope w-5 text-center text-primary-600"></i>
-              Contact
+              {{ t('header.contact') }}
             </NuxtLink>
             
             <div class="my-3 border-t border-gray-200"></div>
@@ -151,37 +160,35 @@
               <template v-if="isAuthenticated">
                 <NuxtLink to="/account" class="flex items-center gap-3 px-3 py-2.5 text-gray-700 hover:bg-primary-50 hover:text-primary-700 rounded-lg font-medium transition" @click="mobileMenuOpen = false">
                   <i class="fa-solid fa-user-gear w-5 text-center text-primary-600"></i>
-                  Account
+                  {{ t('header.account') }}
                   <i v-if="isTrialExpired" class="fa-solid fa-triangle-exclamation ml-auto text-orange-500"></i>
                 </NuxtLink>
                 
                 <!-- Account sub-navigation -->
                 <NuxtLink 
-                  v-if="hasAccess"
                   to="/account" 
                   class="flex items-center gap-3 px-3 py-2.5 pl-11 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg text-sm transition"
                   @click="mobileMenuOpen = false"
                 >
                   <i class="fa-solid fa-house w-4 text-center"></i>
-                  Dashboard
+                  {{ t('header.dashboard') }}
                 </NuxtLink>
                 <NuxtLink 
-                  v-if="hasAccess"
                   to="/account/patients" 
                   class="flex items-center gap-3 px-3 py-2.5 pl-11 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg text-sm transition"
                   @click="mobileMenuOpen = false"
                 >
                   <i class="fa-solid fa-users-medical w-4 text-center"></i>
-                  Patients
+                  {{ t('header.patients') }}
                 </NuxtLink>
                 <NuxtLink 
-                  v-if="isAccountOwner && hasAccess"
+                  v-if="isAccountOwner"
                   to="/account/team" 
                   class="flex items-center gap-3 px-3 py-2.5 pl-11 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg text-sm transition"
                   @click="mobileMenuOpen = false"
                 >
                   <i class="fa-solid fa-users w-4 text-center"></i>
-                  Team
+                  {{ t('header.team') }}
                 </NuxtLink>
                 <NuxtLink 
                   to="/account/settings" 
@@ -189,22 +196,32 @@
                   @click="mobileMenuOpen = false"
                 >
                   <i class="fa-solid fa-gear w-4 text-center"></i>
-                  Settings
+                  {{ t('header.settings') }}
                 </NuxtLink>
+                
+                <!-- Language Selector (Mobile) -->
+                <div class="px-3 py-2">
+                  <LanguageSelector button-class="w-full justify-center" />
+                </div>
                 
                 <button @click="handleSignOut" class="w-full flex items-center gap-3 px-3 py-2.5 text-gray-700 hover:bg-red-50 hover:text-red-700 rounded-lg font-medium transition text-left">
                   <i class="fa-solid fa-arrow-right-from-bracket w-5 text-center text-red-600"></i>
-                  Sign Out
+                  {{ t('header.signOut') }}
                 </button>
               </template>
               <template v-else>
+                <!-- Language Selector (Mobile - Not Authenticated) -->
+                <div class="px-3 py-2">
+                  <LanguageSelector button-class="w-full justify-center" />
+                </div>
+                
                 <NuxtLink to="/signin" class="flex items-center gap-3 px-3 py-2.5 text-gray-700 hover:bg-primary-50 hover:text-primary-700 rounded-lg font-medium transition" @click="mobileMenuOpen = false">
                   <i class="fa-solid fa-arrow-right-to-bracket w-5 text-center text-primary-600"></i>
-                  Sign In
+                  {{ t('header.signIn') }}
                 </NuxtLink>
                 <NuxtLink to="/signup" class="flex items-center justify-center gap-2 bg-gradient-to-r from-primary-600 to-primary-700 text-white px-4 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition mt-2" @click="mobileMenuOpen = false">
                   <i class="fa-solid fa-sparkles"></i>
-                  Get Started
+                  {{ t('header.getStarted') }}
                 </NuxtLink>
               </template>
             </ClientOnly>
@@ -224,6 +241,7 @@ const dropdownOpen = ref(false)
 const dropdownRef = ref(null)
 const { isAuthenticated, user, signOutUser, isAccountOwner } = useAuth()
 const { isTrialExpired, needsSubscription } = useSubscription()
+const { t } = useI18n()
 const router = useRouter()
 const route = useRoute()
 const { subHeaderVisible } = useSubHeaderState()
@@ -251,13 +269,18 @@ const hasSubHeader = computed(() => {
 })
 
 // Show shadow when:
-// - On mobile: Always show shadow
+// - Never in account pages (level 2 nav always visible)
+// - On mobile: Always show shadow (except account pages)
 // - On desktop: Scrolled AND (no sub-header OR sub-header is hidden)
 const showShadow = computed(() => {
-  // On mobile (< 768px), always show shadow
-  if (typeof window !== 'undefined' && window.innerWidth < 768) {
-    return true
-  }
+  const isAccount = route.path.startsWith('/account')
+  const isSmallScreen = typeof window !== 'undefined' && window.innerWidth < 768
+  
+  // Never show shadow in account pages (level 2 nav always visible)
+  if (isAccount) return false
+  
+  // On mobile, always show shadow
+  if (isSmallScreen) return true
   
   // On desktop, use sub-header logic
   if (!isScrolled.value) return false

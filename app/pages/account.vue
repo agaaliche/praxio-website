@@ -10,7 +10,7 @@
           :class="$route.path === '/account' ? 'border-primary-600 text-primary-600' : 'border-transparent text-gray-600 hover:text-primary-600'"
         >
           <i class="fa-solid fa-house mr-2"></i>
-          Dashboard
+          {{ t('account.dashboard.title') }}
         </NuxtLink>
         <span 
           v-else
@@ -18,7 +18,7 @@
           title="Subscribe to access Dashboard"
         >
           <i class="fa-solid fa-house mr-2"></i>
-          Dashboard
+          {{ t('account.dashboard.title') }}
         </span>
         <NuxtLink 
           v-if="hasAccess"
@@ -27,7 +27,7 @@
           :class="$route.path.startsWith('/account/patients') ? 'border-primary-600 text-primary-600' : 'border-transparent text-gray-600 hover:text-primary-600'"
         >
           <i class="fa-solid fa-users-medical mr-2"></i>
-          Patients
+          {{ t('account.patients.title') }}
         </NuxtLink>
         <span 
           v-else
@@ -35,7 +35,7 @@
           title="Subscribe to access Patients"
         >
           <i class="fa-solid fa-users-medical mr-2"></i>
-          Patients
+          {{ t('account.patients.title') }}
         </span>
         <NuxtLink 
           v-if="isAccountOwner && hasAccess"
@@ -44,7 +44,7 @@
           :class="$route.path.startsWith('/account/team') ? 'border-primary-600 text-primary-600' : 'border-transparent text-gray-600 hover:text-primary-600'"
         >
           <i class="fa-solid fa-users mr-2"></i>
-          Team
+          {{ t('account.team.title') }}
         </NuxtLink>
         <span 
           v-else-if="isAccountOwner && !hasAccess"
@@ -52,7 +52,7 @@
           title="Subscribe to access Team"
         >
           <i class="fa-solid fa-users mr-2"></i>
-          Team
+          {{ t('account.team.title') }}
         </span>
         <NuxtLink 
           to="/account/settings" 
@@ -60,7 +60,7 @@
           :class="$route.path.startsWith('/account/settings') ? 'border-primary-600 text-primary-600' : 'border-transparent text-gray-600 hover:text-primary-600'"
         >
           <i class="fa-solid fa-gear mr-2"></i>
-          Settings
+          {{ t('account.settings.title') }}
         </NuxtLink>
         <template #fallback>
           <span class="text-sm font-medium h-full flex items-center text-gray-400">Loading...</span>
@@ -76,6 +76,7 @@
 </template>
 
 <script setup lang="ts">
+const { t } = useI18n()
 const { isAccountOwner } = useAuth()
 const { needsSubscription, isTrialExpired, subscriptionFetched, fetchSubscription } = useSubscription()
 

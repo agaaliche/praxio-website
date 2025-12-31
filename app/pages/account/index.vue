@@ -4,19 +4,19 @@
     <nav class="mb-4 md:hidden">
       <ol class="flex items-center gap-2 text-sm text-primary-600">
         <li>
-          <NuxtLink to="/" class="hover:text-primary-700 transition">Home</NuxtLink>
+          <NuxtLink to="/" class="hover:text-primary-700 transition">{{ t('common.home') }}</NuxtLink>
         </li>
         <li class="text-primary-400">
           <i class="fa-solid fa-chevron-right text-xs"></i>
         </li>
         <li>
-          <NuxtLink to="/account" class="hover:text-primary-700 transition">Account</NuxtLink>
+          <NuxtLink to="/account" class="hover:text-primary-700 transition">{{ t('account.title') }}</NuxtLink>
         </li>
         <li class="text-primary-400">
           <i class="fa-solid fa-chevron-right text-xs"></i>
         </li>
         <li class="font-medium">
-          Dashboard
+          {{ t('account.dashboard.title') }}
         </li>
       </ol>
     </nav>
@@ -24,20 +24,20 @@
     <!-- Welcome Section -->
     <div class="mb-8">
       <h1 class="text-3xl font-display font-bold text-gray-900">
-        Welcome back, {{ displayName }}!
+        {{ t('account.dashboard.welcomeBack') }}, {{ displayName }}!
       </h1>
       <p v-if="organizationName" class="mt-1 text-lg text-primary-600 font-medium">
         {{ organizationName }}
       </p>
       <p class="mt-2 text-gray-600">
-        Manage your Praxio account and access your products.
+        {{ t('account.dashboard.manageAccount') }}
       </p>
     </div>
 
     <!-- Loading State -->
     <div v-if="loading" class="text-center py-12">
       <div class="w-8 h-8 border-4 border-primary-200 border-t-primary-600 rounded-full animate-spin mx-auto"></div>
-      <p class="mt-2 text-gray-500">Loading dashboard...</p>
+      <p class="mt-2 text-gray-500">{{ t('account.dashboard.loading') }}</p>
     </div>
 
     <template v-else>
@@ -50,7 +50,7 @@
             </div>
             <div>
               <p class="text-2xl font-bold text-gray-900">{{ patientCount }}</p>
-              <p class="text-sm text-gray-500">Active Patients</p>
+              <p class="text-sm text-gray-500">{{ t('account.dashboard.activePatients') }}</p>
             </div>
           </div>
         </div>
@@ -62,7 +62,7 @@
             </div>
             <div>
               <p class="text-2xl font-bold text-gray-900">{{ teamCount }}</p>
-              <p class="text-sm text-gray-500">Team Members</p>
+              <p class="text-sm text-gray-500">{{ t('account.dashboard.teamMembers') }}</p>
             </div>
           </div>
         </div>
@@ -73,8 +73,8 @@
               <i class="fa-duotone fa-check-circle text-green-600 text-2xl"></i>
             </div>
             <div>
-              <p class="text-2xl font-bold text-gray-900">Active</p>
-              <p class="text-sm text-gray-500">Subscription Status</p>
+              <p class="text-2xl font-bold text-gray-900">{{ t('account.dashboard.active') }}</p>
+              <p class="text-sm text-gray-500">{{ t('account.dashboard.subscriptionStatus') }}</p>
             </div>
           </div>
         </div>
@@ -82,7 +82,7 @@
 
       <!-- Products Grid -->
       <div class="mb-8">
-        <h2 class="text-xl font-display font-bold text-gray-900 mb-6">Your Products</h2>
+        <h2 class="text-xl font-display font-bold text-gray-900 mb-6">{{ t('account.dashboard.yourProducts') }}</h2>
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           <!-- Retroact -->
           <a
@@ -102,34 +102,19 @@
               </div>
             </div>
             <p class="mt-2 text-sm text-gray-600">
-              INR management for anticoagulant therapy. Track results, generate prescriptions, manage patients.
+              {{ t('account.dashboard.retroactDescription') }}
             </p>
             <div class="mt-4 flex items-center text-primary-600 text-sm font-medium">
-              Open Retroact
+              {{ t('account.dashboard.openApp') }}
               <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
             </div>
           </a>
-
-          <!-- More Products Coming Soon -->
-          <div v-if="isAccountOwner" class="bg-white rounded-2xl p-6 border border-dashed border-gray-300">
-            <div class="flex items-start justify-between mb-4">
-              <h3 class="text-lg font-display font-bold text-gray-400">
-                More Products
-              </h3>
-              <span class="text-xs font-medium text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
-                Coming Soon
-              </span>
-            </div>
-            <p class="mt-2 text-sm text-gray-400">
-              We're working on new medical software solutions. Stay tuned for updates!
-            </p>
-          </div>
         </div>
       </div>
 
       <!-- Quick Links -->
       <div class="mb-8">
-        <h2 class="text-xl font-display font-bold text-gray-900 mb-6">Quick Actions</h2>
+        <h2 class="text-xl font-display font-bold text-gray-900 mb-6">{{ t('account.dashboard.quickActions') }}</h2>
         <div class="grid md:grid-cols-2 gap-6">
           <NuxtLink 
             to="/account/patients"
@@ -138,10 +123,10 @@
             <div class="flex items-center justify-between">
               <div>
                 <h3 class="text-lg font-bold text-gray-900 group-hover:text-primary-600">
-                  Manage Patients
+                  {{ t('account.dashboard.managePatients') }}
                 </h3>
                 <p class="mt-1 text-sm text-gray-500">
-                  View, add, and edit patient records
+                  {{ t('account.dashboard.managePatientsDesc') }}
                 </p>
               </div>
               <i class="fa-solid fa-arrow-right text-gray-400 group-hover:text-primary-600 group-hover:translate-x-1 transition-all"></i>
@@ -156,10 +141,10 @@
             <div class="flex items-center justify-between">
               <div>
                 <h3 class="text-lg font-bold text-gray-900 group-hover:text-primary-600">
-                  Manage Team
+                  {{ t('account.dashboard.manageTeam') }}
                 </h3>
                 <p class="mt-1 text-sm text-gray-500">
-                  Invite team members and manage roles
+                  {{ t('account.dashboard.manageTeamDesc') }}
                 </p>
               </div>
               <i class="fa-solid fa-arrow-right text-gray-400 group-hover:text-primary-600 group-hover:translate-x-1 transition-all"></i>
@@ -170,7 +155,7 @@
 
       <!-- Account Settings -->
       <div>
-        <h2 class="text-xl font-display font-bold text-gray-900 mb-6">Account Settings</h2>
+        <h2 class="text-xl font-display font-bold text-gray-900 mb-6">{{ t('account.dashboard.accountSettings') }}</h2>
         <div class="bg-white rounded-2xl border border-gray-200 divide-y divide-gray-200">
           <!-- Profile -->
           <NuxtLink
@@ -182,8 +167,8 @@
                 <i class="fa-light fa-user text-primary-600 text-lg"></i>
               </div>
               <div>
-                <h3 class="font-medium text-gray-900">Profile</h3>
-                <p class="text-sm text-gray-500">Update your personal information</p>
+                <h3 class="font-medium text-gray-900">{{ t('account.dashboard.profile') }}</h3>
+                <p class="text-sm text-gray-500">{{ t('account.dashboard.profileDesc') }}</p>
               </div>
             </div>
             <i class="fa-solid fa-chevron-right text-gray-400"></i>
@@ -199,8 +184,8 @@
                 <i class="fa-light fa-building text-secondary-600 text-lg"></i>
               </div>
               <div>
-                <h3 class="font-medium text-gray-900">Organization</h3>
-                <p class="text-sm text-gray-500">{{ organizationName || 'Set up your practice details' }}</p>
+                <h3 class="font-medium text-gray-900">{{ t('account.dashboard.organization') }}</h3>
+                <p class="text-sm text-gray-500">{{ organizationName || t('account.dashboard.organizationDesc') }}</p>
               </div>
             </div>
             <i class="fa-solid fa-chevron-right text-gray-400"></i>
@@ -216,8 +201,8 @@
                 <i class="fa-light fa-shield text-amber-600 text-lg"></i>
               </div>
               <div>
-                <h3 class="font-medium text-gray-900">Security</h3>
-                <p class="text-sm text-gray-500">Password and authentication settings</p>
+                <h3 class="font-medium text-gray-900">{{ t('account.dashboard.security') }}</h3>
+                <p class="text-sm text-gray-500">{{ t('account.dashboard.securityDesc') }}</p>
               </div>
             </div>
             <i class="fa-solid fa-chevron-right text-gray-400"></i>
@@ -233,8 +218,8 @@
                 <i class="fa-light fa-box-heart text-purple-600 text-lg"></i>
               </div>
               <div>
-                <h3 class="font-medium text-gray-900">Your Plan</h3>
-                <p class="text-sm text-gray-500">{{ isAccountOwner ? 'Manage your subscription' : 'View organization plan' }}</p>
+                <h3 class="font-medium text-gray-900">{{ t('account.dashboard.yourPlan') }}</h3>
+                <p class="text-sm text-gray-500">{{ isAccountOwner ? t('account.dashboard.manageSubscriptionDesc') : t('account.settings.subscription.sharedPlanDesc') }}</p>
               </div>
             </div>
             <div class="flex items-center gap-2">
@@ -254,8 +239,8 @@
                 <i class="fa-light fa-credit-card text-green-600 text-lg"></i>
               </div>
               <div>
-                <h3 class="font-medium text-gray-900">Billing</h3>
-                <p class="text-sm text-gray-500">Payment methods and invoices</p>
+                <h3 class="font-medium text-gray-900">{{ t('account.dashboard.billing') }}</h3>
+                <p class="text-sm text-gray-500">{{ t('account.dashboard.billingDesc') }}</p>
               </div>
             </div>
             <i class="fa-solid fa-chevron-right text-gray-400"></i>
@@ -275,6 +260,7 @@ useHead({
   title: 'Account - Praxio'
 })
 
+const { t } = useI18n()
 const { user, isAccountOwner } = useAuth()
 const { subscription, isTrialExpired } = useSubscription()
 

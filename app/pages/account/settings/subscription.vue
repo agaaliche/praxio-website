@@ -2,8 +2,8 @@
   <div>
     <!-- Header -->
     <div class="mb-8">
-      <h1 class="text-3xl font-display font-bold text-gray-900">Your Plan</h1>
-      <p class="mt-2 text-gray-600">View and manage your subscription</p>
+      <h1 class="text-3xl font-display font-bold text-gray-900">{{ t('account.settings.subscription.title') }}</h1>
+      <p class="mt-2 text-gray-600">{{ t('account.settings.subscription.description') }}</p>
     </div>
 
     <ClientOnly>
@@ -22,12 +22,12 @@
               <i class="fa-solid fa-ban text-red-600 text-xl"></i>
             </div>
             <div class="flex-1">
-              <h3 class="text-lg font-bold text-red-600">Access Revoked</h3>
+              <h3 class="text-lg font-bold text-red-600">{{ t('account.settings.subscription.accessRevoked') }}</h3>
               <p class="text-red-600 mt-2">
-                Your access has been temporarily suspended because {{ organizationName || 'the organization' }}'s subscription has expired.
+                {{ t('account.settings.subscription.accessRevokedDescription') }}
               </p>
               <p class="text-red-600 mt-2 text-sm">
-                Please contact the account owner to renew the organization's plan and restore your access.
+                {{ t('account.settings.subscription.contactOwner') }}
               </p>
             </div>
           </div>
@@ -40,27 +40,27 @@
               <i class="fa-solid fa-users text-primary-600 text-xl"></i>
             </div>
             <div class="flex-1">
-              <h3 class="text-lg font-bold text-primary-600">Shared Organization Plan</h3>
+              <h3 class="text-lg font-bold text-primary-600">{{ t('account.settings.subscription.sharedPlan') }}</h3>
               <p class="text-primary-700 mt-2">
-                You are part of <strong>{{ organizationName || 'this organization' }}</strong> and share the same subscription plan as the account owner.
+                {{ t('account.settings.subscription.sharedPlanDescription') }}
               </p>
               <div v-if="subscription" class="mt-4 grid md:grid-cols-3 gap-4">
                 <div class="bg-white rounded-lg p-3 border border-primary-100">
-                  <p class="text-xs text-primary-600 font-medium">Current Plan</p>
-                  <p class="text-sm font-bold text-gray-900 mt-1">{{ isOnTrial ? 'Free Trial' : currentPlanName }}</p>
+                  <p class="text-xs text-primary-600 font-medium">{{ t('account.settings.subscription.currentPlan') }}</p>
+                  <p class="text-sm font-bold text-gray-900 mt-1">{{ isOnTrial ? t('account.settings.subscription.freeTrial') : currentPlanName }}</p>
                 </div>
                 <div v-if="!isTrialOrNone" class="bg-white rounded-lg p-3 border border-primary-100">
-                  <p class="text-xs text-primary-600 font-medium">Status</p>
+                  <p class="text-xs text-primary-600 font-medium">{{ t('account.settings.subscription.status') }}</p>
                   <p class="text-sm font-bold text-gray-900 mt-1">{{ statusLabel }}</p>
                 </div>
                 <div v-if="(isOnTrial && subscription?.trialEndDate) || (nextBillingDateFormatted && subscription?.status !== 'canceling' && !isOnTrial)" class="bg-white rounded-lg p-3 border border-primary-100">
-                  <p class="text-xs text-primary-600 font-medium">{{ isOnTrial ? 'Trial Ends' : 'Renews On' }}</p>
+                  <p class="text-xs text-primary-600 font-medium">{{ isOnTrial ? t('account.settings.subscription.trialEnds') : t('account.settings.subscription.renewsOn') }}</p>
                   <p class="text-sm font-bold text-gray-900 mt-1">{{ isOnTrial ? formatDate(subscription.trialEndDate) : nextBillingDateFormatted }}</p>
                 </div>
               </div>
               <p class="text-sm text-primary-600 mt-4">
                 <i class="fa-regular fa-circle-info mr-1"></i>
-                Only the account owner can manage the subscription.
+                {{ t('account.settings.subscription.ownerOnly') }}
               </p>
             </div>
           </div>
@@ -74,12 +74,12 @@
         <div class="flex items-center justify-between mb-6">
           <div>
             <div class="flex items-center gap-3">
-              <h2 class="text-lg font-bold text-gray-900">Current Plan</h2>
+              <h2 class="text-lg font-bold text-gray-900">{{ t('account.settings.subscription.currentPlan') }}</h2>
               <span :class="statusBadgeClass" class="md:hidden">
                 {{ statusLabel }}
               </span>
             </div>
-            <p class="text-gray-500">Your subscription details</p>
+            <p class="text-gray-500">{{ t('account.settings.subscription.subscriptionDetails') }}</p>
           </div>
           <span :class="statusBadgeClass" class="hidden md:inline-flex">
             {{ statusLabel }}
@@ -89,15 +89,15 @@
         <div class="grid gap-6">
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div>
-              <p class="text-sm text-gray-500">Plan</p>
+              <p class="text-sm text-gray-500">{{ t('account.settings.subscription.plan') }}</p>
               <p class="text-lg font-bold text-gray-900">{{ currentPlanName }}</p>
             </div>
             <div v-if="nextBillingDateFormatted">
-              <p class="text-sm text-gray-500">{{ isTrialExpired ? 'Trial Expired' : (isTrialOrNone ? 'Trial Ends' : 'Next Billing Date') }}</p>
+              <p class="text-sm text-gray-500">{{ isTrialExpired ? t('account.settings.subscription.trialExpired') : (isTrialOrNone ? t('account.settings.subscription.trialEnds') : t('account.settings.subscription.nextBillingDate')) }}</p>
               <p class="text-lg font-bold text-gray-900 whitespace-nowrap">{{ nextBillingDateFormatted }}</p>
             </div>
             <div>
-              <p class="text-sm text-gray-500">Amount</p>
+              <p class="text-sm text-gray-500">{{ t('account.settings.subscription.amount') }}</p>
               <p class="text-lg font-bold text-gray-900">{{ planAmount }}</p>
             </div>
           </div>
@@ -114,7 +114,7 @@
                 class="px-4 py-2 bg-primary-600 text-white font-medium rounded-lg hover:bg-primary-700 transition inline-flex items-center gap-2"
               >
                 <i class="fa-solid fa-arrow-up"></i>
-                Upgrade to Annual
+                {{ t('account.settings.subscription.upgradeToAnnual') }}
               </NuxtLink>
             </div>
             
@@ -126,7 +126,7 @@
                 class="px-4 py-2 text-red-600 font-medium border border-red-600 rounded-lg hover:bg-red-50 transition flex items-center gap-2"
               >
                 <i class="fa-regular fa-circle-xmark"></i>
-                Cancel Subscription
+                {{ t('account.settings.subscription.cancelSubscription') }}
               </button>
             </div>
           </template>
@@ -136,7 +136,7 @@
               class="px-4 py-2 bg-primary-600 text-white font-medium rounded-lg hover:bg-primary-700 transition flex items-center gap-2"
             >
               <i class="fa-solid fa-rocket"></i>
-              Choose a Plan
+              {{ t('account.settings.subscription.choosePlan') }}
             </NuxtLink>
           </template>
         </div>
@@ -147,8 +147,8 @@
             <div class="flex items-start gap-3">
               <i class="fa-solid fa-triangle-exclamation text-red-600 mt-0.5"></i>
               <div>
-                <p class="font-medium text-red-600">Your subscription will end on {{ nextBillingDateFormatted }}</p>
-                <p class="text-sm text-red-600 mt-1">You'll continue to have access until then. After that, you'll need to subscribe again to use the service.</p>
+                <p class="font-medium text-red-600">{{ t('account.settings.subscription.subscriptionEndDate', { date: nextBillingDateFormatted }) }}</p>
+                <p class="text-sm text-red-600 mt-1">{{ t('account.settings.subscription.continueAccess') }}</p>
               </div>
             </div>
             <button 
@@ -158,7 +158,7 @@
             >
               <SpinnerIcon v-if="reactivateLoading" />
               <i v-else class="fa-solid fa-rotate-left"></i>
-              Undo Cancellation
+              {{ t('account.settings.subscription.reactivate') }}
             </button>
           </div>
         </div>
@@ -308,6 +308,7 @@ definePageMeta({
   middleware: ['auth']
 })
 
+const { t } = useI18n()
 const { getIdToken, user, isAccountOwner } = useAuth()
 const organizationName = ref('')
 

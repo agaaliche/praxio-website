@@ -1,14 +1,14 @@
 <template>
   <div>
     <div class="mb-6">
-      <h1 class="text-2xl font-display font-bold text-gray-900">Profile Settings</h1>
-      <p class="mt-1 text-gray-600">Manage your personal information</p>
+      <h1 class="text-2xl font-display font-bold text-gray-900">{{ t('account.settings.profile.title') }}</h1>
+      <p class="mt-1 text-gray-600">{{ t('account.settings.profile.description') }}</p>
     </div>
 
     <!-- Loading -->
     <div v-if="loading" class="bg-white rounded-2xl border border-gray-200 p-12 text-center">
       <div class="w-8 h-8 border-4 border-primary-200 border-t-primary-600 rounded-full animate-spin mx-auto"></div>
-      <p class="mt-2 text-gray-500">Loading profile...</p>
+      <p class="mt-2 text-gray-500">{{ t('common.loading') }}</p>
     </div>
 
     <form v-else @submit.prevent="saveProfile" class="space-y-6">
@@ -16,12 +16,12 @@
       <div class="bg-white rounded-2xl border border-gray-200 p-6 space-y-4">
         <h2 class="text-lg font-bold text-gray-900 flex items-center gap-2">
           <i class="fa-light fa-user text-primary-600"></i>
-          Personal Information
+          {{ t('account.settings.profile.personalInfo') }}
         </h2>
 
         <div class="grid md:grid-cols-2 gap-4">
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('account.settings.profile.firstName') }}</label>
             <input
               v-model="form.firstName"
               type="text"
@@ -31,7 +31,7 @@
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('account.settings.profile.lastName') }}</label>
             <input
               v-model="form.lastName"
               type="text"
@@ -44,7 +44,7 @@
 
         <!-- Current Email (readonly) -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+          <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('account.settings.profile.emailAddress') }}</label>
           <input
             v-model="form.email"
             type="email"
@@ -56,12 +56,12 @@
         <!-- Change Email Section -->
         <div v-if="showEmailChange && !isViewer" class="space-y-3">
           <div class="relative">
-            <label class="block text-sm font-medium text-gray-700 mb-1">New Email Address</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('account.settings.profile.newEmail') }}</label>
             <div class="relative">
               <input
                 v-model="newEmail"
                 type="email"
-                placeholder="Enter new email address"
+                :placeholder="t('account.settings.profile.enterNewEmail')"
                 class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent pr-10"
               />
               <button
@@ -83,7 +83,7 @@
           >
             <SpinnerIcon v-if="emailChangeLoading" class="mr-2" />
             <i v-else class="fa-light fa-envelope mr-2"></i>
-            Send Verification Email
+            {{ t('account.settings.profile.sendVerification') }}
           </button>
         </div>
 
@@ -95,12 +95,12 @@
           class="text-sm text-primary-600 hover:text-primary-700 font-medium flex items-center gap-1"
         >
           <i class="fa-light fa-pen"></i>
-          Change Email
+          {{ t('account.settings.profile.changeEmail') }}
         </button>
 
         <!-- Phone Number -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+          <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('account.settings.profile.phoneNumber') }}</label>
           <input
             v-model="form.phoneNumber"
             type="tel"
@@ -115,8 +115,8 @@
       <div v-if="isViewer" class="bg-blue-50 border border-blue-600 rounded-xl p-4 flex items-start gap-3">
         <i class="fa-solid fa-info-circle text-blue-600 mt-0.5"></i>
         <div>
-          <p class="font-medium text-blue-600">View Only Access</p>
-          <p class="text-sm text-blue-600">You have viewer permissions. Contact an administrator to make changes.</p>
+          <p class="font-medium text-blue-600">{{ t('account.settings.profile.viewOnlyAccess') }}</p>
+          <p class="text-sm text-blue-600">{{ t('account.settings.profile.viewOnlyMessage') }}</p>
         </div>
       </div>
 
@@ -129,7 +129,7 @@
       <!-- Success Message -->
       <div v-if="success" class="bg-green-50 border border-green-200 rounded-xl p-4 flex items-start gap-2">
         <i class="fa-solid fa-circle-check text-green-500 mt-0.5"></i>
-        <p class="text-sm text-green-700">Profile updated successfully!</p>
+        <p class="text-sm text-green-700">{{ t('account.settings.profile.updateSuccess') }}</p>
       </div>
 
       <!-- Save Button -->
@@ -141,9 +141,9 @@
         >
           <span v-if="saving" class="inline-flex items-center">
             <SpinnerIcon class="mr-2" />
-            Saving...
+            {{ t('account.settings.profile.saving') }}
           </span>
-          <span v-else>Save Changes</span>
+          <span v-else>{{ t('common.save') }}</span>
         </button>
       </div>
     </form>
@@ -170,6 +170,7 @@ definePageMeta({
   middleware: ['auth']
 })
 
+const { t } = useI18n()
 const { getAuthHeaders } = useAuth()
 
 const loading = ref(true)

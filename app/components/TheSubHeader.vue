@@ -1,9 +1,6 @@
 <template>
   <div 
-    :class="[
-      'bg-white border-b border-gray-200 sticky top-16 z-40 transition-all duration-300',
-      isScrolled ? 'shadow-lg' : ''
-    ]"
+    class="bg-white border-b border-gray-200 shadow-lg sticky top-16 z-40 transition-all duration-300"
   >
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <nav class="flex items-center gap-4 sm:gap-8 h-12 overflow-x-auto scrollbar-hide">
@@ -23,7 +20,6 @@ const props = defineProps({
 
 const { setVisible } = useSubHeaderState()
 const visible = ref(true)
-const isScrolled = ref(false)
 const lastScrollY = ref(0)
 
 // Sync visible state to shared composable
@@ -37,9 +33,6 @@ onMounted(() => {
   
   const handleScroll = () => {
     const currentScrollY = window.scrollY
-    
-    // Track if page is scrolled for shadow
-    isScrolled.value = currentScrollY > 0
     
     // Show bar when scrolling up, hide when scrolling down (if enabled)
     if (props.hideOnScrollDown) {

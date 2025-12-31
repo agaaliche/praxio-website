@@ -1,14 +1,14 @@
 <template>
   <div>
     <div class="mb-6">
-      <h1 class="text-2xl font-display font-bold text-gray-900">Security Settings</h1>
-      <p class="mt-1 text-gray-600">Manage your account security</p>
+      <h1 class="text-2xl font-display font-bold text-gray-900">{{ t('account.settings.security.title') }}</h1>
+      <p class="mt-1 text-gray-600">{{ t('account.settings.security.description') }}</p>
     </div>
 
     <!-- Loading -->
     <div v-if="loading" class="bg-white rounded-2xl border border-gray-200 p-12 text-center">
       <div class="w-8 h-8 border-4 border-primary-200 border-t-primary-600 rounded-full animate-spin mx-auto"></div>
-      <p class="mt-2 text-gray-500">Loading...</p>
+      <p class="mt-2 text-gray-500">{{ t('common.loading') }}</p>
     </div>
 
     <div v-else class="space-y-6">
@@ -16,23 +16,23 @@
       <div class="bg-white rounded-2xl border border-gray-200 p-6">
         <h2 class="text-lg font-bold text-gray-900 flex items-center gap-2 mb-4">
           <i class="fa-light fa-key text-primary-600"></i>
-          Password
+          {{ t('account.settings.security.password') }}
         </h2>
 
         <div v-if="!showPasswordForm">
-          <p class="text-gray-600 mb-4">Change your password to keep your account secure.</p>
+          <p class="text-gray-600 mb-4">{{ t('account.settings.security.passwordDescription') }}</p>
           <button
             @click="showPasswordForm = true"
             class="px-4 py-2 bg-primary-600 text-white font-medium rounded-xl hover:bg-primary-700 transition"
           >
             <i class="fa-solid fa-lock mr-2"></i>
-            Change Password
+            {{ t('account.settings.security.changePassword') }}
           </button>
         </div>
 
         <form v-else @submit.prevent="changePassword" class="space-y-4">
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Current Password</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('account.settings.security.currentPassword') }}</label>
             <div class="relative">
               <input
                 v-model="passwordForm.currentPassword"
@@ -51,7 +51,7 @@
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">New Password</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('account.settings.security.newPassword') }}</label>
             <div class="relative">
               <input
                 v-model="passwordForm.newPassword"
@@ -68,11 +68,11 @@
                 <i :class="showNewPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"></i>
               </button>
             </div>
-            <p class="text-xs text-gray-500 mt-1">Minimum 8 characters</p>
+            <p class="text-xs text-gray-500 mt-1">{{ t('account.settings.security.minCharacters') }}</p>
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Confirm New Password</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('account.settings.security.confirmPassword') }}</label>
             <div class="relative">
               <input
                 v-model="passwordForm.confirmPassword"
@@ -99,7 +99,7 @@
           <!-- Password Success -->
           <div v-if="passwordSuccess" class="bg-green-50 border border-green-200 rounded-xl p-3 flex items-start gap-2">
             <i class="fa-solid fa-circle-check text-green-500 mt-0.5"></i>
-            <p class="text-sm text-green-700">Password changed successfully!</p>
+            <p class="text-sm text-green-700">{{ t('account.settings.security.passwordChangeSuccess') }}</p>
           </div>
 
           <div class="flex items-center gap-3 pt-2">
@@ -108,7 +108,7 @@
               @click="cancelPasswordChange"
               class="px-4 py-2 text-gray-700 hover:bg-gray-100 font-medium rounded-xl transition"
             >
-              Cancel
+              {{ t('common.cancel') }}
             </button>
             <button
               type="submit"
@@ -116,7 +116,7 @@
               class="px-4 py-2 bg-primary-600 text-white font-medium rounded-xl hover:bg-primary-700 transition disabled:opacity-50"
             >
               <SpinnerIcon v-if="changingPassword" class="mr-2" />
-              Update Password
+              {{ t('account.settings.security.updatePassword') }}
             </button>
           </div>
         </form>
@@ -126,7 +126,7 @@
       <div class="bg-white rounded-2xl border border-gray-200 p-6">
         <h2 class="text-lg font-bold text-gray-900 flex items-center gap-2 mb-4">
           <i class="fa-light fa-desktop text-primary-600"></i>
-          Active Sessions
+          {{ t('account.settings.security.activeSessions') }}
         </h2>
         
         <!-- Loading sessions -->
@@ -148,7 +148,7 @@
             <div class="flex-1">
               <p class="font-medium text-gray-900">
                 {{ session.deviceName }}
-                <span v-if="session.isCurrent" class="text-sm font-normal text-green-600 ml-2">(This device)</span>
+                <span v-if="session.isCurrent" class="text-sm font-normal text-green-600 ml-2">({{ t('account.settings.security.thisDevice') }})</span>
               </p>
               <p class="text-sm text-gray-500">
                 {{ session.browser }} {{ session.browserVersion }} • {{ formatSessionTime(session.lastActiveTime) }}
@@ -160,7 +160,7 @@
 
         <!-- No other sessions -->
         <div v-else class="text-center py-4 text-gray-500">
-          <p>You're only signed in on this device</p>
+          <p>{{ t('account.settings.security.onlyThisDevice') }}</p>
         </div>
       </div>
 
@@ -168,11 +168,11 @@
       <div class="bg-white rounded-2xl border border-red-600 p-6">
         <h2 class="text-lg font-bold text-red-600 flex items-center gap-2 mb-4">
           <i class="fa-light fa-triangle-exclamation text-red-600"></i>
-          Danger Zone
+          {{ t('account.settings.security.dangerZone') }}
         </h2>
         
         <p class="text-gray-600 mb-4">
-          Once you delete your account, there is no going back. Please be certain.
+          {{ t('account.settings.security.deleteWarning') }}
         </p>
         
         <button
@@ -252,6 +252,7 @@ definePageMeta({
   middleware: ['auth']
 })
 
+const { t } = useI18n()
 const { user, getAuthHeaders, signOutUser } = useAuth()
 
 const loading = ref(false)

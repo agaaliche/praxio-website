@@ -2,8 +2,8 @@
   <div>
     <!-- Header -->
     <div class="mb-8">
-      <h1 class="text-3xl font-display font-bold text-gray-900">Billing</h1>
-      <p class="mt-2 text-gray-600">Manage your payment methods and view invoices</p>
+      <h1 class="text-3xl font-display font-bold text-gray-900">{{ t('account.settings.billing.title') }}</h1>
+      <p class="mt-2 text-gray-600">{{ t('account.settings.billing.description') }}</p>
     </div>
 
     <!-- Loading State -->
@@ -14,15 +14,15 @@
     <template v-else>
       <!-- Payment Method -->
       <div class="bg-white rounded-xl border border-gray-200 p-6 mb-6">
-        <h2 class="text-lg font-bold text-gray-900 mb-4">Payment Method</h2>
+        <h2 class="text-lg font-bold text-gray-900 mb-4">{{ t('account.settings.billing.paymentMethod') }}</h2>
         
         <div v-if="hasActiveSubscription" class="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
           <div class="w-12 h-8 bg-gradient-to-r from-blue-600 to-blue-800 rounded flex items-center justify-center">
             <i class="fa-brands fa-cc-visa text-white text-xl"></i>
           </div>
           <div>
-            <p class="font-medium text-gray-900">Payment method on file</p>
-            <p class="text-sm text-gray-500">Managed through Stripe</p>
+            <p class="font-medium text-gray-900">{{ t('account.settings.billing.paymentOnFile') }}</p>
+            <p class="text-sm text-gray-500">{{ t('account.settings.billing.managedByStripe') }}</p>
           </div>
           <button 
             @click="openBillingPortal"
@@ -30,23 +30,23 @@
             class="ml-auto text-primary-600 hover:text-primary-700 font-medium text-sm flex items-center gap-1"
           >
             <SpinnerIcon v-if="portalLoading" />
-            Update
+            {{ t('account.settings.billing.update') }}
           </button>
         </div>
         <div v-else class="text-center py-6 text-gray-500">
           <i class="fa-regular fa-credit-card text-3xl mb-2"></i>
-          <p>No payment method on file</p>
-          <p class="text-sm mt-1">Add a payment method when you subscribe to a plan</p>
+          <p>{{ t('account.settings.billing.noPaymentMethod') }}</p>
+          <p class="text-sm mt-1">{{ t('account.settings.billing.addWhenSubscribe') }}</p>
         </div>
       </div>
 
       <!-- Next Billing Date -->
       <div v-if="hasActiveSubscription" class="bg-white rounded-xl border border-gray-200 p-6 mb-6">
         <div class="flex items-center justify-between mb-4">
-          <h2 class="text-lg font-bold text-gray-900">Next Billing</h2>
+          <h2 class="text-lg font-bold text-gray-900">{{ t('account.settings.billing.nextBilling') }}</h2>
           <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
             <i class="fa-solid fa-circle-check mr-1"></i>
-            Active
+            {{ t('account.settings.billing.active') }}
           </span>
         </div>
         <div class="flex items-center gap-4 p-4 bg-primary-50 rounded-lg">
@@ -62,7 +62,7 @@
 
       <!-- Billing History -->
       <div class="bg-white rounded-xl border border-gray-200 p-6">
-        <h2 class="text-lg font-bold text-gray-900 mb-4">Billing History</h2>
+        <h2 class="text-lg font-bold text-gray-900 mb-4">{{ t('account.settings.billing.billingHistory') }}</h2>
         
         <!-- Loading invoices -->
         <div v-if="invoicesLoading" class="flex justify-center py-6">
@@ -76,11 +76,11 @@
             <table class="w-full">
               <thead>
                 <tr class="border-b border-gray-200">
-                  <th class="text-left py-3 px-2 text-sm font-medium text-gray-500">Date</th>
-                  <th class="text-left py-3 px-2 text-sm font-medium text-gray-500">Invoice</th>
-                  <th class="text-left py-3 px-2 text-sm font-medium text-gray-500">Description</th>
-                  <th class="text-right py-3 px-2 text-sm font-medium text-gray-500">Amount</th>
-                  <th class="text-center py-3 px-2 text-sm font-medium text-gray-500">Status</th>
+                  <th class="text-left py-3 px-2 text-sm font-medium text-gray-500">{{ t('account.settings.billing.date') }}</th>
+                  <th class="text-left py-3 px-2 text-sm font-medium text-gray-500">{{ t('account.settings.billing.invoice') }}</th>
+                  <th class="text-left py-3 px-2 text-sm font-medium text-gray-500">{{ t('account.settings.billing.description') }}</th>
+                  <th class="text-right py-3 px-2 text-sm font-medium text-gray-500">{{ t('account.settings.billing.amount') }}</th>
+                  <th class="text-center py-3 px-2 text-sm font-medium text-gray-500">{{ t('account.settings.billing.status') }}</th>
                   <th class="text-right py-3 px-2 text-sm font-medium text-gray-500"></th>
                 </tr>
               </thead>
@@ -186,6 +186,7 @@ definePageMeta({
   middleware: ['auth']
 })
 
+const { t } = useI18n()
 const { getIdToken } = useAuth()
 
 // State

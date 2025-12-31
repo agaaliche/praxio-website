@@ -6,29 +6,29 @@
       <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="max-w-3xl">
           <p class="text-primary-600 font-semibold tracking-wide uppercase text-sm mb-4">
-            Healthcare Software, Reimagined
+            {{ t('home.hero.tagline') }}
           </p>
           <h1 class="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-gray-900 leading-[1.1]">
-            One problem.<br />
-            One app.<br />
-            <span class="text-primary-600">Done right.</span>
+            {{ t('home.hero.title1') }}<br />
+            {{ t('home.hero.title2') }}<br />
+            <span class="text-primary-600">{{ t('home.hero.title3') }}</span>
           </h1>
           <p class="mt-8 text-xl text-gray-600 leading-relaxed max-w-2xl">
-            We build small, focused tools for healthcare professionals. No bloat, no complexity — just software that works the way you do.
+            {{ t('home.hero.subtitle') }}
           </p>
           <div class="mt-10 flex flex-wrap gap-4">
             <NuxtLink 
               to="/retroact"
               class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-primary-600 text-white font-semibold hover:bg-primary-700 transition shadow-lg shadow-primary-600/20"
             >
-              See Our Products
+              {{ t('home.hero.seeProducts') }}
               <i class="fa-solid fa-arrow-right ml-2"></i>
             </NuxtLink>
             <NuxtLink 
               to="/about"
               class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-gray-100 text-gray-700 font-semibold hover:bg-gray-200 transition"
             >
-              Learn About Us
+              {{ t('home.hero.learnAbout') }}
             </NuxtLink>
           </div>
         </div>
@@ -40,10 +40,10 @@
       <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
           <h2 class="text-3xl md:text-4xl font-display font-bold">
-            We're not building the next EHR
+            {{ t('home.manifesto.title') }}
           </h2>
           <p class="mt-4 text-xl text-gray-400">
-            And that's exactly the point.
+            {{ t('home.manifesto.subtitle') }}
           </p>
         </div>
         
@@ -52,9 +52,9 @@
             <div class="w-16 h-16 bg-amber-500/10 border border-amber-500/30 rounded-2xl flex items-center justify-center mx-auto mb-5">
               <i class="fa-duotone fa-hands-bound text-2xl text-amber-400"></i>
             </div>
-            <h3 class="font-bold text-lg mb-2">No vendor lock-in</h3>
+            <h3 class="font-bold text-lg mb-2">{{ t('home.manifesto.noLockIn.title') }}</h3>
             <p class="text-gray-400 text-sm">
-              Month-to-month billing. Backup all your data to .csv anytime. You're always in control.
+              {{ t('home.manifesto.noLockIn.description') }}
             </p>
           </div>
           
@@ -62,9 +62,9 @@
             <div class="w-16 h-16 bg-red-50 border border-red-600 rounded-2xl flex items-center justify-center mx-auto mb-5">
               <i class="fa-duotone fa-bullseye-arrow text-2xl text-red-600"></i>
             </div>
-            <h3 class="font-bold text-lg mb-2">No fluff</h3>
+            <h3 class="font-bold text-lg mb-2">{{ t('home.manifesto.noFluff.title') }}</h3>
             <p class="text-gray-400 text-sm">
-              Clinician-built, clinician-approved. Every feature follows your natural workflow — no learning curve.
+              {{ t('home.manifesto.noFluff.description') }}
             </p>
           </div>
           
@@ -72,9 +72,9 @@
             <div class="w-16 h-16 bg-emerald-500/10 border border-emerald-500/30 rounded-2xl flex items-center justify-center mx-auto mb-5">
               <i class="fa-duotone fa-sack-dollar text-2xl text-emerald-400"></i>
             </div>
-            <h3 class="font-bold text-lg mb-2">Affordable</h3>
+            <h3 class="font-bold text-lg mb-2">{{ t('home.manifesto.affordable.title') }}</h3>
             <p class="text-gray-400 text-sm">
-              No sticker shock here. We build lean, we price fair, and we pass the savings to you.
+              {{ t('home.manifesto.affordable.description') }}
             </p>
           </div>
         </div>
@@ -91,49 +91,48 @@
               <i class="fa-kit-duotone fa-logo text-primary-600 text-4xl md:text-5xl"></i>
             </h2>
             <p class="text-lg text-primary-600 font-medium mb-4">
-              INR Management for Pharmacies, Labs & Clinics
+              {{ t('home.featured.subtitle') }}
             </p>
             <p class="text-lg text-gray-600 mb-6 leading-relaxed">
-              Everything you need to manage anticoagulant therapy — patient tracking, dose adjustments, PDF prescriptions, and smart scheduling — in one clean interface.
+              {{ t('home.featured.description') }}
             </p>
             
             <div class="flex flex-wrap gap-3 mb-8">
               <span class="inline-flex items-center px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg text-sm">
                 <i class="fa-duotone fa-users-medical text-primary-500 mr-2"></i>
-                Patient Management
+                {{ t('home.featured.patientManagement') }}
               </span>
               <span class="inline-flex items-center px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg text-sm">
                 <i class="fa-duotone fa-prescription-bottle-pill text-primary-500 mr-2"></i>
-                Dose Management
+                {{ t('home.featured.doseManagement') }}
               </span>
               <span class="inline-flex items-center px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg text-sm">
                 <i class="fa-duotone fa-file-pdf text-primary-500 mr-2"></i>
-                PDF Prescriptions
+                {{ t('home.featured.pdfPrescriptions') }}
               </span>
               <span class="inline-flex items-center px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg text-sm">
                 <i class="fa-duotone fa-calendar-day text-primary-500 mr-2"></i>
-                Scheduling
+                {{ t('home.featured.scheduling') }}
               </span>
               <span class="inline-flex items-center px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg text-sm">
                 <i class="fa-duotone fa-sparkles text-primary-500 mr-2"></i>
-                AI Insights
+                {{ t('home.featured.aiInsights') }}
               </span>
             </div>
 
             <div class="flex flex-wrap gap-4">
-              <a 
-                href="https://retroact.app" 
-                target="_blank"
+              <NuxtLink 
+                to="/pricing"
                 class="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-primary-600 text-white font-semibold hover:bg-primary-700 transition shadow-lg shadow-primary-600/20"
               >
-                Try It Free
-                <i class="fa-solid fa-arrow-up-right-from-square ml-2"></i>
-              </a>
+                {{ t('home.featured.tryItFree') }}
+                <i class="fa-solid fa-arrow-right ml-2"></i>
+              </NuxtLink>
               <NuxtLink 
                 to="/retroact" 
                 class="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-gray-100 text-gray-700 font-semibold hover:bg-gray-200 transition"
               >
-                See All Features
+                {{ t('home.featured.seeAllFeatures') }}
                 <i class="fa-solid fa-arrow-right ml-2"></i>
               </NuxtLink>
             </div>
@@ -147,10 +146,10 @@
       <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
           <h2 class="text-3xl md:text-4xl font-display font-bold text-gray-900">
-            Built different, on purpose
+            {{ t('home.difference.title') }}
           </h2>
           <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
-            We questioned everything about how healthcare software is made.
+            {{ t('home.difference.subtitle') }}
           </p>
         </div>
 
@@ -162,9 +161,9 @@
                 <i class="fa-duotone fa-user-doctor text-3xl text-sky-600"></i>
               </div>
               <div>
-                <h3 class="text-xl font-bold text-gray-900 mb-2">Built for teams</h3>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">{{ t('home.difference.cards.teams.title') }}</h3>
                 <p class="text-gray-600">
-                  Add team members with view or edit access in seconds.
+                  {{ t('home.difference.cards.teams.description') }}
                 </p>
               </div>
             </div>
@@ -177,9 +176,9 @@
                 <i class="fa-duotone fa-dollar-sign text-3xl text-amber-600"></i>
               </div>
               <div>
-                <h3 class="text-xl font-bold text-gray-900 mb-2">Affordable</h3>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">{{ t('home.difference.cards.affordable.title') }}</h3>
                 <p class="text-gray-600">
-                  One price, everything included. No per-user fees.
+                  {{ t('home.difference.cards.affordable.description') }}
                 </p>
               </div>
             </div>
@@ -192,9 +191,9 @@
                 <i class="fa-duotone fa-door-open text-3xl text-violet-600"></i>
               </div>
               <div>
-                <h3 class="text-xl font-bold text-gray-900 mb-2">Leave anytime</h3>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">{{ t('home.difference.cards.freedom.title') }}</h3>
                 <p class="text-gray-600">
-                  No mandatory commitment, no lock-in. Export your data and cancel whenever you want with a monthly subscription.
+                  {{ t('home.difference.cards.freedom.description') }}
                 </p>
               </div>
             </div>
@@ -207,9 +206,9 @@
                 <i class="fa-duotone fa-phone-volume text-3xl text-emerald-600"></i>
               </div>
               <div>
-                <h3 class="text-xl font-bold text-gray-900 mb-2">Who needs sales reps?</h3>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">{{ t('home.difference.cards.noSales.title') }}</h3>
                 <p class="text-gray-600">
-                  We skip the demo theater. Sign up, explore, decide for yourself with a <NuxtLink to="/pricing" class="text-primary-600 hover:text-primary-700 underline">free trial</NuxtLink>.
+                  {{ t('home.difference.cards.noSales.description') }} <NuxtLink to="/pricing" class="text-primary-600 hover:text-primary-700 underline">{{ t('home.difference.cards.noSales.freeTrial') }}</NuxtLink>.
                 </p>
               </div>
             </div>
@@ -225,28 +224,30 @@
           <i class="fa-duotone fa-lightbulb text-3xl text-primary-600"></i>
         </div>
         <h2 class="text-3xl md:text-4xl font-display font-bold text-gray-900">
-          Ready to try something different?
+          {{ t('home.finalCta.title') }}
         </h2>
         <p class="mt-4 text-xl text-gray-600 max-w-2xl mx-auto">
-          Join healthcare professionals who chose focused tools over feature overload.
+          {{ t('home.finalCta.subtitle') }}
         </p>
         <div class="mt-10 flex flex-wrap justify-center gap-4">
-          <a 
-            href="https://retroact.app" 
-            target="_blank"
+          <NuxtLink 
+            to="/pricing"
             class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-primary-600 text-white font-semibold hover:bg-primary-700 transition shadow-lg shadow-primary-600/20"
           >
-            Try Retroact Free
-            <i class="fa-solid fa-arrow-up-right-from-square ml-2"></i>
-          </a>
+            {{ t('home.finalCta.tryFree') }}
+            <i class="fa-solid fa-arrow-right ml-2"></i>
+          </NuxtLink>
           <NuxtLink 
             to="/contact"
             class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-gray-100 text-gray-700 font-semibold hover:bg-gray-200 transition"
           >
-            Get in Touch
+            {{ t('home.finalCta.getInTouch') }}
           </NuxtLink>
         </div>
       </div>
     </section>
   </div>
 </template>
+<script setup>
+const { t } = useI18n()
+</script>

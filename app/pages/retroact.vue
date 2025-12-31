@@ -4,13 +4,13 @@
     <nav class="pt-4 mb-4 md:hidden px-4 sm:px-6 lg:px-8">
       <ol class="flex items-center gap-2 text-sm text-primary-600">
         <li>
-          <NuxtLink to="/" class="hover:text-primary-700 transition">Home</NuxtLink>
+          <NuxtLink to="/" class="hover:text-primary-700 transition">{{ t('common.home') }}</NuxtLink>
         </li>
         <li class="text-primary-400">
           <i class="fa-solid fa-chevron-right text-xs"></i>
         </li>
         <li class="font-medium">
-          Products
+          {{ t('header.products') }}
         </li>
       </ol>
     </nav>
@@ -22,21 +22,21 @@
           to="/pricing" 
           class="inline-flex items-center px-4 py-2 rounded-lg bg-primary-600 text-white text-sm font-semibold hover:bg-primary-700 transition"
         >
-          Start Free Trial
+          {{ t('retroact.hero.startFreeTrial') }}
         </NuxtLink>
         <button 
           @click="scrollToSection('feature-overview')"
           class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-600 hover:text-primary-600 transition"
         >
           <i class="fa-solid fa-grid-2"></i>
-          Feature Overview
+          {{ t('header.featureOverview') }}
         </button>
         <button 
           @click="scrollToSection('in-action')"
           class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-600 hover:text-primary-600 transition"
         >
           <i class="fa-solid fa-play"></i>
-          In Action
+          {{ t('header.inAction') }}
         </button>
       </div>
     </TheSubHeader>
@@ -49,29 +49,28 @@
             <i class="fa-kit-duotone fa-logo text-primary-600"></i>
           </h1>
           <p class="mt-6 text-xl text-gray-600 leading-relaxed">
-            <span class="text-primary-600">INR Management Made Simple.</span> The complete solution for healthcare professionals managing anticoagulant therapy. 
-            See how Retroact simplifies your daily workflow.
+            <span class="text-primary-600">{{ t('retroact.hero.title') }}</span> {{ t('retroact.hero.subtitle') }}
           </p>
           <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
             <NuxtLink 
               to="/pricing" 
               class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-primary-600 text-white font-semibold hover:bg-primary-700 transition shadow-lg"
             >
-              Start Free Trial
+              {{ t('retroact.hero.startFreeTrial') }}
             </NuxtLink>
             <button 
               @click="scrollToSection('feature-overview')"
               class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-white text-primary-600 font-semibold border-2 border-primary-200 hover:border-primary-300 transition"
             >
               <i class="fa-solid fa-grid-2 mr-2"></i>
-              Feature Overview
+              {{ t('header.featureOverview') }}
             </button>
             <button 
               @click="scrollToSection('in-action')"
               class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-white text-primary-600 font-semibold border-2 border-primary-200 hover:border-primary-300 transition"
             >
               <i class="fa-solid fa-play mr-2"></i>
-              In Action
+              {{ t('header.inAction') }}
             </button>
           </div>
         </div>
@@ -83,10 +82,10 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
           <h2 class="text-3xl md:text-4xl font-display font-bold text-gray-900">
-            Dosing Done Right
+            {{ t('retroact.overview.title') }}
           </h2>
           <p class="mt-4 text-xl text-gray-600">
-            Powerful features for consistent dosing decisions
+            {{ t('retroact.overview.subtitle') }}
           </p>
         </div>
 
@@ -112,10 +111,10 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
         <div class="text-center">
           <h2 class="text-3xl md:text-4xl font-display font-bold text-gray-900">
-            See It In Action
+            {{ t('retroact.inAction.title') }}
           </h2>
           <p class="mt-4 text-xl text-gray-600">
-            Explore each feature in detail with interactive demos
+            {{ t('retroact.inAction.subtitle') }}
           </p>
         </div>
       </div>
@@ -256,7 +255,7 @@
                     </svg>
                   </div>
                   <span class="absolute bottom-4 left-4 text-white font-medium bg-black/50 px-3 py-1.5 rounded-full text-sm">
-                    Watch demo
+                    {{ t('retroact.inAction.watchDemo') }}
                   </span>
                 </div>
               </template>
@@ -268,7 +267,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                       </svg>
                     </div>
-                    <p class="text-gray-500">Screenshot coming soon</p>
+                    <p class="text-gray-500">{{ t('retroact.inAction.screenshotSoon') }}</p>
                   </div>
                 </div>
               </template>
@@ -276,13 +275,13 @@
 
             <!-- Description -->
             <p class="text-gray-600 leading-relaxed mb-6">
-              {{ currentFeature.description }}
+              {{ t(currentFeature.description) }}
             </p>
 
             <!-- Feature Points - Horizontal Chips -->
             <div class="flex flex-wrap gap-2">
               <span 
-                v-for="(point, index) in currentFeature.points" 
+                v-for="(point, index) in t(currentFeature.points)" 
                 :key="index" 
                 class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium"
                 :class="[currentFeature.iconBg, currentFeature.iconColor]"
@@ -317,16 +316,16 @@
     <section class="py-20 bg-primary-600">
       <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2 class="text-3xl md:text-4xl font-display font-bold text-white">
-          Join healthcare professionals who work smarter.
+          {{ t('retroact.cta.title') }}
         </h2>
         <p class="mt-4 text-xl text-primary-100">
-          Start your free trial — no credit card required.
+          {{ t('retroact.cta.subtitle') }}
         </p>
         <NuxtLink 
           to="/pricing" 
           class="mt-8 inline-flex items-center justify-center px-8 py-4 rounded-xl bg-white text-primary-600 font-semibold hover:bg-gray-100 transition shadow-lg"
         >
-          Get Started Free
+          {{ t('retroact.cta.button') }}
           <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
           </svg>
@@ -338,6 +337,8 @@
 
 <script setup>
 import { useOverlayScrollbar } from '~/composables/useOverlayScrollbar'
+
+const { t } = useI18n()
 
 useSeoMeta({
   title: 'Retroact - INR Management Software | Praxio',
@@ -503,15 +504,10 @@ const nextFeature = () => {
 const features = [
   {
     id: 'results',
-    title: 'Recording INR Results',
-    shortDesc: 'Quickly add INR measurements with automatic dose suggestions.',
-    description: 'Record INR values in seconds and get intelligent dosage recommendations based on patient history and target range.',
-    points: [
-      'One-click INR entry with date picker',
-      'Automatic dose calculation suggestions',
-      'Visual trend indicators',
-      'Notes and comments for each measurement'
-    ],
+    title: computed(() => t('retroact.features.results.title')),
+    shortDesc: computed(() => t('retroact.features.results.shortDesc')),
+    description: 'retroact.features.results.description',
+    points: 'retroact.features.results.points',
     iconBg: 'bg-primary-100',
     iconColor: 'text-primary-600',
     hasVideo: true,
@@ -519,15 +515,10 @@ const features = [
   },
   {
     id: 'doses',
-    title: 'Dose Management & History',
-    shortDesc: 'Flexible dosing with weekly schedules and one-time adjustments.',
-    description: 'Manage warfarin dosing with ease. Set up recurring weekly schedules or make single-day adjustments when needed. View complete dose history at a glance.',
-    points: [
-      'Weekly recurring dose schedules',
-      'Single-day dose adjustments',
-      'Complete dose history display',
-      'Refill management and reminders'
-    ],
+    title: computed(() => t('retroact.features.doses.title')),
+    shortDesc: computed(() => t('retroact.features.doses.shortDesc')),
+    description: 'retroact.features.doses.description',
+    points: 'retroact.features.doses.points',
     iconBg: 'bg-teal-100',
     iconColor: 'text-teal-600',
     hasVideo: false,
@@ -535,15 +526,10 @@ const features = [
   },
   {
     id: 'prescriptions',
-    title: 'PDF Prescriptions',
-    shortDesc: 'Generate professional prescription documents instantly.',
-    description: 'Create beautiful, print-ready prescription PDFs with weekly dosage calendars that patients can easily follow.',
-    points: [
-      'Professional prescription layout',
-      'Weekly dosage calendar view',
-      'Customizable with your practice info',
-      'Print or share digitally'
-    ],
+    title: computed(() => t('retroact.features.prescriptions.title')),
+    shortDesc: computed(() => t('retroact.features.prescriptions.shortDesc')),
+    description: 'retroact.features.prescriptions.description',
+    points: 'retroact.features.prescriptions.points',
     iconBg: 'bg-secondary-100',
     iconColor: 'text-secondary-600',
     hasVideo: true,
@@ -551,15 +537,10 @@ const features = [
   },
   {
     id: 'appointments',
-    title: 'Scheduling Appointments',
-    shortDesc: 'Never miss a follow-up with integrated scheduling.',
-    description: 'Schedule next INR check appointments directly from the patient record. Get reminders and keep track of upcoming visits.',
-    points: [
-      'Quick appointment scheduling',
-      'Calendar integration',
-      'Automatic reminders',
-      'Appointment history tracking'
-    ],
+    title: computed(() => t('retroact.features.appointments.title')),
+    shortDesc: computed(() => t('retroact.features.appointments.shortDesc')),
+    description: 'retroact.features.appointments.description',
+    points: 'retroact.features.appointments.points',
     iconBg: 'bg-amber-100',
     iconColor: 'text-amber-600',
     hasVideo: true,
@@ -567,15 +548,10 @@ const features = [
   },
   {
     id: 'patients',
-    title: 'Patient Management',
-    shortDesc: 'Organize all your patients in one secure place.',
-    description: 'Manage your patient list with powerful search and filtering. Access complete INR history and treatment details instantly.',
-    points: [
-      'Fast patient search',
-      'Complete treatment history',
-      'Target INR range settings',
-      'Patient notes and annotations'
-    ],
+    title: computed(() => t('retroact.features.patients.title')),
+    shortDesc: computed(() => t('retroact.features.patients.shortDesc')),
+    description: 'retroact.features.patients.description',
+    points: 'retroact.features.patients.points',
     iconBg: 'bg-purple-100',
     iconColor: 'text-purple-600',
     hasVideo: true,
@@ -583,15 +559,10 @@ const features = [
   },
   {
     id: 'analytics',
-    title: 'INR Analytics',
-    shortDesc: 'Visualize trends with intuitive charts and graphs.',
-    description: 'See INR trends over time with beautiful charts. Identify patterns and optimize treatment with data-driven insights.',
-    points: [
-      'Interactive INR charts',
-      'Time-in-therapeutic-range metrics',
-      'Trend analysis',
-      'Export data for reports'
-    ],
+    title: computed(() => t('retroact.features.analytics.title')),
+    shortDesc: computed(() => t('retroact.features.analytics.shortDesc')),
+    description: 'retroact.features.analytics.description',
+    points: 'retroact.features.analytics.points',
     iconBg: 'bg-blue-50',
     iconColor: 'text-blue-600',
     hasVideo: false,
@@ -599,15 +570,10 @@ const features = [
   },
   {
     id: 'ai-recommendations',
-    title: 'AI-Powered Recommendations',
-    shortDesc: 'Get intelligent dosage suggestions based on patient data.',
-    description: 'Leverage AI to analyze patient INR history and generate clinical dose recommendations with clear rationale. Save time while ensuring evidence-based decisions.',
-    points: [
-      'AI-generated dose recommendations',
-      'Clear clinical rationale',
-      'Based on TTR and trend analysis',
-      'Comprehensive patient reports'
-    ],
+    title: computed(() => t('retroact.features.aiRecommendations.title')),
+    shortDesc: computed(() => t('retroact.features.aiRecommendations.shortDesc')),
+    description: 'retroact.features.aiRecommendations.description',
+    points: 'retroact.features.aiRecommendations.points',
     iconBg: 'bg-violet-100',
     iconColor: 'text-violet-600',
     hasVideo: false,
@@ -615,15 +581,10 @@ const features = [
   },
   {
     id: 'user-management',
-    title: 'User Management',
-    shortDesc: 'Work as a team with role-based access control.',
-    description: 'Collaborate seamlessly with your team. Add authorized editors or viewers to share patient management while maintaining control over who can do what.',
-    points: [
-      'Role-based access (Owner, Editor, Viewer)',
-      'Invite team members easily',
-      'Granular permission control',
-      'Audit trail of user actions'
-    ],
+    title: computed(() => t('retroact.features.userManagement.title')),
+    shortDesc: computed(() => t('retroact.features.userManagement.shortDesc')),
+    description: 'retroact.features.userManagement.description',
+    points: 'retroact.features.userManagement.points',
     iconBg: 'bg-red-50',
     iconColor: 'text-red-600',
     hasVideo: false,
@@ -631,15 +592,10 @@ const features = [
   },
   {
     id: 'notes',
-    title: 'Unified Notes Manager',
-    shortDesc: 'AI-ready clinical notes in one organized place.',
-    description: 'Keep all your clinical notes structured and accessible. Built for the age of AI, your notes become a powerful data container that powers intelligent recommendations.',
-    points: [
-      'Centralized notes for all patient data',
-      'Structured format for AI analysis',
-      'Quick note entry from any screen',
-      'Searchable note history'
-    ],
+    title: computed(() => t('retroact.features.notes.title')),
+    shortDesc: computed(() => t('retroact.features.notes.shortDesc')),
+    description: 'retroact.features.notes.description',
+    points: 'retroact.features.notes.points',
     iconBg: 'bg-cyan-100',
     iconColor: 'text-cyan-600',
     hasVideo: false,
@@ -647,15 +603,10 @@ const features = [
   },
   {
     id: 'export',
-    title: 'Data Export & Backups',
-    shortDesc: 'Export patient data and create secure backups.',
-    description: 'Take control of your data. Export complete patient records in standard formats and create backups to ensure your valuable clinical data is always safe.',
-    points: [
-      'Export to CSV and PDF formats',
-      'Complete patient data download',
-      'Scheduled automatic backups',
-      'Data portability compliance'
-    ],
+    title: computed(() => t('retroact.features.export.title')),
+    shortDesc: computed(() => t('retroact.features.export.shortDesc')),
+    description: 'retroact.features.export.description',
+    points: 'retroact.features.export.points',
     iconBg: 'bg-slate-100',
     iconColor: 'text-slate-600',
     hasVideo: false,
@@ -663,15 +614,10 @@ const features = [
   },
   {
     id: 'security',
-    title: 'Security & Privacy',
-    shortDesc: 'GDPR compliant with enterprise-grade security.',
-    description: 'Your patients\' data is protected with industry-leading security measures. Fully GDPR compliant for European healthcare providers.',
-    points: [
-      'End-to-end encryption',
-      'GDPR compliance',
-      'Secure authentication',
-      'Regular security audits'
-    ],
+    title: computed(() => t('retroact.features.security.title')),
+    shortDesc: computed(() => t('retroact.features.security.shortDesc')),
+    description: 'retroact.features.security.description',
+    points: 'retroact.features.security.points',
     iconBg: 'bg-green-100',
     iconColor: 'text-green-600',
     hasVideo: false,
@@ -679,15 +625,10 @@ const features = [
   },
   {
     id: 'data-residency',
-    title: 'Data Residency & Compliance',
-    shortDesc: 'Choose where your data is stored with country-specific options.',
-    description: 'Meet local regulatory requirements with country-specific data residency. Your patient data stays within your jurisdiction, ensuring compliance with regional healthcare regulations.',
-    points: [
-      'Country-specific data storage',
-      'Regional compliance support',
-      'Data sovereignty guaranteed',
-      'Multi-region availability'
-    ],
+    title: computed(() => t('retroact.features.dataResidency.title')),
+    shortDesc: computed(() => t('retroact.features.dataResidency.shortDesc')),
+    description: 'retroact.features.dataResidency.description',
+    points: 'retroact.features.dataResidency.points',
     iconBg: 'bg-indigo-100',
     iconColor: 'text-indigo-600',
     hasVideo: false,

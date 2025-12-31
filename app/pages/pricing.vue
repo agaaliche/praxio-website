@@ -4,13 +4,13 @@
     <nav class="pt-4 mb-4 md:hidden px-4 sm:px-6 lg:px-8">
       <ol class="flex items-center gap-2 text-sm text-primary-600">
         <li>
-          <NuxtLink to="/" class="hover:text-primary-700 transition">Home</NuxtLink>
+          <NuxtLink to="/" class="hover:text-primary-700 transition">{{ t('common.home') }}</NuxtLink>
         </li>
         <li class="text-primary-400">
           <i class="fa-solid fa-chevron-right text-xs"></i>
         </li>
         <li class="font-medium">
-          Pricing
+          {{ t('header.plans') }}
         </li>
       </ol>
     </nav>
@@ -18,9 +18,9 @@
     <!-- Hero -->
     <section class="bg-gradient-to-br from-primary-50 to-white pt-8 pb-4">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h1 class="font-display text-4xl md:text-5xl font-bold text-gray-900 mb-2">One Price. Everything Included.</h1>
+        <h1 class="font-display text-4xl md:text-5xl font-bold text-gray-900 mb-2">{{ t('pricing.hero.title') }}</h1>
         <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-          Start your 14-day free trial today.
+          {{ t('pricing.hero.subtitle') }}
         </p>
       </div>
     </section>
@@ -33,10 +33,10 @@
             <i class="fa-regular fa-circle-check text-primary-600 text-xl shrink-0"></i>
             <div>
               <p class="font-medium text-gray-900 text-sm sm:text-base">
-                You're currently on the <strong>{{ currentPlanName }}</strong> plan
+                {{ t('pricing.currentPlan.youreOn') }} <strong>{{ currentPlanName }}</strong><span v-if="locale === 'en'"> plan</span>
               </p>
               <p v-if="currentSubscription.nextBillingDate && (isOnTrial || currentSubscription.status === 'active')" class="text-xs sm:text-sm text-gray-600">
-                {{ isOnTrial ? 'Trial ends' : 'Next billing' }}: {{ formatDate(currentSubscription.nextBillingDate) }}
+                {{ isOnTrial ? t('pricing.currentPlan.trialEnds') : t('pricing.currentPlan.nextBilling') }}: {{ formatDate(currentSubscription.nextBillingDate) }}
               </p>
             </div>
           </div>
@@ -45,7 +45,7 @@
             class="text-primary-600 hover:text-primary-700 font-medium text-sm flex items-center gap-1 ml-8 sm:ml-0"
           >
             <i class="fa-regular fa-gear"></i>
-            Manage
+            {{ t('pricing.currentPlan.manage') }}
           </NuxtLink>
         </div>
       </div>
@@ -67,43 +67,43 @@
                 'px-4 py-1 rounded-full text-sm font-medium',
                 isTrialDisabled ? 'bg-gray-400 text-white' : 'bg-green-500 text-white'
               ]">
-                <i class="fa-regular fa-gift mr-1"></i> Free
+                <i class="fa-regular fa-gift mr-1"></i> {{ t('pricing.freeTrial.badge') }}
               </span>
             </div>
-            <h3 class="font-display text-2xl font-bold text-gray-900 mb-2 mt-2">Free Trial</h3>
-            <p class="text-gray-600 mb-6">No credit card required</p>
+            <h3 class="font-display text-2xl font-bold text-gray-900 mb-2 mt-2">{{ t('pricing.freeTrial.title') }}</h3>
+            <p class="text-gray-600 mb-6">{{ t('pricing.freeTrial.subtitle') }}</p>
             <div class="mb-6">
-              <span class="text-4xl font-bold text-green-600">FREE</span>
+              <span class="text-4xl font-bold text-green-600">{{ t('pricing.freeTrial.free') }}</span>
               <div class="text-gray-500 text-sm mt-1">
                 <i class="fa-regular fa-clock mr-1"></i> 
                 <template v-if="isOnTrial">
                   {{ trialDaysLeft }} day{{ trialDaysLeft === 1 ? '' : 's' }} left (ends {{ trialEndFormatted }})
                 </template>
                 <template v-else>
-                  14 days full access
+                  {{ t('pricing.freeTrial.duration') }}
                 </template>
               </div>
             </div>
             <ul class="space-y-4 mb-8">
               <li class="flex items-center">
                 <i class="fa-regular fa-circle-check text-green-500 mr-3"></i>
-                <span class="text-gray-600">Full access for 14 days</span>
+                <span class="text-gray-600">{{ t('pricing.freeTrial.feature1') }}</span>
               </li>
               <li class="flex items-center">
                 <i class="fa-regular fa-circle-check text-green-500 mr-3"></i>
-                <span class="text-gray-600">Unlimited patients</span>
+                <span class="text-gray-600">{{ t('pricing.freeTrial.feature2') }}</span>
               </li>
               <li class="flex items-center">
                 <i class="fa-regular fa-circle-check text-green-500 mr-3"></i>
-                <span class="text-gray-600">All features included</span>
+                <span class="text-gray-600">{{ t('pricing.freeTrial.feature3') }}</span>
               </li>
               <li class="flex items-center">
                 <i class="fa-regular fa-circle-check text-green-500 mr-3"></i>
-                <span class="text-gray-600">No credit card required</span>
+                <span class="text-gray-600">{{ t('pricing.freeTrial.feature4') }}</span>
               </li>
               <li class="flex items-center">
                 <i class="fa-regular fa-circle-check text-green-500 mr-3"></i>
-                <span class="text-gray-600">Upgrade anytime</span>
+                <span class="text-gray-600">{{ t('pricing.freeTrial.feature5') }}</span>
               </li>
             </ul>
             <div class="mt-auto">
@@ -113,7 +113,7 @@
               class="w-full text-center bg-gray-300 text-gray-500 px-6 py-3 rounded-lg font-semibold cursor-not-allowed flex items-center justify-center gap-2"
             >
               <i class="fa-regular fa-circle-check"></i>
-              {{ isOnTrial ? 'Current Plan' : (isTrialExpired ? 'Trial Expired' : 'Not Available') }}
+              {{ isOnTrial ? t('pricing.monthly.badge') : (isTrialExpired ? t('pricing.freeTrial.trialExpired') : t('pricing.freeTrial.notAvailable')) }}
             </button>
             <button 
               v-else
@@ -123,7 +123,7 @@
             >
               <SpinnerIcon v-if="trialLoading" class="mr-2" />
               <i v-else class="fa-regular fa-play mr-2"></i>
-              {{ trialLoading ? 'Starting...' : 'Start Free Trial' }}
+              {{ trialLoading ? t('pricing.freeTrial.starting') : t('pricing.freeTrial.startTrial') }}
             </button>
             </div>
           </div>
@@ -136,32 +136,32 @@
             <!-- Current Plan Badge -->
             <div v-if="isOnMonthly" class="absolute -top-[14px] left-1/2 transform -translate-x-1/2">
               <span class="bg-primary-600 text-white px-4 py-1 rounded-full text-sm font-medium">
-                <i class="fa-regular fa-circle-check mr-1"></i> Current Plan
+                <i class="fa-regular fa-circle-check mr-1"></i> {{ t('pricing.monthly.badge') }}
               </span>
             </div>
-            <h3 class="font-display text-2xl font-bold text-gray-900 mb-2" :class="{ 'mt-2': isOnMonthly }">Monthly Flex</h3>
-            <p class="text-gray-600 mb-6">No commitment</p>
+            <h3 class="font-display text-2xl font-bold text-gray-900 mb-2" :class="{ 'mt-2': isOnMonthly }">{{ t('pricing.monthly.title') }}</h3>
+            <p class="text-gray-600 mb-6">{{ t('pricing.monthly.subtitle') }}</p>
             <div class="mb-6">
-              <span class="text-4xl font-bold text-gray-900">$45</span>
-              <span class="text-gray-600">/month</span>
-              <div class="text-gray-500 text-sm mt-1">CAD · Cancel anytime</div>
+              <span class="text-4xl font-bold text-gray-900">{{ t('pricing.monthly.price') }}</span>
+              <span class="text-gray-600">{{ t('pricing.monthly.perMonth') }}</span>
+              <div class="text-gray-500 text-sm mt-1">{{ t('pricing.monthly.details') }}</div>
             </div>
             <ul class="space-y-4 mb-8">
               <li class="flex items-center">
                 <i class="fa-regular fa-circle-check text-primary-500 mr-3"></i>
-                <span class="text-gray-600">Unlimited patients</span>
+                <span class="text-gray-600">{{ t('pricing.monthly.feature1') }}</span>
               </li>
               <li class="flex items-center">
                 <i class="fa-regular fa-circle-check text-primary-500 mr-3"></i>
-                <span class="text-gray-600">All features included</span>
+                <span class="text-gray-600">{{ t('pricing.monthly.feature2') }}</span>
               </li>
               <li class="flex items-center">
                 <i class="fa-regular fa-circle-check text-primary-500 mr-3"></i>
-                <span class="text-gray-600">Email & chat support</span>
+                <span class="text-gray-600">{{ t('pricing.monthly.feature3') }}</span>
               </li>
               <li class="flex items-center">
                 <i class="fa-regular fa-circle-check text-primary-500 mr-3"></i>
-                <span class="text-gray-600">Cancel anytime</span>
+                <span class="text-gray-600">{{ t('pricing.monthly.feature4') }}</span>
               </li>
             </ul>
             <div class="mt-auto">
@@ -171,7 +171,7 @@
               class="w-full text-center bg-gray-300 text-gray-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-400 transition flex items-center justify-center gap-2"
             >
               <i class="fa-regular fa-circle-check"></i>
-              Current Plan
+              {{ t('pricing.monthly.currentPlanButton') }}
             </NuxtLink>
             <button 
               v-else
@@ -180,7 +180,7 @@
               class="w-full text-center bg-white text-gray-700 border border-gray-300 px-6 py-3 rounded-lg font-semibold hover:bg-gray-50 transition disabled:opacity-50 flex items-center justify-center gap-2"
             >
               <SpinnerIcon v-if="checkoutLoading === 'monthly_flex'" />
-              Get Started
+              {{ t('pricing.monthly.subscribe') }}
             </button>
             </div>
           </div>
@@ -192,37 +192,37 @@
           ]">
             <div class="absolute -top-[14px] left-1/2 transform -translate-x-1/2">
               <span v-if="isOnAnnual" class="bg-primary-600 text-white px-4 py-1 rounded-full text-sm font-medium">
-                <i class="fa-regular fa-circle-check mr-1"></i> Current Plan
+                <i class="fa-regular fa-circle-check mr-1"></i> {{ t('pricing.monthly.badge') }}
               </span>
               <span v-else class="bg-secondary-500 text-white px-4 py-1 rounded-full text-sm font-medium">
-                <i class="fa-solid fa-star mr-1"></i> Best Value
+                <i class="fa-solid fa-star mr-1"></i> {{ t('pricing.annual.badge') }}
               </span>
             </div>
-            <h3 :class="['font-display text-2xl font-bold mb-2 mt-2', isOnAnnual ? 'text-gray-900' : 'text-white']">Annual Plan</h3>
-            <p :class="['mb-6', isOnAnnual ? 'text-gray-600' : 'text-primary-100']">12-month commitment</p>
+            <h3 :class="['font-display text-2xl font-bold mb-2 mt-2', isOnAnnual ? 'text-gray-900' : 'text-white']">{{ t('pricing.annual.title') }}</h3>
+            <p :class="['mb-6', isOnAnnual ? 'text-gray-600' : 'text-primary-100']">{{ t('pricing.annual.subtitle') }}</p>
             <div class="mb-6">
-              <span :class="['text-4xl font-bold', isOnAnnual ? 'text-gray-900' : 'text-white']">$35</span>
-              <span :class="isOnAnnual ? 'text-gray-600' : 'text-primary-100'">/month</span>
+              <span :class="['text-4xl font-bold', isOnAnnual ? 'text-gray-900' : 'text-white']">{{ t('pricing.annual.price') }}</span>
+              <span :class="isOnAnnual ? 'text-gray-600' : 'text-primary-100'">{{ t('pricing.annual.perMonth') }}</span>
               <div :class="['text-sm mt-1 font-medium', isOnAnnual ? 'text-green-600' : 'text-green-300']">
-                <i class="fa-regular fa-piggy-bank mr-1"></i> Save $120/year (22% off)
+                <i class="fa-regular fa-piggy-bank mr-1"></i> {{ t('pricing.annual.savings') }}
               </div>
             </div>
             <ul class="space-y-4 mb-8">
               <li class="flex items-center">
                 <i :class="['fa-regular fa-circle-check mr-3', isOnAnnual ? 'text-primary-500' : 'text-secondary-400']"></i>
-                <span :class="isOnAnnual ? 'text-gray-600' : 'text-white'">Everything in Monthly Flex</span>
+                <span :class="isOnAnnual ? 'text-gray-600' : 'text-white'">{{ t('pricing.annual.feature1') }}</span>
               </li>
               <li class="flex items-center">
                 <i :class="['fa-regular fa-circle-check mr-3', isOnAnnual ? 'text-primary-500' : 'text-secondary-400']"></i>
-                <span :class="isOnAnnual ? 'text-gray-600' : 'text-white'">Priority support</span>
+                <span :class="isOnAnnual ? 'text-gray-600' : 'text-white'">{{ t('pricing.annual.feature2') }}</span>
               </li>
               <li class="flex items-center">
                 <i :class="['fa-regular fa-circle-check mr-3', isOnAnnual ? 'text-primary-500' : 'text-secondary-400']"></i>
-                <span :class="isOnAnnual ? 'text-gray-600' : 'text-white'">Best value – Save $10/month</span>
+                <span :class="isOnAnnual ? 'text-gray-600' : 'text-white'">{{ t('pricing.annual.feature3') }}</span>
               </li>
               <li class="flex items-center">
                 <i :class="['fa-regular fa-circle-check mr-3', isOnAnnual ? 'text-primary-500' : 'text-secondary-400']"></i>
-                <span :class="isOnAnnual ? 'text-gray-600' : 'text-white'">Locked-in pricing</span>
+                <span :class="isOnAnnual ? 'text-gray-600' : 'text-white'">{{ t('pricing.annual.feature4') }}</span>
               </li>
             </ul>
             
@@ -234,7 +234,7 @@
               class="w-full text-center bg-gray-300 text-gray-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-400 transition flex items-center justify-center gap-2"
             >
               <i class="fa-regular fa-circle-check"></i>
-              Current Plan
+              {{ t('pricing.monthly.currentPlanButton') }}
             </NuxtLink>
             
             <!-- Upgrade from monthly to annual -->
@@ -247,11 +247,11 @@
               <SpinnerIcon v-if="checkoutLoading === 'annual'" />
               <template v-else-if="isScheduledAnnual">
                 <i class="fa-regular fa-calendar-check"></i>
-                Upgrade Scheduled
+                {{ t('pricing.annual.upgradeScheduled') }}
               </template>
               <template v-else>
                 <i class="fa-regular fa-arrow-up"></i>
-                Upgrade to Annual
+                {{ t('pricing.annual.upgradeButton') }}
               </template>
             </button>
             
@@ -264,7 +264,7 @@
             >
               <SpinnerIcon v-if="checkoutLoading === 'annual'" />
               <i v-else class="fa-regular fa-rocket"></i>
-              Get Started
+              {{ t('pricing.annual.subscribe') }}
             </button>
             </div>
           </div>
@@ -320,27 +320,27 @@
 
         <!-- FAQ Section -->
         <div class="mt-20">
-          <h2 class="font-display text-3xl font-bold text-gray-900 text-center mb-10">Frequently Asked Questions</h2>
+          <h2 class="font-display text-3xl font-bold text-gray-900 text-center mb-10">{{ t('pricing.faq.title') }}</h2>
           
           <div class="max-w-3xl mx-auto space-y-4">
             <div class="bg-white rounded-xl shadow border border-gray-100 p-6">
-              <h4 class="font-semibold text-gray-900 mb-2">Can I cancel anytime?</h4>
-              <p class="text-gray-600">Yes! The monthly plan has no commitment and can be canceled anytime. The yearly plan requires a 12-month commitment but offers significant savings.</p>
+              <h4 class="font-semibold text-gray-900 mb-2">{{ t('pricing.faq.q1') }}</h4>
+              <p class="text-gray-600">{{ t('pricing.faq.a1') }}</p>
             </div>
             
             <div class="bg-white rounded-xl shadow border border-gray-100 p-6">
-              <h4 class="font-semibold text-gray-900 mb-2">What happens after the trial?</h4>
-              <p class="text-gray-600">After your 14-day free trial, you'll need to choose a plan to continue. You'll receive a reminder email before your trial ends.</p>
+              <h4 class="font-semibold text-gray-900 mb-2">{{ t('pricing.faq.q2') }}</h4>
+              <p class="text-gray-600">{{ t('pricing.faq.a2') }}</p>
             </div>
             
             <div class="bg-white rounded-xl shadow border border-gray-100 p-6">
-              <h4 class="font-semibold text-gray-900 mb-2">Can I switch plans later?</h4>
-              <p class="text-gray-600">Yes! You can upgrade from monthly to annual at any time. The annual plan will start at the end of your current billing cycle.</p>
+              <h4 class="font-semibold text-gray-900 mb-2">{{ t('pricing.faq.q3') }}</h4>
+              <p class="text-gray-600">{{ t('pricing.faq.a3') }}</p>
             </div>
             
             <div class="bg-white rounded-xl shadow border border-gray-100 p-6">
-              <h4 class="font-semibold text-gray-900 mb-2">Is there a patient limit?</h4>
-              <p class="text-gray-600">No! Both paid plans include unlimited patient records and tracking.</p>
+              <h4 class="font-semibold text-gray-900 mb-2">{{ t('pricing.faq.q4') }}</h4>
+              <p class="text-gray-600">{{ t('pricing.faq.a4') }}</p>
             </div>
           </div>
         </div>
@@ -348,7 +348,7 @@
         <!-- Contact Link -->
         <div class="text-center mt-12">
           <p class="text-gray-600">
-            Questions? <NuxtLink to="/contact" class="text-primary-600 font-semibold hover:text-primary-700">Contact us</NuxtLink>
+            {{ t('pricing.contact.questions') }} <NuxtLink to="/contact" class="text-primary-600 font-semibold hover:text-primary-700">{{ t('pricing.contact.contactUs') }}</NuxtLink>
           </p>
         </div>
       </div>
@@ -361,27 +361,32 @@
         <div class="relative bg-white rounded-2xl shadow-xl max-w-md w-full mx-4 p-6">
           <h3 class="text-xl font-bold text-gray-900 mb-4">
             <i class="fa-regular fa-arrow-up text-primary-600 mr-2"></i>
-            Upgrade to Annual Plan
+            {{ t('pricing.upgradeModal.title') }}
           </h3>
           
           <div class="bg-blue-50 border border-blue-600 rounded-lg p-4 mb-6">
             <p class="text-gray-700">
               <i class="fa-regular fa-info-circle text-blue-600 mr-2"></i>
-              Your <strong>Annual Plan</strong> will start on <strong>{{ formatDate(currentSubscription?.nextBillingDate) }}</strong>, 
-              at the end of your current billing cycle.
+              <template v-if="locale === 'en'">
+                Your <strong>Annual Plan</strong> will start on <strong>{{ formatDate(currentSubscription?.nextBillingDate) }}</strong>, 
+                at the end of your current billing cycle.
+              </template>
+              <template v-else>
+                Votre <strong>forfait annuel</strong> commencera le <strong>{{ formatDate(currentSubscription?.nextBillingDate) }}</strong>, à la fin de votre cycle de facturation actuel.
+              </template>
             </p>
             <p class="text-sm text-gray-600 mt-2">
-              You can cancel this scheduled change anytime before it takes effect.
+              {{ t('pricing.upgradeModal.cancelNote') }}
             </p>
           </div>
 
           <div class="bg-gray-50 rounded-lg p-4 mb-6">
             <div class="flex justify-between items-center">
-              <span class="text-gray-600">New rate</span>
+              <span class="text-gray-600">{{ t('pricing.upgradeModal.newRate') }}</span>
               <span class="font-bold text-gray-900">$35 CAD/month</span>
             </div>
             <div class="flex justify-between items-center mt-2">
-              <span class="text-gray-600">Annual savings</span>
+              <span class="text-gray-600">{{ t('pricing.upgradeModal.annualSavings') }}</span>
               <span class="font-bold text-green-600">$120/year</span>
             </div>
           </div>
@@ -391,7 +396,7 @@
               @click="showUpgradeConfirm = false"
               class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition"
             >
-              Cancel
+              {{ t('common.cancel') }}
             </button>
             <button 
               @click="handleScheduleUpgrade"
@@ -400,7 +405,7 @@
             >
               <SpinnerIcon v-if="upgradeLoading" />
               <i v-else class="fa-regular fa-circle-check"></i>
-              Confirm Upgrade
+              {{ t('pricing.upgradeModal.confirmButton') }}
             </button>
           </div>
         </div>
@@ -413,6 +418,7 @@
 import { useAuth } from '~/composables/useAuth'
 import { showNotification } from '~/stores/notification'
 
+const { t, locale } = useI18n()
 const { user, getIdToken } = useAuth()
 const { refreshSubscription } = useSubscription()
 const router = useRouter()
@@ -516,10 +522,10 @@ const isMonthlyDisabled = computed(() => {
 })
 
 const currentPlanName = computed(() => {
-  if (isOnAnnual.value) return 'Annual'
-  if (isOnMonthly.value) return 'Monthly Flex'
-  if (isOnTrial.value) return 'Free Trial'
-  return 'No Plan'
+  if (isOnAnnual.value) return t('pricing.currentPlan.annual')
+  if (isOnMonthly.value) return t('pricing.currentPlan.monthlyFlex')
+  if (isOnTrial.value) return t('pricing.currentPlan.freeTrial')
+  return t('pricing.currentPlan.noPlan')
 })
 
 // Methods
@@ -577,7 +583,7 @@ async function handleSubscribe(planId: 'monthly_flex' | 'annual') {
     window.location.href = response.url
   } catch (err: any) {
     console.error('Checkout error:', err)
-    error.value = err.data?.message || 'Failed to start checkout. Please try again.'
+    error.value = err.data?.message || t('messages.errors.checkoutFailed')
     checkoutLoading.value = null
   }
 }
@@ -601,7 +607,7 @@ async function handleScheduleUpgrade() {
     window.location.href = '/account/settings/subscription'
   } catch (err: any) {
     console.error('Schedule upgrade error:', err)
-    error.value = err.data?.message || 'Failed to schedule upgrade. Please try again.'
+    error.value = err.data?.message || t('messages.errors.upgradeScheduleFailed')
     upgradeLoading.value = false
   }
 }
@@ -625,7 +631,7 @@ async function startTrial() {
 
     if (response.success) {
       // Show success notification at top center
-      showNotification('Your 14-day free trial has started! Enjoy full access to all features.', 'success', 5000)
+      showNotification(t('messages.success.trialStarted'), 'success', 5000)
       // Force refresh global subscription state so tabs update
       await refreshSubscription()
       // Small delay to ensure state propagates
@@ -635,7 +641,7 @@ async function startTrial() {
     }
   } catch (err: any) {
     console.error('Start trial error:', err)
-    error.value = err.data?.message || 'Failed to start trial. Please try again.'
+    error.value = err.data?.message || t('messages.errors.startTrialFailed')
   } finally {
     trialLoading.value = false
   }
@@ -648,7 +654,7 @@ onMounted(async () => {
   
   const urlParams = new URLSearchParams(window.location.search)
   if (urlParams.get('canceled') === 'true') {
-    error.value = 'Checkout was canceled. You can try again when ready.'
+    error.value = t('messages.errors.checkoutCanceled')
     window.history.replaceState({}, '', '/pricing')
   }
 })
