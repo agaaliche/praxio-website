@@ -71,28 +71,35 @@
       <template v-if="isAccountOwner">
       <!-- Current Plan - show if has subscription (active, canceling, or trialing) -->
       <div v-if="hasActiveSubscription" class="bg-white rounded-xl border border-gray-200 p-6 mb-6">
-        <div class="flex items-start justify-between">
+        <div class="flex items-center justify-between mb-6">
           <div>
-            <h2 class="text-lg font-bold text-gray-900">Current Plan</h2>
+            <div class="flex items-center gap-3">
+              <h2 class="text-lg font-bold text-gray-900">Current Plan</h2>
+              <span :class="statusBadgeClass" class="md:hidden">
+                {{ statusLabel }}
+              </span>
+            </div>
             <p class="text-gray-500">Your subscription details</p>
           </div>
-          <span :class="statusBadgeClass">
+          <span :class="statusBadgeClass" class="hidden md:inline-flex">
             {{ statusLabel }}
           </span>
         </div>
 
-        <div class="mt-6 grid md:grid-cols-3 gap-6">
-          <div>
-            <p class="text-sm text-gray-500">Plan</p>
-            <p class="text-lg font-bold text-gray-900">{{ currentPlanName }}</p>
-          </div>
-          <div v-if="nextBillingDateFormatted">
-            <p class="text-sm text-gray-500">{{ isTrialExpired ? 'Trial Expired' : (isTrialOrNone ? 'Trial Ends' : 'Next Billing Date') }}</p>
-            <p class="text-lg font-bold text-gray-900">{{ nextBillingDateFormatted }}</p>
-          </div>
-          <div>
-            <p class="text-sm text-gray-500">Amount</p>
-            <p class="text-lg font-bold text-gray-900">{{ planAmount }}</p>
+        <div class="grid gap-6">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div>
+              <p class="text-sm text-gray-500">Plan</p>
+              <p class="text-lg font-bold text-gray-900">{{ currentPlanName }}</p>
+            </div>
+            <div v-if="nextBillingDateFormatted">
+              <p class="text-sm text-gray-500">{{ isTrialExpired ? 'Trial Expired' : (isTrialOrNone ? 'Trial Ends' : 'Next Billing Date') }}</p>
+              <p class="text-lg font-bold text-gray-900 whitespace-nowrap">{{ nextBillingDateFormatted }}</p>
+            </div>
+            <div>
+              <p class="text-sm text-gray-500">Amount</p>
+              <p class="text-lg font-bold text-gray-900">{{ planAmount }}</p>
+            </div>
           </div>
         </div>
 
@@ -136,7 +143,7 @@
         
         <!-- Cancellation Notice -->
         <div v-if="isCanceling" class="mt-4 p-4 bg-red-50 border border-red-600 rounded-lg">
-          <div class="flex items-start justify-between gap-4">
+          <div class="flex flex-col gap-4">
             <div class="flex items-start gap-3">
               <i class="fa-solid fa-triangle-exclamation text-red-600 mt-0.5"></i>
               <div>
@@ -147,7 +154,7 @@
             <button 
               @click="reactivateSubscription"
               :disabled="reactivateLoading"
-              class="px-4 py-2 bg-primary-600 text-white font-medium rounded-lg hover:bg-primary-700 transition disabled:opacity-50 flex items-center gap-2 whitespace-nowrap"
+              class="px-4 py-2 bg-primary-600 text-white font-medium rounded-lg hover:bg-primary-700 transition disabled:opacity-50 flex items-center gap-2 justify-center sm:self-start"
             >
               <SpinnerIcon v-if="reactivateLoading" />
               <i v-else class="fa-solid fa-rotate-left"></i>

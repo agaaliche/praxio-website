@@ -42,7 +42,13 @@
 
       <!-- Next Billing Date -->
       <div v-if="hasActiveSubscription" class="bg-white rounded-xl border border-gray-200 p-6 mb-6">
-        <h2 class="text-lg font-bold text-gray-900 mb-4">Next Billing</h2>
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-lg font-bold text-gray-900">Next Billing</h2>
+          <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+            <i class="fa-solid fa-circle-check mr-1"></i>
+            Active
+          </span>
+        </div>
         <div class="flex items-center gap-4 p-4 bg-primary-50 rounded-lg">
           <div class="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center">
             <i class="fa-regular fa-calendar text-primary-600 text-xl"></i>
@@ -50,12 +56,6 @@
           <div class="flex-1">
             <p class="font-medium text-gray-900">{{ formatBillingDate(subscription?.nextBillingDate) }}</p>
             <p class="text-sm text-gray-600">{{ subscription?.planName || 'Subscription' }} · {{ formatBillingAmount(subscription?.amount, subscription?.currency) }}</p>
-          </div>
-          <div class="text-right">
-            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-              <i class="fa-solid fa-circle-check mr-1"></i>
-              Active
-            </span>
           </div>
         </div>
       </div>
@@ -69,50 +69,98 @@
           <SpinnerIcon size="lg" class="text-primary-600" />
         </div>
         
-        <!-- Invoices table -->
-        <div v-else-if="invoices.length > 0" class="overflow-x-auto">
-          <table class="w-full">
-            <thead>
-              <tr class="border-b border-gray-200">
-                <th class="text-left py-3 px-2 text-sm font-medium text-gray-500">Date</th>
-                <th class="text-left py-3 px-2 text-sm font-medium text-gray-500">Invoice</th>
-                <th class="text-left py-3 px-2 text-sm font-medium text-gray-500">Description</th>
-                <th class="text-right py-3 px-2 text-sm font-medium text-gray-500">Amount</th>
-                <th class="text-center py-3 px-2 text-sm font-medium text-gray-500">Status</th>
-                <th class="text-right py-3 px-2 text-sm font-medium text-gray-500"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="invoice in invoices" :key="invoice.id" class="border-b border-gray-100 hover:bg-gray-50">
-                <td class="py-3 px-2 text-sm text-gray-900">{{ formatDate(invoice.date) }}</td>
-                <td class="py-3 px-2 text-sm text-gray-600">{{ invoice.number || '—' }}</td>
-                <td class="py-3 px-2 text-sm text-gray-600 max-w-xs truncate">{{ invoice.description || 'Subscription' }}</td>
-                <td class="py-3 px-2 text-sm text-gray-900 text-right font-medium">{{ formatAmount(invoice.amount, invoice.currency) }}</td>
-                <td class="py-3 px-2 text-center">
-                  <span 
-                    :class="[
-                      'inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium',
-                      getStatusClass(invoice.status)
-                    ]"
-                  >
-                    <i :class="['mr-1 text-[10px]', getStatusIcon(invoice.status)]"></i>
-                    {{ getStatusLabel(invoice.status) }}
-                  </span>
-                </td>
-                <td class="py-3 px-2 text-right">
-                  <a 
-                    v-if="invoice.pdfUrl"
-                    :href="invoice.pdfUrl"
-                    target="_blank"
-                    class="text-primary-600 hover:text-primary-700 text-sm font-medium inline-flex items-center gap-1"
-                  >
-                    <i class="fa-regular fa-file-pdf"></i>
-                    PDF
-                  </a>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <!-- Invoices -->
+        <div v-else-if="invoices.length > 0">
+          <!-- Desktop Table -->
+          <div class="hidden md:block overflow-x-auto">
+            <table class="w-full">
+              <thead>
+                <tr class="border-b border-gray-200">
+                  <th class="text-left py-3 px-2 text-sm font-medium text-gray-500">Date</th>
+                  <th class="text-left py-3 px-2 text-sm font-medium text-gray-500">Invoice</th>
+                  <th class="text-left py-3 px-2 text-sm font-medium text-gray-500">Description</th>
+                  <th class="text-right py-3 px-2 text-sm font-medium text-gray-500">Amount</th>
+                  <th class="text-center py-3 px-2 text-sm font-medium text-gray-500">Status</th>
+                  <th class="text-right py-3 px-2 text-sm font-medium text-gray-500"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="invoice in invoices" :key="invoice.id" class="border-b border-gray-100 hover:bg-gray-50">
+                  <td class="py-3 px-2 text-sm text-gray-900">{{ formatDate(invoice.date) }}</td>
+                  <td class="py-3 px-2 text-sm text-gray-600">{{ invoice.number || '—' }}</td>
+                  <td class="py-3 px-2 text-sm text-gray-600 max-w-xs truncate">{{ invoice.description || 'Subscription' }}</td>
+                  <td class="py-3 px-2 text-sm text-gray-900 text-right font-medium">{{ formatAmount(invoice.amount, invoice.currency) }}</td>
+                  <td class="py-3 px-2 text-center">
+                    <span 
+                      :class="[
+                        'inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium',
+                        getStatusClass(invoice.status)
+                      ]"
+                    >
+                      <i :class="['mr-1 text-[10px]', getStatusIcon(invoice.status)]"></i>
+                      {{ getStatusLabel(invoice.status) }}
+                    </span>
+                  </td>
+                  <td class="py-3 px-2 text-right">
+                    <a 
+                      v-if="invoice.pdfUrl"
+                      :href="invoice.pdfUrl"
+                      target="_blank"
+                      class="text-primary-600 hover:text-primary-700 text-sm font-medium inline-flex items-center gap-1"
+                    >
+                      <i class="fa-regular fa-file-pdf"></i>
+                      PDF
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <!-- Mobile List -->
+          <div class="md:hidden -mx-6">
+          <div 
+            v-for="invoice in invoices" 
+            :key="invoice.id" 
+            class="bg-white p-4 border-b border-gray-200"
+          >
+            <div class="flex items-start justify-between mb-3">
+              <div class="flex-1">
+                <p class="text-sm font-medium text-gray-900">{{ formatDate(invoice.date) }}</p>
+                <p class="text-xs text-gray-500 mt-0.5">{{ invoice.number || '—' }}</p>
+              </div>
+              <span 
+                :class="[
+                  'inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium',
+                  getStatusClass(invoice.status)
+                ]"
+              >
+                <i :class="['mr-1 text-[10px]', getStatusIcon(invoice.status)]"></i>
+                {{ getStatusLabel(invoice.status) }}
+              </span>
+            </div>
+            
+            <div class="space-y-2">
+              <div>
+                <p class="text-sm text-gray-900">{{ invoice.description || 'Subscription' }}</p>
+              </div>
+              
+              <div class="flex justify-end">
+                <p class="text-sm font-medium text-gray-900">{{ formatAmount(invoice.amount, invoice.currency) }}</p>
+              </div>
+            </div>
+            
+            <a 
+              v-if="invoice.pdfUrl"
+              :href="invoice.pdfUrl"
+              target="_blank"
+              class="mt-3 w-full flex items-center justify-center gap-2 px-4 py-2 bg-white border border-gray-200 text-primary-600 hover:bg-primary-50 text-sm font-medium rounded-lg transition"
+            >
+              <i class="fa-regular fa-file-pdf"></i>
+              Download PDF
+            </a>
+          </div>
+        </div>
         </div>
         
         <!-- No invoices -->
