@@ -41,27 +41,33 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     // Server-only config (not exposed to client)
-    dbHost: process.env.DB_HOST || 'localhost',
-    dbUser: process.env.DB_USER || 'root',
-    dbPassword: process.env.DB_PASSWORD || '',
-    dbName: process.env.DB_NAME || 'master',
-    dbPort: process.env.DB_PORT || '3306',
-    dbSocketPath: process.env.DB_SOCKET_PATH || '',
+    // Nuxt automatically loads these from .env.local without process.env
+    dbHost: 'localhost',
+    dbUser: 'root',
+    dbPassword: '',
+    dbName: 'master',
+    dbPort: '3306',
+    dbSocketPath: '',
     
     // Stripe
-    stripeSecretKey: process.env.STRIPE_SECRET_KEY || '',
-    stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET || '',
+    stripeSecretKey: '',
+    stripeWebhookSecret: '',
+    
+    // SSO
+    ssoSecret: '',
+    jwtSecret: '',
     
     // Email (uses same Firebase Extension as inrManager)
-    useFirebaseEmail: process.env.USE_FIREBASE_EMAIL || 'false',
-    firebaseServiceAccount: process.env.FIREBASE_SERVICE_ACCOUNT || '',
-    siteUrl: process.env.SITE_URL || 'http://localhost:3000',
+    useFirebaseEmail: 'false',
+    firebaseServiceAccount: '',
+    siteUrl: 'http://localhost:3000',
     
     // Public config (exposed to client)
     public: {
       apiUrl: process.env.NUXT_PUBLIC_API_URL || 'https://inr-backend-pq7nv4e3fq-uk.a.run.app',
       stripePublishableKey: process.env.STRIPE_PUBLISHABLE_KEY || '',
-      siteUrl: process.env.SITE_URL || 'http://localhost:3000'
+      siteUrl: process.env.SITE_URL || 'http://localhost:3000',
+      retroactUrl: process.env.RETROACT_URL || 'http://localhost:8081'
     }
   }
 })

@@ -252,7 +252,8 @@ export function useAuth() {
       // Use hidden iframe to trigger retroact logout without redirecting
       if (typeof window !== 'undefined') {
         try {
-          const retroactLogoutUrl = 'http://localhost:8081/sso-logout'
+          const config = useRuntimeConfig()
+          const retroactLogoutUrl = `${config.public.retroactUrl}/sso-logout`
           const iframe = document.createElement('iframe')
           iframe.style.display = 'none'
           iframe.src = retroactLogoutUrl

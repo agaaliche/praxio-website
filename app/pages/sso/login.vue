@@ -49,8 +49,12 @@ const { isAuthenticated, isLoading, getIdToken, getCurrentUser } = useAuth()
 const loading = ref(true)
 const error = ref('')
 
+// Get runtime config for retroact URL
+const config = useRuntimeConfig()
+const retroactBaseUrl = config.public.retroactUrl
+
 // Get the intended retroact destination
-const returnUrl = (route.query.returnUrl as string) || 'http://localhost:8081'
+const returnUrl = (route.query.returnUrl as string) || retroactBaseUrl
 const redirectPath = `/sso/login?returnUrl=${encodeURIComponent(returnUrl)}`
 
 onMounted(async () => {
@@ -114,9 +118,9 @@ onMounted(async () => {
     if ((response as any)?.ssoToken) {
       console.log('✅ SSO token generated, redirecting to retroact')
       
-      // Parse returnUrl to get the path
+      // Parse returnUrl to get the host and path
       const retroactUrl = new URL(returnUrl)
-      const retroactAuthUrl = new URL('http://localhost:8081/auth/sso')
+      const retroactAuthUrl = new URL('/auth/sso', retroactUrl.origin)
       retroactAuthUrl.searchParams.set('token', (response as any).ssoToken)
       
       // Add return path if not root
