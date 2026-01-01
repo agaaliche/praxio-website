@@ -33,6 +33,7 @@ gcloud run deploy $SERVICE_NAME `
     --set-env-vars "DB_USER=root" `
     --set-env-vars "DB_NAME=master" `
     --set-env-vars "NODE_ENV=production" `
+    --set-env-vars "RETROACT_URL=https://retroact.app" `
     --min-instances 0 `
     --max-instances 10 `
     --memory 512Mi `
