@@ -85,9 +85,11 @@
         <h2 class="text-xl font-display font-bold text-gray-900 mb-6">{{ t('account.dashboard.yourProducts') }}</h2>
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           <!-- Retroact -->
-          <a
-            href="https://retroact.app"
-            class="bg-white rounded-2xl p-6 border border-gray-200 hover:shadow-lg hover:border-primary-300 transition group"
+          <button
+            @click="handleLaunchRetroact"
+            :disabled="!hasAccess || launchingRetroact"
+            class="bg-white rounded-2xl p-6 border border-gray-200 hover:shadow-lg hover:border-primary-300 transition group text-left w-full"
+            :class="{ 'opacity-50 cursor-not-allowed': !hasAccess || launchingRetroact }"
           >
             <div class="flex items-start justify-between mb-4">
               <i class="fa-kit-duotone fa-logo text-primary-600 text-4xl"></i>
@@ -105,10 +107,16 @@
               {{ t('account.dashboard.retroactDescription') }}
             </p>
             <div class="mt-4 flex items-center text-primary-600 text-sm font-medium">
-              {{ t('account.dashboard.openApp') }}
-              <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+              <span v-if="launchingRetroact">
+                <i class="fa-solid fa-spinner-third fa-spin mr-2"></i>
+                {{ t('account.dashboard.launching') }}
+              </span>
+              <span v-else>
+                {{ t('account.dashboard.openApp') }}
+                <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+              </span>
             </div>
-          </a>
+          </button>
         </div>
       </div>
 
@@ -263,6 +271,7 @@ useHead({
 const { t } = useI18n()
 const { user, isAccountOwner } = useAuth()
 const { subscription, isTrialExpired } = useSubscription()
+const { launchRetroact } = useRetroactSSO()
 
 // Computed display name
 const displayName = computed(() => {
@@ -274,6 +283,27 @@ const patientCount = ref(0)
 const teamCount = ref(0)
 const organizationName = ref('')
 const loading = ref(true)
+const launchingRetroact = ref(false)
+
+// Check if user has access (valid subscription)
+const hasAccess = computed(() => !isTrialExpired.value)
+
+// Handle launching Retroact with SSO
+const handleLaunchRetroact = async () => {
+  console.log('🔵 Retroact button clicked! hasAccess:', hasAccess.value)
+  
+  // Temporarily allow access for testing
+  // if (!hasAccess.value) return
+  
+  launchingRetroact.value = true
+  try {
+    await launchRetroact()
+  } catch (error) {
+    console.error('Failed to launch Retroact:', error)
+  } finally {
+    launchingRetroact.value = false
+  }
+}
 
 // Subscription label and badge
 const subscriptionLabel = computed(() => {

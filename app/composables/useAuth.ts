@@ -248,6 +248,26 @@ export function useAuth() {
         // Ignore if subscription composable not available
       }
       
+      // SSO: Also logout from retroact (service app)
+      // Use hidden iframe to trigger retroact logout without redirecting
+      if (typeof window !== 'undefined') {
+        try {
+          const retroactLogoutUrl = 'http://localhost:8081/sso-logout'
+          const iframe = document.createElement('iframe')
+          iframe.style.display = 'none'
+          iframe.src = retroactLogoutUrl
+          document.body.appendChild(iframe)
+          
+          // Remove iframe after logout completes
+          setTimeout(() => {
+            document.body.removeChild(iframe)
+          }, 2000)
+        } catch (e) {
+          console.log('Could not logout from retroact:', e)
+          // Don't fail praxio logout if retroact logout fails
+        }
+      }
+      
       return { success: true }
     } catch (error: any) {
       return {
