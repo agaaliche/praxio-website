@@ -2,14 +2,27 @@
 // Uses @praxio/messaging templates to generate and send emails
 // Centralized email delivery for all Praxio apps
 
-const admin = require('firebase-admin');
+import admin from 'firebase-admin';
+import { createRequire } from 'module';
+import { fileURLToPath } from 'url';
+import { dirname, resolve } from 'path';
+
+// Create require function for loading CommonJS modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const require = createRequire(import.meta.url);
+
+// Load templates (they are CommonJS modules)
+const templatesPath = resolve(__dirname, '../../../packages/messaging/templates/emails/index.js');
+const templates = require(templatesPath);
+
 const {
   InvitationTemplate,
   CredentialsTemplate,
   VerificationTemplate,
   PasswordResetTemplate,
   EmailChangeTemplate
-} = require('../../../packages/messaging/templates/emails');
+} = templates;
 
 /**
  * Email Service
@@ -130,4 +143,4 @@ class EmailService {
 }
 
 // Export singleton instance
-module.exports = new EmailService();
+export default new EmailService();
