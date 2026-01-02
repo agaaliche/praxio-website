@@ -170,12 +170,12 @@
           <div>
             <h2 class="text-lg font-bold text-gray-900 flex items-center gap-2">
               <i class="fa-regular fa-calendar-clock text-blue-600"></i>
-              Upcoming Plan Change
+              {{ t('account.settings.subscription.upcomingPlanChange') }}
             </h2>
-            <p class="text-gray-500">Scheduled change to your subscription</p>
+            <p class="text-gray-500">{{ t('account.settings.subscription.scheduledChangeDesc') }}</p>
           </div>
           <span class="px-3 py-1 text-sm font-medium rounded-full bg-blue-50 text-blue-600">
-            Scheduled
+            {{ t('account.settings.subscription.scheduled') }}
           </span>
         </div>
 
@@ -185,7 +185,7 @@
             <div>
               <p class="font-bold text-gray-900">{{ scheduledPlanName }}</p>
               <p class="text-sm text-gray-600">
-                Starting <strong>{{ formatDate(subscription.scheduledChangeDate || '') }}</strong>
+                {{ t('account.settings.subscription.starting') }} <strong>{{ formatDate(subscription.scheduledChangeDate || '') }}</strong>
               </p>
             </div>
           </div>
@@ -194,7 +194,7 @@
         <div class="mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <p class="text-sm text-gray-500">
             <i class="fa-regular fa-info-circle mr-1"></i>
-            You can cancel this change before it takes effect
+            {{ t('account.settings.subscription.cancelChangeInfo') }}
           </p>
           <button 
             @click="cancelScheduledChange"
@@ -203,7 +203,7 @@
           >
             <SpinnerIcon v-if="cancelScheduledLoading" />
             <i v-else class="fa-regular fa-xmark"></i>
-            Cancel Change
+            {{ t('account.settings.subscription.cancelChange') }}
           </button>
         </div>
       </div>

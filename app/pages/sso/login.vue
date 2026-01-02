@@ -1,33 +1,26 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-primary-50 to-white flex items-center justify-center py-12 px-4">
-    <div class="max-w-md w-full text-center">
-      <!-- Loading State -->
-      <div v-if="loading" class="bg-white rounded-2xl shadow-xl p-8">
-        <div class="w-16 h-16 border-4 border-primary-200 border-t-primary-600 rounded-full animate-spin mx-auto mb-4"></div>
-        <h2 class="text-xl font-display font-bold text-gray-900 mb-2">
-          Connecting to Retroact...
-        </h2>
-        <p class="text-gray-600">Generating secure access token</p>
-      </div>
-
-      <!-- Error State -->
-      <div v-else-if="error" class="bg-white rounded-2xl shadow-xl p-8">
-        <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-          <i class="fa-solid fa-exclamation-triangle text-red-600 text-2xl"></i>
-        </div>
-        <h2 class="text-xl font-display font-bold text-gray-900 mb-2">
-          Authentication Required
-        </h2>
-        <p class="text-gray-600 mb-6">{{ error }}</p>
-        <NuxtLink 
-          :to="`/signin?redirect=${encodeURIComponent(redirectPath)}`"
-          class="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-primary-600 text-white font-semibold hover:bg-primary-700 transition"
-        >
-          Sign in to Praxio
-        </NuxtLink>
-      </div>
-    </div>
-  </div>
+  <AlertPage 
+    v-if="loading"
+    type="loading"
+    :title="t('auth.sso.connecting')"
+    :message="t('auth.sso.generatingToken')"
+  />
+  
+  <AlertPage 
+    v-else-if="error"
+    type="error"
+    :title="t('auth.sso.required')"
+    :message="error"
+  >
+    <template #action>
+      <NuxtLink 
+        :to="`/signin?redirect=${encodeURIComponent(redirectPath)}`"
+        class="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-primary-600 text-white font-semibold hover:bg-primary-700 transition"
+      >
+        {{ t('auth.sso.signInToPraxio') }}
+      </NuxtLink>
+    </template>
+  </AlertPage>
 </template>
 
 <script setup lang="ts">
@@ -40,10 +33,13 @@
  * - If not authenticated: redirects to praxio signin
  */
 
+import AlertPage from '~/../../packages/messaging/components/alerts/AlertPage.vue'
+
 definePageMeta({
   layout: false
 })
 
+const { t } = useI18n()
 const route = useRoute()
 const { isAuthenticated, isLoading, getIdToken, getCurrentUser } = useAuth()
 const loading = ref(true)
