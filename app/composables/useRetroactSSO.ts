@@ -3,11 +3,8 @@ export const useRetroactSSO = () => {
   const { user } = useAuth()
 
   const getRetroactURL = () => {
-    // Use environment-specific URL
-    if (process.dev || config.public.env === 'development') {
-      return 'http://localhost:8081'
-    }
-    return 'https://retroact.app'
+    // Use runtime config for retroact URL
+    return config.public.retroactUrl
   }
 
   const generateSSOLink = async () => {

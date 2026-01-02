@@ -2,6 +2,7 @@
  * GET /api/sessions/list
  * Get all active sessions for the current user
  */
+import { defineEventHandler, createError, getHeader } from 'h3'
 import { query, queryOne } from '../../utils/database'
 
 export default defineEventHandler(async (event) => {

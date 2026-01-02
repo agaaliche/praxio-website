@@ -2,6 +2,7 @@
  * POST /api/stripe/reactivate-subscription
  * Undo subscription cancellation (set cancel_at_period_end = false)
  */
+import { defineEventHandler, createError } from 'h3'
 import Stripe from 'stripe'
 import { queryOne, execute } from '../../utils/database'
 import { verifyAuth } from '../../utils/auth'

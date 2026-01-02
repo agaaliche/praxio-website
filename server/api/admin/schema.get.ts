@@ -2,6 +2,7 @@
  * GET /api/admin/schema
  * Check database schema (development only)
  */
+import { defineEventHandler, createError } from 'h3'
 import { query } from '../../utils/database'
 
 export default defineEventHandler(async (event) => {

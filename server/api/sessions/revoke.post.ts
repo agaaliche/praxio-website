@@ -2,6 +2,7 @@
  * POST /api/sessions/revoke
  * Revoke a specific session
  */
+import { defineEventHandler, createError, getHeader, readBody } from 'h3'
 import { execute } from '../../utils/database'
 
 export default defineEventHandler(async (event) => {

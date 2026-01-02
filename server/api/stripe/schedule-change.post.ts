@@ -3,6 +3,7 @@
  * Schedule a plan change at the end of the current billing period
  * Used when upgrading from monthly to annual
  */
+import { defineEventHandler, createError, readBody } from 'h3'
 import Stripe from 'stripe'
 import { queryOne, execute } from '../../utils/database'
 import { verifyAuth } from '../../utils/auth'

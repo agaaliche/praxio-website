@@ -2,6 +2,7 @@
  * GET /api/patients
  * Get all patients for the account with their target INR values
  */
+import { defineEventHandler, getQuery, createError } from 'h3'
 import { query } from '../../utils/database'
 import { verifyAuth, getEffectiveAccountOwnerId } from '../../utils/auth'
 

@@ -2,6 +2,7 @@
  * GET /api/patients/:id
  * Get a single patient by ID
  */
+import { defineEventHandler, createError, getRouterParam } from 'h3'
 import { queryOne } from '../../utils/database'
 import { verifyAuth, getEffectiveAccountOwnerId } from '../../utils/auth'
 

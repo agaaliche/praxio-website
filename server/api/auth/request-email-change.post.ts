@@ -3,6 +3,7 @@
  * Request email address change (sends verification to new email)
  * Copied from inrManager/backend/controllers/auth.controller.js
  */
+import { defineEventHandler, createError, readBody } from 'h3'
 import { getFirebaseAdmin } from '../../utils/firebase-admin'
 import { verifyAuth } from '../../utils/auth'
 import { createEmailChangeRequest, initTable } from '../../services/emailChangeService'

@@ -3,6 +3,7 @@
  * Invite a new team member
  * Copied from inrManager/backend/controllers/userManagement.controller.js - inviteUser
  */
+import { defineEventHandler, readBody, createError } from 'h3'
 import { query, queryOne, execute } from '../../utils/database'
 import { verifyAuth, getEffectiveAccountOwnerId, isAccountOwner } from '../../utils/auth'
 import { sendInviteEmail } from '../../utils/email'

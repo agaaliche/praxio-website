@@ -2,6 +2,7 @@
  * GET /api/stripe/invoices
  * Fetch billing history (invoices) from Stripe for the current user
  */
+import { defineEventHandler } from 'h3'
 import Stripe from 'stripe'
 import { queryOne } from '../../utils/database'
 import { verifyAuth } from '../../utils/auth'

@@ -2,6 +2,7 @@
  * GET /api/users/team
  * Get all team members for the account
  */
+import { defineEventHandler, createError } from 'h3'
 import { query } from '../../utils/database'
 import { verifyAuth, getEffectiveAccountOwnerId } from '../../utils/auth'
 

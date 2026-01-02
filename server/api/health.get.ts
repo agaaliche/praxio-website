@@ -2,6 +2,7 @@
  * GET /api/health
  * Health check endpoint - tests database connectivity
  */
+import { defineEventHandler } from 'h3'
 import { query } from '../utils/database'
 
 export default defineEventHandler(async (event) => {

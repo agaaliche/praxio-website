@@ -3,6 +3,7 @@
  * Resend verification email
  * Copied from inrManager/backend/controllers/auth.controller.js - resendVerification
  */
+import { defineEventHandler, createError, readBody } from 'h3'
 import { getFirebaseAdmin } from '../../utils/firebase-admin'
 import { sendVerificationEmail } from '../../services/authEmailService'
 

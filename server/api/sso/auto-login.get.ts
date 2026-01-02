@@ -11,7 +11,8 @@ export default defineEventHandler(async (event) => {
   try {
     // Get the intended retroact destination from query params
     const query = getQuery(event)
-    const retroactUrl = (query.returnUrl as string) || 'http://localhost:8081'
+    const config = useRuntimeConfig()
+    const retroactUrl = (query.returnUrl as string) || config.public.retroactUrl
     
     console.log('🔐 SSO Auto-login requested, returnUrl:', retroactUrl)
     
@@ -69,7 +70,7 @@ export default defineEventHandler(async (event) => {
     console.log('🎫 SSO token generated, redirecting to retroact')
     
     // Redirect to retroact SSO auth page with token and return URL
-    const retroactAuthUrl = new URL('http://localhost:8081/auth/sso')
+    const retroactAuthUrl = new URL('/auth/sso', config.public.retroactUrl)
     retroactAuthUrl.searchParams.set('token', ssoToken)
     
     // Extract the path from retroactUrl to use as return path in retroact

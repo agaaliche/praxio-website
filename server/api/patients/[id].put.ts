@@ -2,6 +2,7 @@
  * PUT /api/patients/:id
  * Update a patient
  */
+import { defineEventHandler, createError, getRouterParam, readBody } from 'h3'
 import { queryOne, transaction } from '../../utils/database'
 import { verifyAuth, getEffectiveAccountOwnerId, canEdit } from '../../utils/auth'
 

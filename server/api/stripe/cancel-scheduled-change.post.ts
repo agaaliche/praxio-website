@@ -2,6 +2,7 @@
  * POST /api/stripe/cancel-scheduled-change
  * Cancel a scheduled plan change before it takes effect
  */
+import { defineEventHandler, createError } from 'h3'
 import Stripe from 'stripe'
 import { queryOne, execute } from '../../utils/database'
 import { verifyAuth } from '../../utils/auth'

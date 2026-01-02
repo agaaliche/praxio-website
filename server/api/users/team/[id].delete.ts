@@ -2,6 +2,7 @@
  * DELETE /api/users/team/:id
  * Remove a team member
  */
+import { defineEventHandler, createError, getRouterParam } from 'h3'
 import { queryOne, execute } from '../../../utils/database'
 import { verifyAuth, getEffectiveAccountOwnerId, isAccountOwner } from '../../../utils/auth'
 

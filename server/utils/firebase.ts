@@ -26,7 +26,8 @@ export function getFirebaseApp(): App | null {
   const config = useRuntimeConfig()
   
   // Option 1: Service account from environment variable (JSON string or base64) - Recommended
-  let serviceAccountJson = config.firebaseServiceAccount
+  // Use direct process.env access since runtimeConfig doesn't load .env.local reliably
+  let serviceAccountJson = process.env.FIREBASE_SERVICE_ACCOUNT || config.firebaseServiceAccount
   
   // Check for base64 encoded version
   if (!serviceAccountJson && process.env.FIREBASE_SERVICE_ACCOUNT_BASE64) {

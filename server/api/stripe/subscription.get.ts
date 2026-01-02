@@ -2,6 +2,7 @@
  * GET /api/stripe/subscription
  * Get current subscription details from Stripe
  */
+import { defineEventHandler } from 'h3'
 import Stripe from 'stripe'
 import { queryOne } from '../../utils/database'
 import { verifyAuth } from '../../utils/auth'

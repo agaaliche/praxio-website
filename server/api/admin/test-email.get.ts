@@ -3,6 +3,7 @@
  * DELETE THIS FILE IN PRODUCTION
  */
 
+import { defineEventHandler, getQuery, createError } from 'h3'
 import { sendInviteEmail } from '../../utils/email'
 
 export default defineEventHandler(async (event) => {

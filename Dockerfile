@@ -1,16 +1,21 @@
 # Praxio Website - Nuxt 3 on Cloud Run
+# Build context must be the parent directory (C:\praxio)
 FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Copy package files
-COPY package*.json ./
+# Copy packages directory (for @praxio/i18n)
+COPY packages ./packages
+
+# Copy website files
+COPY praxio-website/package*.json ./praxio-website/
+WORKDIR /app/praxio-website
 
 # Install dependencies
 RUN npm ci
 
-# Copy source code
-COPY . .
+# Copy website source code
+COPY praxio-website .
 
 # Build the application
 RUN npm run build
@@ -20,9 +25,10 @@ FROM node:20-alpine AS runner
 
 WORKDIR /app
 
-# Copy built output
-COPY --from=builder /app/.output ./.output
-COPY --from=builder /app/package*.json ./
+# Copy built output and dependencies
+COPY --from=builder /app/praxio-website/.output ./.output
+COPY --from=builder /app/praxio-website/package*.json ./
+COPY --from=builder /app/packages ./packages
 
 # Set environment variables
 ENV NODE_ENV=production

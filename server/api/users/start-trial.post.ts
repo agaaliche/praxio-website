@@ -5,7 +5,7 @@
  * Starts a 14-day free trial for the authenticated user.
  * Only available if user has never had a trial before.
  */
-
+import { defineEventHandler, createError } from 'h3'
 import { execute, queryOne } from '../../utils/database'
 import { verifyAuth } from '../../utils/auth'
 import { initializeTrialPeriod } from '../../services/subscription'

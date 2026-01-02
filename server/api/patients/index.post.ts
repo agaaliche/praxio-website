@@ -2,6 +2,7 @@
  * POST /api/patients
  * Create a new patient
  */
+import { defineEventHandler, createError, readBody } from 'h3'
 import { transaction } from '../../utils/database'
 import { verifyAuth, getEffectiveAccountOwnerId, canEdit } from '../../utils/auth'
 

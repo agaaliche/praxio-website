@@ -2,6 +2,7 @@
  * PUT /api/users/profile
  * Update current user's profile (first name, last name, phone)
  */
+import { defineEventHandler, createError, readBody } from 'h3'
 import { execute, queryOne } from '../../utils/database'
 import { verifyAuth, getEffectiveAccountOwnerId } from '../../utils/auth'
 

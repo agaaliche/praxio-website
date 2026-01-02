@@ -4,6 +4,7 @@
  * Copied from inrManager/backend/controllers/userManagement.controller.js - validateMagicLink
  */
 
+import { defineEventHandler, readBody, createError } from 'h3'
 import { queryOne, execute, query } from '../../../utils/database'
 import { validateMagicLinkToken } from '../../../utils/magicLinkService'
 import { getFirebaseApp } from '../../../utils/firebase'
@@ -148,16 +149,16 @@ export default defineEventHandler(async (event) => {
           console.log(`✅ Set password for user (step 2) - email/password auth now enabled`)
           
           firebaseUserCreated = true
-        } catch (createError: any) {
+        } catch (firebaseError: any) {
           // If email already exists, this is an error
-          if (createError.code === 'auth/email-already-exists') {
+          if (firebaseError.code === 'auth/email-already-exists') {
             console.error(`❌ Email ${user.email} already exists in Firebase`)
             throw createError({
               statusCode: 409,
               message: 'This email address already has a Praxio account. Users cannot be added to multiple organizations with the same email address.'
             })
           } else {
-            throw createError
+            throw firebaseError
           }
         }
       } else {

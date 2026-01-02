@@ -2,6 +2,7 @@
  * PUT /api/users/team/:id
  * Update a team member's role
  */
+import { defineEventHandler, readBody, createError, getRouterParam } from 'h3'
 import { queryOne, execute } from '../../../utils/database'
 import { verifyAuth, getEffectiveAccountOwnerId, isAccountOwner } from '../../../utils/auth'
 import { getFirebaseAdmin } from '../../../utils/firebase-admin'

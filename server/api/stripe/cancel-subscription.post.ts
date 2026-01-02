@@ -2,6 +2,7 @@
  * POST /api/stripe/cancel-subscription
  * Cancel subscription at end of billing period (sets cancel_at_period_end = true)
  */
+import { defineEventHandler, createError } from 'h3'
 import Stripe from 'stripe'
 import { queryOne, execute } from '../../utils/database'
 import { verifyAuth } from '../../utils/auth'

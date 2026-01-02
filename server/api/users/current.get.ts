@@ -3,6 +3,7 @@
  * Get current user's profile
  * If user doesn't exist in database, creates a new profile (like inrManager)
  */
+import { defineEventHandler, createError } from 'h3'
 import Stripe from 'stripe'
 import { query, queryOne, execute } from '../../utils/database'
 import { verifyAuth, getEffectiveAccountOwnerId } from '../../utils/auth'

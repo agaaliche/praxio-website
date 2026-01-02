@@ -3,6 +3,7 @@
  * Updates lastActiveTime and checks if session is revoked
  * Auto-creates sessions for existing logged-in users
  */
+import { defineEventHandler, getHeader } from 'h3'
 import { queryOne, execute } from '../utils/database'
 import { randomBytes } from 'crypto'
 

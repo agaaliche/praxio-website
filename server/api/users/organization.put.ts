@@ -2,6 +2,7 @@
  * PUT /api/users/organization
  * Update organization settings (account owner only)
  */
+import { defineEventHandler, createError, readBody } from 'h3'
 import { execute } from '../../utils/database'
 import { verifyAuth } from '../../utils/auth'
 

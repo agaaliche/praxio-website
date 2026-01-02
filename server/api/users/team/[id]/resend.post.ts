@@ -3,6 +3,7 @@
  * Resend invite to a team member
  * Uses same magic link service as inrManager
  */
+import { defineEventHandler, createError, getRouterParam } from 'h3'
 import { queryOne, execute } from '../../../../utils/database'
 import { verifyAuth, getEffectiveAccountOwnerId, isAccountOwner } from '../../../../utils/auth'
 import { sendInviteEmail } from '../../../../utils/email'

@@ -2,6 +2,7 @@
  * DELETE /api/patients/:id
  * Hard delete a patient and related records
  */
+import { defineEventHandler, createError, getRouterParam } from 'h3'
 import { queryOne, execute } from '../../utils/database'
 import { verifyAuth, getEffectiveAccountOwnerId, canEdit } from '../../utils/auth'
 

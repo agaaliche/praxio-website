@@ -2,6 +2,7 @@
  * POST /api/sessions/revoke-all
  * Revoke all sessions except the current one
  */
+import { defineEventHandler, createError, getHeader } from 'h3'
 import { execute } from '../../utils/database'
 
 export default defineEventHandler(async (event) => {

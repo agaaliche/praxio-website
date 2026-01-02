@@ -3,6 +3,7 @@
  * Request password reset email
  * Copied from inrManager/backend/controllers/auth.controller.js - requestPasswordReset
  */
+import { defineEventHandler, createError, readBody } from 'h3'
 import { getFirebaseAdmin } from '../../utils/firebase-admin'
 import { sendPasswordResetEmail } from '../../services/authEmailService'
 

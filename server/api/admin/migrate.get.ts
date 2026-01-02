@@ -2,6 +2,7 @@
  * GET /api/admin/migrate
  * Add missing columns for scheduled subscription changes
  */
+import { defineEventHandler } from 'h3'
 import { execute, query } from '../../utils/database'
 
 export default defineEventHandler(async () => {

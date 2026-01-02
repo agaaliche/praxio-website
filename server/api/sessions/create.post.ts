@@ -2,6 +2,7 @@
  * POST /api/sessions/create
  * Create a new session after successful login
  */
+import { defineEventHandler, createError, getHeader } from 'h3'
 import { execute } from '../../utils/database'
 import { randomBytes } from 'crypto'
 

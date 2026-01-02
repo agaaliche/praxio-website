@@ -64,10 +64,10 @@ export default defineNuxtConfig({
     
     // Public config (exposed to client)
     public: {
-      apiUrl: process.env.NUXT_PUBLIC_API_URL || 'https://inr-backend-pq7nv4e3fq-uk.a.run.app',
-      stripePublishableKey: process.env.STRIPE_PUBLISHABLE_KEY || '',
-      siteUrl: process.env.SITE_URL || 'http://localhost:3000',
-      retroactUrl: process.env.RETROACT_URL || 'http://localhost:8081'
+      apiUrl: 'https://inr-backend-pq7nv4e3fq-uk.a.run.app',
+      stripePublishableKey: '',
+      siteUrl: 'http://localhost:3000',
+      retroactUrl: 'http://localhost:8081'
     }
   }
 })

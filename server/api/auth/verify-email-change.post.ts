@@ -3,6 +3,7 @@
  * Verify email change token and complete the email change
  * Copied from inrManager/backend/controllers/auth.controller.js
  */
+import { defineEventHandler, createError, readBody } from 'h3'
 import { getFirebaseAdmin } from '../../utils/firebase-admin'
 import { execute } from '../../utils/database'
 import { verifyEmailChangeToken, completeEmailChange } from '../../services/emailChangeService'
