@@ -1,146 +1,177 @@
-// Email Service for Praxio
-// Uses @praxio/messaging templates to generate and send emails
-// Centralized email delivery for all Praxio apps
+// Centralized Email Service for Praxio
+// Uses messaging templates to generate and send emails via Firebase
 
 import admin from 'firebase-admin';
-import { createRequire } from 'module';
 import { fileURLToPath } from 'url';
 import { dirname, resolve } from 'path';
+import { createRequire } from 'module';
 
-// Create require function for loading CommonJS modules
+// Get __dirname equivalent in ESM
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
+// Create require function to load CommonJS modules
 const require = createRequire(import.meta.url);
 
-// Load templates (they are CommonJS modules)
+// Resolve path to messaging templates
 const templatesPath = resolve(__dirname, '../../../packages/messaging/templates/emails/index.js');
-const templates = require(templatesPath);
 
-const {
-  InvitationTemplate,
-  CredentialsTemplate,
-  VerificationTemplate,
-  PasswordResetTemplate,
-  EmailChangeTemplate
-} = templates;
-
-/**
- * Email Service
- * Handles email generation and delivery via Firebase Trigger Email Extension
- */
 class EmailService {
   constructor() {
-    // Initialize Firebase Admin if not already done
-    try {
-      this.admin = admin.app();
-    } catch (error) {
-      // App already initialized
-      this.admin = admin;
+    this.db = null;
+    this.templates = null;
+  }
+
+  // Lazy initialization
+  initialize() {
+    if (this.db && this.templates) {
+      return;
+    }
+
+    // Initialize Firebase if needed
+    if (!admin.apps.length) {
+      admin.initializeApp();
     }
     this.db = admin.firestore();
+
+    // Load CommonJS templates using require
+    this.templates = require(templatesPath);
   }
 
   /**
-   * Send an email using a template
-   * @param {string} type - Template type: 'invitation', 'credentials', 'verification', 'passwordReset', 'emailChange'
-   * @param {string} recipient - Email address
+   * Get template instance for email type
+   * @param {string} type - Email type (invitation, credentials, verification, passwordReset, emailChange)
+   * @param {string} locale - Locale code (en, fr)
+   * @returns {Object} Template instance
+   */
+  getTemplate(type, locale = 'en') {
+    this.initialize();
+
+    const {
+      InvitationTemplate,
+      CredentialsTemplate,
+      VerificationTemplate,
+      PasswordResetTemplate,
+      EmailChangeTemplate
+    } = this.templates;
+
+    const templateMap = {
+      invitation: InvitationTemplate,
+      credentials: CredentialsTemplate,
+      verification: VerificationTemplate,
+      passwordReset: PasswordResetTemplate,
+      emailChange: EmailChangeTemplate
+    };
+
+    const TemplateClass = templateMap[type];
+    if (!TemplateClass) {
+      throw new Error(`Unknown email template type: ${type}`);
+    }
+
+    return new TemplateClass(locale);
+  }
+
+  /**
+   * Send email using messaging template
+   * @param {string} type - Email type
+   * @param {string} recipient - Recipient email address
    * @param {Object} data - Template data
-   * @param {string} locale - Language locale ('en' or 'fr')
+   * @param {string} locale - Locale code
+   * @returns {Promise<Object>} Result with success status
    */
   async send(type, recipient, data, locale = 'en') {
+    this.initialize();
+
     try {
-      // Get the appropriate template
+      console.log(`📧 Preparing ${type} email for ${recipient} (${locale})`);
+
+      // Get template and render email
       const template = this.getTemplate(type, locale);
-      
-      // Generate email content
       const html = template.render(data);
       const subject = template.getSubject(data);
       const text = template.getText(data);
 
-      // Send via Firebase Extension
-      const docRef = await this.db.collection('mail').add({
+      // Add email to Firestore mail collection
+      // Firebase Extension will process and send
+      const mailRef = await this.db.collection('mail').add({
         to: recipient,
         message: {
           subject,
-          html,
           text,
-          trackingSettings: {
-            clickTracking: {
-              enable: false // Disable for security/magic links
-            }
-          }
+          html
+        },
+        template: {
+          name: type,
+          data
         }
       });
 
-      console.log(`✅ Email queued: ${type} to ${recipient} (doc: ${docRef.id})`);
-      
+      console.log(`✅ Email queued with ID: ${mailRef.id}`);
+
       return {
         success: true,
-        messageId: docRef.id,
+        emailId: mailRef.id,
         type,
         recipient
       };
     } catch (error) {
-      console.error(`❌ Email error: ${type} to ${recipient}`, error);
+      console.error(`❌ Error sending ${type} email:`, error);
       throw error;
     }
   }
 
   /**
-   * Get template instance for the given type
-   */
-  getTemplate(type, locale) {
-    switch (type) {
-      case 'invitation':
-        return new InvitationTemplate(locale);
-      case 'credentials':
-        return new CredentialsTemplate(locale);
-      case 'verification':
-        return new VerificationTemplate(locale);
-      case 'passwordReset':
-        return new PasswordResetTemplate(locale);
-      case 'emailChange':
-        return new EmailChangeTemplate(locale);
-      default:
-        throw new Error(`Unknown email template type: ${type}`);
-    }
-  }
-
-  /**
    * Send invitation email
+   * @param {string} email - Recipient email
+   * @param {Object} data - { userName, inviteLink, inviterName }
+   * @param {string} locale - Locale code
    */
-  async sendInvitation(recipient, data, locale = 'en') {
-    return this.send('invitation', recipient, data, locale);
+  async sendInvitation(email, data, locale = 'en') {
+    return this.send('invitation', email, data, locale);
   }
 
   /**
    * Send credentials email
+   * @param {string} email - Recipient email
+   * @param {Object} data - { userName, email, temporaryPassword, loginUrl }
+   * @param {string} locale - Locale code
    */
-  async sendCredentials(recipient, data, locale = 'en') {
-    return this.send('credentials', recipient, data, locale);
+  async sendCredentials(email, data, locale = 'en') {
+    return this.send('credentials', email, data, locale);
   }
 
   /**
    * Send verification email
+   * @param {string} email - Recipient email
+   * @param {Object} data - { userName, verificationLink }
+   * @param {string} locale - Locale code
    */
-  async sendVerification(recipient, data, locale = 'en') {
-    return this.send('verification', recipient, data, locale);
+  async sendVerification(email, data, locale = 'en') {
+    return this.send('verification', email, data, locale);
   }
 
   /**
    * Send password reset email
+   * @param {string} email - Recipient email
+   * @param {Object} data - { userName, resetLink }
+   * @param {string} locale - Locale code
    */
-  async sendPasswordReset(recipient, data, locale = 'en') {
-    return this.send('passwordReset', recipient, data, locale);
+  async sendPasswordReset(email, data, locale = 'en') {
+    return this.send('passwordReset', email, data, locale);
   }
 
   /**
    * Send email change confirmation
+   * @param {string} email - Recipient email
+   * @param {Object} data - { userName, verificationLink, newEmail }
+   * @param {string} locale - Locale code
    */
-  async sendEmailChange(recipient, data, locale = 'en') {
-    return this.send('emailChange', recipient, data, locale);
+  async sendEmailChange(email, data, locale = 'en') {
+    return this.send('emailChange', email, data, locale);
   }
 }
 
-// Export singleton instance
-export default new EmailService();
+// Export factory function instead of singleton
+export default function getEmailService() {
+  return new EmailService();
+}

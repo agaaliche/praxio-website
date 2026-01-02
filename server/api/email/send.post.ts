@@ -2,7 +2,7 @@
 // Accepts email requests from Retroact and other services
 // Secured with API key authentication
 
-import emailService from '../../services/emailService';
+import getEmailService from '../../services/emailService';
 
 export default defineEventHandler(async (event) => {
   try {
@@ -55,6 +55,7 @@ export default defineEventHandler(async (event) => {
 
     // Send email
     console.log(`📧 API request: ${type} email to ${recipient} (locale: ${locale})`);
+    const emailService = getEmailService();
     const result = await emailService.send(type, recipient, data, locale);
 
     return {
