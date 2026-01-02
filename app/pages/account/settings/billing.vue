@@ -166,7 +166,7 @@
         <!-- No invoices -->
         <div v-else class="text-center py-8 text-gray-500">
           <i class="fa-solid fa-receipt text-3xl mb-2"></i>
-          <p>No invoices yet</p>
+          <p>{{ t('account.settings.billing.noInvoices') }}</p>
         </div>
       </div>
     </template>

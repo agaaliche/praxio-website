@@ -6,7 +6,7 @@
 import { defineEventHandler, readBody, createError } from 'h3'
 import { query, queryOne, execute } from '../../utils/database'
 import { verifyAuth, getEffectiveAccountOwnerId, isAccountOwner } from '../../utils/auth'
-import { sendInviteEmail } from '../../utils/email'
+import getEmailService from '../../services/emailService'
 import { generateMagicLinkToken, getTokenExpiryDate, generateInviteLink } from '../../utils/magicLinkService'
 import crypto from 'crypto'
 
@@ -108,18 +108,21 @@ export default defineEventHandler(async (event) => {
       ]
     )
     
-    // Send invite email
-    const emailResult = await sendInviteEmail({
-      email: body.email.toLowerCase(),
-      inviteLink,
-      accountOwnerName: user.email,
-      role: body.role,
-      firstName: body.firstName,
-      lastName: body.lastName,
-      ownerFirstName: '',
-      organizationName: '',
-      lang: 'fr'
-    })
+    // Send invite email using new EmailService
+    const emailService = getEmailService()
+    const emailResult = await emailService.sendInvitation(
+      body.email.toLowerCase(),
+      {
+        firstName: body.firstName || body.email.split('@')[0],
+        lastName: body.lastName || '',
+        inviteLink,
+        ownerName: user.displayName || user.email,
+        ownerFirstName: user.displayName?.split(' ')[0] || '',
+        organizationName: '',
+        role: body.role
+      },
+      'fr' // TODO: Get user's language preference
+    )
     
     setResponseStatus(event, 201)
     return {

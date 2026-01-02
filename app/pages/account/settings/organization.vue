@@ -11,19 +11,94 @@
       <p class="mt-2 text-gray-500">{{ t('common.loading') }}</p>
     </div>
 
-    <!-- No Access for Invited Users -->
-    <div v-else-if="isInvitedUser" class="bg-white rounded-2xl border border-gray-200 p-12 text-center">
-      <i class="fa-solid fa-building text-gray-300 text-4xl mb-4"></i>
-      <h3 class="text-lg font-bold text-gray-900 mb-2">{{ t('account.settings.organization.title') }}</h3>
-      <p class="text-gray-600">{{ t('account.settings.organization.ownerOnly') }}</p>
-      <div v-if="organization" class="mt-6 bg-gray-50 rounded-xl p-4 text-left">
-        <p class="text-sm text-gray-500 mb-1">{{ t('account.settings.organization.yourOrganization') }}</p>
-        <p class="font-medium text-gray-900">{{ organization.name || t('account.settings.organization.notSet') }}</p>
-        <p v-if="organization.type" class="text-sm text-gray-600">{{ organization.type }}</p>
+    <!-- Organization Data for Invited Users -->
+    <div v-if="isInvitedUser" class="space-y-6">
+      <!-- Organization Info Card (Read-only for invited users) -->
+      <div v-if="organization" class="bg-white rounded-2xl border border-gray-200 p-6 space-y-4">
+        <h2 class="text-lg font-bold text-gray-900 flex items-center gap-2">
+          <i class="fa-light fa-building text-primary-600"></i>
+          {{ t('account.settings.organization.details') }}
+        </h2>
+
+        <div v-if="organization.name">
+          <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('account.settings.organization.name') }}</label>
+          <div class="w-full px-4 py-2.5 bg-gray-100 border border-gray-200 rounded-xl text-gray-900">
+            {{ organization.name }}
+          </div>
+        </div>
+
+        <div v-if="organization.type">
+          <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('account.settings.organization.type') }}</label>
+          <div class="w-full px-4 py-2.5 bg-gray-100 border border-gray-200 rounded-xl text-gray-900">
+            {{ organization.type }}
+          </div>
+        </div>
+
+        <div v-if="organization.telephone || organization.fax" class="grid md:grid-cols-2 gap-4">
+          <div v-if="organization.telephone">
+            <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('account.settings.organization.phone') }}</label>
+            <div class="w-full px-4 py-2.5 bg-gray-100 border border-gray-200 rounded-xl text-gray-900">
+              {{ organization.telephone }}
+            </div>
+          </div>
+          <div v-if="organization.fax">
+            <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('account.settings.organization.fax') }}</label>
+            <div class="w-full px-4 py-2.5 bg-gray-100 border border-gray-200 rounded-xl text-gray-900">
+              {{ organization.fax }}
+            </div>
+          </div>
+        </div>
+
+        <div v-if="organization.address || organization.city || organization.postalCode || organization.country">
+          <h3 class="text-md font-bold text-gray-900 flex items-center gap-2 mb-3">
+            <i class="fa-light fa-location-dot text-primary-600"></i>
+            {{ t('account.settings.organization.address') }}
+          </h3>
+
+          <div class="space-y-4">
+            <div v-if="organization.address || organization.postalCode" class="grid md:grid-cols-3 gap-4">
+              <div v-if="organization.address" class="md:col-span-2">
+                <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('account.settings.organization.streetAddress') }}</label>
+                <div class="w-full px-4 py-2.5 bg-gray-100 border border-gray-200 rounded-xl text-gray-900">
+                  {{ organization.address }}
+                </div>
+              </div>
+              <div v-if="organization.postalCode">
+                <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('account.settings.organization.postalCode') }}</label>
+                <div class="w-full px-4 py-2.5 bg-gray-100 border border-gray-200 rounded-xl text-gray-900">
+                  {{ organization.postalCode }}
+                </div>
+              </div>
+            </div>
+
+            <div v-if="organization.city || organization.country" class="grid md:grid-cols-2 gap-4">
+              <div v-if="organization.city">
+                <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('account.settings.organization.city') }}</label>
+                <div class="w-full px-4 py-2.5 bg-gray-100 border border-gray-200 rounded-xl text-gray-900">
+                  {{ organization.city }}
+                </div>
+              </div>
+              <div v-if="organization.country">
+                <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('account.settings.organization.country') }}</label>
+                <div class="w-full px-4 py-2.5 bg-gray-100 border border-gray-200 rounded-xl text-gray-900">
+                  {{ organization.country }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alert at bottom -->
+      <div class="bg-blue-50 border border-blue-600 rounded-xl p-4 flex items-start gap-3">
+        <i class="fa-solid fa-info-circle text-blue-600 mt-0.5"></i>
+        <div>
+          <p class="text-sm text-blue-600">{{ t('account.settings.profile.viewOnlyMessage') }}</p>
+        </div>
       </div>
     </div>
 
-    <form v-else @submit.prevent="saveOrganization" class="space-y-6">
+    <form v-if="!isInvitedUser" @submit.prevent="saveOrganization" class="space-y-6">
       <!-- Organization Info Card -->
       <div class="bg-white rounded-2xl border border-gray-200 p-6 space-y-4">
         <h2 class="text-lg font-bold text-gray-900 flex items-center gap-2">

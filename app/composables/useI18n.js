@@ -39,12 +39,22 @@ export const useI18n = () => {
   /**
    * Get translation by key
    * @param {string} key - Translation key in dot notation (e.g., 'header.products')
-   * @returns {string} - Translated text
+   * @param {Object} params - Parameters for interpolation (e.g., { days: 5 })
+   * @returns {string} - Translated text with interpolated values
    */
-  const t = (key) => {
+  const t = (key, params = {}) => {
     const locale = currentLocale.value
     const translation = translations[locale]
-    return getNestedValue(translation, key)
+    let text = getNestedValue(translation, key)
+    
+    // Interpolate parameters
+    if (params && typeof text === 'string') {
+      Object.keys(params).forEach(param => {
+        text = text.replace(new RegExp(`\\{${param}\\}`, 'g'), params[param])
+      })
+    }
+    
+    return text
   }
 
   /**

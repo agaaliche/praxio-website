@@ -4,13 +4,13 @@
   <nav class="mb-4 md:hidden">
     <ol class="flex items-center gap-2 text-sm text-primary-600">
       <li>
-        <NuxtLink to="/account" class="hover:text-primary-700 transition">Account</NuxtLink>
+        <NuxtLink to="/account" class="hover:text-primary-700 transition">{{ t('header.account') }}</NuxtLink>
       </li>
       <li class="text-primary-400">
         <i class="fa-solid fa-chevron-right text-xs"></i>
       </li>
       <li class="font-medium">
-        Team
+        {{ t('account.team.title') }}
       </li>
     </ol>
   </nav>
@@ -23,38 +23,38 @@
           <i class="fa-duotone fa-user-doctor text-primary-600 text-5xl"></i>
         </div>
         <h1 class="text-3xl font-display font-bold text-gray-900 mb-4">
-          Invite your first team member
+          {{ t('account.team.inviteFirst') }}
         </h1>
         <p class="text-lg text-gray-600 mb-8">
-          Collaborate with colleagues on patient care. Invite team members to share access and work together.
+          {{ t('account.team.inviteFirstDesc') }}
         </p>
         <button
           @click="openInviteModal"
           class="inline-flex items-center px-6 py-3 bg-primary-600 text-white font-medium text-lg rounded-xl hover:bg-primary-700 transition shadow-lg shadow-primary-600/25"
         >
           <i class="fa-solid fa-user-plus mr-3"></i>
-          Invite Your First Member
+          {{ t('account.team.inviteYourFirst') }}
         </button>
       
         <!-- Features Card -->
         <div class="mt-10 bg-primary-50 rounded-2xl p-6 text-left">
-          <h3 class="font-bold text-primary-900 mb-4">What team members can do:</h3>
+          <h3 class="font-bold text-primary-900 mb-4">{{ t('account.team.whatTeamCanDo') }}</h3>
           <ul class="space-y-3">
             <li class="flex items-center gap-3 text-gray-700">
               <i class="fa-duotone fa-users text-primary-600 w-5"></i>
-              <span>View and manage shared patients</span>
+              <span>{{ t('account.team.viewPatients') }}</span>
             </li>
             <li class="flex items-center gap-3 text-gray-700">
               <i class="fa-duotone fa-vial text-primary-600 w-5"></i>
-              <span>Add INR results and notes</span>
+              <span>{{ t('account.team.addInrResults') }}</span>
             </li>
             <li class="flex items-center gap-3 text-gray-700">
               <i class="fa-duotone fa-pills text-primary-600 w-5"></i>
-              <span>Adjust dosing schedules</span>
+              <span>{{ t('account.team.adjustDosing') }}</span>
             </li>
             <li class="flex items-center gap-3 text-gray-700">
               <i class="fa-duotone fa-shield-check text-primary-600 w-5"></i>
-              <span>Work under your subscription</span>
+              <span>{{ t('account.team.workUnderSubscription') }}</span>
             </li>
           </ul>
         </div>
@@ -334,17 +334,16 @@
               <div class="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4">
                 <i class="fa-solid fa-user-minus text-red-600 text-2xl"></i>
               </div>
-              <h2 class="text-xl font-bold text-gray-900 mb-2">Remove Team Member?</h2>
+              <h2 class="text-xl font-bold text-gray-900 mb-2">{{ t('account.team.confirmRemove') }}</h2>
               <p class="text-gray-600 mb-6">
-                Are you sure you want to remove <strong>{{ removingMember?.firstName }} {{ removingMember?.lastName }}</strong>? 
-                They will lose access to all patient data.
+                {{ t('account.team.removeWarning', { name: `${removingMember?.firstName} ${removingMember?.lastName}` }) }}
               </p>
               <div class="flex justify-center gap-3">
                 <button
                   @click="showRemoveModal = false"
                   class="px-4 py-2 text-gray-700 font-medium hover:bg-gray-100 rounded-lg transition"
                 >
-                  Cancel
+                  {{ t('common.cancel') }}
                 </button>
                 <button
                   @click="removeMember"
@@ -352,7 +351,7 @@
                   class="px-4 py-2 bg-red-600 text-white font-medium rounded-lg hover:bg-red-600 transition disabled:opacity-50"
                 >
                   <SpinnerIcon v-if="removing" class="mr-2" />
-                  Remove
+                  {{ t('common.delete') }}
                 </button>
               </div>
             </div>
@@ -368,7 +367,7 @@
 import { showNotification } from '~/stores/notification'
 
 definePageMeta({
-  middleware: ['auth']
+  middleware: ['auth', 'subscription']
 })
 
 interface TeamMember {
@@ -382,6 +381,17 @@ interface TeamMember {
   createdAt: string
   inviteLink: string | null
 }
+
+const { needsSubscription, hasAccess } = useSubscription()
+const router = useRouter()
+const { t } = useI18n()
+
+// Redirect to subscription page if user needs a subscription
+watch(needsSubscription, (needs) => {
+  if (needs) {
+    router.push('/account/settings/subscription')
+  }
+}, { immediate: true })
 
 // Data
 const teamMembers = ref<TeamMember[]>([])

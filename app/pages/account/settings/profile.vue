@@ -5,13 +5,7 @@
       <p class="mt-1 text-gray-600">{{ t('account.settings.profile.description') }}</p>
     </div>
 
-    <!-- Loading -->
-    <div v-if="loading" class="bg-white rounded-2xl border border-gray-200 p-12 text-center">
-      <div class="w-8 h-8 border-4 border-primary-200 border-t-primary-600 rounded-full animate-spin mx-auto"></div>
-      <p class="mt-2 text-gray-500">{{ t('common.loading') }}</p>
-    </div>
-
-    <form v-else @submit.prevent="saveProfile" class="space-y-6">
+    <form @submit.prevent="saveProfile" class="space-y-6">
       <!-- Profile Info Card -->
       <div class="bg-white rounded-2xl border border-gray-200 p-6 space-y-4">
         <h2 class="text-lg font-bold text-gray-900 flex items-center gap-2">
@@ -115,7 +109,6 @@
       <div v-if="isViewer" class="bg-blue-50 border border-blue-600 rounded-xl p-4 flex items-start gap-3">
         <i class="fa-solid fa-info-circle text-blue-600 mt-0.5"></i>
         <div>
-          <p class="font-medium text-blue-600">{{ t('account.settings.profile.viewOnlyAccess') }}</p>
           <p class="text-sm text-blue-600">{{ t('account.settings.profile.viewOnlyMessage') }}</p>
         </div>
       </div>

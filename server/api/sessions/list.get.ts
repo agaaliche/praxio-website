@@ -1,9 +1,11 @@
 /**
  * GET /api/sessions/list
- * Get all active sessions for the current user
+ * Get all active sessions for the current user (paginated, max 10 sessions)
  */
-import { defineEventHandler, createError, getHeader } from 'h3'
+import { defineEventHandler, createError, getHeader, getQuery } from 'h3'
 import { query, queryOne } from '../../utils/database'
+
+const MAX_SESSIONS = 10
 
 export default defineEventHandler(async (event) => {
   try {
@@ -21,14 +23,28 @@ export default defineEventHandler(async (event) => {
     // Get current session ID from custom claim
     const currentSessionId = decodedToken.sessionId as string | undefined
 
-    // Get all active sessions for user
+    // Get pagination parameters
+    const queryParams = getQuery(event)
+    const page = Math.max(1, parseInt(queryParams.page as string) || 1)
+    const limit = Math.min(MAX_SESSIONS, parseInt(queryParams.limit as string) || MAX_SESSIONS)
+    const offset = (page - 1) * limit
+
+    // Get total count
+    const countResult = await queryOne<{ total: number }>(
+      `SELECT COUNT(*) as total FROM sessions WHERE userId = ? AND isRevoked = FALSE`,
+      [userId]
+    )
+    const total = countResult?.total || 0
+
+    // Get paginated active sessions for user
     const sessions = await query<any>(
       `SELECT sessionId, deviceName, deviceType, browser, browserVersion, os, 
               ipAddress, loginTime, lastActiveTime, isRevoked
        FROM sessions 
        WHERE userId = ? AND isRevoked = FALSE
-       ORDER BY lastActiveTime DESC`,
-      [userId]
+       ORDER BY lastActiveTime DESC
+       LIMIT ? OFFSET ?`,
+      [userId, limit, offset]
     )
 
     return {
@@ -36,7 +52,15 @@ export default defineEventHandler(async (event) => {
       sessions: sessions.map(session => ({
         ...session,
         isCurrent: session.sessionId === currentSessionId
-      }))
+      })),
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+        hasNext: page * limit < total,
+        hasPrev: page > 1
+      }
     }
   } catch (error: any) {
     console.error('❌ List sessions error:', error)

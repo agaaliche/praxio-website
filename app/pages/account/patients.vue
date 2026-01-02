@@ -4,13 +4,13 @@
     <nav class="mb-4 md:hidden">
       <ol class="flex items-center gap-2 text-sm text-primary-600">
         <li>
-          <NuxtLink to="/account" class="hover:text-primary-700 transition">Account</NuxtLink>
+          <NuxtLink to="/account" class="hover:text-primary-700 transition">{{ t('header.account') }}</NuxtLink>
         </li>
         <li class="text-primary-400">
           <i class="fa-solid fa-chevron-right text-xs"></i>
         </li>
         <li class="font-medium">
-          Patients
+          {{ t('account.patients.title') }}
         </li>
       </ol>
     </nav>
@@ -126,38 +126,38 @@
             <i class="fa-duotone fa-hospital-user text-primary-600 text-5xl"></i>
           </div>
           <h1 class="text-3xl font-display font-bold text-gray-900 mb-4">
-            Create your first patient
+            {{ t('account.patients.addFirst') }}
           </h1>
           <p class="text-lg text-gray-600 mb-8">
-            Start by adding your first patient. You'll be able to track their health records, INR results, and more.
+            {{ t('account.patients.addFirstDesc') }}
           </p>
           <button
             @click="startCreatePatient"
             class="inline-flex items-center px-6 py-3 bg-primary-600 text-white font-medium text-lg rounded-xl hover:bg-primary-700 transition shadow-lg shadow-primary-600/25"
           >
             <i class="fa-solid fa-user-plus mr-3"></i>
-            Add Your First Patient
+            {{ t('account.patients.addYourFirst') }}
           </button>
         
           <!-- Features Card -->
           <div class="mt-10 bg-primary-50 rounded-2xl p-6 text-left">
-            <h3 class="font-bold text-primary-900 mb-4">What you can do:</h3>
+            <h3 class="font-bold text-primary-900 mb-4">{{ t('account.patients.whatYouCanDo') }}</h3>
             <ul class="space-y-3">
               <li class="flex items-center gap-3 text-gray-700">
                 <i class="fa-duotone fa-vial text-primary-600 w-5"></i>
-                <span>Track INR results and therapeutic range</span>
+                <span>{{ t('account.patients.trackInr') }}</span>
               </li>
               <li class="flex items-center gap-3 text-gray-700">
                 <i class="fa-duotone fa-pills text-primary-600 w-5"></i>
-                <span>Manage dosing schedules</span>
+                <span>{{ t('account.patients.manageDosing') }}</span>
               </li>
               <li class="flex items-center gap-3 text-gray-700">
                 <i class="fa-duotone fa-file-prescription text-primary-600 w-5"></i>
-                <span>Generate prescriptions</span>
+                <span>{{ t('account.patients.generatePrescriptions') }}</span>
               </li>
               <li class="flex items-center gap-3 text-gray-700">
                 <i class="fa-duotone fa-chart-line-up text-primary-600 w-5"></i>
-                <span>Monitor patient progress over time</span>
+                <span>{{ t('account.patients.monitorProgress') }}</span>
               </li>
             </ul>
           </div>
@@ -522,7 +522,7 @@
 import { useOverlayScrollbar } from '~/composables/useOverlayScrollbar'
 
 definePageMeta({
-  middleware: ['auth']
+  middleware: ['auth', 'subscription']
 })
 
 interface Patient {
@@ -541,6 +541,16 @@ interface Patient {
 }
 
 const { user } = useAuth()
+const { needsSubscription, hasAccess } = useSubscription()
+const router = useRouter()
+const { t } = useI18n()
+
+// Redirect to subscription page if user needs a subscription
+watch(needsSubscription, (needs) => {
+  if (needs) {
+    router.push('/account/settings/subscription')
+  }
+}, { immediate: true })
 
 // Check permissions
 const canEdit = computed(() => {

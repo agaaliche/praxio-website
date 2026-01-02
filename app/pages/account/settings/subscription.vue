@@ -217,14 +217,14 @@
           <div>
             <h3 class="font-bold text-gray-900">{{ trialMessage }}</h3>
             <p class="text-gray-600 mt-1">
-              {{ isTrialExpired ? 'Subscribe now to restore access to all features and your data.' : 'Subscribe now to unlock unlimited access to all features and never lose your data.' }}
+              {{ isTrialExpired ? t('account.settings.subscription.expiredMessage') : t('account.settings.subscription.trialMessage') }}
             </p>
             <NuxtLink 
               to="/pricing"
               class="inline-flex items-center gap-2 mt-3 px-4 py-2 bg-primary-600 text-white font-medium rounded-lg hover:bg-primary-700 transition"
             >
               <i class="fa-solid fa-arrow-right"></i>
-              View Pricing Plans
+              {{ t('account.settings.subscription.viewPricing') }}
             </NuxtLink>
           </div>
         </div>
@@ -473,12 +473,16 @@ const trialMessage = computed(() => {
     const daysLeft = Math.ceil((trialEnd.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
     
     if (daysLeft > 0) {
-      return `Your trial ends in ${daysLeft} day${daysLeft === 1 ? '' : 's'}`
+      return daysLeft === 1 
+        ? t('account.settings.subscription.trialEndsInOne')
+        : t('account.settings.subscription.trialEndsInMany', { days: daysLeft })
     }
     const daysAgo = Math.abs(daysLeft)
-    return `Your trial expired ${daysAgo} day${daysAgo === 1 ? '' : 's'} ago`
+    return daysAgo === 1
+      ? t('account.settings.subscription.trialExpiredOne')
+      : t('account.settings.subscription.trialExpiredMany', { days: daysAgo })
   }
-  return 'Start your subscription today'
+  return t('account.settings.subscription.startSubscription')
 })
 
 const isScheduledAnnual = computed(() => {

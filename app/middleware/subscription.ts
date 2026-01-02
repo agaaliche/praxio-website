@@ -47,11 +47,11 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     })
   }
 
-  // Redirect to subscribe page if subscription is required
+  // Redirect to subscription settings if subscription is required
   if (needsSubscription.value) {
-    // Only allow settings when user has no plan
+    // Only allow settings and pricing when user has no plan
     const allowedPaths = [
-      '/subscribe', 
+      '/account/settings/subscription',
       '/pricing', 
       '/signout',
       '/account/settings'
@@ -60,11 +60,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
       return
     }
     
-    // Redirect /account (dashboard) to settings when no plan
-    if (to.path === '/account') {
-      return navigateTo('/account/settings')
-    }
-
-    return navigateTo('/subscribe')
+    // Redirect to subscription settings page
+    return navigateTo('/account/settings/subscription')
   }
 })

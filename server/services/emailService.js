@@ -34,6 +34,9 @@ class EmailService {
     }
     this.db = admin.firestore();
 
+    // Clear require cache to get fresh templates on each server restart
+    delete require.cache[require.resolve(templatesPath)];
+    
     // Load CommonJS templates using require
     this.templates = require(templatesPath);
   }

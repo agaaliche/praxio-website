@@ -112,8 +112,8 @@
         leave-from-class="opacity-100 translate-y-0"
         leave-to-class="opacity-0 -translate-y-2"
       >
-        <div v-if="mobileMenuOpen" class="md:hidden border-t border-gray-100 absolute left-0 right-0">
-          <div class="py-4 px-4 space-y-1 bg-white">
+        <div v-if="mobileMenuOpen" class="md:hidden border-t border-gray-100 absolute left-0 right-0 max-h-[calc(100vh-4rem)] overflow-y-auto">
+          <div class="py-4 px-4 pb-24 space-y-1 bg-white">
             <ClientOnly>
               <!-- Show user info at top of mobile menu when authenticated -->
               <template v-if="isAuthenticated">
@@ -166,6 +166,7 @@
                 
                 <!-- Account sub-navigation -->
                 <NuxtLink 
+                  v-if="hasAccess"
                   to="/account" 
                   class="flex items-center gap-3 px-3 py-2.5 pl-11 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg text-sm transition"
                   @click="mobileMenuOpen = false"
@@ -173,7 +174,15 @@
                   <i class="fa-solid fa-house w-4 text-center"></i>
                   {{ t('header.dashboard') }}
                 </NuxtLink>
+                <span 
+                  v-else
+                  class="flex items-center gap-3 px-3 py-2.5 pl-11 text-gray-300 rounded-lg text-sm cursor-not-allowed"
+                >
+                  <i class="fa-solid fa-house w-4 text-center"></i>
+                  {{ t('header.dashboard') }}
+                </span>
                 <NuxtLink 
+                  v-if="hasAccess"
                   to="/account/patients" 
                   class="flex items-center gap-3 px-3 py-2.5 pl-11 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg text-sm transition"
                   @click="mobileMenuOpen = false"
@@ -181,8 +190,15 @@
                   <i class="fa-solid fa-users-medical w-4 text-center"></i>
                   {{ t('header.patients') }}
                 </NuxtLink>
+                <span 
+                  v-else
+                  class="flex items-center gap-3 px-3 py-2.5 pl-11 text-gray-300 rounded-lg text-sm cursor-not-allowed"
+                >
+                  <i class="fa-solid fa-users-medical w-4 text-center"></i>
+                  {{ t('header.patients') }}
+                </span>
                 <NuxtLink 
-                  v-if="isAccountOwner"
+                  v-if="isAccountOwner && hasAccess"
                   to="/account/team" 
                   class="flex items-center gap-3 px-3 py-2.5 pl-11 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg text-sm transition"
                   @click="mobileMenuOpen = false"
@@ -190,6 +206,13 @@
                   <i class="fa-solid fa-users w-4 text-center"></i>
                   {{ t('header.team') }}
                 </NuxtLink>
+                <span 
+                  v-else-if="isAccountOwner && !hasAccess"
+                  class="flex items-center gap-3 px-3 py-2.5 pl-11 text-gray-300 rounded-lg text-sm cursor-not-allowed"
+                >
+                  <i class="fa-solid fa-users w-4 text-center"></i>
+                  {{ t('header.team') }}
+                </span>
                 <NuxtLink 
                   to="/account/settings" 
                   class="flex items-center gap-3 px-3 py-2.5 pl-11 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg text-sm transition"
@@ -200,9 +223,27 @@
                 </NuxtLink>
                 
                 <!-- Language Selector (Mobile) -->
-                <div class="px-3 py-2">
-                  <LanguageSelector button-class="w-full justify-center" />
-                </div>
+                <button 
+                  @click="mobileLanguageOpen = !mobileLanguageOpen"
+                  class="w-full flex items-center gap-3 px-3 py-2.5 text-gray-700 hover:bg-primary-50 hover:text-primary-700 rounded-lg font-medium transition text-left"
+                >
+                  <i class="fa-solid fa-globe w-5 text-center text-primary-600"></i>
+                  <span class="flex-1">Language ({{ locale.toUpperCase() }})</span>
+                  <i class="fa-solid fa-chevron-down text-xs transition-transform" :class="{ 'rotate-180': mobileLanguageOpen }"></i>
+                </button>
+                <template v-if="mobileLanguageOpen">
+                  <button
+                    v-for="lang in locales"
+                    :key="lang"
+                    @click="handleLanguageChange(lang)"
+                    class="w-full flex items-center gap-3 px-3 py-2.5 pl-11 rounded-lg text-sm transition text-left"
+                    :class="locale === lang ? 'bg-primary-50 text-primary-700 font-medium' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'"
+                  >
+                    <span class="uppercase">{{ lang }}</span>
+                    <span class="flex-1">{{ getLanguageName(lang) }}</span>
+                    <i v-if="locale === lang" class="fa-solid fa-check text-primary-600"></i>
+                  </button>
+                </template>
                 
                 <button @click="handleSignOut" class="w-full flex items-center gap-3 px-3 py-2.5 text-gray-700 hover:bg-red-50 hover:text-red-700 rounded-lg font-medium transition text-left">
                   <i class="fa-solid fa-arrow-right-from-bracket w-5 text-center text-red-600"></i>
@@ -211,9 +252,27 @@
               </template>
               <template v-else>
                 <!-- Language Selector (Mobile - Not Authenticated) -->
-                <div class="px-3 py-2">
-                  <LanguageSelector button-class="w-full justify-center" />
-                </div>
+                <button 
+                  @click="mobileLanguageOpen = !mobileLanguageOpen"
+                  class="w-full flex items-center gap-3 px-3 py-2.5 text-gray-700 hover:bg-primary-50 hover:text-primary-700 rounded-lg font-medium transition text-left"
+                >
+                  <i class="fa-solid fa-globe w-5 text-center text-primary-600"></i>
+                  <span class="flex-1">Language ({{ locale.toUpperCase() }})</span>
+                  <i class="fa-solid fa-chevron-down text-xs transition-transform" :class="{ 'rotate-180': mobileLanguageOpen }"></i>
+                </button>
+                <template v-if="mobileLanguageOpen">
+                  <button
+                    v-for="lang in locales"
+                    :key="lang"
+                    @click="handleLanguageChange(lang)"
+                    class="w-full flex items-center gap-3 px-3 py-2.5 pl-11 rounded-lg text-sm transition text-left"
+                    :class="locale === lang ? 'bg-primary-50 text-primary-700 font-medium' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'"
+                  >
+                    <span class="uppercase">{{ lang }}</span>
+                    <span class="flex-1">{{ getLanguageName(lang) }}</span>
+                    <i v-if="locale === lang" class="fa-solid fa-check text-primary-600"></i>
+                  </button>
+                </template>
                 
                 <NuxtLink to="/signin" class="flex items-center gap-3 px-3 py-2.5 text-gray-700 hover:bg-primary-50 hover:text-primary-700 rounded-lg font-medium transition" @click="mobileMenuOpen = false">
                   <i class="fa-solid fa-arrow-right-to-bracket w-5 text-center text-primary-600"></i>
@@ -236,12 +295,13 @@
 
 <script setup>
 const mobileMenuOpen = ref(false)
+const mobileLanguageOpen = ref(false)
 const isScrolled = ref(false)
 const dropdownOpen = ref(false)
 const dropdownRef = ref(null)
 const { isAuthenticated, user, signOutUser, isAccountOwner } = useAuth()
 const { isTrialExpired, needsSubscription } = useSubscription()
-const { t } = useI18n()
+const { t, locale, locales, setLocale } = useI18n()
 const router = useRouter()
 const route = useRoute()
 const { subHeaderVisible } = useSubHeaderState()
@@ -251,6 +311,19 @@ const hasAccess = computed(() => !needsSubscription.value)
 
 // User role for invited users
 const userRole = computed(() => user.value?.role || null)
+
+// Language names
+const languageNames = {
+  en: 'English',
+  fr: 'Français'
+}
+
+const getLanguageName = (lang) => languageNames[lang] || lang
+
+const handleLanguageChange = (lang) => {
+  setLocale(lang)
+  mobileLanguageOpen.value = false
+}
 
 // Role chip styling
 const roleChipClass = computed(() => {

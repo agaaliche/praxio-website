@@ -162,6 +162,29 @@
         <div v-else class="text-center py-4 text-gray-500">
           <p>{{ t('account.settings.security.onlyThisDevice') }}</p>
         </div>
+
+        <!-- Pagination -->
+        <div v-if="pagination && pagination.totalPages > 1" class="mt-4 flex items-center justify-between border-t border-gray-200 pt-4">
+          <p class="text-sm text-gray-600">
+            {{ t('common.showing') }} {{ (pagination.page - 1) * pagination.limit + 1 }}-{{ Math.min(pagination.page * pagination.limit, pagination.total) }} {{ t('common.of') }} {{ pagination.total }}
+          </p>
+          <div class="flex gap-2">
+            <button
+              @click="changePage(pagination.page - 1)"
+              :disabled="!pagination.hasPrev || sessionsLoading"
+              class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <button
+              @click="changePage(pagination.page + 1)"
+              :disabled="!pagination.hasNext || sessionsLoading"
+              class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <i class="fa-solid fa-chevron-right"></i>
+            </button>
+          </div>
+        </div>
       </div>
 
       <!-- Danger Zone -->
@@ -264,6 +287,8 @@ const revokingSession = ref<string | null>(null)
 const revokingAll = ref(false)
 const sessionError = ref('')
 const sessionSuccess = ref('')
+const currentPage = ref(1)
+const pagination = ref<any>(null)
 
 // Password change
 const showPasswordForm = ref(false)
@@ -380,15 +405,25 @@ async function fetchSessions() {
   
   try {
     const headers = await getAuthHeaders()
-    const response = await $fetch<{ sessions: any[] }>('/api/sessions/list', {
-      headers
+    const response = await $fetch<{ sessions: any[], pagination: any }>('/api/sessions/list', {
+      headers,
+      query: {
+        page: currentPage.value,
+        limit: 10
+      }
     })
     sessions.value = response.sessions
+    pagination.value = response.pagination
   } catch (e: any) {
     sessionError.value = e.data?.message || 'Failed to load sessions'
   } finally {
     sessionsLoading.value = false
   }
+}
+
+function changePage(page: number) {
+  currentPage.value = page
+  fetchSessions()
 }
 
 async function revokeSession(sessionId: string) {
