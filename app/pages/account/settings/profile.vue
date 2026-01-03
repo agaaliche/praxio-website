@@ -164,14 +164,14 @@ definePageMeta({
 })
 
 const { t } = useI18n()
-const { getAuthHeaders } = useAuth()
+const { getAuthHeaders, isViewer: isViewerAuth } = useAuth()
 
 const loading = ref(true)
 const saving = ref(false)
 const error = ref('')
 const success = ref(false)
 
-const isViewer = ref(false)
+const isViewer = computed(() => isViewerAuth.value)
 
 const form = ref({
   firstName: '',
@@ -268,7 +268,7 @@ const loadProfile = async () => {
       phoneNumber: data.phoneNumber || ''
     }
     
-    isViewer.value = data.role === 'viewer'
+    // Role is now managed by useAuth composable
   } catch (e: any) {
     error.value = e.data?.message || 'Failed to load profile'
   } finally {

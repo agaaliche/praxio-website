@@ -2,7 +2,7 @@ import Stripe from 'stripe'
 
 // Initialize Stripe with secret key from environment
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
-  apiVersion: '2024-12-18.acacia'
+  apiVersion: '2024-11-20.acacia' as any
 })
 
 export const stripeService = {
@@ -86,13 +86,13 @@ export const stripeService = {
         console.log('📅 Scheduling subscription change (database only):', subscriptionId)
         console.log('   Current price:', subscription.items.data[0].price.id)
         console.log('   New price (pending):', updateData.priceId)
-        console.log('   Will take effect at:', new Date(subscription.current_period_end * 1000))
+        console.log('   Will take effect at:', new Date((subscription as any).current_period_end * 1000))
         
         return {
           ...subscription,
           scheduled_change: {
             priceId: updateData.priceId,
-            startDate: subscription.current_period_end
+            startDate: (subscription as any).current_period_end
           }
         }
       }

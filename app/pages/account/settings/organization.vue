@@ -198,19 +198,16 @@
         </div>
       </div>
 
-      <!-- Messages Container -->
-      <div class="min-h-[52px]">
-        <!-- Error Message -->
-        <div v-if="error" class="bg-red-50 border border-red-600 rounded-xl p-4 flex items-start gap-2">
-          <i class="fa-solid fa-exclamation-circle text-red-600 mt-0.5"></i>
-          <p class="text-sm text-red-600">{{ error }}</p>
-        </div>
+      <!-- Error Message -->
+      <div v-if="error" class="bg-red-50 border border-red-600 rounded-xl p-4 flex items-start gap-2">
+        <i class="fa-solid fa-exclamation-circle text-red-600 mt-0.5"></i>
+        <p class="text-sm text-red-600">{{ error }}</p>
+      </div>
 
-        <!-- Success Message -->
-        <div v-else-if="success" class="bg-green-50 border border-green-200 rounded-xl p-4 flex items-start gap-2">
-          <i class="fa-solid fa-circle-check text-green-500 mt-0.5"></i>
-          <p class="text-sm text-green-700">{{ t('account.settings.organization.updateSuccess') }}</p>
-        </div>
+      <!-- Success Message -->
+      <div v-if="success" class="bg-green-50 border border-green-200 rounded-xl p-4 flex items-start gap-2">
+        <i class="fa-solid fa-circle-check text-green-500 mt-0.5"></i>
+        <p class="text-sm text-green-700">{{ t('account.settings.organization.updateSuccess') }}</p>
       </div>
 
       <!-- Save Button -->
@@ -234,14 +231,14 @@ definePageMeta({
 })
 
 const { t } = useI18n()
-const { getAuthHeaders, userRole } = useAuth()
+const { getAuthHeaders, userRole, effectiveRole } = useAuth()
 
 const loading = ref(true)
 const saving = ref(false)
 const error = ref('')
 const success = ref(false)
 
-const isInvitedUser = computed(() => !!userRole.value)
+const isInvitedUser = computed(() => !!effectiveRole.value)
 const organization = ref<any>(null)
 
 const form = ref({

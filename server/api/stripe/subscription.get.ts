@@ -8,7 +8,7 @@ import { queryOne } from '../../utils/database'
 import { verifyAuth } from '../../utils/auth'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2024-12-18.acacia'
+  apiVersion: '2024-11-20.acacia' as any
 })
 
 // Price ID to plan name mapping
@@ -39,7 +39,7 @@ export default defineEventHandler(async (event) => {
     }
 
     // Get subscription from Stripe for accurate billing info
-    const stripeSubscription = await stripe.subscriptions.retrieve(userRecord.subscriptionId)
+    const stripeSubscription = await stripe.subscriptions.retrieve(userRecord.subscriptionId) as any
     
     const priceId = stripeSubscription.items.data[0]?.price?.id
     const amount = stripeSubscription.items.data[0]?.price?.unit_amount

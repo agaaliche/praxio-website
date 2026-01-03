@@ -44,6 +44,7 @@ const props = defineProps({
 })
 
 const { locale, locales, setLocale } = useI18n()
+const { isAuthenticated, getIdToken } = useAuth()
 const isOpen = ref(false)
 const dropdownRef = ref(null)
 
@@ -54,9 +55,33 @@ const languageNames = {
 
 const getLanguageName = (lang) => languageNames[lang] || lang
 
-const changeLanguage = (lang) => {
+const changeLanguage = async (lang) => {
+  console.log('🌍 Praxio LanguageSelector: Changing language to:', lang, 'Authenticated:', isAuthenticated.value)
+  console.log('🔍 Praxio: Current localStorage praxio_language:', localStorage.getItem('praxio_language'))
+  
   setLocale(lang)
   isOpen.value = false
+  
+  console.log('💾 Praxio: Language saved via setLocale()')
+  console.log('🔍 Praxio: After setLocale, localStorage praxio_language:', localStorage.getItem('praxio_language'))
+  
+  // Save language preference to database if authenticated
+  if (isAuthenticated.value) {
+    try {
+      console.log('🔄 Praxio: Saving language preference to database...')
+      const token = await getIdToken()
+      const response = await $fetch('/api/users/preferences', {
+        method: 'PATCH',
+        headers: { Authorization: `Bearer ${token}` },
+        body: { language: lang }
+      })
+      console.log('✅ Praxio: Language preference saved to database:', response)
+    } catch (err) {
+      console.error('❌ Praxio: Failed to save language preference:', err)
+    }
+  } else {
+    console.log('⚠️ Praxio: Not authenticated, language saved to localStorage only')
+  }
 }
 
 const handleClickOutside = (event) => {

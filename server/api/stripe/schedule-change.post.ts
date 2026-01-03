@@ -9,7 +9,7 @@ import { queryOne, execute } from '../../utils/database'
 import { verifyAuth } from '../../utils/auth'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2024-12-18.acacia'
+  apiVersion: '2024-11-20.acacia' as any
 })
 
 interface UserRecord {
@@ -45,7 +45,7 @@ export default defineEventHandler(async (event) => {
     }
 
     // Get the current subscription from Stripe
-    const subscription = await stripe.subscriptions.retrieve(userRecord.subscriptionId)
+    const subscription = await stripe.subscriptions.retrieve(userRecord.subscriptionId) as any
     
     // If subscription already has a schedule (e.g., from previous cancellation or upgrade),
     // release it first so we can create a new one

@@ -8,7 +8,7 @@ import { queryOne, execute } from '../../utils/database'
 import { verifyAuth } from '../../utils/auth'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2024-12-18.acacia'
+  apiVersion: '2024-11-20.acacia' as any
 })
 
 export default defineEventHandler(async (event) => {
@@ -31,7 +31,7 @@ export default defineEventHandler(async (event) => {
     // Cancel at end of billing period (don't cancel immediately)
     const subscription = await stripe.subscriptions.update(userRecord.subscriptionId, {
       cancel_at_period_end: true
-    })
+    }) as any
 
     // Update database to reflect cancellation status
     await execute(

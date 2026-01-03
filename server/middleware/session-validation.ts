@@ -31,29 +31,26 @@ export default defineEventHandler(async (event) => {
     
     const sessionId = decodedToken.sessionId as string | undefined
     const userId = decodedToken.uid
+    const userRole = decodedToken.role as string | undefined
 
     if (!sessionId) {
       // No session ID in token - check if a recent session exists, otherwise create one
       
-      // Check for existing recent session (created in last 2 minutes)
+      // Check for existing recent session (created in last 10 seconds to avoid rapid recreation)
       const existingSession = await queryOne<any>(
         `SELECT sessionId FROM sessions 
          WHERE userId = ? 
          AND isRevoked = FALSE 
-         AND loginTime > DATE_SUB(NOW(), INTERVAL 2 MINUTE)
+         AND loginTime > DATE_SUB(NOW(), INTERVAL 10 SECOND)
          ORDER BY loginTime DESC
          LIMIT 1`,
         [userId]
       )
       
       if (existingSession) {
-        // Use existing recent session
-        console.log(`Using existing session ${existingSession.sessionId} for user ${userId}`)
-        
-        await admin.auth().setCustomUserClaims(userId, {
-          sessionId: existingSession.sessionId
-        })
-        
+        // Use existing recent session - DON'T update claims, just return
+        // The client will get the sessionId on next token refresh
+        console.log(`⚠️ User ${userId} (role: ${userRole}) missing sessionId in token, but session ${existingSession.sessionId} exists. Skipping claim update to avoid loop.`)
         return
       }
       
@@ -85,8 +82,10 @@ export default defineEventHandler(async (event) => {
           ]
         )
         
-        // Set custom claim with session ID
+        // Set custom claim with session ID (preserve existing claims) - ONLY on first creation
+        const userRecord = await admin.auth().getUser(userId)
         await admin.auth().setCustomUserClaims(userId, {
+          ...userRecord.customClaims,
           sessionId: newSessionId
         })
         

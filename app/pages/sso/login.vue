@@ -10,9 +10,9 @@
     v-else-if="error"
     type="error"
     :title="t('auth.sso.required')"
-    :message="error"
+    :message="t('auth.sso.pleaseSignIn')"
   >
-    <template #action>
+    <template #actions>
       <NuxtLink 
         :to="`/signin?redirect=${encodeURIComponent(redirectPath)}`"
         class="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-primary-600 text-white font-semibold hover:bg-primary-700 transition"
@@ -43,7 +43,10 @@ const { t } = useI18n()
 const route = useRoute()
 const { isAuthenticated, isLoading, getIdToken, getCurrentUser } = useAuth()
 const loading = ref(true)
-const error = ref('')
+const error = ref(false)
+
+// Get current locale
+const { locale } = useI18n()
 
 // Get runtime config for retroact URL
 const config = useRuntimeConfig()
@@ -67,7 +70,7 @@ onMounted(async () => {
     // Not logged in - show error and link to signin
     console.log('❌ Not authenticated, showing signin link')
     loading.value = false
-    error.value = 'Please sign in to access Retroact'
+    error.value = true
     return
   }
 
@@ -78,7 +81,7 @@ onMounted(async () => {
   if (!user) {
     console.error('❌ No current user despite isAuthenticated being true')
     loading.value = false
-    error.value = 'Authentication state error. Please try signing in again.'
+    error.value = true
     return
   }
 
@@ -119,6 +122,10 @@ onMounted(async () => {
       const retroactAuthUrl = new URL('/auth/sso', retroactUrl.origin)
       retroactAuthUrl.searchParams.set('token', (response as any).ssoToken)
       
+      // Add current language preference to URL
+      retroactAuthUrl.searchParams.set('lang', locale.value)
+      console.log(`🌍 Passing language preference to Retroact: ${locale.value}`)
+      
       // Add return path if not root
       if (retroactUrl.pathname && retroactUrl.pathname !== '/' && retroactUrl.pathname !== '/signin') {
         retroactAuthUrl.searchParams.set('returnUrl', retroactUrl.pathname)
@@ -132,7 +139,7 @@ onMounted(async () => {
   } catch (e: any) {
     console.error('❌ SSO token generation failed:', e)
     loading.value = false
-    error.value = e.data?.message || 'Failed to generate access token. Please try again.'
+    error.value = true
   }
 })
 </script>

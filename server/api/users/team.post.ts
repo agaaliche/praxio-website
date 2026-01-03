@@ -107,6 +107,20 @@ export default defineEventHandler(async (event) => {
         expiresAt
       ]
     )
+
+    // Get owner's organization data
+    const ownerData = await queryOne<any>(
+      `SELECT userName, userLastName, organizationName 
+       FROM users 
+       WHERE userId = ?`,
+      [accountOwnerId]
+    )
+
+    const ownerFirstName = ownerData?.userName || user.displayName?.split(' ')[0] || user.email?.split('@')[0] || 'Account Owner'
+    const ownerFullName = ownerData?.userName && ownerData?.userLastName 
+      ? `${ownerData.userName} ${ownerData.userLastName}`
+      : user.displayName || user.email || 'Account Owner'
+    const organizationName = ownerData?.organizationName || ''
     
     // Send invite email using new EmailService
     const emailService = getEmailService()
@@ -116,9 +130,9 @@ export default defineEventHandler(async (event) => {
         firstName: body.firstName || body.email.split('@')[0],
         lastName: body.lastName || '',
         inviteLink,
-        ownerName: user.displayName || user.email,
-        ownerFirstName: user.displayName?.split(' ')[0] || '',
-        organizationName: '',
+        ownerName: ownerFullName,
+        ownerFirstName: ownerFirstName,
+        organizationName: organizationName,
         role: body.role
       },
       'fr' // TODO: Get user's language preference

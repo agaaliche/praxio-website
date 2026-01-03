@@ -63,7 +63,7 @@
                 >
                   <div v-if="dropdownOpen" class="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-lg border border-gray-200 py-2 z-50">
                     <div class="px-4 py-3 border-b border-gray-100">
-                      <p class="text-sm font-medium text-gray-900">{{ user?.displayName || 'User' }}</p>
+                      <p class="text-sm font-medium text-gray-900">{{ displayName }}</p>
                       <p class="text-sm text-gray-500 truncate">{{ user?.email }}</p>
                       <span v-if="userRole" :class="roleChipClass" class="inline-block mt-2 px-2 py-0.5 text-xs font-medium rounded-full">
                         {{ userRole === 'editor' ? t('roles.editor') : t('roles.viewer') }}
@@ -299,18 +299,58 @@ const mobileLanguageOpen = ref(false)
 const isScrolled = ref(false)
 const dropdownOpen = ref(false)
 const dropdownRef = ref(null)
-const { isAuthenticated, user, signOutUser, isAccountOwner } = useAuth()
+const { isAuthenticated, user, signOutUser, isAccountOwner, getIdToken } = useAuth()
 const { isTrialExpired, needsSubscription } = useSubscription()
 const { t, locale, locales, setLocale } = useI18n()
 const router = useRouter()
 const route = useRoute()
 const { subHeaderVisible } = useSubHeaderState()
 
+// User data from API (includes correct role without stale claims)
+const userData = ref(null)
+
+// Fetch user data from API to get correct role
+const fetchUserData = async () => {
+  if (!isAuthenticated.value) {
+    userData.value = null
+    return
+  }
+  
+  try {
+    console.log('🔄 Praxio TheHeader: Fetching user data...')
+    const token = await getIdToken()
+    const response = await $fetch('/api/users/current', {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    userData.value = response
+    console.log('✅ Praxio: User data fetched:', { email: response.email, role: response.role, preferences: response.preferences })
+    
+    // Apply language preference from database if available
+    if (response.preferences?.language && response.preferences.language !== locale.value) {
+      console.log(`🌍 Praxio: Loading language preference from database: ${response.preferences.language}`)
+      setLocale(response.preferences.language)
+    } else {
+      console.log(`ℹ️ Praxio: Current language already matches preference: ${locale.value}`)
+    }
+  } catch (err) {
+    console.error('❌ Praxio: Failed to fetch user data:', err)
+  }
+}
+
+// Watch for auth changes
+watch(isAuthenticated, (newVal) => {
+  if (newVal) {
+    fetchUserData()
+  } else {
+    userData.value = null
+  }
+}, { immediate: true })
+
 // Check if user has access to account features
 const hasAccess = computed(() => !needsSubscription.value)
 
-// User role for invited users
-const userRole = computed(() => user.value?.role || null)
+// User role from API data (not from Firebase token)
+const userRole = computed(() => userData.value?.role || null)
 
 // Language names
 const languageNames = {
@@ -320,9 +360,24 @@ const languageNames = {
 
 const getLanguageName = (lang) => languageNames[lang] || lang
 
-const handleLanguageChange = (lang) => {
+const handleLanguageChange = async (lang) => {
   setLocale(lang)
   mobileLanguageOpen.value = false
+  
+  // Save language preference to database if authenticated
+  if (isAuthenticated.value) {
+    try {
+      const token = await getIdToken()
+      await $fetch('/api/users/preferences', {
+        method: 'PATCH',
+        headers: { Authorization: `Bearer ${token}` },
+        body: { language: lang }
+      })
+      console.log('✅ Language preference saved to database')
+    } catch (err) {
+      console.error('Failed to save language preference:', err)
+    }
+  }
 }
 
 // Role chip styling
@@ -363,6 +418,18 @@ const showShadow = computed(() => {
 
 // Compute user initials for avatar
 const userInitial = computed(() => {
+  // Use API data for name if available
+  const firstName = userData.value?.firstName
+  const lastName = userData.value?.lastName
+  
+  if (firstName && lastName) {
+    return (firstName.charAt(0) + lastName.charAt(0)).toUpperCase()
+  }
+  if (firstName) {
+    return firstName.charAt(0).toUpperCase()
+  }
+  
+  // Fallback to Firebase user data
   if (user.value?.displayName) {
     const parts = user.value.displayName.trim().split(/\s+/)
     if (parts.length >= 2) {
@@ -374,6 +441,20 @@ const userInitial = computed(() => {
     return user.value.email.charAt(0).toUpperCase()
   }
   return 'U'
+})
+
+// Computed display name
+const displayName = computed(() => {
+  const firstName = userData.value?.firstName
+  const lastName = userData.value?.lastName
+  
+  if (firstName && lastName) {
+    return `${firstName} ${lastName}`
+  }
+  if (firstName) {
+    return firstName
+  }
+  return user.value?.displayName || user.value?.email || 'User'
 })
 
 // Close dropdown when clicking outside

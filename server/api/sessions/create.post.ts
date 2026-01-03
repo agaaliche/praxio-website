@@ -48,8 +48,10 @@ export default defineEventHandler(async (event) => {
       ]
     )
 
-    // Set custom claim with session ID (so we can validate it)
+    // Set custom claim with session ID (preserve existing claims like role, accountOwnerId)
+    const userRecord = await admin.auth().getUser(userId)
     await admin.auth().setCustomUserClaims(userId, {
+      ...userRecord.customClaims,
       sessionId
     })
 

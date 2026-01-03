@@ -38,10 +38,21 @@ export interface AuthResult {
 // State
 const user = ref<AuthUser | null>(null)
 const isAuthenticated = ref(false)
-const userRole = ref<string | null>(null)
+const userRole = ref<string | null>(null) // Role from Firebase token (may be stale)
+const dbRole = ref<string | null>(null) // Role from database (source of truth)
+const dbRoleFetched = ref(false) // Track if DB role has been loaded
 const userClaims = ref<Record<string, any> | null>(null)
 const isLoading = ref(true)
 const authInitialized = ref(false)
+
+// Load dbRole from localStorage on init
+if (typeof window !== 'undefined') {
+  const stored = localStorage.getItem('praxio_db_role')
+  if (stored !== null) {
+    dbRole.value = stored === 'null' ? null : stored
+    dbRoleFetched.value = true
+  }
+}
 
 // Get auth instance - uses the exported function from firebase plugin
 const getAuthInstance = (): Auth => {
@@ -72,6 +83,79 @@ const getApiBaseUrl = (): string => {
 }
 
 export function useAuth() {
+  // Fetch user role from database (source of truth)
+  const fetchDatabaseRole = async (showNotification = false): Promise<boolean> => {
+    if (!isAuthenticated.value) {
+      dbRole.value = null
+      dbRoleFetched.value = false
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('praxio_db_role')
+      }
+      return false
+    }
+
+    try {
+      const auth = getAuthInstance()
+      const currentUser = auth.currentUser
+      if (!currentUser) return false
+
+      const token = await currentUser.getIdToken()
+      const response = await $fetch('/api/users/current', {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      
+      console.log('📥 API Response received:', {
+        fullResponse: response,
+        hasRole: 'role' in (response || {}),
+        roleValue: (response as any)?.role,
+        responseType: typeof response,
+        responseKeys: response ? Object.keys(response) : []
+      })
+      
+      // Get the role from API response - null means account owner
+      const newRole = (response as any).role || null
+      const previousRole = dbRole.value
+      const roleChanged = dbRoleFetched.value && previousRole !== newRole
+      
+      // Update state
+      dbRole.value = newRole
+      dbRoleFetched.value = true
+      
+      // Store in localStorage for persistence
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('praxio_db_role', dbRole.value === null ? 'null' : dbRole.value)
+      }
+      
+      console.log('✅ Database role fetched:', { 
+        tokenRole: userRole.value, 
+        dbRole: dbRole.value,
+        previousRole,
+        roleChanged,
+        isAccountOwner: !dbRole.value,
+        stored: true
+      })
+
+      // If role changed and notification requested, show alert
+      if (roleChanged && showNotification) {
+        console.warn('🔄 Role changed from', previousRole, 'to', newRole)
+        
+        // Dynamically import notification to avoid circular deps
+        if (typeof window !== 'undefined') {
+          const event = new CustomEvent('role-changed', {
+            detail: { previousRole, newRole }
+          })
+          window.dispatchEvent(event)
+        }
+      }
+      
+      return roleChanged
+    } catch (error) {
+      console.error('Failed to fetch database role:', error)
+      dbRoleFetched.value = false
+      return false
+    }
+  }
+
   // Initialize auth state listener (call once on app init)
   const initAuth = () => {
     // Guard against double initialization
@@ -97,6 +181,13 @@ export function useAuth() {
           userClaims.value = idTokenResult.claims as Record<string, any>
           userRole.value = (idTokenResult.claims.role as string) || null
 
+          console.log('🎫 ID Token claims:', {
+            role: idTokenResult.claims.role,
+            accountOwnerId: idTokenResult.claims.accountOwnerId,
+            userId: idTokenResult.claims.userId,
+            allClaims: idTokenResult.claims
+          })
+
           const userEmail = firebaseUser.email || (idTokenResult.claims.email as string)
 
           user.value = {
@@ -110,6 +201,10 @@ export function useAuth() {
           }
 
           console.log('👤 User object set:', user.value)
+          console.log('👑 isAccountOwner will be:', !userRole.value && true)
+
+          // Fetch role from database (source of truth)
+          await fetchDatabaseRole()
         } catch (error) {
           console.error('Error getting user claims:', error)
           user.value = {
@@ -121,14 +216,21 @@ export function useAuth() {
             accountOwnerId: null,
             userId: null
           }
+          // Still try to fetch database role even if token parsing failed
+          await fetchDatabaseRole()
         }
         isAuthenticated.value = true
       } else {
         console.log('🚪 User signed out')
         user.value = null
         userRole.value = null
+        dbRole.value = null
+        dbRoleFetched.value = false
         userClaims.value = null
         isAuthenticated.value = false
+        if (typeof window !== 'undefined') {
+          localStorage.removeItem('praxio_db_role')
+        }
       }
       
       isLoading.value = false
@@ -409,10 +511,23 @@ export function useAuth() {
     return { Authorization: `Bearer ${token}` }
   }
 
-  // Permission helpers
-  const isViewer = computed(() => userRole.value === 'viewer')
-  const isEditor = computed(() => userRole.value === 'editor')
-  const isAccountOwner = computed(() => !userRole.value && isAuthenticated.value)
+  // Permission helpers - use dbRole when fetched, fallback to token role
+  const effectiveRole = computed(() => dbRoleFetched.value ? dbRole.value : userRole.value)
+  const isViewer = computed(() => effectiveRole.value === 'viewer')
+  const isEditor = computed(() => effectiveRole.value === 'editor')
+  const isAccountOwner = computed(() => {
+    const role = effectiveRole.value
+    const result = !role && isAuthenticated.value
+    console.log('🔍 isAccountOwner check:', { 
+      effectiveRole: role, 
+      dbRoleFetched: dbRoleFetched.value,
+      dbRole: dbRole.value,
+      tokenRole: userRole.value,
+      isAuthenticated: isAuthenticated.value,
+      result 
+    })
+    return result
+  })
   const canEdit = computed(() => isAccountOwner.value || isEditor.value)
   const canManageUsers = computed(() => isAccountOwner.value)
 
@@ -421,7 +536,10 @@ export function useAuth() {
     user: readonly(user),
     isAuthenticated: readonly(isAuthenticated),
     isLoading: readonly(isLoading),
-    userRole: readonly(userRole),
+    userRole: readonly(userRole), // Token role (may be stale)
+    dbRole: readonly(dbRole), // Database role (source of truth)
+    dbRoleFetched: readonly(dbRoleFetched), // Whether DB role has been loaded
+    effectiveRole: readonly(effectiveRole), // The role actually being used
     userClaims: readonly(userClaims),
 
     // Auth methods
@@ -438,6 +556,7 @@ export function useAuth() {
     getCurrentUser,
     getIdToken,
     getAuthHeaders,
+    fetchDatabaseRole, // New method to refresh role from database
 
     // Permission helpers
     isViewer,

@@ -1,6 +1,7 @@
 export const useRetroactSSO = () => {
   const config = useRuntimeConfig()
   const { user } = useAuth()
+  const { locale } = useI18n()
 
   const getRetroactURL = () => {
     // Use runtime config for retroact URL
@@ -37,9 +38,11 @@ export const useRetroactSSO = () => {
         throw new Error('Failed to generate SSO token')
       }
 
-      // Build Retroact URL with SSO token
+      // Build Retroact URL with SSO token and language parameter
       const retroactURL = getRetroactURL()
-      return `${retroactURL}/auth/sso?token=${response.ssoToken}`
+      const currentLanguage = locale.value
+      console.log(`🌍 Passing language preference to Retroact: ${currentLanguage}`)
+      return `${retroactURL}/auth/sso?token=${response.ssoToken}&lang=${currentLanguage}`
     } catch (error) {
       console.error('Failed to generate SSO link:', error)
       throw error
@@ -52,7 +55,7 @@ export const useRetroactSSO = () => {
       
       console.log('🚀 Opening Retroact with SSO link:', ssoLink)
       
-      // Open in new tab (simple approach)
+      // Open in new tab and keep reference for postMessage
       const retroactWindow = window.open(ssoLink, '_blank')
       
       if (!retroactWindow) {
@@ -60,6 +63,13 @@ export const useRetroactSSO = () => {
         alert('Please allow popups for this site to launch Retroact with SSO.')
         return
       }
+
+      // Store reference globally so language changes can be sent
+      if (!window.praxioOpenedWindows) {
+        window.praxioOpenedWindows = []
+      }
+      window.praxioOpenedWindows.push(retroactWindow)
+      console.log('📝 Stored reference to Retroact window for language sync')
 
       console.log('✅ Retroact opened in new tab')
       

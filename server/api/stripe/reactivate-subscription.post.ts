@@ -8,7 +8,7 @@ import { queryOne, execute } from '../../utils/database'
 import { verifyAuth } from '../../utils/auth'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2024-12-18.acacia'
+  apiVersion: '2024-11-20.acacia' as any
 })
 
 export default defineEventHandler(async (event) => {
@@ -29,7 +29,7 @@ export default defineEventHandler(async (event) => {
     }
 
     // Check if subscription is actually pending cancellation
-    const currentSubscription = await stripe.subscriptions.retrieve(userRecord.subscriptionId)
+    const currentSubscription = await stripe.subscriptions.retrieve(userRecord.subscriptionId) as any
     
     if (!currentSubscription.cancel_at_period_end) {
       throw createError({ statusCode: 400, message: 'Subscription is not scheduled for cancellation' })

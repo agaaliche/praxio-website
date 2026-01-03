@@ -119,12 +119,28 @@ export function useSubscription() {
 
     try {
       const token = await getIdToken()
-      const response = await $fetch<{ subscription: SubscriptionState, roleChanged?: boolean }>('/api/users/current', {
+      const response = await $fetch<{ subscription: SubscriptionState, roleChanged?: boolean, role?: string | null }>('/api/users/current', {
         headers: { Authorization: `Bearer ${token}` }
       })
       
       subscription.value = response.subscription
       subscriptionFetched.value = true
+      
+      // Update localStorage role if provided in response
+      if (response.role !== undefined && typeof window !== 'undefined') {
+        const storedRole = localStorage.getItem('praxio_db_role')
+        const newRoleStr = response.role === null ? 'null' : response.role
+        
+        // If role changed in localStorage, update auth composable
+        if (storedRole !== newRoleStr) {
+          console.log('🔄 Role changed detected:', storedRole, '->', newRoleStr)
+          localStorage.setItem('praxio_db_role', newRoleStr)
+          
+          // Trigger role refresh in auth composable
+          const { fetchDatabaseRole } = useAuth()
+          await fetchDatabaseRole(true)
+        }
+      }
       
       // Check if role has changed - notify user to refresh
       if (response.roleChanged) {
