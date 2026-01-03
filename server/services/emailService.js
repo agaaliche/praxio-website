@@ -14,10 +14,14 @@ const __dirname = dirname(__filename);
 const require = createRequire(import.meta.url);
 
 // Resolve path to messaging templates
-// In production (.output build), we're at .output/server/services/emailService.js
-// packages is at ./packages (3 levels up: ../../../packages)
-// In development, server dir is at server/services (also 3 levels up)
-const templatesPath = resolve(__dirname, '../../../packages/messaging/templates/emails/index.js');
+// In production (Docker), packages is at /app/packages
+// In development, we need to go up from server/services to reach packages
+let templatesPath;
+if (process.env.NODE_ENV === 'production') {
+  templatesPath = '/app/packages/messaging/templates/emails/index.js';
+} else {
+  templatesPath = resolve(__dirname, '../../../packages/messaging/templates/emails/index.js');
+}
 console.log('📂 Email templates path:', templatesPath);
 
 class EmailService {
