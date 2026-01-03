@@ -14,7 +14,11 @@ const __dirname = dirname(__filename);
 const require = createRequire(import.meta.url);
 
 // Resolve path to messaging templates
+// In production (.output build), we're at .output/server/services/emailService.js
+// packages is at ./packages (3 levels up: ../../../packages)
+// In development, server dir is at server/services (also 3 levels up)
 const templatesPath = resolve(__dirname, '../../../packages/messaging/templates/emails/index.js');
+console.log('📂 Email templates path:', templatesPath);
 
 class EmailService {
   constructor() {
