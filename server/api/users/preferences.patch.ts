@@ -18,11 +18,11 @@ export default defineEventHandler(async (event) => {
     const body = await readBody<PreferencesUpdate>(event)
     
     // Validate language if provided
-    const validLanguages = ['en', 'fr', 'de', 'sv']
+    const validLanguages = ['en', 'fr']
     if (body.language && !validLanguages.includes(body.language)) {
       throw createError({
         statusCode: 400,
-        message: 'Invalid language. Must be one of: en, fr, de, sv'
+        message: 'Invalid language. Must be one of: en, fr'
       })
     }
     

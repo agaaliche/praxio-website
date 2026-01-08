@@ -51,7 +51,7 @@
                 <!-- Header with Close Button and Search -->
                 <div class="sticky top-0 bg-white border-b border-gray-200">
                   <div class="px-4 py-4 flex items-center justify-between">
-                    <h3 class="text-lg font-semibold text-gray-900">Select Patient</h3>
+                    <h3 class="text-lg font-semibold text-gray-900">{{ t('account.patients.selectPatient') }}</h3>
                     <button @click="mobileDropdownOpen = false" class="w-9 h-9 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 transition">
                       <i class="fa-solid fa-xmark text-xl"></i>
                     </button>
@@ -64,7 +64,7 @@
                       <input
                         v-model="searchQuery"
                         type="text"
-                        placeholder="Search patients..."
+                        :placeholder="t('account.patients.searchPatients')"
                         class="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                       />
                     </div>
@@ -109,7 +109,7 @@
                   <!-- Empty Search -->
                   <div v-if="filteredPatients.length === 0" class="p-8 text-center text-gray-500">
                     <i class="fa-solid fa-search text-2xl mb-2"></i>
-                    <p>No patients match your search</p>
+                    <p>{{ t('account.patients.noMatch') }}</p>
                   </div>
                 </div>
               </div>
@@ -178,7 +178,7 @@
             <div class="flex items-center gap-2">
               <span class="text-sm font-medium text-gray-500">
                 <i class="fa-solid fa-user mr-1"></i>
-                {{ filteredPatients.length }} patients
+                {{ t('account.patients.patientsCount', { count: filteredPatients.length }) }}
               </span>
             </div>
             <button
@@ -198,7 +198,7 @@
             <input
               v-model="searchQuery"
               type="text"
-              placeholder="Search patients..."
+              :placeholder="t('account.patients.searchPatients')"
               class="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-transparent"
             />
           </div>
@@ -211,7 +211,7 @@
                 type="checkbox"
                 class="rounded text-primary-600 focus:ring-primary-500"
               />
-              Show inactive
+              {{ t('account.patients.showInactive') }}
             </label>
           </div>
         </div>
@@ -265,7 +265,7 @@
           <!-- Empty Search -->
           <div v-if="filteredPatients.length === 0 && patients.length > 0" class="p-6 text-center text-gray-500">
             <i class="fa-solid fa-search text-2xl mb-2"></i>
-            <p>No patients match your search</p>
+            <p>{{ t('account.patients.noMatch') }}</p>
           </div>
 
           <!-- No Patients (in left pane when creating first patient) -->
@@ -305,17 +305,17 @@
           <!-- Form Header (hidden on mobile) -->
           <div class="mb-6 hidden lg:block">
             <h2 class="text-xl font-bold text-gray-900">
-              {{ isCreatingPatient ? 'New Patient' : (selectedPatient ? `${selectedPatient.firstName} ${selectedPatient.name}` : 'Select a patient') }}
+              {{ isCreatingPatient ? t('account.patients.newPatient') : (selectedPatient ? `${selectedPatient.firstName} ${selectedPatient.name}` : t('account.patients.selectPatient')) }}
             </h2>
             <p v-if="selectedPatient && !isCreatingPatient" class="text-sm text-gray-500 mt-1">
-              Patient since {{ formatDate(selectedPatient.createdAt) }}
+              {{ t('account.patients.patientSince', { date: formatDate(selectedPatient.createdAt) }) }}
             </p>
           </div>
 
           <!-- No Selection State -->
           <div v-if="!selectedPatient && !isCreatingPatient" class="bg-white rounded-2xl border border-gray-200 p-12 text-center">
             <i class="fa-solid fa-arrow-left text-gray-300 text-4xl mb-4"></i>
-            <p class="text-gray-500">Select a patient from the list to view details</p>
+            <p class="text-gray-500">{{ t('account.patients.selectFromList') }}</p>
           </div>
 
           <!-- Patient Form -->
@@ -324,7 +324,7 @@
               <!-- Name Row -->
               <div class="grid grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">First Name *</label>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('account.patients.firstNameRequired') }}</label>
                   <input
                     v-model="form.firstName"
                     type="text"
@@ -334,7 +334,7 @@
                   />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">Last Name *</label>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('account.patients.lastNameRequired') }}</label>
                   <input
                     v-model="form.name"
                     type="text"
@@ -348,20 +348,20 @@
               <!-- Gender & Birth Date Row -->
               <div class="grid grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">Gender *</label>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('account.patients.genderRequired') }}</label>
                   <select
                     v-model="form.gender"
                     required
                     :disabled="!canEdit"
                     class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   >
-                    <option value="">Select...</option>
-                    <option value="M">Male</option>
-                    <option value="F">Female</option>
+                    <option value="">{{ t('account.patients.genderSelect') }}</option>
+                    <option value="M">{{ t('account.patients.male') }}</option>
+                    <option value="F">{{ t('account.patients.female') }}</option>
                   </select>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">Birth Date *</label>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('account.patients.birthDateRequired') }}</label>
                   <input
                     v-model="form.birthDate"
                     type="date"
@@ -374,7 +374,7 @@
 
               <!-- Health Insurance -->
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Health Insurance Number *</label>
+                <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('account.patients.healthInsuranceRequired') }}</label>
                 <input
                   v-model="form.healthInsuranceNb"
                   type="text"
@@ -384,21 +384,9 @@
                 />
               </div>
 
-              <!-- Indication -->
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Indication</label>
-                <input
-                  v-model="form.indication"
-                  type="text"
-                  placeholder="e.g., AF, DVT, PE"
-                  :readonly="!canEdit"
-                  class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                />
-              </div>
-
               <!-- Patient Status (only for existing patients) -->
               <div v-if="selectedPatient && !isCreatingPatient">
-                <label class="block text-sm font-medium text-gray-700 mb-2">Patient Status</label>
+                <label class="block text-sm font-medium text-gray-700 mb-2">{{ t('account.patients.patientStatus') }}</label>
                 <div class="flex items-center gap-6">
                   <label class="flex items-center gap-2 cursor-pointer">
                     <input
@@ -408,7 +396,7 @@
                       :disabled="!canEdit"
                       class="text-primary-600 focus:ring-primary-500"
                     />
-                    <span class="text-sm text-gray-700">Active</span>
+                    <span class="text-sm text-gray-700">{{ t('account.patients.active') }}</span>
                   </label>
                   <label class="flex items-center gap-2 cursor-pointer">
                     <input
@@ -418,7 +406,7 @@
                       :disabled="!canEdit"
                       class="text-gray-600 focus:ring-gray-500"
                     />
-                    <span class="text-sm text-gray-700">Inactive</span>
+                    <span class="text-sm text-gray-700">{{ t('account.patients.inactive') }}</span>
                   </label>
                 </div>
                 
@@ -426,7 +414,7 @@
                 <div v-if="form.isActive === false" class="mt-3 bg-amber-50 border border-amber-200 rounded-xl p-3 flex items-start gap-2">
                   <i class="fa-solid fa-exclamation-triangle text-amber-500 mt-0.5"></i>
                   <p class="text-sm text-amber-700">
-                    Inactive patients are hidden from the list but their data is preserved.
+                    {{ t('account.patients.inactiveWarning') }}
                   </p>
                 </div>
               </div>
@@ -449,7 +437,7 @@
               >
                 <SpinnerIcon v-if="deleting" class="mr-2" />
                 <i v-else class="fa-solid fa-trash mr-2"></i>
-                Delete
+                {{ t('account.patients.delete') }}
               </button>
               <div v-else></div>
               
@@ -460,7 +448,7 @@
                   @click="cancelCreate"
                   class="px-4 py-2 text-gray-700 hover:bg-gray-100 font-medium rounded-xl transition"
                 >
-                  Cancel
+                  {{ t('account.patients.cancel') }}
                 </button>
                 <button
                   type="submit"
@@ -468,7 +456,7 @@
                   class="px-6 py-2 bg-primary-600 text-white font-medium rounded-xl hover:bg-primary-700 transition disabled:opacity-50"
                 >
                   <SpinnerIcon v-if="saving" class="mr-2" />
-                  {{ isCreatingPatient ? 'Create Patient' : 'Save Changes' }}
+                  {{ isCreatingPatient ? t('account.patients.createPatient') : t('account.patients.saveChanges') }}
                 </button>
               </div>
             </div>
@@ -488,17 +476,16 @@
               <div class="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4">
                 <i class="fa-solid fa-exclamation-triangle text-red-600 text-2xl"></i>
               </div>
-              <h2 class="text-xl font-bold text-gray-900 mb-2">Delete Patient?</h2>
+              <h2 class="text-xl font-bold text-gray-900 mb-2">{{ t('account.patients.deletePatientQuestion') }}</h2>
               <p class="text-gray-600 mb-6">
-                Are you sure you want to delete <strong>{{ selectedPatient?.firstName }} {{ selectedPatient?.name }}</strong>? 
-                This action cannot be undone.
+                {{ t('account.patients.confirmDeleteMessage', { name: `${selectedPatient?.firstName} ${selectedPatient?.name}` }) }}
               </p>
               <div class="flex justify-center gap-3">
                 <button
                   @click="showDeleteModal = false"
                   class="px-4 py-2 text-gray-700 font-medium hover:bg-gray-100 rounded-xl transition"
                 >
-                  Cancel
+                  {{ t('account.patients.cancel') }}
                 </button>
                 <button
                   @click="deletePatient"
@@ -506,7 +493,7 @@
                   class="px-4 py-2 bg-red-600 text-white font-medium rounded-xl hover:bg-red-600 transition disabled:opacity-50"
                 >
                   <SpinnerIcon v-if="deleting" class="mr-2" />
-                  Delete
+                  {{ t('account.patients.delete') }}
                 </button>
               </div>
             </div>
@@ -758,7 +745,7 @@ const savePatient = async () => {
     }
   } catch (e: any) {
     console.error('Save patient error:', e)
-    formError.value = e.data?.message || e.message || 'Failed to save patient'
+    formError.value = e.data?.message || e.message || t('account.patients.errorSave')
   }
   
   saving.value = false
@@ -795,7 +782,7 @@ const deletePatient = async () => {
     }
   } catch (e: any) {
     console.error('Delete error:', e)
-    formError.value = e.data?.message || e.message || 'Failed to delete patient'
+    formError.value = e.data?.message || e.message || t('account.patients.errorDelete')
     showDeleteModal.value = false
   } finally {
     deleting.value = false

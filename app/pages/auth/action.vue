@@ -172,6 +172,27 @@ const oobCode = computed(() => route.query.oobCode as string)
 
 // Process the action
 const processAction = async () => {
+  // For email change, we use 'token' parameter instead of 'oobCode'
+  if (mode.value === 'changeEmail') {
+    const token = route.query.token as string
+    if (!token) {
+      loading.value = false
+      errorTitle.value = 'Invalid Link'
+      errorMessage.value = 'This email change link is invalid. Please request a new one.'
+      return
+    }
+    try {
+      loadingMessage.value = 'Changing your email address...'
+      await handleChangeEmail()
+    } catch (error: any) {
+      loading.value = false
+      errorTitle.value = 'Email Change Failed'
+      errorMessage.value = error.message || 'Unable to complete this action. The link may have expired.'
+    }
+    return
+  }
+  
+  // For other actions, check oobCode
   if (!oobCode.value) {
     loading.value = false
     errorTitle.value = 'Invalid Link'
@@ -194,11 +215,6 @@ const processAction = async () => {
       case 'recoverEmail':
         loadingMessage.value = 'Recovering your email...'
         await handleRecoverEmail()
-        break
-
-      case 'changeEmail':
-        loadingMessage.value = 'Changing your email address...'
-        await handleChangeEmail()
         break
 
       default:

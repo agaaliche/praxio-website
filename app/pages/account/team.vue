@@ -67,8 +67,8 @@
         <!-- Header -->
         <div class="flex items-center justify-between mb-8">
           <div>
-            <h1 class="text-3xl font-display font-bold text-gray-900">Team</h1>
-            <p class="mt-2 text-gray-600">Invite and manage team members</p>
+            <h1 class="text-3xl font-display font-bold text-gray-900">{{ t('account.team.title') }}</h1>
+            <p class="mt-2 text-gray-600">{{ t('account.team.inviteManage') }}</p>
           </div>
           <button
             @click="openInviteModal"
@@ -81,7 +81,7 @@
         <!-- Loading State -->
         <div v-if="loading" class="text-center py-12">
           <div class="w-8 h-8 border-4 border-primary-200 border-t-primary-600 rounded-full animate-spin mx-auto"></div>
-          <p class="mt-2 text-gray-500">Loading team members...</p>
+          <p class="mt-2 text-gray-500">{{ t('account.team.loading') }}</p>
         </div>
 
         <!-- Error State (inline) -->
@@ -132,7 +132,7 @@
                 :class="member.role === 'editor' ? 'bg-primary-100 text-primary-700' : 'bg-gray-100 text-gray-600'"
                 class="px-2 py-0.5 text-xs font-medium rounded-full"
               >
-                {{ member.role === 'editor' ? 'Editor' : 'Viewer' }}
+                {{ member.role === 'editor' ? t('common.editor') : t('common.viewer') }}
               </span>
               <span 
                 :class="getStatusChipClass(member.status)"
@@ -155,7 +155,7 @@
             @click="resendInvite(member)"
             :disabled="resendingEmail === member.email"
             class="w-9 h-9 rounded-lg flex items-center justify-center text-green-600 hover:bg-green-50 transition"
-            title="Resend invite"
+            :title="t('account.team.resendInvite')"
           >
             <SpinnerIcon v-if="resendingEmail === member.email" />
             <i v-else class="fa-regular fa-paper-plane"></i>
@@ -165,7 +165,7 @@
           <button
             @click="copyInviteLink(member)"
             class="w-9 h-9 rounded-lg flex items-center justify-center text-blue-600 hover:bg-blue-50 transition"
-            title="Copy invite link"
+            :title="t('common.copyInviteLink')"
           >
             <i class="fa-regular fa-link"></i>
           </button>
@@ -174,7 +174,7 @@
           <button
             @click="openEditRoleModal(member)"
             class="w-9 h-9 rounded-lg flex items-center justify-center text-primary-600 hover:bg-primary-50 transition"
-            title="Edit role"
+            :title="t('account.team.editRole')"
           >
             <i class="fa-regular fa-user-pen"></i>
           </button>
@@ -183,7 +183,7 @@
           <button
             @click="confirmRemove(member)"
             class="w-9 h-9 rounded-lg flex items-center justify-center text-red-600 hover:bg-red-50 transition ml-auto md:ml-0"
-            title="Remove"
+            :title="t('common.remove')"
           >
             <i class="fa-regular fa-trash"></i>
           </button>

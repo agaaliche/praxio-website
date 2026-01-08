@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
     const accountOwnerId = getEffectiveAccountOwnerId(user)
     
     const authorizedUser = await queryOne<any>(
-      `SELECT id, email, first_name, last_name, role, status, account_owner_id
+      `SELECT id, email, first_name, last_name, role, status, account_owner_id, updated_at
        FROM authorized_users 
        WHERE account_owner_id = ? AND email = ? AND status = 'active'`,
       [accountOwnerId, user.email]
@@ -33,12 +33,29 @@ export default defineEventHandler(async (event) => {
       // Handle this case first before checking users table
       
       // Check if role in database differs from token role
-      const roleChanged = user.role && authorizedUser.role !== user.role
+      // To prevent infinite loop, only report roleChanged if:
+      // 1. Token has a role (not first login)
+      // 2. Database role differs from token role
+      // 3. Role was recently updated (within last 5 minutes) to catch legitimate changes
+      const tokenRole = user.role
+      const dbRole = authorizedUser.role
+      const rolesDiffer = tokenRole && dbRole !== tokenRole
+      
+      // Check if role was recently updated (within 5 minutes)
+      // This prevents reporting roleChanged on every request after token refresh
+      const roleRecentlyUpdated = authorizedUser.updated_at 
+        ? (Date.now() - new Date(authorizedUser.updated_at).getTime()) < 5 * 60 * 1000
+        : false
+      
+      const roleChanged = rolesDiffer && roleRecentlyUpdated
       
       console.log('🔍 Invited user detected:', {
-        tokenRole: user.role,
-        dbRole: authorizedUser.role,
+        tokenRole,
+        dbRole,
+        rolesDiffer,
+        roleRecentlyUpdated,
         roleChanged,
+        updatedAt: authorizedUser.updated_at,
         email: user.email
       })
       
@@ -85,6 +102,7 @@ export default defineEventHandler(async (event) => {
         role: authorizedUser.role,
         status: authorizedUser.status,
         roleChanged,
+        updatedAt: authorizedUser.updated_at, // Include timestamp for frontend tracking
         preferences,
         organization: owner ? {
           name: owner.organizationName,
@@ -181,8 +199,8 @@ export default defineEventHandler(async (event) => {
     // Create a new account owner profile
     console.log(`ℹ️ Creating new user profile for ${user.uid} (${user.email})`)
     
-    // Parse display name into first/last name if available
-    const displayName = '' // Would need to get this from request header or Firebase
+    // Get display name from Firebase user (set during signup)
+    const displayName = user.displayName || ''
     const userName = displayName?.split(' ')[0] || null
     const userLastName = displayName?.split(' ').slice(1).join(' ') || null
     

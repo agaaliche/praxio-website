@@ -3,7 +3,6 @@
     <!-- Header -->
     <div class="mb-8">
       <h1 class="text-3xl font-display font-bold text-gray-900">{{ t('account.settings.billing.title') }}</h1>
-      <p class="mt-2 text-gray-600">{{ t('account.settings.billing.description') }}</p>
     </div>
 
     <!-- Loading State -->

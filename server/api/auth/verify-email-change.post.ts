@@ -7,6 +7,7 @@ import { defineEventHandler, createError, readBody } from 'h3'
 import { getFirebaseAdmin } from '../../utils/firebase-admin'
 import { execute } from '../../utils/database'
 import { verifyEmailChangeToken, completeEmailChange } from '../../services/emailChangeService'
+import { sendEmailChangedConfirmation } from '../../services/authEmailService'
 
 export default defineEventHandler(async (event) => {
   try {
@@ -67,15 +68,29 @@ export default defineEventHandler(async (event) => {
     console.log(`✅ Database email updated for user ${userId}`)
     
     // Also check and update authorized_users if this user is also an authorized user somewhere
+    // Use the current (old) email to find the record since it hasn't been updated yet
     await execute(
-      'UPDATE authorized_users SET email = ?, updated_at = NOW() WHERE firebase_uid = ?',
-      [newEmail, userId]
+      'UPDATE authorized_users SET email = ?, updated_at = NOW() WHERE email = ?',
+      [newEmail, currentEmail]
     )
     
     // Complete the email change (delete token)
     await completeEmailChange(body.token)
     
     console.log(`✅ Email change completed: ${currentEmail} -> ${newEmail} for user ${userId}`)
+    
+    // Get user's name for confirmation email
+    try {
+      const userRecord = await admin.auth().getUser(userId)
+      const displayName = userRecord.displayName || ''
+      const firstName = displayName.split(' ')[0] || ''
+      
+      // Send confirmation email to OLD email address
+      await sendEmailChangedConfirmation(currentEmail, newEmail, firstName)
+    } catch (emailError: any) {
+      console.error('⚠️ Failed to send email changed confirmation:', emailError)
+      // Don't fail the request if email sending fails
+    }
     
     return {
       success: true,

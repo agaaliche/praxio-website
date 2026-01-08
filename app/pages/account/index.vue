@@ -84,8 +84,9 @@
       <div class="mb-8">
         <h2 class="text-xl font-display font-bold text-gray-900 mb-6">{{ t('account.dashboard.yourProducts') }}</h2>
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <!-- Retroact -->
+          <!-- Retroact - Desktop Only -->
           <button
+            v-if="!isMobile"
             @click="handleLaunchRetroact"
             :disabled="!hasAccess || launchingRetroact"
             class="bg-white rounded-2xl p-6 border border-gray-200 hover:shadow-lg hover:border-primary-300 transition group text-left w-full"
@@ -107,16 +108,44 @@
               {{ t('account.dashboard.retroactDescription') }}
             </p>
             <div class="mt-4 flex items-center text-primary-600 text-sm font-medium">
-              <span v-if="launchingRetroact">
-                <i class="fa-solid fa-spinner-third fa-spin mr-2"></i>
+              <span v-if="launchingRetroact" class="flex items-center">
+                <SpinnerIcon size="sm" class="mr-2" />
                 {{ t('account.dashboard.launching') }}
               </span>
-              <span v-else>
-                {{ t('account.dashboard.openApp') }}
-                <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+              <span v-else class="flex items-center justify-between w-full">
+                <span>{{ t('account.dashboard.openApp') }}</span>
+                <span class="flex items-center gap-1.5 text-xs">
+                  <i class="fa-solid fa-desktop"></i>
+                  Desktop
+                </span>
               </span>
             </div>
           </button>
+          
+          <!-- Retroact Mobile - Disabled -->
+          <div
+            v-else
+            class="bg-white rounded-2xl p-6 border border-gray-200 text-left w-full"
+          >
+            <div class="flex items-start justify-between mb-4">
+              <i class="fa-kit-duotone fa-logo text-primary-600 text-4xl"></i>
+              <div class="flex items-center gap-2">
+                <span v-if="subscriptionLabel" :class="subscriptionBadgeClass">
+                  {{ subscriptionLabel }}
+                </span>
+                <span v-if="daysLeft !== null" class="flex items-center gap-1 text-xs text-gray-500">
+                  <i class="fa-regular fa-stopwatch"></i>
+                  {{ daysLeft }}d
+                </span>
+              </div>
+            </div>
+            <p class="mt-2 text-sm text-gray-600">
+              {{ t('account.dashboard.retroactDescription') }}
+            </p>
+            <div class="mt-4 flex items-center text-gray-400 text-sm font-medium">
+              Desktop only app
+            </div>
+          </div>
         </div>
       </div>
 
@@ -248,7 +277,6 @@
               </div>
               <div>
                 <h3 class="font-medium text-gray-900">{{ t('account.dashboard.billing') }}</h3>
-                <p class="text-sm text-gray-500">{{ t('account.dashboard.billingDesc') }}</p>
               </div>
             </div>
             <i class="fa-solid fa-chevron-right text-gray-400"></i>
@@ -284,6 +312,15 @@ const teamCount = ref(0)
 const organizationName = ref('')
 const loading = ref(true)
 const launchingRetroact = ref(false)
+
+// Detect mobile device
+const isMobile = ref(false)
+onMounted(() => {
+  isMobile.value = window.innerWidth < 768
+  window.addEventListener('resize', () => {
+    isMobile.value = window.innerWidth < 768
+  })
+})
 
 // Check if user has access (valid subscription)
 const hasAccess = computed(() => !isTrialExpired.value)

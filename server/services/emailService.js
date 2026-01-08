@@ -51,7 +51,7 @@ class EmailService {
 
   /**
    * Get template instance for email type
-   * @param {string} type - Email type (invitation, credentials, verification, passwordReset, emailChange)
+   * @param {string} type - Email type (invitation, credentials, verification, passwordReset, emailChange, passwordChanged, emailChanged)
    * @param {string} locale - Locale code (en, fr)
    * @returns {Object} Template instance
    */
@@ -63,7 +63,9 @@ class EmailService {
       CredentialsTemplate,
       VerificationTemplate,
       PasswordResetTemplate,
-      EmailChangeTemplate
+      EmailChangeTemplate,
+      PasswordChangedTemplate,
+      EmailChangedTemplate
     } = this.templates;
 
     const templateMap = {
@@ -71,7 +73,9 @@ class EmailService {
       credentials: CredentialsTemplate,
       verification: VerificationTemplate,
       passwordReset: PasswordResetTemplate,
-      emailChange: EmailChangeTemplate
+      emailChange: EmailChangeTemplate,
+      passwordChanged: PasswordChangedTemplate,
+      emailChanged: EmailChangedTemplate
     };
 
     const TemplateClass = templateMap[type];
@@ -179,6 +183,26 @@ class EmailService {
    */
   async sendEmailChange(email, data, locale = 'en') {
     return this.send('emailChange', email, data, locale);
+  }
+
+  /**
+   * Send password changed confirmation
+   * @param {string} email - Recipient email
+   * @param {Object} data - { firstName, changeDate, supportUrl }
+   * @param {string} locale - Locale code
+   */
+  async sendPasswordChanged(email, data, locale = 'en') {
+    return this.send('passwordChanged', email, data, locale);
+  }
+
+  /**
+   * Send email changed confirmation (to old email)
+   * @param {string} email - Recipient email (old email address)
+   * @param {Object} data - { firstName, oldEmail, newEmail, changeDate, supportUrl }
+   * @param {string} locale - Locale code
+   */
+  async sendEmailChanged(email, data, locale = 'en') {
+    return this.send('emailChanged', email, data, locale);
   }
 }
 

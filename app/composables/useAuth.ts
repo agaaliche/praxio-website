@@ -84,22 +84,28 @@ const getApiBaseUrl = (): string => {
 
 export function useAuth() {
   // Fetch user role from database (source of truth)
-  const fetchDatabaseRole = async (showNotification = false): Promise<boolean> => {
+  const fetchDatabaseRole = async (showNotification = false): Promise<{success: boolean, needsSession?: boolean}> => {
+    console.log('🔎 fetchDatabaseRole called, isAuthenticated:', isAuthenticated.value)
+    
     if (!isAuthenticated.value) {
       dbRole.value = null
       dbRoleFetched.value = false
       if (typeof window !== 'undefined') {
         localStorage.removeItem('praxio_db_role')
       }
-      return false
+      return { success: false }
     }
 
     try {
       const auth = getAuthInstance()
       const currentUser = auth.currentUser
-      if (!currentUser) return false
+      if (!currentUser) {
+        console.log('⚠️ No current user')
+        return { success: false }
+      }
 
       const token = await currentUser.getIdToken()
+      console.log('📡 Fetching /api/users/current...')
       const response = await $fetch('/api/users/current', {
         headers: { Authorization: `Bearer ${token}` }
       })
@@ -148,11 +154,31 @@ export function useAuth() {
         }
       }
       
-      return roleChanged
-    } catch (error) {
-      console.error('Failed to fetch database role:', error)
+      return { success: true, needsSession: false }
+    } catch (error: any) {
+      console.error('❌ Failed to fetch database role:', error)
+      console.log('📊 Full error object:', JSON.stringify(error, null, 2))
+      console.log('📊 Error details:', {
+        message: error?.message,
+        status: error?.status,
+        statusCode: error?.statusCode,
+        statusMessage: error?.statusMessage,
+        data: error?.data,
+        responseStatus: error?.response?.status,
+        errorType: typeof error,
+        errorConstructor: error?.constructor?.name
+      })
       dbRoleFetched.value = false
-      return false
+      
+      // Check if error is 401 - indicates no session
+      const is401 = error?.status === 401 || 
+                    error?.statusCode === 401 || 
+                    error?.response?.status === 401 ||
+                    error?.data?.statusCode === 401 ||
+                    (error?.message && error.message.includes('401'))
+      
+      console.log(`🔍 Is 401 error? ${is401}`)
+      return { success: false, needsSession: is401 }
     }
   }
 
@@ -204,7 +230,20 @@ export function useAuth() {
           console.log('👑 isAccountOwner will be:', !userRole.value && true)
 
           // Fetch role from database (source of truth)
-          await fetchDatabaseRole()
+          const roleResult = await fetchDatabaseRole()
+          
+          // If session was revoked (401), dispatch event to show notification
+          if (roleResult.needsSession) {
+            console.log('🚪 Session was revoked (401) - dispatching session-revoked event')
+            
+            if (typeof window !== 'undefined') {
+              const event = new CustomEvent('session-revoked', {
+                detail: { reason: 'Session signed out from another device' }
+              })
+              window.dispatchEvent(event)
+            }
+            return
+          }
         } catch (error) {
           console.error('Error getting user claims:', error)
           user.value = {
@@ -280,10 +319,14 @@ export function useAuth() {
           method: 'POST',
           headers: { Authorization: `Bearer ${token}` }
         })
-        // Session created - custom claims will be picked up on next token refresh
+        console.log('✅ Session created successfully after login')
+        
+        // Force token refresh to get updated custom claims
+        await userCredential.user.getIdToken(true)
       } catch (sessionError) {
-        console.error('Failed to create session:', sessionError)
-        // Don't fail login if session creation fails
+        console.error('❌ Failed to create session:', sessionError)
+        // Don't fail login if session creation fails, but log it prominently
+        throw sessionError
       }
       
       return {
@@ -313,10 +356,13 @@ export function useAuth() {
           method: 'POST',
           headers: { Authorization: `Bearer ${token}` }
         })
-        // Session created - custom claims will be picked up on next token refresh
+        console.log('✅ Session created successfully after Google login')
+        
+        // Force token refresh to get updated custom claims
+        await result.user.getIdToken(true)
       } catch (sessionError) {
-        console.error('Failed to create session:', sessionError)
-        // Don't fail login if session creation fails
+        console.error('❌ Failed to create session:', sessionError)
+        throw sessionError
       }
       
       return {
@@ -336,6 +382,21 @@ export function useAuth() {
   const signOutUser = async (): Promise<AuthResult> => {
     try {
       const auth = getAuthInstance()
+      
+      // Delete current session from database
+      try {
+        const token = await auth.currentUser?.getIdToken()
+        if (token) {
+          await $fetch('/api/sessions/delete-current', {
+            method: 'POST',
+            headers: { Authorization: `Bearer ${token}` }
+          })
+        }
+      } catch (sessionError) {
+        console.error('Failed to delete session:', sessionError)
+        // Don't fail logout if session deletion fails
+      }
+      
       await signOut(auth)
       user.value = null
       userRole.value = null

@@ -362,7 +362,7 @@ export async function sendCredentialsEmail(options: SendCredentialsEmailOptions)
     }
   }
   
-  // Development mode
+  // Development mode - log to console
   logCredentialsToConsole(email, password, firstName, lastName, displayName)
   return { success: true, message: 'Credentials logged to console', inviteLink: '' }
 }

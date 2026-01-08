@@ -21,7 +21,7 @@
       </ol>
     </nav>
     
-    <div class="flex h-full">
+    <div class="flex h-full min-w-0">
       <!-- Mobile Settings Selector (visible only on mobile) -->
       <div class="lg:hidden bg-gradient-to-r from-gray-50 to-white border-b border-gray-200 px-4 pt-0 pb-4 mt-0 absolute top-32 left-0 right-0 z-30">
       <div class="relative">
@@ -235,7 +235,7 @@
     </ClientOnly>
 
     <!-- Content (adjust padding for mobile dropdown) -->
-    <div class="flex-1 lg:pl-6 transition-all duration-300" :class="{ 'pt-[75px] lg:pt-0': true }">
+    <div class="flex-1 lg:pl-6 transition-all duration-300 min-w-0" :class="{ 'pt-[75px] lg:pt-0': true }">
       <NuxtPage />
     </div>
     </div>

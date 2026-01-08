@@ -52,11 +52,22 @@ export default defineEventHandler(async (event) => {
     
     const patients = await query<Patient>(sql, params)
     
-    return patients.map(p => ({
-      ...p,
-      isActive: Boolean(p.isActive),
-      birthDate: p.birthDate ? new Date(p.birthDate).toISOString().split('T')[0] : null
-    }))
+    return patients.map(p => {
+      let birthDateStr = null
+      if (p.birthDate) {
+        const d = new Date(p.birthDate)
+        const year = d.getFullYear()
+        const month = String(d.getMonth() + 1).padStart(2, '0')
+        const day = String(d.getDate()).padStart(2, '0')
+        birthDateStr = `${year}-${month}-${day}`
+      }
+      
+      return {
+        ...p,
+        isActive: Boolean(p.isActive),
+        birthDate: birthDateStr
+      }
+    })
   } catch (error: any) {
     console.error('GET /api/patients error:', error)
     throw error

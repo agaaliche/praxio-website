@@ -1,8 +1,8 @@
 /**
- * POST /api/sessions/revoke
- * Revoke a specific session
+ * POST /api/sessions/delete-current
+ * Delete the current session (called on logout or window close)
  */
-import { defineEventHandler, createError, getHeader, readBody } from 'h3'
+import { defineEventHandler, createError, getHeader } from 'h3'
 import { execute } from '../../utils/database'
 
 export default defineEventHandler(async (event) => {
@@ -17,31 +17,25 @@ export default defineEventHandler(async (event) => {
     const admin = getFirebaseAdmin()
     const decodedToken = await admin.auth().verifyIdToken(token)
     const userId = decodedToken.uid
+    const currentSessionId = decodedToken.sessionId as string | undefined
 
-    const body = await readBody<{ sessionId: string }>(event)
-    const { sessionId } = body
-
-    if (!sessionId) {
-      throw createError({ statusCode: 400, message: 'Session ID is required' })
+    if (!currentSessionId) {
+      // No session to delete
+      return { success: true, message: 'No active session' }
     }
 
-    // Delete the session
-    const result = await execute(
-      `DELETE FROM sessions 
-       WHERE sessionId = ? AND userId = ?`,
-      [sessionId, userId]
+    // Delete the current session
+    await execute(
+      `DELETE FROM sessions WHERE sessionId = ? AND userId = ?`,
+      [currentSessionId, userId]
     )
-
-    if (result.affectedRows === 0) {
-      throw createError({ statusCode: 404, message: 'Session not found' })
-    }
 
     return {
       success: true,
-      message: 'Session revoked successfully'
+      message: 'Session deleted successfully'
     }
   } catch (error: any) {
-    console.error('❌ Revoke session error:', error)
+    console.error('❌ Delete current session error:', error)
     
     if (error.statusCode) {
       throw error
@@ -49,7 +43,7 @@ export default defineEventHandler(async (event) => {
     
     throw createError({
       statusCode: 500,
-      message: 'Failed to revoke session'
+      message: 'Failed to delete session'
     })
   }
 })

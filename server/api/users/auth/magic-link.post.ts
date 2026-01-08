@@ -9,7 +9,7 @@ import { queryOne, execute, query } from '../../../utils/database'
 import { validateMagicLinkToken } from '../../../utils/magicLinkService'
 import { getFirebaseApp } from '../../../utils/firebase'
 import { getAuth } from 'firebase-admin/auth'
-import { sendCredentialsEmail } from '../../../utils/email'
+import getEmailService from '../../../services/emailService'
 import crypto from 'crypto'
 
 // Generate secure random password (same as inrManager)
@@ -244,15 +244,16 @@ export default defineEventHandler(async (event) => {
         [user.account_owner_id]
       )
       
-      await sendCredentialsEmail({
+      const emailService = getEmailService()
+      await emailService.sendCredentials(user.email, {
         email: user.email,
+        password: user.password,
         firstName: user.first_name || '',
         lastName: user.last_name || '',
-        password: user.password,
-        organizationName: ownerProfile?.organizationName || '',
-        ownerFirstName: ownerProfile?.userName || '',
-        lang: 'fr'
-      })
+        ownerName: ownerProfile?.userName || '',
+        organizationName: ownerProfile?.organizationName || ''
+      }, 'fr')
+      
       console.log('📧 Credentials email sent to', user.email)
     } catch (emailError) {
       console.error('⚠️ Failed to send credentials email:', emailError)

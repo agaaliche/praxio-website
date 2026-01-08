@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sync Locale Cookie</title>
+</head>
+<body>
+  <h1>Sync Locale Cookie</h1>
+  <p>LocalStorage: <span id="localStorage"></span></p>
+  <p>Cookie: <span id="cookie"></span></p>
+  <button onclick="sync()">Sync Cookie to Match LocalStorage</button>
+  <p id="result"></p>
+  
+  <script>
+    const STORAGE_KEY = 'praxio_language';
+    
+    function getCookie() {
+      const match = document.cookie.match(new RegExp(`(^| )${STORAGE_KEY}=([^;]+)`));
+      return match ? match[2] : null;
+    }
+    
+    function showStatus() {
+      const ls = localStorage.getItem(STORAGE_KEY);
+      const cookie = getCookie();
+      document.getElementById('localStorage').textContent = ls || 'not set';
+      document.getElementById('cookie').textContent = cookie || 'not set';
+    }
+    
+    function sync() {
+      const locale = localStorage.getItem(STORAGE_KEY);
+      if (locale) {
+        document.cookie = `${STORAGE_KEY}=${locale}; path=/; max-age=31536000; SameSite=Lax`;
+        document.getElementById('result').textContent = `✅ Cookie synced to: ${locale}`;
+        showStatus();
+      } else {
+        document.getElementById('result').textContent = '❌ No localStorage value to sync';
+      }
+    }
+    
+    showStatus();
+  </script>
+</body>
+</html>

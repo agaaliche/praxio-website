@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="max-w-full overflow-hidden">
     <div class="mb-6">
       <h1 class="text-2xl font-display font-bold text-gray-900">{{ t('account.settings.security.title') }}</h1>
       <p class="mt-1 text-gray-600">{{ t('account.settings.security.description') }}</p>
@@ -11,9 +11,9 @@
       <p class="mt-2 text-gray-500">{{ t('common.loading') }}</p>
     </div>
 
-    <div v-else class="space-y-6">
+    <div v-else class="space-y-6 max-w-full">
       <!-- Password Section -->
-      <div class="bg-white rounded-2xl border border-gray-200 p-6">
+      <div class="bg-white rounded-2xl border border-gray-200 p-6 max-w-full overflow-hidden">
         <h2 class="text-lg font-bold text-gray-900 flex items-center gap-2 mb-4">
           <i class="fa-light fa-key text-primary-600"></i>
           {{ t('account.settings.security.password') }}
@@ -38,6 +38,7 @@
                 v-model="passwordForm.currentPassword"
                 :type="showCurrentPassword ? 'text' : 'password'"
                 required
+                autocomplete="current-password"
                 class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent pr-10"
               />
               <button
@@ -58,6 +59,7 @@
                 :type="showNewPassword ? 'text' : 'password'"
                 required
                 minlength="8"
+                autocomplete="new-password"
                 class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent pr-10"
               />
               <button
@@ -78,6 +80,7 @@
                 v-model="passwordForm.confirmPassword"
                 :type="showConfirmPassword ? 'text' : 'password'"
                 required
+                autocomplete="new-password"
                 class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent pr-10"
               />
               <button
@@ -123,11 +126,21 @@
       </div>
 
       <!-- Sessions Section -->
-      <div class="bg-white rounded-2xl border border-gray-200 p-6">
-        <h2 class="text-lg font-bold text-gray-900 flex items-center gap-2 mb-4">
-          <i class="fa-light fa-desktop text-primary-600"></i>
-          {{ t('account.settings.security.activeSessions') }}
-        </h2>
+      <div class="bg-white rounded-2xl border border-gray-200 p-6 max-w-full overflow-hidden">
+        <div class="flex items-center justify-between mb-4 gap-2">
+          <h2 class="text-lg font-bold text-gray-900 flex items-center gap-2 min-w-0">
+            <i class="fa-light fa-desktop text-primary-600 flex-shrink-0"></i>
+            <span class="truncate">{{ t('account.settings.security.activeSessions') }}</span>
+          </h2>
+          <button
+            @click.prevent="fetchSessions"
+            :disabled="sessionsLoading"
+            class="p-2 text-gray-600 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition disabled:opacity-50 flex-shrink-0"
+            :title="t('common.refresh')"
+          >
+            <i class="fa-solid fa-arrows-rotate"></i>
+          </button>
+        </div>
         
         <!-- Loading sessions -->
         <div v-if="sessionsLoading" class="flex justify-center py-4">
@@ -135,26 +148,38 @@
         </div>
 
         <!-- Sessions list -->
-        <div v-else-if="sessions.length > 0" class="space-y-3">
+        <div v-else-if="sessions.length > 0" class="space-y-3 max-w-full">
           <div
             v-for="session in sessions"
             :key="session.sessionId"
-            class="flex items-center gap-4 p-4 rounded-xl"
+            class="flex flex-col md:flex-row md:items-center gap-4 p-4 rounded-xl max-w-full"
             :class="session.isCurrent ? 'bg-green-50 border border-green-200' : 'bg-gray-50'"
           >
-            <div class="w-10 h-10 rounded-full flex items-center justify-center" :class="session.isCurrent ? 'bg-green-100' : 'bg-gray-200'">
-              <i :class="session.isCurrent ? 'fa-solid fa-check text-green-600' : getDeviceIcon(session.deviceType) + ' text-gray-600'"></i>
+            <div class="flex items-center gap-4 flex-1 min-w-0">
+              <div class="w-10 h-10 flex-shrink-0 rounded-full flex items-center justify-center" :class="session.isCurrent ? 'bg-green-100' : 'bg-gray-200'">
+                <i :class="session.isCurrent ? 'fa-solid fa-check text-green-600' : getDeviceIcon(session.deviceType) + ' text-gray-600'"></i>
+              </div>
+              <div class="flex-1 min-w-0">
+                <p class="font-medium text-gray-900 truncate">
+                  {{ session.deviceName }}
+                  <span v-if="session.isCurrent" class="text-sm font-normal text-green-600 ml-2">({{ t('account.settings.security.thisDevice') }})</span>
+                </p>
+                <p class="text-sm text-gray-500 truncate">
+                  {{ session.browser }} {{ session.browserVersion }} • {{ formatSessionTime(session.lastActiveTime) }}
+                </p>
+                <p class="text-xs text-gray-400 mt-1 break-all">{{ session.ipAddress }}</p>
+              </div>
             </div>
-            <div class="flex-1">
-              <p class="font-medium text-gray-900">
-                {{ session.deviceName }}
-                <span v-if="session.isCurrent" class="text-sm font-normal text-green-600 ml-2">({{ t('account.settings.security.thisDevice') }})</span>
-              </p>
-              <p class="text-sm text-gray-500">
-                {{ session.browser }} {{ session.browserVersion }} • {{ formatSessionTime(session.lastActiveTime) }}
-              </p>
-              <p class="text-xs text-gray-400 mt-1">{{ session.ipAddress }}</p>
-            </div>
+            <button
+              v-if="!session.isCurrent"
+              @click="revokeSession(session.sessionId)"
+              :disabled="revokingSession === session.sessionId"
+              class="flex-shrink-0 px-4 py-2 text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-lg transition disabled:opacity-50 w-full md:w-auto flex items-center justify-center gap-2"
+            >
+              <i v-if="revokingSession === session.sessionId" class="fa-solid fa-spinner-third fa-spin"></i>
+              <i v-else class="fa-solid fa-right-from-bracket"></i>
+              {{ t('account.settings.security.signOut') }}
+            </button>
           </div>
         </div>
 
@@ -280,6 +305,15 @@ const { user, getAuthHeaders, signOutUser } = useAuth()
 
 const loading = ref(false)
 
+// Component mounted state to prevent updates after unmount
+const isMounted = ref(false)
+onMounted(() => {
+  isMounted.value = true
+})
+onBeforeUnmount(() => {
+  isMounted.value = false
+})
+
 // Sessions
 const sessions = ref<any[]>([])
 const sessionsLoading = ref(false)
@@ -348,13 +382,24 @@ const changePassword = async () => {
     passwordSuccess.value = true
     passwordForm.value = { currentPassword: '', newPassword: '', confirmPassword: '' }
     
+    // Send confirmation email
+    try {
+      await $fetch('/api/auth/send-password-changed', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${await currentUser.getIdToken()}` }
+      })
+    } catch (emailError) {
+      console.error('Failed to send password changed confirmation:', emailError)
+      // Don't fail the password change if email sending fails
+    }
+    
     setTimeout(() => {
       showPasswordForm.value = false
       passwordSuccess.value = false
     }, 2000)
   } catch (e: any) {
     console.error('Password change error:', e)
-    if (e.code === 'auth/wrong-password') {
+    if (e.code === 'auth/wrong-password' || e.code === 'auth/invalid-credential') {
       passwordError.value = 'Current password is incorrect'
     } else if (e.code === 'auth/weak-password') {
       passwordError.value = 'Password is too weak'
@@ -400,6 +445,12 @@ onMounted(async () => {
 })
 
 async function fetchSessions() {
+  if (!isMounted.value) return
+  
+  // Prevent multiple simultaneous calls
+  if (sessionsLoading.value) return
+  
+  console.log('🔄 Starting fetchSessions')
   sessionsLoading.value = true
   sessionError.value = ''
   
@@ -409,14 +460,30 @@ async function fetchSessions() {
       headers,
       query: {
         page: currentPage.value,
-        limit: 10
+        limit: 5
       }
     })
+    
+    console.log('✅ Got sessions response')
+    
+    // Check again before updating state (component might have unmounted during fetch)
+    if (!isMounted.value) {
+      console.log('⚠️ Component unmounted during fetch')
+      return
+    }
+    
     sessions.value = response.sessions
     pagination.value = response.pagination
+    console.log('✅ Sessions updated')
   } catch (e: any) {
+    console.error('❌ Failed to fetch sessions:', e)
+    if (!isMounted.value) {
+      console.log('⚠️ Component unmounted during error')
+      return
+    }
     sessionError.value = e.data?.message || 'Failed to load sessions'
   } finally {
+    console.log('🔄 Finally block - setting loading to false')
     sessionsLoading.value = false
   }
 }
@@ -427,6 +494,8 @@ function changePage(page: number) {
 }
 
 async function revokeSession(sessionId: string) {
+  if (!isMounted.value) return
+  
   revokingSession.value = sessionId
   sessionError.value = ''
   sessionSuccess.value = ''
@@ -439,20 +508,29 @@ async function revokeSession(sessionId: string) {
       body: { sessionId }
     })
     
+    if (!isMounted.value) return
+    
     sessionSuccess.value = 'Session signed out successfully'
     await fetchSessions()
     
     setTimeout(() => {
-      sessionSuccess.value = ''
+      if (isMounted.value) {
+        sessionSuccess.value = ''
+      }
     }, 3000)
   } catch (e: any) {
+    if (!isMounted.value) return
     sessionError.value = e.data?.message || 'Failed to sign out session'
   } finally {
-    revokingSession.value = null
+    if (isMounted.value) {
+      revokingSession.value = null
+    }
   }
 }
 
 async function revokeAllSessions() {
+  if (!isMounted.value) return
+  
   revokingAll.value = true
   sessionError.value = ''
   sessionSuccess.value = ''
@@ -464,16 +542,23 @@ async function revokeAllSessions() {
       headers
     })
     
+    if (!isMounted.value) return
+    
     sessionSuccess.value = `Signed out ${response.revokedCount} device${response.revokedCount === 1 ? '' : 's'} successfully`
     await fetchSessions()
     
     setTimeout(() => {
-      sessionSuccess.value = ''
+      if (isMounted.value) {
+        sessionSuccess.value = ''
+      }
     }, 3000)
   } catch (e: any) {
+    if (!isMounted.value) return
     sessionError.value = e.data?.message || 'Failed to sign out all sessions'
   } finally {
-    revokingAll.value = false
+    if (isMounted.value) {
+      revokingAll.value = false
+    }
   }
 }
 

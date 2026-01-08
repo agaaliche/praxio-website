@@ -23,6 +23,27 @@ const subscriptionError = ref<string | null>(null)
 const subscriptionFetched = ref(false)
 let roleCheckInterval: NodeJS.Timeout | null = null
 
+// Track handled role changes by their updated_at timestamp (using sessionStorage)
+// This persists across page reloads but clears when tab closes
+function isRoleChangeTimestampHandled(timestamp: string): boolean {
+  if (typeof window === 'undefined') return false
+  const handledTimestamps = sessionStorage.getItem('praxio_handled_role_timestamps')
+  if (!handledTimestamps) return false
+  const timestamps = JSON.parse(handledTimestamps)
+  return timestamps.includes(timestamp)
+}
+
+function markRoleChangeTimestampHandled(timestamp: string) {
+  if (typeof window === 'undefined') return
+  const handledTimestamps = sessionStorage.getItem('praxio_handled_role_timestamps')
+  const timestamps = handledTimestamps ? JSON.parse(handledTimestamps) : []
+  if (!timestamps.includes(timestamp)) {
+    timestamps.push(timestamp)
+    sessionStorage.setItem('praxio_handled_role_timestamps', JSON.stringify(timestamps))
+    console.log('🔒 Marked role change timestamp as handled:', timestamp)
+  }
+}
+
 export function useSubscription() {
   const { user, getIdToken, isAuthenticated } = useAuth()
 
@@ -119,8 +140,19 @@ export function useSubscription() {
 
     try {
       const token = await getIdToken()
-      const response = await $fetch<{ subscription: SubscriptionState, roleChanged?: boolean, role?: string | null }>('/api/users/current', {
+      const response = await $fetch<{ 
+        subscription: SubscriptionState, 
+        roleChanged?: boolean, 
+        role?: string | null,
+        updatedAt?: string 
+      }>('/api/users/current', {
         headers: { Authorization: `Bearer ${token}` }
+      })
+      
+      console.log('📡 API Response:', {
+        roleChanged: response.roleChanged,
+        role: response.role,
+        updatedAt: response.updatedAt
       })
       
       subscription.value = response.subscription
@@ -142,35 +174,46 @@ export function useSubscription() {
         }
       }
       
-      // Check if role has changed - notify user to refresh
-      if (response.roleChanged) {
-        const { showNotification } = await import('~/stores/notification')
-        const { refreshUserClaims } = useAuth()
+      // Check if role has changed - use timestamp to avoid handling same change multiple times
+      if (response.roleChanged && response.updatedAt) {
+        const timestampAlreadyHandled = isRoleChangeTimestampHandled(response.updatedAt)
         
-        // Refresh claims in background
-        await refreshUserClaims()
+        console.log('🔄 ROLE CHANGE DETECTED IN RESPONSE:', {
+          timestampAlreadyHandled,
+          updatedAt: response.updatedAt,
+          tokenRole: user.value?.role,
+          responseRole: response.role
+        })
         
-        // Show countdown notification
-        let countdown = 10
-        const notificationMessage = ref(`Your role has been updated by the account owner. Page will refresh in ${countdown} seconds...`)
-        showNotification(notificationMessage.value, 'info', 11000)
-        
-        // Update countdown every second
-        const countdownInterval = setInterval(() => {
-          countdown--
-          if (countdown > 0) {
-            notificationMessage.value = `Your role has been updated by the account owner. Page will refresh in ${countdown} seconds...`
-            showNotification(notificationMessage.value, 'info', 1100)
-          } else {
-            clearInterval(countdownInterval)
-          }
-        }, 1000)
-        
-        // Auto-reload after 10 seconds
-        setTimeout(() => {
-          clearInterval(countdownInterval)
-          window.location.reload()
-        }, 10000)
+        // Only handle if we haven't processed this specific timestamp before
+        if (!timestampAlreadyHandled) {
+          // Mark this timestamp as handled immediately
+          markRoleChangeTimestampHandled(response.updatedAt)
+          
+          // Stop role checking to prevent re-triggering
+          stopRoleChecking()
+          
+          console.log('🚨 Handling role change - reloading page immediately')
+          
+          const { showNotification } = await import('~/stores/notification')
+          
+          // Show brief notification
+          showNotification(
+            'Your role has been updated. Refreshing page...',
+            'info',
+            3000
+          )
+          
+          // Reload immediately after a brief delay for notification visibility
+          setTimeout(() => {
+            console.log('🔄 Reloading page after role change...')
+            window.location.reload()
+          }, 1500)
+        } else {
+          console.log('⏭️ Role change timestamp already handled - skipping reload')
+        }
+      } else {
+        console.log('ℹ️ No role change detected in this API response')
       }
     } catch (error: any) {
       console.error('Failed to fetch subscription:', error)
@@ -185,6 +228,7 @@ export function useSubscription() {
     subscription.value = null
     subscriptionFetched.value = false
     subscriptionError.value = null
+    clearRoleChangeHandled() // Clear flag on logout
     
     // Stop role checking
     if (roleCheckInterval) {
@@ -199,11 +243,17 @@ export function useSubscription() {
     if (!user.value?.role) return
     
     // Don't start multiple intervals
-    if (roleCheckInterval) return
+    if (roleCheckInterval) {
+      console.log('⏸️ Role checking interval already running')
+      return
+    }
+    
+    console.log('▶️ Starting role checking interval (every 15 seconds)')
     
     // Check every 15 seconds
     roleCheckInterval = setInterval(() => {
       if (isAuthenticated.value && user.value?.role) {
+        console.log('⏰ Role check interval tick - fetching subscription...')
         fetchSubscription(true)
       }
     }, 15000)

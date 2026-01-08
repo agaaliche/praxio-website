@@ -23,11 +23,10 @@ export default defineEventHandler(async (event) => {
       throw createError({ statusCode: 400, message: 'Current session ID not found' })
     }
 
-    // Revoke all sessions except current
+    // Delete all sessions except current
     const result = await execute(
-      `UPDATE sessions 
-       SET isRevoked = TRUE, revokedAt = NOW() 
-       WHERE userId = ? AND sessionId != ? AND isRevoked = FALSE`,
+      `DELETE FROM sessions 
+       WHERE userId = ? AND sessionId != ?`,
       [userId, currentSessionId]
     )
 

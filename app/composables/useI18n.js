@@ -5,18 +5,40 @@ import {
   DEFAULT_LOCALE,
   getNestedValue,
   initLanguage,
-  setStoredLanguage
+  setStoredLanguage,
+  getLanguageFromCookie
 } from '@praxio/i18n'
 
-const currentLocale = ref(DEFAULT_LOCALE)
+// CRITICAL: Initialize locale IMMEDIATELY on module load, BEFORE any component renders
+// This ensures SSR gets the correct locale from the start
+function getInitialLocale() {
+  if (typeof window !== 'undefined') {
+    // Client: try localStorage/cookie
+    return initLanguage()
+  } else {
+    // SSR: try to get from Nuxt's SSR context (will be set by plugin)
+    // For now, default to DEFAULT_LOCALE - plugin will update it immediately
+    return DEFAULT_LOCALE
+  }
+}
+
+const currentLocale = ref(getInitialLocale())
+let isInitialized = false
 
 export const useI18n = () => {
   /**
    * Initialize locale on first use
+   * @param {string} ssrLocale - Optional locale from SSR (cookie)
    */
-  const init = () => {
+  const init = (ssrLocale) => {
+    if (isInitialized) return
+    isInitialized = true
+    
     if (typeof window !== 'undefined') {
-      currentLocale.value = initLanguage()
+      // Client-side: use localStorage/cookie
+      const clientLocale = initLanguage()
+      currentLocale.value = clientLocale
+      console.log(`🌐 Client i18n: Initialized with locale: ${clientLocale}`)
       
       // Listen for language changes from other apps
       window.addEventListener('storage', (e) => {
@@ -33,6 +55,10 @@ export const useI18n = () => {
           currentLocale.value = e.detail.locale
         }
       })
+    } else if (ssrLocale && SUPPORTED_LOCALES.includes(ssrLocale)) {
+      // Server-side: use provided locale from cookie
+      currentLocale.value = ssrLocale
+      console.log(`🌐 SSR i18n: Using locale from cookie: ${ssrLocale}`)
     }
   }
 

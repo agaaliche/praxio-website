@@ -12,6 +12,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^7.1.0",
     "@praxio/i18n": "file:../packages/i18n",
+    "@sendgrid/mail": "^8.1.6",
     "firebase": "^12.7.0",
     "firebase-admin": "^13.6.0",
     "mysql2": "^3.16.0",

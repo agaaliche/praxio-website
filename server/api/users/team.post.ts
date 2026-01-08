@@ -109,11 +109,12 @@ export default defineEventHandler(async (event) => {
     )
 
     // Get owner's organization data
+    // userId in database is stored as user_ID_FIREBASEUID, so we need to use LIKE
     const ownerData = await queryOne<any>(
       `SELECT userName, userLastName, organizationName 
        FROM users 
-       WHERE userId = ?`,
-      [accountOwnerId]
+       WHERE userId LIKE ?`,
+      [`%${accountOwnerId}`]
     )
 
     const ownerFirstName = ownerData?.userName || user.displayName?.split(' ')[0] || user.email?.split('@')[0] || 'Account Owner'

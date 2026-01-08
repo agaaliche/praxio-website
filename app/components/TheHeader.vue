@@ -1,7 +1,6 @@
 <template>
   <header :class="[
-    'bg-white sticky top-0 z-50 transition-shadow duration-200',
-    !route.path.startsWith('/account') && 'shadow-mobile',
+    'bg-white sticky top-0 z-50 transition-shadow duration-200 shadow-mobile',
     showShadow && 'shadow-lg'
   ]">
     <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -68,6 +67,14 @@
                       <span v-if="userRole" :class="roleChipClass" class="inline-block mt-2 px-2 py-0.5 text-xs font-medium rounded-full">
                         {{ userRole === 'editor' ? t('roles.editor') : t('roles.viewer') }}
                       </span>
+                    </div>
+                    <div class="px-4 py-3">
+                      <button 
+                        @click="navigateToRetroact" 
+                        class="w-full px-4 py-2.5 rounded-lg bg-primary-600 text-white font-medium hover:bg-primary-700 transition text-sm"
+                      >
+                        {{ t('header.openRetroact') }}
+                      </button>
                     </div>
                     <button 
                       @click="handleSignOut" 
@@ -482,6 +489,21 @@ const handleSignOut = async () => {
   await signOutUser()
   mobileMenuOpen.value = false
   await navigateTo('/')
+}
+
+const navigateToRetroact = async () => {
+  try {
+    const { generateSSOLink } = useRetroactSSO()
+    const ssoUrl = await generateSSOLink()
+    window.open(ssoUrl, '_blank')
+    dropdownOpen.value = false
+  } catch (error) {
+    console.error('Failed to navigate to Retroact:', error)
+    // Fallback: redirect to Retroact homepage
+    const config = useRuntimeConfig()
+    window.open(config.public.retroactUrl, '_blank')
+    dropdownOpen.value = false
+  }
 }
 </script>
 

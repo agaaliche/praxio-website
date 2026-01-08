@@ -5,7 +5,7 @@
 import { defineEventHandler, createError, getHeader, getQuery } from 'h3'
 import { query, queryOne } from '../../utils/database'
 
-const MAX_SESSIONS = 10
+const MAX_SESSIONS = 5
 
 export default defineEventHandler(async (event) => {
   try {
@@ -31,7 +31,7 @@ export default defineEventHandler(async (event) => {
 
     // Get total count
     const countResult = await queryOne<{ total: number }>(
-      `SELECT COUNT(*) as total FROM sessions WHERE userId = ? AND isRevoked = FALSE`,
+      `SELECT COUNT(*) as total FROM sessions WHERE userId = ? AND isRevoked = 0`,
       [userId]
     )
     const total = countResult?.total || 0
@@ -41,10 +41,10 @@ export default defineEventHandler(async (event) => {
       `SELECT sessionId, deviceName, deviceType, browser, browserVersion, os, 
               ipAddress, loginTime, lastActiveTime, isRevoked
        FROM sessions 
-       WHERE userId = ? AND isRevoked = FALSE
-       ORDER BY lastActiveTime DESC
-       LIMIT ? OFFSET ?`,
-      [userId, limit, offset]
+       WHERE userId = ? AND isRevoked = 0
+       ORDER BY loginTime DESC
+       LIMIT ${Number(limit)} OFFSET ${Number(offset)}`,
+      [userId]
     )
 
     return {

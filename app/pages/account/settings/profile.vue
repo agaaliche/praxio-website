@@ -234,22 +234,25 @@ const sendEmailVerification = async () => {
     })
     
     if (result.success) {
-      snackbar.value = {
-        show: true,
-        message: result.message || 'Verification email sent! Please check your inbox.',
-        color: 'success'
-      }
+      // Use global notification store
+      const { showNotification } = await import('~/stores/notification')
+      showNotification(
+        `Verification email sent to ${newEmail.value}. Please check your inbox.`,
+        'success',
+        5000
+      )
       cancelEmailChange()
     } else {
       emailChangeError.value = result.message || 'Failed to send verification email'
     }
   } catch (e: any) {
     emailChangeError.value = e.data?.message || 'An error occurred'
-    snackbar.value = {
-      show: true,
-      message: e.data?.message || 'An error occurred',
-      color: 'error'
-    }
+    const { showNotification } = await import('~/stores/notification')
+    showNotification(
+      e.data?.message || 'An error occurred',
+      'error',
+      5000
+    )
   } finally {
     emailChangeLoading.value = false
   }

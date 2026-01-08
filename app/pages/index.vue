@@ -24,12 +24,6 @@
               {{ t('home.hero.seeProducts') }}
               <i class="fa-solid fa-arrow-right ml-2"></i>
             </NuxtLink>
-            <NuxtLink 
-              to="/about"
-              class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-gray-100 text-gray-700 font-semibold hover:bg-gray-200 transition"
-            >
-              {{ t('home.hero.learnAbout') }}
-            </NuxtLink>
           </div>
         </div>
       </div>
