@@ -149,3 +149,61 @@ export function isViewer(user: AuthenticatedUser): boolean {
   const effectiveRole = user.dbRole !== undefined ? user.dbRole : user.role
   return effectiveRole === 'viewer'
 }
+
+/**
+ * Verify that the user is a site admin
+ * This checks the siteadmin custom claim from Firebase
+ */
+export async function verifySiteAdmin(event: H3Event): Promise<AuthenticatedUser> {
+  const authHeader = getHeader(event, 'authorization')
+  
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    throw createError({
+      statusCode: 401,
+      statusMessage: 'Unauthorized',
+      message: 'Missing or invalid authorization header'
+    })
+  }
+  
+  const token = authHeader.substring(7)
+  
+  try {
+    const app = getFirebaseApp()
+    if (!app) {
+      throw createError({
+        statusCode: 500,
+        statusMessage: 'Internal Server Error',
+        message: 'Firebase Admin SDK not initialized'
+      })
+    }
+    const auth = getAuth(app)
+    
+    // Verify the Firebase ID token
+    const decodedToken = await auth.verifyIdToken(token)
+    
+    // Check if user has siteadmin claim
+    if (decodedToken.siteadmin !== true) {
+      throw createError({
+        statusCode: 403,
+        statusMessage: 'Forbidden',
+        message: 'Site admin access required'
+      })
+    }
+    
+    return {
+      uid: decodedToken.uid,
+      email: decodedToken.email || '',
+      role: decodedToken.role as string | undefined,
+      accountOwnerId: decodedToken.accountOwnerId as string | undefined
+    }
+  } catch (error: any) {
+    if (error.statusCode === 403) throw error
+    
+    console.error('Auth verification error:', error.message || error)
+    throw createError({
+      statusCode: 401,
+      statusMessage: 'Unauthorized',
+      message: error.message || 'Invalid token'
+    })
+  }
+}

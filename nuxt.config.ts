@@ -20,40 +20,24 @@ export default defineNuxtConfig({
       alwaysRedirect: false,
       fallbackLocale: 'en'
     },
-    lazy: true,
-    langDir: 'locales',
     locales: [
       {
         code: 'en',
         name: 'English',
-        files: [
-          'en/common.json',
-          'en/auth.json',
-          'en/account.json',
-          'en/pricing.json',
-          'en/retroact.json',
-          'en/contact.json',
-          'en/admin.json',
-          'en/emails.json',
-          'en/messages.json'
-        ]
+        file: 'en.json'
       },
       {
         code: 'fr',
         name: 'Français',
-        files: [
-          'fr/common.json',
-          'fr/auth.json',
-          'fr/account.json',
-          'fr/pricing.json',
-          'fr/retroact.json',
-          'fr/contact.json',
-          'fr/admin.json',
-          'fr/emails.json',
-          'fr/messages.json'
-        ]
+        file: 'fr.json'
       }
-    ]
+    ],
+    lazy: true,
+    langDir: 'locales',
+    compilation: {
+      strictMessage: false,
+      escapeHtml: false
+    }
   },
 
   googleFonts: {

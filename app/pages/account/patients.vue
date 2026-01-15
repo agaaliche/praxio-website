@@ -119,47 +119,65 @@
         </div>
       </div>
       
-      <!-- No Patients Landing -->
-      <div v-if="!loading && patients.length === 0 && !isCreatingPatient" class="flex-1 flex items-center justify-center">
-        <div class="max-w-2xl mx-auto text-center px-6">
-          <div class="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6">
-            <i class="fa-duotone fa-hospital-user text-primary-600 text-5xl"></i>
+      <!-- No Patients Landing - Full Width Landscape Layout -->
+      <div v-if="!loading && patients.length === 0 && !isCreatingPatient" class="flex-1 flex items-start p-8">
+        <div class="w-full h-full bg-white rounded-2xl border border-gray-200 flex flex-row items-start p-8">
+          <!-- Left Side: Icon -->
+          <div class="flex items-center justify-center pr-10 flex-shrink-0">
+            <div class="w-[120px] h-[120px] rounded-full border-2 border-primary-600 flex items-center justify-center opacity-25">
+              <i class="fa-thin fa-hospital-user text-primary-600 text-[70px]"></i>
+            </div>
           </div>
-          <h1 class="text-3xl font-display font-bold text-gray-900 mb-4">
-            {{ t('account.patients.addFirst') }}
-          </h1>
-          <p class="text-lg text-gray-600 mb-8">
-            {{ t('account.patients.addFirstDesc') }}
-          </p>
-          <button
-            @click="startCreatePatient"
-            class="inline-flex items-center px-6 py-3 bg-primary-600 text-white font-medium text-lg rounded-xl hover:bg-primary-700 transition shadow-lg shadow-primary-600/25"
-          >
-            <i class="fa-solid fa-user-plus mr-3"></i>
-            {{ t('account.patients.addYourFirst') }}
-          </button>
-        
-          <!-- Features Card -->
-          <div class="mt-10 bg-primary-50 rounded-2xl p-6 text-left">
-            <h3 class="font-bold text-primary-900 mb-4">{{ t('account.patients.whatYouCanDo') }}</h3>
-            <ul class="space-y-3">
-              <li class="flex items-center gap-3 text-gray-700">
-                <i class="fa-duotone fa-vial text-primary-600 w-5"></i>
-                <span>{{ t('account.patients.trackInr') }}</span>
-              </li>
-              <li class="flex items-center gap-3 text-gray-700">
-                <i class="fa-duotone fa-pills text-primary-600 w-5"></i>
-                <span>{{ t('account.patients.manageDosing') }}</span>
-              </li>
-              <li class="flex items-center gap-3 text-gray-700">
-                <i class="fa-duotone fa-file-prescription text-primary-600 w-5"></i>
-                <span>{{ t('account.patients.generatePrescriptions') }}</span>
-              </li>
-              <li class="flex items-center gap-3 text-gray-700">
-                <i class="fa-duotone fa-chart-line-up text-primary-600 w-5"></i>
-                <span>{{ t('account.patients.monitorProgress') }}</span>
-              </li>
-            </ul>
+
+          <!-- Right Side: Content -->
+          <div class="flex-1 flex flex-col text-left">
+            <h1 class="text-3xl font-bold text-primary-600 mb-4">
+              {{ t('account.patients.addFirst') }}
+            </h1>
+            
+            <p class="text-xl text-gray-600 mb-8 max-w-[700px]">
+              {{ t('account.patients.addFirstDesc') }}
+            </p>
+
+            <div class="mb-8">
+              <button
+                @click="startCreatePatient"
+                class="inline-flex items-center px-8 py-3.5 bg-primary-600 text-white font-medium text-lg rounded-full hover:bg-primary-700 transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5"
+              >
+                <i class="fa-solid fa-user-plus mr-3"></i>
+                {{ t('account.patients.addYourFirst') }}
+              </button>
+            </div>
+
+            <!-- Features Card -->
+            <div class="bg-primary-50 rounded-xl p-6 max-w-[700px]">
+              <h3 class="text-lg font-bold text-primary-600 mb-4">
+                {{ t('account.patients.whatYouCanDo') }}
+              </h3>
+              
+              <ul class="space-y-2">
+                <li class="flex items-center gap-3 text-gray-700">
+                  <i class="fa-duotone fa-light fa-calendar text-primary-600 text-2xl w-6"></i>
+                  <span class="text-base">{{ t('account.patients.features.appointments') }}</span>
+                </li>
+                <li class="flex items-center gap-3 text-gray-700">
+                  <i class="fa-duotone fa-light fa-vial text-primary-600 text-2xl w-6"></i>
+                  <span class="text-base">{{ t('account.patients.trackInr') }}</span>
+                </li>
+                <li class="flex items-center gap-3 text-gray-700">
+                  <i class="fa-duotone fa-light fa-pills text-primary-600 text-2xl w-6"></i>
+                  <span class="text-base">{{ t('account.patients.manageDosing') }}</span>
+                </li>
+                <li class="flex items-center gap-3 text-gray-700">
+                  <i class="fa-duotone fa-light fa-file-prescription text-primary-600 text-2xl w-6"></i>
+                  <span class="text-base">{{ t('account.patients.generatePrescriptions') }}</span>
+                </li>
+                <li class="flex items-center gap-3 text-gray-700">
+                  <i class="fa-duotone fa-light fa-chart-line-up text-primary-600 text-2xl w-6"></i>
+                  <span class="text-base">{{ t('account.patients.monitorProgress') }}</span>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>

@@ -42,6 +42,7 @@ const userRole = ref<string | null>(null) // Role from Firebase token (may be st
 const dbRole = ref<string | null>(null) // Role from database (source of truth)
 const dbRoleFetched = ref(false) // Track if DB role has been loaded
 const userClaims = ref<Record<string, any> | null>(null)
+const isSiteAdmin = ref(false) // Track if user is a site admin
 const isLoading = ref(true)
 const authInitialized = ref(false)
 
@@ -206,11 +207,13 @@ export function useAuth() {
           const idTokenResult = await firebaseUser.getIdTokenResult()
           userClaims.value = idTokenResult.claims as Record<string, any>
           userRole.value = (idTokenResult.claims.role as string) || null
+          isSiteAdmin.value = idTokenResult.claims.siteadmin === true
 
           console.log('🎫 ID Token claims:', {
             role: idTokenResult.claims.role,
             accountOwnerId: idTokenResult.claims.accountOwnerId,
             userId: idTokenResult.claims.userId,
+            siteadmin: idTokenResult.claims.siteadmin,
             allClaims: idTokenResult.claims
           })
 
@@ -266,6 +269,7 @@ export function useAuth() {
         dbRole.value = null
         dbRoleFetched.value = false
         userClaims.value = null
+        isSiteAdmin.value = false
         isAuthenticated.value = false
         if (typeof window !== 'undefined') {
           localStorage.removeItem('praxio_db_role')
@@ -602,6 +606,7 @@ export function useAuth() {
     dbRoleFetched: readonly(dbRoleFetched), // Whether DB role has been loaded
     effectiveRole: readonly(effectiveRole), // The role actually being used
     userClaims: readonly(userClaims),
+    isSiteAdmin: readonly(isSiteAdmin), // Site admin status
 
     // Auth methods
     initAuth,

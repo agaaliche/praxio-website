@@ -1,0 +1,862 @@
+{
+  "account": {
+    "title": "Account",
+    "dashboard": {
+      "title": "Dashboard",
+      "welcomeBack": "Welcome back",
+      "manageAccount": "Manage your Praxio account and access your products.",
+      "loading": "Loading dashboard...",
+      "activePatients": "Active Patients",
+      "teamMembers": "Team Members",
+      "subscriptionStatus": "Subscription Status",
+      "active": "Active",
+      "yourProducts": "Your Products",
+      "openApp": "Open App",
+      "launching": "Launching...",
+      "retroactDescription": "INR management for anticoagulant therapy. Track results, generate prescriptions, manage patients.",
+      "viewDetails": "View Details",
+      "quickActions": "Quick Actions",
+      "managePatients": "Manage Patients",
+      "managePatientsDesc": "View, add, and edit patient records",
+      "manageTeam": "Manage Team",
+      "manageTeamDesc": "Invite team members and manage roles",
+      "addPatient": "Add Patient",
+      "addPatientDesc": "Create a new patient record",
+      "inviteTeamMember": "Invite Team Member",
+      "inviteTeamMemberDesc": "Add a colleague to your team",
+      "manageSubscription": "Manage Subscription",
+      "manageSubscriptionDesc": "View plans and billing",
+      "accountSettings": "Account Settings",
+      "profile": "Profile",
+      "profileDesc": "Update your personal information",
+      "organization": "Organization",
+      "organizationDesc": "Manage organization details",
+      "security": "Security",
+      "securityDesc": "Password and authentication settings",
+      "yourPlan": "Your Plan",
+      "billing": "Billing",
+      "billingDesc": "Payment methods and invoices"
+    },
+    "patients": {
+      "title": "Patients",
+      "selectPatient": "Select Patient",
+      "searchPatients": "Search patients...",
+      "noMatch": "No patients match your search",
+      "addFirst": "Add your first patient",
+      "addFirstDesc": "Start tracking INR results and managing anticoagulant therapy for your patients.",
+      "addYourFirst": "Add Your First Patient",
+      "whatYouCanDo": "What you can do:",
+      "trackInr": "Track INR results and therapeutic range",
+      "manageDosing": "Manage dosing schedules",
+      "generatePrescriptions": "Generate prescriptions",
+      "monitorProgress": "Monitor patient progress over time",
+      "addPatient": "Add Patient",
+      "editPatient": "Edit Patient",
+      "patientDetails": "Patient Details",
+      "patientStatus": "Patient Status",
+      "active": "Active",
+      "inactive": "Inactive",
+      "archived": "Archived",
+      "firstName": "First Name",
+      "firstNameRequired": "First Name *",
+      "lastName": "Last Name",
+      "lastNameRequired": "Last Name *",
+      "dateOfBirth": "Date of Birth",
+      "birthDate": "Birth Date",
+      "birthDateRequired": "Birth Date *",
+      "healthInsurance": "Health Insurance Number",
+      "healthInsuranceRequired": "Health Insurance Number *",
+      "gender": "Gender",
+      "genderRequired": "Gender *",
+      "genderSelect": "Select...",
+      "male": "Male",
+      "female": "Female",
+      "phone": "Phone Number",
+      "email": "Email",
+      "address": "Address",
+      "indication": "Indication",
+      "indicationFull": "Indication for Anticoagulation",
+      "indicationPlaceholder": "e.g., AF, DVT, PE",
+      "targetInr": "Target INR Range",
+      "notes": "Notes",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "savePatient": "Save Patient",
+      "updatePatient": "Update Patient",
+      "createPatient": "Create Patient",
+      "saveChanges": "Save",
+      "deletePatient": "Delete Patient",
+      "deletePatientQuestion": "Delete Patient?",
+      "confirmDelete": "Are you sure you want to delete this patient?",
+      "confirmDeleteMessage": "Are you sure you want to delete {name}? This action cannot be undone.",
+      "deleteWarning": "This action cannot be undone. All patient data including INR results and dosing history will be permanently deleted.",
+      "viewInRetroact": "View in Retroact",
+      "showInactive": "Show inactive",
+      "patientsCount": "{count} patients",
+      "newPatient": "New Patient",
+      "selectFromList": "Select a patient from the list to view details",
+      "patientSince": "Patient since {date}",
+      "inactiveWarning": "Inactive patients are hidden from the list but their data is preserved.",
+      "errorSave": "Failed to save patient",
+      "errorDelete": "Failed to delete patient",
+      "errorLoad": "Failed to load patients"
+    },
+    "team": {
+      "title": "Team",
+      "inviteFirst": "Invite your first team member",
+      "inviteFirstDesc": "Collaborate with colleagues on patient care. Invite team members to share access and work together.",
+      "inviteYourFirst": "Invite Your First Member",
+      "whatTeamCanDo": "What team members can do:",
+      "viewPatients": "View and manage shared patients",
+      "addInrResults": "Add INR results and notes",
+      "adjustDosing": "Adjust dosing schedules",
+      "workUnderSubscription": "Work under your subscription",
+      "inviteManage": "Invite and manage team members",
+      "loading": "Loading team members...",
+      "inviteMember": "Invite Team Member",
+      "email": "Email",
+      "emailPlaceholder": "colleague{'@'}example.com",
+      "role": "Role",
+      "editorRole": "Editor - Can view and edit all patients",
+      "viewerRole": "Viewer - Can only view patients",
+      "sendInvite": "Send Invite",
+      "inviteSent": "Invitation sent successfully!",
+      "pending": "Pending",
+      "resendInvite": "Resend Invite",
+      "cancelInvite": "Cancel Invite",
+      "editRole": "Edit Role",
+      "removeFromTeam": "Remove from Team",
+      "confirmRemove": "Remove Team Member?",
+      "removeWarning": "Are you sure you want to remove {name}? They will lose access to all patient data.",
+      "confirmRemoval": "Yes, Remove",
+      "owner": "Owner",
+      "you": "You"
+    },
+    "settings": {
+      "title": "Settings",
+      "profile": {
+        "title": "Profile Settings",
+        "description": "Manage your personal information",
+        "personalInfo": "Personal Information",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "emailAddress": "Email Address",
+        "newEmail": "New Email Address",
+        "enterNewEmail": "Enter new email address",
+        "changeEmail": "Change Email",
+        "sendVerification": "Send Verification Email",
+        "phoneNumber": "Phone Number",
+        "viewOnlyAccess": "View Only Access",
+        "viewOnlyMessage": "You have viewer permissions. Contact an administrator to make changes.",
+        "updateSuccess": "Profile updated successfully!",
+        "saving": "Saving...",
+        "manageInPraxio": "Manage Your Account",
+        "manageInPraxioDesc": "All profile settings are managed in the main Praxio dashboard",
+        "goToPraxio": "Go to Praxio Dashboard"
+      },
+      "organization": {
+        "title": "Organization Settings",
+        "description": "Manage your organization details",
+        "details": "Organization Details",
+        "name": "Organization Name",
+        "type": "Organization Type",
+        "selectType": "Select type...",
+        "clinic": "Clinic",
+        "hospital": "Hospital",
+        "privatePractice": "Private Practice",
+        "laboratory": "Laboratory",
+        "pharmacy": "Pharmacy",
+        "researchCenter": "Research Center",
+        "other": "Other",
+        "phone": "Phone",
+        "fax": "Fax",
+        "address": "Address",
+        "streetAddress": "Street Address",
+        "postalCode": "Postal Code",
+        "city": "City",
+        "country": "Country",
+        "ownerOnly": "Only account owners can modify organization settings.",
+        "yourOrganization": "Your Organization",
+        "notSet": "Not set",
+        "updateSuccess": "Organization updated successfully!",
+        "saving": "Saving..."
+      },
+      "security": {
+        "title": "Security Settings",
+        "description": "Manage your account security",
+        "password": "Password",
+        "passwordDescription": "Change your password to keep your account secure.",
+        "changePassword": "Change Password",
+        "currentPassword": "Current Password",
+        "newPassword": "New Password",
+        "confirmPassword": "Confirm New Password",
+        "minCharacters": "Minimum 8 characters",
+        "updatePassword": "Update Password",
+        "passwordChangeSuccess": "Password changed successfully!",
+        "activeSessions": "Active Sessions",
+        "thisDevice": "This device",
+        "onlyThisDevice": "You're only signed in on this device",
+        "signOut": "Sign Out",
+        "dangerZone": "Danger Zone",
+        "deleteWarning": "Once you delete your account, there is no going back. Please be certain.",
+        "passwordRequirements": "Password must be at least 6 characters long",
+        "sessions": "Active Sessions",
+        "currentSession": "Current session",
+        "signOutOtherSessions": "Sign Out Other Sessions",
+        "twoFactor": "Two-Factor Authentication",
+        "twoFactorDesc": "Add an extra layer of security to your account",
+        "enable": "Enable",
+        "disable": "Disable",
+        "comingSoon": "Coming Soon"
+      },
+      "subscription": {
+        "title": "Your Plan",
+        "description": "View and manage your subscription",
+        "accessRevoked": "Access Revoked",
+        "accessRevokedDescription": "Your access has been temporarily suspended because the organization's subscription has expired.",
+        "contactOwner": "Please contact the account owner to renew the organization's plan and restore your access.",
+        "sharedPlan": "Shared Organization Plan",
+        "sharedPlanDescription": "You are part of this organization and share the same subscription plan as the account owner.",
+        "currentPlan": "Current Plan",
+        "freeTrial": "Free Trial",
+        "status": "Status",
+        "trialEnds": "Trial Ends",
+        "renewsOn": "Renews On",
+        "plan": "Plan",
+        "nextBillingDate": "Next Billing Date",
+        "amount": "Amount",
+        "ownerOnly": "Only the account owner can manage the subscription.",
+        "subscriptionDetails": "Your subscription details",
+        "trialExpired": "Trial Expired",
+        "upgradeToAnnual": "Upgrade to Annual",
+        "cancelSubscription": "Cancel Subscription",
+        "choosePlan": "Choose a Plan",
+        "subscriptionEndDate": "Your subscription will end on {date}",
+        "continueAccess": "You'll continue to have access until then. After that, you'll need to subscribe again to use the service.",
+        "reactivate": "Reactivate Subscription",
+        "accessRevokedDesc": "You no longer have access to this organization. Contact the owner or start your own subscription.",
+        "startNewSubscription": "Start New Subscription",
+        "sharedPlanDesc": "You're using this organization's subscription",
+        "managedBy": "Managed by",
+        "canceledOn": "Canceled on",
+        "accessUntil": "Access until",
+        "reactivating": "Reactivating...",
+        "upcomingPlanChange": "Upcoming Plan Change",
+        "scheduledChange": "Scheduled Change",
+        "scheduledChangeDesc": "Scheduled change to your subscription",
+        "scheduled": "Scheduled",
+        "starting": "Starting",
+        "cancelChangeInfo": "You can cancel this change before it takes effect",
+        "cancelChange": "Cancel Change",
+        "upgradeToAnnualOn": "Upgrading to Annual Plan on",
+        "cancelScheduledChange": "Cancel Scheduled Change",
+        "canceling": "Canceling...",
+        "manageBilling": "Manage Billing",
+        "confirmCancel": "Are you sure you want to cancel?",
+        "cancelWarning": "You'll still have access until the end of your current billing period",
+        "confirmCancellation": "Yes, Cancel Subscription",
+        "noSubscription": "No Active Subscription",
+        "noSubscriptionDesc": "Start a subscription to access Retroact and manage patients.",
+        "browsePlans": "Browse Plans",
+        "trialMessage": "Subscribe now to unlock unlimited access to all features and never lose your data.",
+        "expiredMessage": "Subscribe now to restore access to all features and your data.",
+        "viewPricing": "View Pricing Plans",
+        "trialEndsInOne": "Your trial ends in 1 day",
+        "trialEndsInMany": "Your trial ends in {days} days",
+        "trialExpiredOne": "Your trial expired 1 day ago",
+        "trialExpiredMany": "Your trial expired {days} days ago",
+        "startSubscription": "Start your subscription today"
+      },
+      "trialExpiredPage": {
+        "title": "Your Trial Has Expired",
+        "message": "Your 14-day free trial ended {days} days ago. Subscribe now to restore access to all your patients and data.",
+        "messageSingular": "Your 14-day free trial ended {days} day ago. Subscribe now to restore access to all your patients and data.",
+        "messageToday": "Your 14-day free trial ended today. Subscribe now to restore access to all your patients and data.",
+        "dataSecure": "Your data is safe",
+        "benefit1": "All patient records preserved",
+        "benefit2": "INR history maintained",
+        "benefit3": "Instant access upon subscription",
+        "viewPricing": "View Pricing Plans",
+        "manageSubscription": "Manage Subscription",
+        "signOut": "Sign out and use a different account"
+      },
+      "billing": {
+        "title": "Billing",
+        "description": "Description",
+        "paymentMethod": "Payment Method",
+        "paymentOnFile": "Payment method on file",
+        "managedByStripe": "Managed through Stripe",
+        "update": "Update",
+        "noPaymentMethod": "No payment method on file",
+        "addWhenSubscribe": "Add a payment method when you subscribe to a plan",
+        "nextBilling": "Next Billing",
+        "active": "Active",
+        "billingHistory": "Billing History",
+        "date": "Date",
+        "invoice": "Invoice",
+        "amount": "Amount",
+        "status": "Status",
+        "paid": "Paid",
+        "pending": "Pending",
+        "failed": "Failed",
+        "noInvoices": "No invoices yet",
+        "updatePayment": "Update Payment Method",
+        "managedThroughStripe": "Managed through Stripe",
+        "loadingBilling": "Loading billing information..."
+      }
+    }
+  },
+  "admin": {
+    "impersonate": {
+      "title": "Impersonate User",
+      "subtitle": "Login as another user for support purposes",
+      "warning": {
+        "title": "Important Notice",
+        "message": "Impersonation is logged for security purposes. Only use this feature for legitimate support reasons."
+      },
+      "form": {
+        "userEmail": "User Email",
+        "searchPlaceholder": "Start typing to search users...",
+        "noMatches": "No users match \"{query}\"",
+        "noUsersLoaded": "No users loaded. Check console for errors.",
+        "reason": "Reason for Impersonation",
+        "reasonPlaceholder": "e.g., Debugging user's issue, Support request #1234",
+        "startButton": "Start Impersonation"
+      },
+      "success": {
+        "title": "Impersonation Token Generated",
+        "message": "The impersonation token has been generated. You can now login as the user.",
+        "loginButton": "Login as {email}"
+      },
+      "log": {
+        "title": "Impersonation Log",
+        "empty": "No impersonation history",
+        "by": "by {email}"
+      },
+      "loading": "Loading..."
+    }
+  },
+  "auth": {
+    "signUp": "Sign Up",
+    "signIn": "Sign In",
+    "signOut": "Sign Out",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "displayName": "Display Name",
+    "fullName": "Full name",
+    "forgotPassword": "Forgot Password?",
+    "resetPassword": "Reset Password",
+    "sendResetLink": "Send Reset Link",
+    "resetEmailSent": "Password reset email sent! Check your inbox.",
+    "verificationEmailSent": "A verification email has been sent to your email address.",
+    "verifyYourEmail": "Verify Your Email",
+    "checkYourInbox": "Please check your inbox and click the verification link to activate your account.",
+    "goToSignIn": "Go to Sign In",
+    "emailNotVerified": "Please verify your email before signing in.",
+    "resendVerification": "Resend Verification Email",
+    "signUpWithGoogle": "Sign up with Google",
+    "signInWithGoogle": "Sign in with Google",
+    "alreadyHaveAccount": "Already have an account?",
+    "dontHaveAccount": "Don't have an account?",
+    "or": "OR",
+    "signInTitle": "Sign in to your account",
+    "signInSubtitle": "Access Retroact and all Praxio products",
+    "signUpTitle": "Create your account",
+    "signUpSubtitle": "Start your free trial today",
+    "emailAddress": "Email address",
+    "signingIn": "Signing in...",
+    "signingUp": "Signing up...",
+    "forgotPasswordQuestion": "Forgot your password?"
+  },
+  "roles": {
+    "editor": "Editor",
+    "viewer": "Viewer"
+  },
+  "common": {
+    "yes": "Yes",
+    "no": "No",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "home": "Home",
+    "showing": "Showing",
+    "of": "of",
+    "editor": "Editor",
+    "viewer": "Viewer",
+    "active": "active",
+    "pending": "pending",
+    "copyInviteLink": "Copy invite link",
+    "remove": "Remove"
+  },
+  "header": {
+    "products": "Products",
+    "plans": "Plans",
+    "contact": "Contact",
+    "account": "Account",
+    "signIn": "Sign In",
+    "signOut": "Sign Out",
+    "getStarted": "Get Started",
+    "dashboard": "Dashboard",
+    "patients": "Patients",
+    "team": "Team",
+    "settings": "Settings",
+    "featureOverview": "Feature Overview",
+    "inAction": "In Action",
+    "openRetroact": "Open Retroact"
+  },
+  "footer": {
+    "products": "Products",
+    "company": "Company",
+    "legal": "Legal",
+    "about": "About",
+    "contact": "Contact",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "allRightsReserved": "All rights reserved",
+    "brandDescription": "Building modern software solutions for healthcare professionals. Our mission is to simplify clinical workflows and improve patient care."
+  },
+  "cookieConsent": {
+    "title": "We value your privacy",
+    "description": "We use cookies to enhance your browsing experience, serve personalized content, and analyze our traffic. By clicking \"Accept All\", you consent to our use of cookies.",
+    "customize": "Customize",
+    "rejectAll": "Reject All",
+    "acceptAll": "Accept All",
+    "detailedSettings": "Cookie Preferences",
+    "required": "Always Active",
+    "essential": {
+      "title": "Essential Cookies",
+      "description": "These cookies are necessary for the website to function and cannot be switched off in our systems.",
+      "auth": "Authentication & session management",
+      "preferences": "User preferences & settings",
+      "security": "Security & fraud prevention"
+    },
+    "functional": {
+      "title": "Functional Cookies",
+      "description": "These cookies enable enhanced functionality and personalization, such as language preferences.",
+      "language": "Language selection",
+      "display": "Display preferences"
+    },
+    "analytics": {
+      "title": "Analytics Cookies",
+      "description": "These cookies help us understand how visitors interact with our website by collecting and reporting information anonymously.",
+      "performance": "Website performance metrics",
+      "usage": "Usage patterns & statistics"
+    }
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "Have questions? We'd love to hear from you.",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
+    "subject": "Subject",
+    "message": "Message",
+    "generalInquiry": "General Inquiry",
+    "sales": "Sales",
+    "support": "Support",
+    "partnership": "Partnership",
+    "sendMessage": "Send Message",
+    "sending": "Sending...",
+    "thankYou": "Thank you! We'll get back to you soon.",
+    "reachDirectly": "Or reach us directly:"
+  },
+  "emails": {
+    "invitation": {
+      "subject": "You've been invited to access {accountName}'s account",
+      "greeting": "Hi {firstName},",
+      "invitedBy": "{ownerName} has invited you to access {accountName}'s account.",
+      "clickButton": "Click the button below to accept the invitation. You'll receive your login credentials in a separate email after verification.",
+      "acceptButton": "Accept Invitation",
+      "linkExpires": "This invitation link will expire in 48 hours for security purposes.",
+      "ignoreIfUnexpected": "If you didn't expect this invitation, you can safely ignore this email."
+    },
+    "credentials": {
+      "subject": "Your login credentials for {accountName}",
+      "greeting": "Hi {firstName},",
+      "welcome": "Welcome!",
+      "credentialsIntro": "Please find below your login credentials for accessing {accountName}'s account.",
+      "loginCredentialsTitle": "Your Login Credentials",
+      "emailLabel": "Email",
+      "passwordLabel": "Password",
+      "signInButton": "Sign In"
+    },
+    "verification": {
+      "subject": "Welcome - Verify your email",
+      "greeting": "Hi {name},",
+      "welcome": "Welcome! Thank you for signing up.",
+      "clickButton": "Click the button below to verify your email address and activate your account.",
+      "verifyButton": "Verify Email Address",
+      "linkExpires": "This verification link will expire in 24 hours for security purposes.",
+      "ignoreIfUnexpected": "If you didn't create an account, you can safely ignore this email."
+    },
+    "passwordReset": {
+      "subject": "Reset your password",
+      "greeting": "Hi {name},",
+      "requestReceived": "We received a request to reset your password.",
+      "clickButton": "Click the button below to create a new password.",
+      "resetButton": "Reset Password",
+      "linkExpires": "This password reset link will expire in 1 hour for security purposes.",
+      "ignoreIfUnexpected": "If you didn't request a password reset, you can safely ignore this email. Your password will remain unchanged."
+    },
+    "footer": {
+      "copyright": "© {year} All rights reserved."
+    }
+  },
+  "messages": {
+    "errors": {
+      "generic": "An unexpected error occurred.",
+      "signInFailed": "Sign in failed. Please try again.",
+      "signUpFailed": "Sign up failed. Please try again.",
+      "googleSignInFailed": "Google sign in failed.",
+      "googleSignUpFailed": "Google sign up failed.",
+      "loadSubscriptionFailed": "Failed to load subscription information",
+      "billingPortalFailed": "Failed to open billing portal",
+      "cancelChangeFailed": "Failed to cancel scheduled change",
+      "cancelSubscriptionFailed": "Failed to cancel subscription",
+      "reactivateSubscriptionFailed": "Failed to reactivate subscription",
+      "resetPasswordFailed": "Failed to reset password. Please try again.",
+      "resendVerificationFailed": "Failed to resend verification email. Please try again later.",
+      "linkExpired": "This link is invalid or has expired. Please request a new one.",
+      "actionNotRecognized": "This action is not recognized.",
+      "verificationExpired": "Your verification link has expired. Click below to receive a new verification email.",
+      "verificationUsed": "This verification link has already been used. Your email may already be verified.",
+      "verificationFailed": "Unable to verify your email address. Please try again or contact support.",
+      "passwordResetExpired": "Your password reset link has expired. Please request a new one from the sign in page.",
+      "passwordResetUsed": "This password reset link has already been used or is invalid.",
+      "passwordResetFailed": "Unable to process your password reset request. Please try again or contact support.",
+      "checkoutFailed": "Failed to start checkout. Please try again.",
+      "upgradeScheduleFailed": "Failed to schedule upgrade. Please try again.",
+      "startTrialFailed": "Failed to start trial. Please try again.",
+      "checkoutCanceled": "Checkout was canceled. You can try again when ready."
+    },
+    "success": {
+      "accountCreated": "Account created! Please check your email to verify your account.",
+      "emailVerified": "Your email has been verified successfully. You can now sign in to your account.",
+      "passwordReset": "Your password has been reset successfully. You can now sign in with your new password.",
+      "verificationSent": "A new verification email has been sent to your inbox. Please check your email and click the verification link.",
+      "subscriptionCanceled": "Your subscription has been canceled. You'll continue to have access until {date}.",
+      "subscriptionReactivated": "Your subscription has been reactivated! You will continue to be billed as normal.",
+      "trialStarted": "Your 14-day free trial has started! Enjoy full access to all features."
+    },
+    "cta": {
+      "title": "Join healthcare professionals who work smarter.",
+      "subtitle": "Start your free trial — no credit card required.",
+      "button": "Get Started Free"
+    }
+  },
+  "pricing": {
+    "hero": {
+      "title": "One Price. Everything Included.",
+      "subtitle": "Start your 14-day free trial today."
+    },
+    "currentPlan": {
+      "youreOn": "You're currently on the",
+      "plan": "plan",
+      "trialEnds": "Trial ends",
+      "nextBilling": "Next billing",
+      "manage": "Manage",
+      "annual": "Annual",
+      "monthlyFlex": "Monthly Flex",
+      "freeTrial": "Free Trial",
+      "noPlan": "No Plan"
+    },
+    "freeTrial": {
+      "badge": "Free",
+      "title": "Free Trial",
+      "subtitle": "No credit card required",
+      "free": "FREE",
+      "daysLeft": "day{s} left (ends {date})",
+      "duration": "14 days full access",
+      "feature1": "Full access for 14 days",
+      "feature2": "Unlimited patients",
+      "feature3": "All features included",
+      "feature4": "No credit card required",
+      "feature5": "Upgrade anytime",
+      "notAvailable": "Not Available",
+      "trialExpired": "Trial Expired",
+      "startTrial": "Start Free Trial",
+      "starting": "Starting..."
+    },
+    "monthly": {
+      "badge": "Current Plan",
+      "title": "Monthly Flex",
+      "subtitle": "No commitment",
+      "price": "$45",
+      "perMonth": "/month",
+      "details": "CAD · Cancel anytime",
+      "feature1": "Unlimited patients",
+      "feature2": "All features included",
+      "feature3": "Email & chat support",
+      "feature4": "Cancel anytime",
+      "currentPlanButton": "Current Plan",
+      "subscribe": "Subscribe Monthly"
+    },
+    "annual": {
+      "badge": "Best Value",
+      "title": "Annual Plan",
+      "subtitle": "12-month commitment",
+      "price": "$35",
+      "perMonth": "/month",
+      "perYear": "/year",
+      "perMonthEquiv": "/month equivalent",
+      "savings": "Save $120/year (22% off)",
+      "feature1": "Everything in Monthly Flex",
+      "feature2": "Priority support",
+      "feature3": "Best value – Save $10/month",
+      "feature4": "Locked-in pricing",
+      "upgradeButton": "Upgrade to Annual",
+      "subscribe": "Subscribe Annually",
+      "upgradeScheduled": "Upgrade Scheduled"
+    },
+    "upgradeModal": {
+      "title": "Upgrade to Annual Plan",
+      "description": "Your <strong>Annual Plan</strong> will start on <strong>{date}</strong>, at the end of your current billing cycle.",
+      "cancelNote": "You can cancel this scheduled change anytime before it takes effect.",
+      "newRate": "New rate",
+      "annualSavings": "Annual savings",
+      "confirmButton": "Confirm Upgrade"
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "q1": "Can I cancel anytime?",
+      "a1": "Yes! The monthly plan has no commitment and can be canceled anytime. The yearly plan requires a 12-month commitment but offers significant savings.",
+      "q2": "What happens after the trial?",
+      "a2": "After your 14-day free trial, you'll need to choose a plan to continue. You'll receive a reminder email before your trial ends.",
+      "q3": "Can I switch plans later?",
+      "a3": "Yes! You can upgrade from monthly to annual at any time. The annual plan will start at the end of your current billing cycle.",
+      "q4": "Is there a patient limit?",
+      "a4": "No! Both paid plans include unlimited patient records and tracking."
+    },
+    "contact": {
+      "questions": "Questions?",
+      "contactUs": "Contact us"
+    }
+  },
+  "retroact": {
+    "hero": {
+      "title": "INR Management Made Simple.",
+      "subtitle": "The complete solution for healthcare professionals managing anticoagulant therapy. See how Retroact simplifies your daily workflow.",
+      "startFreeTrial": "Start Free Trial"
+    },
+    "overview": {
+      "title": "Dosing Done Right",
+      "subtitle": "Powerful features for consistent dosing decisions"
+    },
+    "inAction": {
+      "title": "See It In Action",
+      "subtitle": "Explore each feature in detail with interactive demos",
+      "watchDemo": "Watch demo",
+      "screenshotSoon": "Screenshot coming soon"
+    },
+    "features": {
+      "results": {
+        "title": "Recording INR Results",
+        "shortDesc": "Quickly add INR measurements with automatic dose suggestions.",
+        "description": "Record INR values in seconds and get intelligent dosage recommendations based on patient history and target range.",
+        "points": [
+          "One-click INR entry with date picker",
+          "Automatic dose calculation suggestions",
+          "Visual trend indicators",
+          "Notes and comments for each measurement"
+        ]
+      },
+      "doses": {
+        "title": "Dose Management & History",
+        "shortDesc": "Flexible dosing with weekly schedules and one-time adjustments.",
+        "description": "Manage warfarin dosing with ease. Set up recurring weekly schedules or make single-day adjustments when needed. View complete dose history at a glance.",
+        "points": [
+          "Weekly recurring dose schedules",
+          "Single-day dose adjustments",
+          "Complete dose history display",
+          "Refill management and reminders"
+        ]
+      },
+      "prescriptions": {
+        "title": "PDF Prescriptions",
+        "shortDesc": "Generate professional prescription documents instantly.",
+        "description": "Create beautiful, print-ready prescription PDFs with weekly dosage calendars that patients can easily follow.",
+        "points": [
+          "Professional prescription layout",
+          "Weekly dosage calendar view",
+          "Customizable with your practice info",
+          "Print or share digitally"
+        ]
+      },
+      "appointments": {
+        "title": "Scheduling Appointments",
+        "shortDesc": "Never miss a follow-up with integrated scheduling.",
+        "description": "Schedule next INR check appointments directly from the patient record. Get reminders and keep track of upcoming visits.",
+        "points": [
+          "Quick appointment scheduling",
+          "Calendar integration",
+          "Automatic reminders",
+          "Appointment history tracking"
+        ]
+      },
+      "patients": {
+        "title": "Patient Management",
+        "shortDesc": "Organize all your patients in one secure place.",
+        "description": "Manage your patient list with powerful search and filtering. Access complete INR history and treatment details instantly.",
+        "points": [
+          "Fast patient search",
+          "Complete treatment history",
+          "Target INR range settings",
+          "Patient notes and annotations"
+        ]
+      },
+      "analytics": {
+        "title": "INR Analytics",
+        "shortDesc": "Visualize trends with intuitive charts and graphs.",
+        "description": "See INR trends over time with beautiful charts. Identify patterns and optimize treatment with data-driven insights.",
+        "points": [
+          "Interactive INR charts",
+          "Time-in-therapeutic-range metrics",
+          "Trend analysis",
+          "Export data for reports"
+        ]
+      },
+      "aiRecommendations": {
+        "title": "AI-Powered Recommendations",
+        "shortDesc": "Get intelligent dosage suggestions based on patient data.",
+        "description": "Leverage AI to analyze patient INR history and generate clinical dose recommendations with clear rationale. Save time while ensuring evidence-based decisions.",
+        "points": [
+          "AI-generated dose recommendations",
+          "Clear clinical rationale",
+          "Based on TTR and trend analysis",
+          "Comprehensive patient reports"
+        ]
+      },
+      "userManagement": {
+        "title": "User Management",
+        "shortDesc": "Work as a team with role-based access control.",
+        "description": "Collaborate seamlessly with your team. Add authorized editors or viewers to share patient management while maintaining control over who can do what.",
+        "points": [
+          "Role-based access (Owner, Editor, Viewer)",
+          "Invite team members easily",
+          "Granular permission control",
+          "Audit trail of user actions"
+        ]
+      },
+      "notes": {
+        "title": "Unified Notes Manager",
+        "shortDesc": "AI-ready clinical notes in one organized place.",
+        "description": "Keep all your clinical notes structured and accessible. Built for the age of AI, your notes become a powerful data container that powers intelligent recommendations.",
+        "points": [
+          "Centralized notes for all patient data",
+          "Structured format for AI analysis",
+          "Quick note entry from any screen",
+          "Searchable note history"
+        ]
+      },
+      "export": {
+        "title": "Data Export & Backups",
+        "shortDesc": "Export patient data and create secure backups.",
+        "description": "Take control of your data. Export complete patient records in standard formats and create backups to ensure your valuable clinical data is always safe.",
+        "points": [
+          "Export to CSV and PDF formats",
+          "Complete patient data download",
+          "Scheduled automatic backups",
+          "Data portability compliance"
+        ]
+      },
+      "security": {
+        "title": "Security & Privacy",
+        "shortDesc": "GDPR compliant with enterprise-grade security.",
+        "description": "Your patients' data is protected with industry-leading security measures. Fully GDPR compliant for European healthcare providers.",
+        "points": [
+          "End-to-end encryption",
+          "GDPR compliance",
+          "Secure authentication",
+          "Regular security audits"
+        ]
+      },
+      "dataResidency": {
+        "title": "Data Residency & Compliance",
+        "shortDesc": "Choose where your data is stored with country-specific options.",
+        "description": "Meet local regulatory requirements with country-specific data residency. Your patient data stays within your jurisdiction, ensuring compliance with regional healthcare regulations.",
+        "points": [
+          "Country-specific data storage",
+          "Regional compliance support",
+          "Data sovereignty guaranteed",
+          "Multi-region availability"
+        ]
+      }
+    }
+  },
+  "home": {
+    "hero": {
+      "tagline": "Healthcare Software, Reimagined",
+      "title1": "One problem.",
+      "title2": "One app.",
+      "title3": "Done right.",
+      "subtitle": "We build small, focused tools for healthcare professionals. No bloat, no complexity — just software that works the way you do.",
+      "seeProducts": "See Our Products",
+      "learnAbout": "Learn About Us"
+    },
+    "manifesto": {
+      "title": "We're not building the next EHR",
+      "subtitle": "And that's exactly the point.",
+      "noLockIn": {
+        "title": "No vendor lock-in",
+        "description": "Month-to-month billing. Backup all your data to .csv anytime. You're always in control."
+      },
+      "noFluff": {
+        "title": "No fluff",
+        "description": "Clinician-built, clinician-approved. Every feature follows your natural workflow — no learning curve."
+      },
+      "affordable": {
+        "title": "Affordable",
+        "description": "No sticker shock here. We build lean, we price fair, and we pass the savings to you."
+      }
+    },
+    "featured": {
+      "subtitle": "INR Management for Pharmacies, Labs & Clinics",
+      "description": "Everything you need to manage anticoagulant therapy — patient tracking, dose adjustments, PDF prescriptions, and smart scheduling — in one clean interface.",
+      "patientManagement": "Patient Management",
+      "doseManagement": "Dose Management",
+      "pdfPrescriptions": "PDF Prescriptions",
+      "scheduling": "Scheduling",
+      "aiInsights": "AI Insights",
+      "tryItFree": "Try It Free",
+      "seeAllFeatures": "See All Features"
+    },
+    "difference": {
+      "title": "Built different, on purpose",
+      "subtitle": "We questioned everything about how healthcare software is made.",
+      "cards": {
+        "teams": {
+          "title": "Built for teams",
+          "description": "Add team members with view or edit access in seconds."
+        },
+        "affordable": {
+          "title": "Affordable",
+          "description": "One price, everything included. No per-user fees."
+        },
+        "freedom": {
+          "title": "Leave anytime",
+          "description": "No mandatory commitment, no lock-in. Export your data and cancel whenever you want with a monthly subscription."
+        },
+        "noSales": {
+          "title": "Who needs sales reps?",
+          "description": "We skip the demo theater. Sign up, explore, decide for yourself with a",
+          "freeTrial": "free trial"
+        }
+      }
+    },
+    "finalCta": {
+      "title": "Ready to try something different?",
+      "subtitle": "Join healthcare professionals who chose focused tools over feature overload.",
+      "tryFree": "Try Retroact Free",
+      "getInTouch": "Get in Touch"
+    }
+  }
+}

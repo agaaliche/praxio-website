@@ -49,9 +49,11 @@ export default defineEventHandler(async (event) => {
       
       if (authorizedUser) {
         console.log('✅ Found authorized_user:', authorizedUser)
-        // Update custom claims with DB values
-        customClaims = {
-          ...customClaims,
+        // Get existing claims to preserve siteadmin
+        const existingClaims = userRecord.customClaims || {}
+        
+        const customClaims = {
+          ...existingClaims,
           role: authorizedUser.role,
           accountOwnerId: authorizedUser.account_owner_id, // DB column name
           userId: authorizedUser.id,
@@ -73,16 +75,22 @@ export default defineEventHandler(async (event) => {
         
         if (owner) {
           console.log('✅ Found account owner:', owner)
+          // Get existing claims to preserve siteadmin
+          const existingClaims = userRecord.customClaims || {}
+          
           // Account owners should NOT have a role claim
           // Role is only for invited team members (viewer/editor)
           // Create fresh claims object WITHOUT role
           customClaims = {
+            ...existingClaims,
             accountOwnerId: owner.userId,
             userId: owner.userId,
             firstName: owner.userName,
             lastName: owner.userLastName
-            // Explicitly NO role property
+            // Explicitly NO role property (will be undefined/deleted if in existing claims)
           }
+          // Remove role if it exists
+          delete customClaims.role
           
           // Update Firebase custom claims
           await admin.auth().setCustomUserClaims(uid, customClaims)

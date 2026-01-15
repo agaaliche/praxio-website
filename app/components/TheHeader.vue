@@ -76,6 +76,15 @@
                         {{ t('header.openRetroact') }}
                       </button>
                     </div>
+                    <NuxtLink 
+                      v-if="isSiteAdmin"
+                      to="/admin" 
+                      @click="dropdownOpen = false"
+                      class="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition"
+                    >
+                      <i class="fa-solid fa-shield text-red-500"></i>
+                      Admin
+                    </NuxtLink>
                     <button 
                       @click="handleSignOut" 
                       class="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition text-left"
@@ -252,6 +261,16 @@
                   </button>
                 </template>
                 
+                <NuxtLink 
+                  v-if="isSiteAdmin"
+                  to="/admin" 
+                  @click="mobileMenuOpen = false"
+                  class="flex items-center gap-3 px-3 py-2.5 text-red-600 hover:bg-red-50 rounded-lg font-medium transition"
+                >
+                  <i class="fa-solid fa-shield w-5 text-center"></i>
+                  Admin
+                </NuxtLink>
+                
                 <button @click="handleSignOut" class="w-full flex items-center gap-3 px-3 py-2.5 text-gray-700 hover:bg-red-50 hover:text-red-700 rounded-lg font-medium transition text-left">
                   <i class="fa-solid fa-arrow-right-from-bracket w-5 text-center text-red-600"></i>
                   {{ t('header.signOut') }}
@@ -306,7 +325,7 @@ const mobileLanguageOpen = ref(false)
 const isScrolled = ref(false)
 const dropdownOpen = ref(false)
 const dropdownRef = ref(null)
-const { isAuthenticated, user, signOutUser, isAccountOwner, getIdToken } = useAuth()
+const { isAuthenticated, user, signOutUser, isAccountOwner, getIdToken, isSiteAdmin } = useAuth()
 const { isTrialExpired, needsSubscription } = useSubscription()
 const { t, locale, locales, setLocale } = useI18n()
 const router = useRouter()

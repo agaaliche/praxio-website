@@ -211,8 +211,13 @@ export default defineEventHandler(async (event) => {
       console.log(`ℹ️ User profile already exists for ${user.email} (${firebaseUid})`)
     }
 
-    // Set custom claims on the Firebase user
+    // Get existing claims to preserve siteadmin and other custom claims
+    const existingUser = await auth.getUser(firebaseUid)
+    const existingClaims = existingUser.customClaims || {}
+
+    // Set custom claims on the Firebase user, preserving siteadmin
     await auth.setCustomUserClaims(firebaseUid, {
+      ...existingClaims,
       email: user.email,
       role: user.role,
       accountOwnerId: user.account_owner_id,
@@ -223,7 +228,8 @@ export default defineEventHandler(async (event) => {
     
     console.log(`✅ Set custom claims for ${firebaseUid}:`, {
       role: user.role,
-      accountOwnerId: user.account_owner_id
+      accountOwnerId: user.account_owner_id,
+      siteadmin: existingClaims.siteadmin || false
     })
 
     // Create Firebase custom token for auto sign-in
