@@ -21,12 +21,12 @@
       <div v-if="isOpen" class="absolute right-0 mt-2 w-36 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
         <button
           v-for="lang in locales"
-          :key="lang"
-          @click="changeLanguage(lang)"
+          :key="lang.code"
+          @click="changeLanguage(lang.code)"
           class="w-full px-4 py-2 text-sm hover:bg-gray-50 transition text-left"
-          :class="{ 'text-primary-600 font-semibold': locale === lang }"
+          :class="{ 'text-primary-600 font-semibold': locale === lang.code }"
         >
-          {{ getLanguageName(lang) }} ({{ lang.toUpperCase() }})
+          {{ lang.name }} ({{ lang.code.toUpperCase() }})
         </button>
       </div>
     </Transition>
@@ -45,13 +45,6 @@ const { locale, locales, setLocale } = useI18n()
 const { isAuthenticated, getIdToken } = useAuth()
 const isOpen = ref(false)
 const dropdownRef = ref(null)
-
-const languageNames = {
-  en: 'English',
-  fr: 'Français'
-}
-
-const getLanguageName = (lang) => languageNames[lang] || lang
 
 const changeLanguage = async (lang) => {
   console.log('🌍 Praxio LanguageSelector: Changing language to:', lang, 'Authenticated:', isAuthenticated.value)
