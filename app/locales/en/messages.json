@@ -1,0 +1,44 @@
+{
+  "messages": {
+    "errors": {
+      "generic": "An unexpected error occurred.",
+      "signInFailed": "Sign in failed. Please try again.",
+      "signUpFailed": "Sign up failed. Please try again.",
+      "googleSignInFailed": "Google sign in failed.",
+      "googleSignUpFailed": "Google sign up failed.",
+      "loadSubscriptionFailed": "Failed to load subscription information",
+      "billingPortalFailed": "Failed to open billing portal",
+      "cancelChangeFailed": "Failed to cancel scheduled change",
+      "cancelSubscriptionFailed": "Failed to cancel subscription",
+      "reactivateSubscriptionFailed": "Failed to reactivate subscription",
+      "resetPasswordFailed": "Failed to reset password. Please try again.",
+      "resendVerificationFailed": "Failed to resend verification email. Please try again later.",
+      "linkExpired": "This link is invalid or has expired. Please request a new one.",
+      "actionNotRecognized": "This action is not recognized.",
+      "verificationExpired": "Your verification link has expired. Click below to receive a new verification email.",
+      "verificationUsed": "This verification link has already been used. Your email may already be verified.",
+      "verificationFailed": "Unable to verify your email address. Please try again or contact support.",
+      "passwordResetExpired": "Your password reset link has expired. Please request a new one from the sign in page.",
+      "passwordResetUsed": "This password reset link has already been used or is invalid.",
+      "passwordResetFailed": "Unable to process your password reset request. Please try again or contact support.",
+      "checkoutFailed": "Failed to start checkout. Please try again.",
+      "upgradeScheduleFailed": "Failed to schedule upgrade. Please try again.",
+      "startTrialFailed": "Failed to start trial. Please try again.",
+      "checkoutCanceled": "Checkout was canceled. You can try again when ready."
+    },
+    "success": {
+      "accountCreated": "Account created! Please check your email to verify your account.",
+      "emailVerified": "Your email has been verified successfully. You can now sign in to your account.",
+      "passwordReset": "Your password has been reset successfully. You can now sign in with your new password.",
+      "verificationSent": "A new verification email has been sent to your inbox. Please check your email and click the verification link.",
+      "subscriptionCanceled": "Your subscription has been canceled. You'll continue to have access until {{date}}.",
+      "subscriptionReactivated": "Your subscription has been reactivated! You will continue to be billed as normal.",
+      "trialStarted": "Your 14-day free trial has started! Enjoy full access to all features."
+    },
+    "cta": {
+      "title": "Join healthcare professionals who work smarter.",
+      "subtitle": "Start your free trial — no credit card required.",
+      "button": "Get Started Free"
+    }
+  }
+}

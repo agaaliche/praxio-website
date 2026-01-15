@@ -1,0 +1,220 @@
+{
+  "retroact": {
+    "hero": {
+      "title": "La gestion du RIN, enfin simple.",
+      "subtitle": "La solution complète pour les professionnels qui gèrent l'anticoagulothérapie. Découvrez comment Retroact facilite votre quotidien.",
+      "startFreeTrial": "Essai gratuit"
+    },
+    "overview": {
+      "title": "Le dosage comme il faut",
+      "subtitle": "Des outils puissants pour des décisions de dosage cohérentes"
+    },
+    "inAction": {
+      "title": "Voyez-le en action",
+      "subtitle": "Explorez chaque fonctionnalité en détail avec des démos interactives",
+      "watchDemo": "Voir la démo",
+      "screenshotSoon": "Capture d'écran à venir"
+    },
+    "features": {
+      "results": {
+        "title": "Enregistrement des résultats RIN",
+        "shortDesc": "Ajoutez rapidement les mesures RIN avec suggestions de dose automatiques.",
+        "description": "Enregistrez les valeurs RIN en quelques secondes et obtenez des recommandations de dosage intelligentes basées sur l'historique et la cible du patient.",
+        "points": [
+          "Saisie RIN en un clic avec sélecteur de date",
+          "Suggestions de calcul de dose automatiques",
+          "Indicateurs de tendance visuels",
+          "Notes et commentaires pour chaque mesure"
+        ]
+      },
+      "doses": {
+        "title": "Gestion des doses et historique",
+        "shortDesc": "Dosage flexible avec horaires hebdomadaires et ajustements ponctuels.",
+        "description": "Gérez facilement le dosage de la warfarine. Configurez des horaires hebdomadaires récurrents ou effectuez des ajustements ponctuels selon les besoins. Visualisez l'historique complet des doses en un coup d'œil.",
+        "points": [
+          "Horaires de doses hebdomadaires récurrents",
+          "Ajustements de dose ponctuels",
+          "Affichage complet de l'historique des doses",
+          "Gestion des renouvellements et rappels"
+        ]
+      },
+      "prescriptions": {
+        "title": "Ordonnances PDF",
+        "shortDesc": "Générez instantanément des ordonnances professionnelles.",
+        "description": "Créez de belles ordonnances PDF prêtes à imprimer avec des calendriers de dosage hebdomadaires faciles à suivre pour les patients.",
+        "points": [
+          "Mise en page d'ordonnance professionnelle",
+          "Vue calendrier de dosage hebdomadaire",
+          "Personnalisable avec vos informations",
+          "Imprimez ou partagez numériquement"
+        ]
+      },
+      "appointments": {
+        "title": "Planification des rendez-vous",
+        "shortDesc": "Ne manquez jamais un suivi grâce à la planification intégrée.",
+        "description": "Planifiez le prochain rendez-vous de contrôle RIN directement depuis le dossier patient. Recevez des rappels et suivez les visites à venir.",
+        "points": [
+          "Planification rapide des rendez-vous",
+          "Intégration calendrier",
+          "Rappels automatiques",
+          "Suivi de l'historique des rendez-vous"
+        ]
+      },
+      "patients": {
+        "title": "Gestion des patients",
+        "shortDesc": "Organisez tous vos patients en un seul endroit sécurisé.",
+        "description": "Gérez votre liste de patients avec une recherche et un filtrage puissants. Accédez instantanément à l'historique RIN complet et aux détails du traitement.",
+        "points": [
+          "Recherche rapide de patients",
+          "Historique de traitement complet",
+          "Paramètres de plage RIN cible",
+          "Notes et annotations patient"
+        ]
+      },
+      "analytics": {
+        "title": "Analyses RIN",
+        "shortDesc": "Visualisez les tendances avec des graphiques intuitifs.",
+        "description": "Visualisez l'évolution du RIN au fil du temps avec de beaux graphiques. Identifiez les tendances et optimisez le traitement grâce à des analyses basées sur les données.",
+        "points": [
+          "Graphiques RIN interactifs",
+          "Métriques de temps dans la plage thérapeutique",
+          "Analyse des tendances",
+          "Exportation des données pour rapports"
+        ]
+      },
+      "aiRecommendations": {
+        "title": "Recommandations alimentées par l'IA",
+        "shortDesc": "Obtenez des suggestions de dosage intelligentes basées sur les données du patient.",
+        "description": "Utilisez l'IA pour analyser l'historique RIN du patient et générer des recommandations de dose cliniques avec justification claire. Gagnez du temps tout en assurant des décisions fondées sur des données probantes.",
+        "points": [
+          "Recommandations de dose générées par l'IA",
+          "Justification clinique claire",
+          "Basé sur le TTR et l'analyse des tendances",
+          "Rapports patients complets"
+        ]
+      },
+      "userManagement": {
+        "title": "Gestion des utilisateurs",
+        "shortDesc": "Travaillez en équipe avec contrôle d'accès par rôle.",
+        "description": "Collaborez en toute transparence avec votre équipe. Ajoutez des éditeurs ou observateurs autorisés pour partager la gestion des patients tout en gardant le contrôle sur qui peut faire quoi.",
+        "points": [
+          "Accès basé sur les rôles (Propriétaire, Éditeur, Observateur)",
+          "Invitez facilement les membres de l'équipe",
+          "Contrôle granulaire des permissions",
+          "Journal d'audit des actions utilisateur"
+        ]
+      },
+      "notes": {
+        "title": "Gestionnaire de notes unifié",
+        "shortDesc": "Notes cliniques prêtes pour l'IA en un seul endroit organisé.",
+        "description": "Gardez toutes vos notes cliniques structurées et accessibles. Conçues pour l'ère de l'IA, vos notes deviennent un conteneur de données puissant qui alimente les recommandations intelligentes.",
+        "points": [
+          "Notes centralisées pour toutes les données patient",
+          "Format structuré pour l'analyse IA",
+          "Saisie rapide de notes depuis n'importe quel écran",
+          "Historique de notes consultable"
+        ]
+      },
+      "export": {
+        "title": "Exportation et sauvegardes",
+        "shortDesc": "Exportez les données des patients et créez des sauvegardes sécurisées.",
+        "description": "Prenez le contrôle de vos données. Exportez les dossiers patients complets dans des formats standard et créez des sauvegardes pour garantir la sécurité de vos précieuses données cliniques.",
+        "points": [
+          "Exportation aux formats CSV et PDF",
+          "Téléchargement complet des données patient",
+          "Sauvegardes automatiques programmées",
+          "Conformité à la portabilité des données"
+        ]
+      },
+      "security": {
+        "title": "Sécurité et confidentialité",
+        "shortDesc": "Conforme au RGPD avec sécurité de niveau entreprise.",
+        "description": "Les données de vos patients sont protégées par des mesures de sécurité de pointe. Entièrement conforme au RGPD pour les prestataires de soins de santé européens.",
+        "points": [
+          "Chiffrement de bout en bout",
+          "Conformité RGPD",
+          "Authentification sécurisée",
+          "Audits de sécurité réguliers"
+        ]
+      },
+      "dataResidency": {
+        "title": "Résidence des données et conformité",
+        "shortDesc": "Choisissez où vos données sont stockées avec des options par pays.",
+        "description": "Respectez les exigences réglementaires locales avec une résidence des données spécifique à chaque pays. Les données de vos patients restent dans votre juridiction, garantissant la conformité aux réglementations de santé régionales.",
+        "points": [
+          "Stockage de données spécifique par pays",
+          "Support de conformité régionale",
+          "Souveraineté des données garantie",
+          "Disponibilité multi-régions"
+        ]
+      }
+    }
+  },
+  "home": {
+    "hero": {
+      "tagline": "Des logiciels de santé repensés",
+      "title1": "Un besoin.",
+      "title2": "Une solution.",
+      "title3": "Parfaite.",
+      "subtitle": "Nous créons des outils ciblés pour les professionnels de la santé. Sans artifice, sans complexité — simplement des logiciels qui s'adaptent à votre pratique.",
+      "seeProducts": "Découvrir nos produits",
+      "learnAbout": "En savoir plus sur nous"
+    },
+    "manifesto": {
+      "title": "On ne fait pas de DSE tous azimuts",
+      "subtitle": "Et c'est justement ça l'idée.",
+      "noLockIn": {
+        "title": "Liberté totale",
+        "description": "Abonnement mensuel sans engagement. Exportez toutes vos données en .csv quand vous voulez. C'est vous qui décidez."
+      },
+      "noFluff": {
+        "title": "L'essentiel, rien que l'essentiel",
+        "description": "Conçu par des cliniciens, pour des cliniciens. Chaque fonctionnalité s'intègre naturellement à votre routine — prise en main instantanée."
+      },
+      "affordable": {
+        "title": "Prix transparent",
+        "description": "Pas de mauvaise surprise. On développe efficacement, on facture raisonnablement, et vous en profitez."
+      }
+    },
+    "featured": {
+      "subtitle": "Gestion du RIN pour pharmacies, laboratoires et cliniques",
+      "description": "Tout pour gérer l'anticoagulothérapie — suivi des patients, ajustement des doses, ordonnances PDF, rappels automatiques — le tout dans une interface épurée.",
+      "patientManagement": "Gestion des patients",
+      "doseManagement": "Ajustement des doses",
+      "pdfPrescriptions": "Ordonnances PDF",
+      "scheduling": "Planification",
+      "aiInsights": "Analyses IA",
+      "tryItFree": "Essai gratuit",
+      "seeAllFeatures": "Toutes les fonctionnalités"
+    },
+    "difference": {
+      "title": "Conçu différemment, délibérément",
+      "subtitle": "Nous avons remis en question tout ce qui concerne la conception de logiciels de santé.",
+      "cards": {
+        "teams": {
+          "title": "Conçu pour les équipes",
+          "description": "Ajoutez des membres avec accès en lecture ou en écriture en quelques secondes."
+        },
+        "affordable": {
+          "title": "Abordable",
+          "description": "Un prix unique, tout inclus. Pas de frais par utilisateur."
+        },
+        "freedom": {
+          "title": "Partez quand vous voulez",
+          "description": "Aucun engagement obligatoire, aucun verrouillage. Exportez vos données et annulez quand vous voulez avec un abonnement mensuel."
+        },
+        "noSales": {
+          "title": "Qui a besoin de représentants?",
+          "description": "On saute le théâtre des démos. Inscrivez-vous, explorez, décidez par vous-même avec un",
+          "freeTrial": "essai gratuit"
+        }
+      }
+    },
+    "finalCta": {
+      "title": "Prêt à essayer quelque chose de différent?",
+      "subtitle": "Rejoignez les professionnels de la santé qui ont choisi des outils ciblés plutôt que la surcharge de fonctionnalités.",
+      "tryFree": "Essayer Retroact Gratuitement",
+      "getInTouch": "Nous Contacter"
+    }
+  }
+}

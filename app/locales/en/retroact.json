@@ -1,0 +1,220 @@
+{
+  "retroact": {
+    "hero": {
+      "title": "INR Management Made Simple.",
+      "subtitle": "The complete solution for healthcare professionals managing anticoagulant therapy. See how Retroact simplifies your daily workflow.",
+      "startFreeTrial": "Start Free Trial"
+    },
+    "overview": {
+      "title": "Dosing Done Right",
+      "subtitle": "Powerful features for consistent dosing decisions"
+    },
+    "inAction": {
+      "title": "See It In Action",
+      "subtitle": "Explore each feature in detail with interactive demos",
+      "watchDemo": "Watch demo",
+      "screenshotSoon": "Screenshot coming soon"
+    },
+    "features": {
+      "results": {
+        "title": "Recording INR Results",
+        "shortDesc": "Quickly add INR measurements with automatic dose suggestions.",
+        "description": "Record INR values in seconds and get intelligent dosage recommendations based on patient history and target range.",
+        "points": [
+          "One-click INR entry with date picker",
+          "Automatic dose calculation suggestions",
+          "Visual trend indicators",
+          "Notes and comments for each measurement"
+        ]
+      },
+      "doses": {
+        "title": "Dose Management & History",
+        "shortDesc": "Flexible dosing with weekly schedules and one-time adjustments.",
+        "description": "Manage warfarin dosing with ease. Set up recurring weekly schedules or make single-day adjustments when needed. View complete dose history at a glance.",
+        "points": [
+          "Weekly recurring dose schedules",
+          "Single-day dose adjustments",
+          "Complete dose history display",
+          "Refill management and reminders"
+        ]
+      },
+      "prescriptions": {
+        "title": "PDF Prescriptions",
+        "shortDesc": "Generate professional prescription documents instantly.",
+        "description": "Create beautiful, print-ready prescription PDFs with weekly dosage calendars that patients can easily follow.",
+        "points": [
+          "Professional prescription layout",
+          "Weekly dosage calendar view",
+          "Customizable with your practice info",
+          "Print or share digitally"
+        ]
+      },
+      "appointments": {
+        "title": "Scheduling Appointments",
+        "shortDesc": "Never miss a follow-up with integrated scheduling.",
+        "description": "Schedule next INR check appointments directly from the patient record. Get reminders and keep track of upcoming visits.",
+        "points": [
+          "Quick appointment scheduling",
+          "Calendar integration",
+          "Automatic reminders",
+          "Appointment history tracking"
+        ]
+      },
+      "patients": {
+        "title": "Patient Management",
+        "shortDesc": "Organize all your patients in one secure place.",
+        "description": "Manage your patient list with powerful search and filtering. Access complete INR history and treatment details instantly.",
+        "points": [
+          "Fast patient search",
+          "Complete treatment history",
+          "Target INR range settings",
+          "Patient notes and annotations"
+        ]
+      },
+      "analytics": {
+        "title": "INR Analytics",
+        "shortDesc": "Visualize trends with intuitive charts and graphs.",
+        "description": "See INR trends over time with beautiful charts. Identify patterns and optimize treatment with data-driven insights.",
+        "points": [
+          "Interactive INR charts",
+          "Time-in-therapeutic-range metrics",
+          "Trend analysis",
+          "Export data for reports"
+        ]
+      },
+      "aiRecommendations": {
+        "title": "AI-Powered Recommendations",
+        "shortDesc": "Get intelligent dosage suggestions based on patient data.",
+        "description": "Leverage AI to analyze patient INR history and generate clinical dose recommendations with clear rationale. Save time while ensuring evidence-based decisions.",
+        "points": [
+          "AI-generated dose recommendations",
+          "Clear clinical rationale",
+          "Based on TTR and trend analysis",
+          "Comprehensive patient reports"
+        ]
+      },
+      "userManagement": {
+        "title": "User Management",
+        "shortDesc": "Work as a team with role-based access control.",
+        "description": "Collaborate seamlessly with your team. Add authorized editors or viewers to share patient management while maintaining control over who can do what.",
+        "points": [
+          "Role-based access (Owner, Editor, Viewer)",
+          "Invite team members easily",
+          "Granular permission control",
+          "Audit trail of user actions"
+        ]
+      },
+      "notes": {
+        "title": "Unified Notes Manager",
+        "shortDesc": "AI-ready clinical notes in one organized place.",
+        "description": "Keep all your clinical notes structured and accessible. Built for the age of AI, your notes become a powerful data container that powers intelligent recommendations.",
+        "points": [
+          "Centralized notes for all patient data",
+          "Structured format for AI analysis",
+          "Quick note entry from any screen",
+          "Searchable note history"
+        ]
+      },
+      "export": {
+        "title": "Data Export & Backups",
+        "shortDesc": "Export patient data and create secure backups.",
+        "description": "Take control of your data. Export complete patient records in standard formats and create backups to ensure your valuable clinical data is always safe.",
+        "points": [
+          "Export to CSV and PDF formats",
+          "Complete patient data download",
+          "Scheduled automatic backups",
+          "Data portability compliance"
+        ]
+      },
+      "security": {
+        "title": "Security & Privacy",
+        "shortDesc": "GDPR compliant with enterprise-grade security.",
+        "description": "Your patients' data is protected with industry-leading security measures. Fully GDPR compliant for European healthcare providers.",
+        "points": [
+          "End-to-end encryption",
+          "GDPR compliance",
+          "Secure authentication",
+          "Regular security audits"
+        ]
+      },
+      "dataResidency": {
+        "title": "Data Residency & Compliance",
+        "shortDesc": "Choose where your data is stored with country-specific options.",
+        "description": "Meet local regulatory requirements with country-specific data residency. Your patient data stays within your jurisdiction, ensuring compliance with regional healthcare regulations.",
+        "points": [
+          "Country-specific data storage",
+          "Regional compliance support",
+          "Data sovereignty guaranteed",
+          "Multi-region availability"
+        ]
+      }
+    }
+  },
+  "home": {
+    "hero": {
+      "tagline": "Healthcare Software, Reimagined",
+      "title1": "One problem.",
+      "title2": "One app.",
+      "title3": "Done right.",
+      "subtitle": "We build small, focused tools for healthcare professionals. No bloat, no complexity — just software that works the way you do.",
+      "seeProducts": "See Our Products",
+      "learnAbout": "Learn About Us"
+    },
+    "manifesto": {
+      "title": "We're not building the next EHR",
+      "subtitle": "And that's exactly the point.",
+      "noLockIn": {
+        "title": "No vendor lock-in",
+        "description": "Month-to-month billing. Backup all your data to .csv anytime. You're always in control."
+      },
+      "noFluff": {
+        "title": "No fluff",
+        "description": "Clinician-built, clinician-approved. Every feature follows your natural workflow — no learning curve."
+      },
+      "affordable": {
+        "title": "Affordable",
+        "description": "No sticker shock here. We build lean, we price fair, and we pass the savings to you."
+      }
+    },
+    "featured": {
+      "subtitle": "INR Management for Pharmacies, Labs & Clinics",
+      "description": "Everything you need to manage anticoagulant therapy — patient tracking, dose adjustments, PDF prescriptions, and smart scheduling — in one clean interface.",
+      "patientManagement": "Patient Management",
+      "doseManagement": "Dose Management",
+      "pdfPrescriptions": "PDF Prescriptions",
+      "scheduling": "Scheduling",
+      "aiInsights": "AI Insights",
+      "tryItFree": "Try It Free",
+      "seeAllFeatures": "See All Features"
+    },
+    "difference": {
+      "title": "Built different, on purpose",
+      "subtitle": "We questioned everything about how healthcare software is made.",
+      "cards": {
+        "teams": {
+          "title": "Built for teams",
+          "description": "Add team members with view or edit access in seconds."
+        },
+        "affordable": {
+          "title": "Affordable",
+          "description": "One price, everything included. No per-user fees."
+        },
+        "freedom": {
+          "title": "Leave anytime",
+          "description": "No mandatory commitment, no lock-in. Export your data and cancel whenever you want with a monthly subscription."
+        },
+        "noSales": {
+          "title": "Who needs sales reps?",
+          "description": "We skip the demo theater. Sign up, explore, decide for yourself with a",
+          "freeTrial": "free trial"
+        }
+      }
+    },
+    "finalCta": {
+      "title": "Ready to try something different?",
+      "subtitle": "Join healthcare professionals who chose focused tools over feature overload.",
+      "tryFree": "Try Retroact Free",
+      "getInTouch": "Get in Touch"
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "Have questions? We'd love to hear from you.",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
+    "subject": "Subject",
+    "message": "Message",
+    "generalInquiry": "General Inquiry",
+    "sales": "Sales",
+    "support": "Support",
+    "partnership": "Partnership",
+    "sendMessage": "Send Message",
+    "sending": "Sending...",
+    "thankYou": "Thank you! We'll get back to you soon.",
+    "reachDirectly": "Or reach us directly:"
+  }
+}

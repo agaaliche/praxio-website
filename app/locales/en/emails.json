@@ -1,0 +1,44 @@
+{
+  "emails": {
+    "invitation": {
+      "subject": "You've been invited to access {accountName}'s account",
+      "greeting": "Hi {firstName},",
+      "invitedBy": "{ownerName} has invited you to access {accountName}'s account.",
+      "clickButton": "Click the button below to accept the invitation. You'll receive your login credentials in a separate email after verification.",
+      "acceptButton": "Accept Invitation",
+      "linkExpires": "This invitation link will expire in 48 hours for security purposes.",
+      "ignoreIfUnexpected": "If you didn't expect this invitation, you can safely ignore this email."
+    },
+    "credentials": {
+      "subject": "Your login credentials for {accountName}",
+      "greeting": "Hi {firstName},",
+      "welcome": "Welcome!",
+      "credentialsIntro": "Please find below your login credentials for accessing {accountName}'s account.",
+      "loginCredentialsTitle": "Your Login Credentials",
+      "emailLabel": "Email",
+      "passwordLabel": "Password",
+      "signInButton": "Sign In"
+    },
+    "verification": {
+      "subject": "Welcome - Verify your email",
+      "greeting": "Hi {name},",
+      "welcome": "Welcome! Thank you for signing up.",
+      "clickButton": "Click the button below to verify your email address and activate your account.",
+      "verifyButton": "Verify Email Address",
+      "linkExpires": "This verification link will expire in 24 hours for security purposes.",
+      "ignoreIfUnexpected": "If you didn't create an account, you can safely ignore this email."
+    },
+    "passwordReset": {
+      "subject": "Reset your password",
+      "greeting": "Hi {name},",
+      "requestReceived": "We received a request to reset your password.",
+      "clickButton": "Click the button below to create a new password.",
+      "resetButton": "Reset Password",
+      "linkExpires": "This password reset link will expire in 1 hour for security purposes.",
+      "ignoreIfUnexpected": "If you didn't request a password reset, you can safely ignore this email. Your password will remain unchanged."
+    },
+    "footer": {
+      "copyright": "© {year} All rights reserved."
+    }
+  }
+}

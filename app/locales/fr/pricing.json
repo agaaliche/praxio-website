@@ -1,0 +1,90 @@
+{
+  "pricing": {
+    "hero": {
+      "title": "Un seul prix. Tout compris.",
+      "subtitle": "Essayez gratuitement pendant 14 jours."
+    },
+    "currentPlan": {
+      "youreOn": "Vous êtes abonné au forfait",
+      "plan": "",
+      "trialEnds": "Fin de l'essai",
+      "nextBilling": "Prochaine facturation",
+      "manage": "Gérer",
+      "annual": "Forfait annuel",
+      "monthlyFlex": "Forfait mensuel flexible",
+      "freeTrial": "Essai gratuit",
+      "noPlan": "Aucun forfait"
+    },
+    "freeTrial": {
+      "badge": "Gratuit",
+      "title": "Essai gratuit",
+      "subtitle": "Aucune carte de crédit requise",
+      "free": "GRATUIT",
+      "daysLeft": "jour{{s}} restant{{s}} (fin le {{date}})",
+      "duration": "Accès complet pendant 14 jours",
+      "feature1": "Accès complet pendant 14 jours",
+      "feature2": "Patients illimités",
+      "feature3": "Toutes les fonctionnalités incluses",
+      "feature4": "Aucune carte de crédit requise",
+      "feature5": "Passer au forfait payant en tout temps",
+      "notAvailable": "Non disponible",
+      "trialExpired": "Essai expiré",
+      "startTrial": "Commencer l'essai gratuit",
+      "starting": "Démarrage..."
+    },
+    "monthly": {
+      "badge": "Forfait actuel",
+      "title": "Mensuel flexible",
+      "subtitle": "Sans engagement",
+      "price": "45 $",
+      "perMonth": "/mois",
+      "details": "CAD · Annulation en tout temps",
+      "feature1": "Patients illimités",
+      "feature2": "Toutes les fonctionnalités incluses",
+      "feature3": "Assistance par courriel et clavardage",
+      "feature4": "Annulation en tout temps",
+      "currentPlanButton": "Forfait actuel",
+      "subscribe": "S'abonner au mois"
+    },
+    "annual": {
+      "badge": "Meilleur choix",
+      "title": "Forfait annuel",
+      "subtitle": "Engagement de 12 mois",
+      "price": "35 $",
+      "perMonth": "/mois",
+      "perYear": "/an",
+      "perMonthEquiv": "/mois en moyenne",
+      "savings": "Économisez 120 $/année (22 % de rabais)",
+      "feature1": "Tout ce qui est inclus dans le forfait mensuel",
+      "feature2": "Assistance prioritaire",
+      "feature3": "Meilleur rapport qualité-prix – 10 $/mois d'économie",
+      "feature4": "Tarif garanti",
+      "upgradeButton": "Passer au forfait annuel",
+      "subscribe": "S'abonner à l'année",
+      "upgradeScheduled": "Mise à niveau prévue"
+    },
+    "upgradeModal": {
+      "title": "Passer au forfait annuel",
+      "description": "Votre <strong>forfait annuel</strong> commencera le <strong>{{date}}</strong>, à la fin de votre cycle de facturation actuel.",
+      "cancelNote": "Vous pouvez annuler ce changement prévu en tout temps avant qu'il ne prenne effet.",
+      "newRate": "Nouveau tarif",
+      "annualSavings": "Économies annuelles",
+      "confirmButton": "Confirmer la mise à niveau"
+    },
+    "faq": {
+      "title": "Foire aux questions",
+      "q1": "Puis-je annuler en tout temps?",
+      "a1": "Oui! Le forfait mensuel n'a aucun engagement et peut être annulé en tout temps. Le forfait annuel exige un engagement de 12 mois, mais offre des économies substantielles.",
+      "q2": "Que se passe-t-il après l'essai?",
+      "a2": "Après votre essai gratuit de 14 jours, vous devrez choisir un forfait pour continuer. Vous recevrez un rappel par courriel avant la fin de votre essai.",
+      "q3": "Puis-je changer de forfait plus tard?",
+      "a3": "Oui! Vous pouvez passer du forfait mensuel au forfait annuel en tout temps. Le forfait annuel commencera à la fin de votre cycle de facturation actuel.",
+      "q4": "Y a-t-il une limite de patients?",
+      "a4": "Non! Les deux forfaits payants incluent un nombre illimité de dossiers patients."
+    },
+    "contact": {
+      "questions": "Des questions?",
+      "contactUs": "Contactez-nous"
+    }
+  }
+}

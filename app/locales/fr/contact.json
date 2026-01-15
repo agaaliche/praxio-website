@@ -1,0 +1,19 @@
+{
+  "contact": {
+    "title": "Contactez-nous",
+    "subtitle": "Des questions ? Nous serions ravis de vous entendre.",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "email": "Courriel",
+    "subject": "Sujet",
+    "message": "Message",
+    "generalInquiry": "Demande générale",
+    "sales": "Ventes",
+    "support": "Assistance",
+    "partnership": "Partenariat",
+    "sendMessage": "Envoyer le message",
+    "sending": "Envoi en cours...",
+    "thankYou": "Merci ! Nous vous répondrons sous peu.",
+    "reachDirectly": "Ou contactez-nous directement :"
+  }
+}

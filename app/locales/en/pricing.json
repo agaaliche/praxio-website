@@ -1,0 +1,90 @@
+{
+  "pricing": {
+    "hero": {
+      "title": "One Price. Everything Included.",
+      "subtitle": "Start your 14-day free trial today."
+    },
+    "currentPlan": {
+      "youreOn": "You're currently on the",
+      "plan": "plan",
+      "trialEnds": "Trial ends",
+      "nextBilling": "Next billing",
+      "manage": "Manage",
+      "annual": "Annual",
+      "monthlyFlex": "Monthly Flex",
+      "freeTrial": "Free Trial",
+      "noPlan": "No Plan"
+    },
+    "freeTrial": {
+      "badge": "Free",
+      "title": "Free Trial",
+      "subtitle": "No credit card required",
+      "free": "FREE",
+      "daysLeft": "day{{s}} left (ends {{date}})",
+      "duration": "14 days full access",
+      "feature1": "Full access for 14 days",
+      "feature2": "Unlimited patients",
+      "feature3": "All features included",
+      "feature4": "No credit card required",
+      "feature5": "Upgrade anytime",
+      "notAvailable": "Not Available",
+      "trialExpired": "Trial Expired",
+      "startTrial": "Start Free Trial",
+      "starting": "Starting..."
+    },
+    "monthly": {
+      "badge": "Current Plan",
+      "title": "Monthly Flex",
+      "subtitle": "No commitment",
+      "price": "$45",
+      "perMonth": "/month",
+      "details": "CAD · Cancel anytime",
+      "feature1": "Unlimited patients",
+      "feature2": "All features included",
+      "feature3": "Email & chat support",
+      "feature4": "Cancel anytime",
+      "currentPlanButton": "Current Plan",
+      "subscribe": "Subscribe Monthly"
+    },
+    "annual": {
+      "badge": "Best Value",
+      "title": "Annual Plan",
+      "subtitle": "12-month commitment",
+      "price": "$35",
+      "perMonth": "/month",
+      "perYear": "/year",
+      "perMonthEquiv": "/month equivalent",
+      "savings": "Save $120/year (22% off)",
+      "feature1": "Everything in Monthly Flex",
+      "feature2": "Priority support",
+      "feature3": "Best value – Save $10/month",
+      "feature4": "Locked-in pricing",
+      "upgradeButton": "Upgrade to Annual",
+      "subscribe": "Subscribe Annually",
+      "upgradeScheduled": "Upgrade Scheduled"
+    },
+    "upgradeModal": {
+      "title": "Upgrade to Annual Plan",
+      "description": "Your <strong>Annual Plan</strong> will start on <strong>{{date}}</strong>, at the end of your current billing cycle.",
+      "cancelNote": "You can cancel this scheduled change anytime before it takes effect.",
+      "newRate": "New rate",
+      "annualSavings": "Annual savings",
+      "confirmButton": "Confirm Upgrade"
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "q1": "Can I cancel anytime?",
+      "a1": "Yes! The monthly plan has no commitment and can be canceled anytime. The yearly plan requires a 12-month commitment but offers significant savings.",
+      "q2": "What happens after the trial?",
+      "a2": "After your 14-day free trial, you'll need to choose a plan to continue. You'll receive a reminder email before your trial ends.",
+      "q3": "Can I switch plans later?",
+      "a3": "Yes! You can upgrade from monthly to annual at any time. The annual plan will start at the end of your current billing cycle.",
+      "q4": "Is there a patient limit?",
+      "a4": "No! Both paid plans include unlimited patient records and tracking."
+    },
+    "contact": {
+      "questions": "Questions?",
+      "contactUs": "Contact us"
+    }
+  }
+}

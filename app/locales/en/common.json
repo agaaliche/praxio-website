@@ -1,0 +1,81 @@
+{
+  "common": {
+    "yes": "Yes",
+    "no": "No",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "home": "Home",
+    "showing": "Showing",
+    "of": "of",
+    "editor": "Editor",
+    "viewer": "Viewer",
+    "active": "active",
+    "pending": "pending",
+    "copyInviteLink": "Copy invite link",
+    "remove": "Remove"
+  },
+  "header": {
+    "products": "Products",
+    "plans": "Plans",
+    "contact": "Contact",
+    "account": "Account",
+    "signIn": "Sign In",
+    "signOut": "Sign Out",
+    "getStarted": "Get Started",
+    "dashboard": "Dashboard",
+    "patients": "Patients",
+    "team": "Team",
+    "settings": "Settings",
+    "featureOverview": "Feature Overview",
+    "inAction": "In Action",
+    "openRetroact": "Open Retroact"
+  },
+  "footer": {
+    "products": "Products",
+    "company": "Company",
+    "legal": "Legal",
+    "about": "About",
+    "contact": "Contact",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "allRightsReserved": "All rights reserved",
+    "brandDescription": "Building modern software solutions for healthcare professionals. Our mission is to simplify clinical workflows and improve patient care."
+  },
+  "cookieConsent": {
+    "title": "We value your privacy",
+    "description": "We use cookies to enhance your browsing experience, serve personalized content, and analyze our traffic. By clicking \"Accept All\", you consent to our use of cookies.",
+    "customize": "Customize",
+    "rejectAll": "Reject All",
+    "acceptAll": "Accept All",
+    "detailedSettings": "Cookie Preferences",
+    "required": "Always Active",
+    "essential": {
+      "title": "Essential Cookies",
+      "description": "These cookies are necessary for the website to function and cannot be switched off in our systems.",
+      "auth": "Authentication & session management",
+      "preferences": "User preferences & settings",
+      "security": "Security & fraud prevention"
+    },
+    "functional": {
+      "title": "Functional Cookies",
+      "description": "These cookies enable enhanced functionality and personalization, such as language preferences.",
+      "language": "Language selection",
+      "display": "Display preferences"
+    },
+    "analytics": {
+      "title": "Analytics Cookies",
+      "description": "These cookies help us understand how visitors interact with our website by collecting and reporting information anonymously.",
+      "performance": "Website performance metrics",
+      "usage": "Usage patterns & statistics"
+    }
+  }
+}

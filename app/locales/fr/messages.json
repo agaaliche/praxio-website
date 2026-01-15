@@ -1,0 +1,44 @@
+{
+  "messages": {
+    "errors": {
+      "generic": "Une erreur inattendue s'est produite.",
+      "signInFailed": "Échec de la connexion. Veuillez réessayer.",
+      "signUpFailed": "Échec de l'inscription. Veuillez réessayer.",
+      "googleSignInFailed": "Échec de la connexion avec Google.",
+      "googleSignUpFailed": "Échec de l'inscription avec Google.",
+      "loadSubscriptionFailed": "Impossible de charger les informations d'abonnement",
+      "billingPortalFailed": "Impossible d'ouvrir le portail de facturation",
+      "cancelChangeFailed": "Impossible d'annuler la modification prévue",
+      "cancelSubscriptionFailed": "Impossible d'annuler l'abonnement",
+      "reactivateSubscriptionFailed": "Impossible de réactiver l'abonnement",
+      "resetPasswordFailed": "Échec de la réinitialisation du mot de passe. Veuillez réessayer.",
+      "resendVerificationFailed": "Impossible de renvoyer le courriel de vérification. Veuillez réessayer plus tard.",
+      "linkExpired": "Ce lien n'est pas valide ou a expiré. Veuillez en demander un nouveau.",
+      "actionNotRecognized": "Cette action n'est pas reconnue.",
+      "verificationExpired": "Votre lien de vérification a expiré. Cliquez ci-dessous pour recevoir un nouveau courriel de vérification.",
+      "verificationUsed": "Ce lien de vérification a déjà été utilisé. Votre courriel est peut-être déjà vérifié.",
+      "verificationFailed": "Impossible de vérifier votre adresse courriel. Veuillez réessayer ou contacter le support.",
+      "passwordResetExpired": "Votre lien de réinitialisation a expiré. Veuillez en demander un nouveau depuis la page de connexion.",
+      "passwordResetUsed": "Ce lien de réinitialisation a déjà été utilisé ou n'est pas valide.",
+      "passwordResetFailed": "Impossible de traiter votre demande de réinitialisation. Veuillez réessayer ou contacter le support.",
+      "checkoutFailed": "Impossible de démarrer le paiement. Veuillez réessayer.",
+      "upgradeScheduleFailed": "Impossible de programmer la mise à niveau. Veuillez réessayer.",
+      "startTrialFailed": "Impossible de démarrer l'essai. Veuillez réessayer.",
+      "checkoutCanceled": "Le paiement a été annulé. Vous pouvez réessayer quand vous le souhaitez."
+    },
+    "success": {
+      "accountCreated": "Compte créé ! Veuillez vérifier votre courriel pour confirmer votre compte.",
+      "emailVerified": "Votre courriel a été vérifié avec succès. Vous pouvez maintenant vous connecter à votre compte.",
+      "passwordReset": "Votre mot de passe a été réinitialisé avec succès. Vous pouvez maintenant vous connecter avec votre nouveau mot de passe.",
+      "verificationSent": "Un nouveau courriel de vérification a été envoyé. Veuillez consulter votre boîte de réception et cliquer sur le lien de vérification.",
+      "subscriptionCanceled": "Votre abonnement a été annulé. Vous continuerez d'avoir accès jusqu'au {{date}}.",
+      "subscriptionReactivated": "Votre abonnement a été réactivé ! Vous continuerez d'être facturé normalement.",
+      "trialStarted": "Votre essai gratuit de 14 jours a commencé ! Profitez de toutes les fonctionnalités."
+    },
+    "cta": {
+      "title": "Rejoignez les professionnels de la santé qui travaillent plus intelligemment.",
+      "subtitle": "Commencez votre essai gratuit — aucune carte de crédit requise.",
+      "button": "Commencer gratuitement"
+    }
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "common": {
+    "yes": "Oui",
+    "no": "Non",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "close": "Fermer",
+    "back": "Retour",
+    "next": "Suivant",
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès",
+    "home": "Accueil",
+    "showing": "Affichage de",
+    "of": "sur",
+    "editor": "Éditeur",
+    "viewer": "Observateur",
+    "active": "actif",
+    "pending": "en attente",
+    "copyInviteLink": "Copier le lien d'invitation",
+    "remove": "Retirer"
+  },
+  "header": {
+    "products": "Produits",
+    "plans": "Tarifs",
+    "contact": "Contact",
+    "account": "Compte",
+    "signIn": "Connexion",
+    "signOut": "Déconnexion",
+    "getStarted": "Démarrer",
+    "dashboard": "Tableau de bord",
+    "patients": "Patients",
+    "team": "Équipe",
+    "settings": "Paramètres",
+    "featureOverview": "Fonctionnalités",
+    "inAction": "Démo",
+    "openRetroact": "Ouvrir Retroact"
+  },
+  "footer": {
+    "products": "Produits",
+    "company": "Entreprise",
+    "legal": "Juridique",
+    "about": "À propos",
+    "contact": "Contact",
+    "privacy": "Confidentialité",
+    "terms": "Conditions générales",
+    "allRightsReserved": "Tous droits réservés",
+    "brandDescription": "Nous créons des solutions logicielles modernes pour les professionnels de la santé. Notre mission est de simplifier les flux de travail cliniques et d'améliorer les soins aux patients."
+  },
+  "cookieConsent": {
+    "title": "Nous respectons votre vie privée",
+    "description": "Nous utilisons des cookies pour améliorer votre expérience de navigation, proposer du contenu personnalisé et analyser notre trafic. En cliquant sur « Tout accepter », vous consentez à l'utilisation de cookies.",
+    "customize": "Personnaliser",
+    "rejectAll": "Tout refuser",
+    "acceptAll": "Tout accepter",
+    "detailedSettings": "Préférences des cookies",
+    "required": "Toujours actif",
+    "essential": {
+      "title": "Cookies essentiels",
+      "description": "Ces cookies sont nécessaires au fonctionnement du site et ne peuvent pas être désactivés.",
+      "auth": "Authentification et gestion de session",
+      "preferences": "Préférences et paramètres utilisateur",
+      "security": "Sécurité et prévention de la fraude"
+    },
+    "functional": {
+      "title": "Cookies fonctionnels",
+      "description": "Ces cookies permettent des fonctionnalités améliorées et la personnalisation, comme les préférences linguistiques.",
+      "language": "Sélection de la langue",
+      "display": "Préférences d'affichage"
+    },
+    "analytics": {
+      "title": "Cookies analytiques",
+      "description": "Ces cookies nous aident à comprendre comment les visiteurs interagissent avec notre site en collectant des informations de manière anonyme.",
+      "performance": "Métriques de performance du site",
+      "usage": "Modèles d'utilisation et statistiques"
+    }
+  }
+}

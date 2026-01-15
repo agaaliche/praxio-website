@@ -2,12 +2,59 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
-  
+
   modules: [
     '@nuxtjs/tailwindcss',
     '@nuxtjs/google-fonts',
-    '@vueuse/nuxt'
+    '@vueuse/nuxt',
+    '@nuxtjs/i18n'
   ],
+
+  i18n: {
+    defaultLocale: 'en',
+    strategy: 'no_prefix',
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'praxio_language',
+      redirectOn: 'root',
+      alwaysRedirect: false,
+      fallbackLocale: 'en'
+    },
+    lazy: true,
+    langDir: 'locales',
+    locales: [
+      {
+        code: 'en',
+        name: 'English',
+        files: [
+          'en/common.json',
+          'en/auth.json',
+          'en/account.json',
+          'en/pricing.json',
+          'en/retroact.json',
+          'en/contact.json',
+          'en/admin.json',
+          'en/emails.json',
+          'en/messages.json'
+        ]
+      },
+      {
+        code: 'fr',
+        name: 'Français',
+        files: [
+          'fr/common.json',
+          'fr/auth.json',
+          'fr/account.json',
+          'fr/pricing.json',
+          'fr/retroact.json',
+          'fr/contact.json',
+          'fr/admin.json',
+          'fr/emails.json',
+          'fr/messages.json'
+        ]
+      }
+    ]
+  },
 
   googleFonts: {
     families: {
@@ -48,20 +95,20 @@ export default defineNuxtConfig({
     dbName: 'master',
     dbPort: '3306',
     dbSocketPath: '',
-    
+
     // Stripe
     stripeSecretKey: '',
     stripeWebhookSecret: '',
-    
+
     // SSO
     ssoSecret: '',
     jwtSecret: '',
-    
+
     // Email (uses same Firebase Extension as inrManager)
     useFirebaseEmail: 'false',
     firebaseServiceAccount: '',
     siteUrl: 'http://localhost:3000',
-    
+
     // Public config (exposed to client)
     public: {
       apiUrl: 'https://inr-backend-pq7nv4e3fq-uk.a.run.app',

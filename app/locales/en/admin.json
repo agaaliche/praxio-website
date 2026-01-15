@@ -1,0 +1,32 @@
+{
+  "admin": {
+    "impersonate": {
+      "title": "Impersonate User",
+      "subtitle": "Login as another user for support purposes",
+      "warning": {
+        "title": "Important Notice",
+        "message": "Impersonation is logged for security purposes. Only use this feature for legitimate support reasons."
+      },
+      "form": {
+        "userEmail": "User Email",
+        "searchPlaceholder": "Start typing to search users...",
+        "noMatches": "No users match \"{query}\"",
+        "noUsersLoaded": "No users loaded. Check console for errors.",
+        "reason": "Reason for Impersonation",
+        "reasonPlaceholder": "e.g., Debugging user's issue, Support request #1234",
+        "startButton": "Start Impersonation"
+      },
+      "success": {
+        "title": "Impersonation Token Generated",
+        "message": "The impersonation token has been generated. You can now login as the user.",
+        "loginButton": "Login as {email}"
+      },
+      "log": {
+        "title": "Impersonation Log",
+        "empty": "No impersonation history",
+        "by": "by {email}"
+      },
+      "loading": "Loading..."
+    }
+  }
+}

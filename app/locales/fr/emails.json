@@ -1,0 +1,44 @@
+{
+  "emails": {
+    "invitation": {
+      "subject": "Vous avez été invité à accéder au compte de {accountName}",
+      "greeting": "Bonjour {firstName},",
+      "invitedBy": "{ownerName} vous a invité à accéder au compte de {accountName}.",
+      "clickButton": "Cliquez sur le bouton ci-dessous pour accepter l'invitation. Vous recevrez vos identifiants de connexion dans un email séparé après vérification.",
+      "acceptButton": "Accepter l'invitation",
+      "linkExpires": "Ce lien d'invitation expirera dans 48 heures pour des raisons de sécurité.",
+      "ignoreIfUnexpected": "Si vous n'attendiez pas cette invitation, vous pouvez ignorer cet email en toute sécurité."
+    },
+    "credentials": {
+      "subject": "Vos identifiants de connexion pour {accountName}",
+      "greeting": "Bonjour {firstName},",
+      "welcome": "Bienvenue!",
+      "credentialsIntro": "Veuillez trouver ci-dessous vos identifiants de connexion pour accéder au compte de {accountName}.",
+      "loginCredentialsTitle": "Vos identifiants de connexion",
+      "emailLabel": "Email",
+      "passwordLabel": "Mot de passe",
+      "signInButton": "Se connecter"
+    },
+    "verification": {
+      "subject": "Bienvenue - Vérifiez votre email",
+      "greeting": "Bonjour {name},",
+      "welcome": "Bienvenue! Merci de vous être inscrit.",
+      "clickButton": "Cliquez sur le bouton ci-dessous pour vérifier votre adresse email et activer votre compte.",
+      "verifyButton": "Vérifier l'adresse email",
+      "linkExpires": "Ce lien de vérification expirera dans 24 heures pour des raisons de sécurité.",
+      "ignoreIfUnexpected": "Si vous n'avez pas créé de compte, vous pouvez ignorer cet email en toute sécurité."
+    },
+    "passwordReset": {
+      "subject": "Réinitialisez votre mot de passe",
+      "greeting": "Bonjour {name},",
+      "requestReceived": "Nous avons reçu une demande de réinitialisation de votre mot de passe.",
+      "clickButton": "Cliquez sur le bouton ci-dessous pour créer un nouveau mot de passe.",
+      "resetButton": "Réinitialiser le mot de passe",
+      "linkExpires": "Ce lien de réinitialisation expirera dans 1 heure pour des raisons de sécurité.",
+      "ignoreIfUnexpected": "Si vous n'avez pas demandé de réinitialisation de mot de passe, vous pouvez ignorer cet email en toute sécurité. Votre mot de passe restera inchangé."
+    },
+    "footer": {
+      "copyright": "© {year} Tous droits réservés."
+    }
+  }
+}
