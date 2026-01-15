@@ -2,22 +2,22 @@
   <AlertPage 
     v-if="loading"
     type="loading"
-    :title="t('auth.sso.connecting')"
-    :message="t('auth.sso.generatingToken')"
+    :title="loadingTitle"
+    :message="loadingMessage"
   />
   
   <AlertPage 
     v-else-if="error"
     type="error"
-    :title="t('auth.sso.required')"
-    :message="t('auth.sso.pleaseSignIn')"
+    :title="errorTitle"
+    :message="errorMessage"
   >
     <template #actions>
       <NuxtLink 
         :to="`/signin?redirect=${encodeURIComponent(redirectPath)}`"
         class="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-primary-600 text-white font-semibold hover:bg-primary-700 transition"
       >
-        {{ t('auth.sso.signInToPraxio') }}
+        {{ signInButtonText }}
       </NuxtLink>
     </template>
   </AlertPage>
@@ -39,14 +39,47 @@ definePageMeta({
   layout: false
 })
 
-const { t } = useI18n()
+const { t, init, locale } = useI18n()
 const route = useRoute()
 const { isAuthenticated, isLoading, getIdToken, getCurrentUser } = useAuth()
 const loading = ref(true)
 const error = ref(false)
 
-// Get current locale
-const { locale } = useI18n()
+// Inline translations as fallback (SSO page doesn't load package translations reliably)
+const ssoTranslations = {
+  en: {
+    connecting: 'Connecting to Retroact...',
+    generatingToken: 'Generating secure access token',
+    required: 'Authentication Required',
+    pleaseSignIn: 'Please sign in to access Retroact',
+    signInToPraxio: 'Sign in to Praxio'
+  },
+  fr: {
+    connecting: 'Connexion à Retroact...',
+    generatingToken: 'Génération du jeton d\'accès sécurisé',
+    required: 'Authentification requise',
+    pleaseSignIn: 'Veuillez vous connecter pour accéder à Retroact',
+    signInToPraxio: 'Se connecter à Praxio'
+  }
+}
+
+// Helper function to get translation with fallback
+const getSsoText = (key: string) => {
+  const lang = locale.value as 'en' | 'fr'
+  return ssoTranslations[lang]?.[key] || ssoTranslations.en[key]
+}
+
+// Initialize i18n
+if (process.client) {
+  init()
+}
+
+// Use inline translations
+const loadingTitle = computed(() => getSsoText('connecting'))
+const loadingMessage = computed(() => getSsoText('generatingToken'))
+const errorTitle = computed(() => getSsoText('required'))
+const errorMessage = computed(() => getSsoText('pleaseSignIn'))
+const signInButtonText = computed(() => getSsoText('signInToPraxio'))
 
 // Get runtime config for retroact URL
 const config = useRuntimeConfig()
