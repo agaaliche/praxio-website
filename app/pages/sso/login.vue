@@ -39,47 +39,19 @@ definePageMeta({
   layout: false
 })
 
-const { t, init, locale } = useI18n()
+const { $t } = useNuxtApp()
+const { locale } = useI18n()
 const route = useRoute()
 const { isAuthenticated, isLoading, getIdToken, getCurrentUser } = useAuth()
 const loading = ref(true)
 const error = ref(false)
 
-// Inline translations as fallback (SSO page doesn't load package translations reliably)
-const ssoTranslations = {
-  en: {
-    connecting: 'Connecting to Retroact...',
-    generatingToken: 'Generating secure access token',
-    required: 'Authentication Required',
-    pleaseSignIn: 'Please sign in to access Retroact',
-    signInToPraxio: 'Sign in to Praxio'
-  },
-  fr: {
-    connecting: 'Connexion à Retroact...',
-    generatingToken: 'Génération du jeton d\'accès sécurisé',
-    required: 'Authentification requise',
-    pleaseSignIn: 'Veuillez vous connecter pour accéder à Retroact',
-    signInToPraxio: 'Se connecter à Praxio'
-  }
-}
-
-// Helper function to get translation with fallback
-const getSsoText = (key: string) => {
-  const lang = locale.value as 'en' | 'fr'
-  return ssoTranslations[lang]?.[key] || ssoTranslations.en[key]
-}
-
-// Initialize i18n
-if (process.client) {
-  init()
-}
-
-// Use inline translations
-const loadingTitle = computed(() => getSsoText('connecting'))
-const loadingMessage = computed(() => getSsoText('generatingToken'))
-const errorTitle = computed(() => getSsoText('required'))
-const errorMessage = computed(() => getSsoText('pleaseSignIn'))
-const signInButtonText = computed(() => getSsoText('signInToPraxio'))
+// Use proper i18n translations
+const loadingTitle = computed(() => $t('auth.sso.connecting'))
+const loadingMessage = computed(() => $t('auth.sso.generatingToken'))
+const errorTitle = computed(() => $t('auth.sso.required'))
+const errorMessage = computed(() => $t('auth.sso.pleaseSignIn'))
+const signInButtonText = computed(() => $t('auth.sso.signInToPraxio'))
 
 // Get runtime config for retroact URL
 const config = useRuntimeConfig()
