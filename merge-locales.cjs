@@ -3,24 +3,24 @@ const path = require('path');
 
 // Function to escape @ symbols and fix placeholders for vue-i18n
 function fixForVueI18n(obj) {
-  if (typeof obj === 'string') {
-    // Escape @ symbols
-    let fixed = obj.replace(/@/g, "{'@'}");
-    // Convert {{placeholder}} to {placeholder}
-    fixed = fixed.replace(/\{\{([^}]+)\}\}/g, '{$1}');
-    return fixed;
-  }
-  if (Array.isArray(obj)) {
-    return obj.map(fixForVueI18n);
-  }
-  if (obj && typeof obj === 'object') {
-    const result = {};
-    for (const key in obj) {
-      result[key] = fixForVueI18n(obj[key]);
+    if (typeof obj === 'string') {
+        // Escape @ symbols
+        let fixed = obj.replace(/@/g, "{'@'}");
+        // Convert {{placeholder}} to {placeholder}
+        fixed = fixed.replace(/\{\{([^}]+)\}\}/g, '{$1}');
+        return fixed;
     }
-    return result;
-  }
-  return obj;
+    if (Array.isArray(obj)) {
+        return obj.map(fixForVueI18n);
+    }
+    if (obj && typeof obj === 'object') {
+        const result = {};
+        for (const key in obj) {
+            result[key] = fixForVueI18n(obj[key]);
+        }
+        return result;
+    }
+    return obj;
 }
 
 // Merge all domain files into single language files for @nuxtjs/i18n

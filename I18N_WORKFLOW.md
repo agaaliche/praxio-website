@@ -2,6 +2,21 @@
 
 ## Quick Reference
 
+### NPM Scripts (Recommended)
+
+```bash
+# Merge translations and generate types (all-in-one)
+npm run i18n:merge
+
+# Validate translations only
+npm run i18n:validate
+
+# Generate TypeScript types only
+npm run i18n:types
+```
+
+### Manual Commands
+
 ### Making Translation Changes
 
 1. **Edit source files** in `app/locales/[lang]/[domain].json`
@@ -30,7 +45,12 @@
    node scripts/validate-translations.cjs
    ```
 
-5. **Restart dev server** to see changes
+5. **Generate TypeScript types** for autocomplete:
+   ```bash
+   node scripts/generate-i18n-types.cjs
+   ```
+
+6. **Restart dev server** to see changes
 
 ## Important Rules
 
@@ -228,12 +248,62 @@ Add to your deployment pipeline:
     cd praxio-website
     node scripts/validate-translations.cjs
     
+- name: Generate TypeScript types
+  run: |
+    cd praxio-website
+    node scripts/generate-i18n-types.cjs
+    
 - name: Build translations
   run: |
     cd praxio-website
     node merge-locales.cjs
     Copy-Item locales\*.json i18n\locales\ -Force
 ```
+
+## TypeScript Autocomplete
+
+### Setup
+
+The project includes automatic TypeScript type generation for all translation keys:
+
+```bash
+# Generate types from translations
+node scripts/generate-i18n-types.cjs
+```
+
+This creates `types/i18n.d.ts` with:
+- Full interface of all translation keys
+- Literal union type for autocomplete
+- Type-safe `$t()` function
+
+### Usage
+
+```typescript
+// In any component or composable
+const { $t } = useNuxtApp()
+
+// ✅ Autocomplete works!
+$t('common.header.products')
+$t('auth.signIn.title')
+$t('pricing.freeTrial.daysLeft', { days: 14 })
+
+// ❌ TypeScript error for invalid keys
+$t('invalid.key.path')
+```
+
+### VSCode Extension
+
+Install **i18n Ally** extension for inline translation preview:
+
+1. Open Extensions (Ctrl+Shift+X)
+2. Search for "i18n Ally"
+3. Install (already configured in `.vscode/settings.json`)
+
+Benefits:
+- Inline translation preview in code
+- Quick navigation to translation files
+- Missing translation detection
+- Translation editing from code
 
 ## Reference
 

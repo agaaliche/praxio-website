@@ -7,7 +7,10 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "i18n:merge": "node merge-locales.cjs && node scripts/generate-i18n-types.cjs",
+    "i18n:validate": "node scripts/validate-translations.cjs",
+    "i18n:types": "node scripts/generate-i18n-types.cjs"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^7.1.0",
