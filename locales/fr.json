@@ -367,14 +367,14 @@
     "emailAddress": "Adresse email",
     "signingIn": "Connexion en cours...",
     "signingUp": "Inscription en cours...",
-    "forgotPasswordQuestion": "Mot de passe oublié?"
-  },
-  "sso": {
-    "connecting": "Connexion à Retroact...",
-    "generatingToken": "Génération du jeton d'accès sécurisé",
-    "required": "Authentification requise",
-    "pleaseSignIn": "Veuillez vous connecter pour accéder à Retroact",
-    "signInToPraxio": "Se connecter à Praxio"
+    "forgotPasswordQuestion": "Mot de passe oublié?",
+    "sso": {
+      "connecting": "Connexion à Retroact...",
+      "generatingToken": "Génération du jeton d'accès sécurisé",
+      "required": "Authentification requise",
+      "pleaseSignIn": "Veuillez vous connecter pour accéder à Retroact",
+      "signInToPraxio": "Se connecter à Praxio"
+    }
   },
   "roles": {
     "editor": "Éditeur",

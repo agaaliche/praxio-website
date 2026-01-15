@@ -367,14 +367,14 @@
     "emailAddress": "Email address",
     "signingIn": "Signing in...",
     "signingUp": "Signing up...",
-    "forgotPasswordQuestion": "Forgot your password?"
-  },
-  "sso": {
-    "connecting": "Connecting to Retroact...",
-    "generatingToken": "Generating secure access token",
-    "required": "Authentication Required",
-    "pleaseSignIn": "Please sign in to access Retroact",
-    "signInToPraxio": "Sign in to Praxio"
+    "forgotPasswordQuestion": "Forgot your password?",
+    "sso": {
+      "connecting": "Connecting to Retroact...",
+      "generatingToken": "Generating secure access token",
+      "required": "Authentication Required",
+      "pleaseSignIn": "Please sign in to access Retroact",
+      "signInToPraxio": "Sign in to Praxio"
+    }
   },
   "roles": {
     "editor": "Editor",

@@ -377,6 +377,13 @@ export interface I18nMessages {
     signingUp: string
     forgotPasswordQuestion: string
   }
+  sso: {
+    connecting: string
+    generatingToken: string
+    required: string
+    pleaseSignIn: string
+    signInToPraxio: string
+  }
   roles: {
     editor: string
     viewer: string
@@ -1156,6 +1163,11 @@ type TranslationKey = 'account.title'
   | 'auth.signingIn'
   | 'auth.signingUp'
   | 'auth.forgotPasswordQuestion'
+  | 'sso.connecting'
+  | 'sso.generatingToken'
+  | 'sso.required'
+  | 'sso.pleaseSignIn'
+  | 'sso.signInToPraxio'
   | 'roles.editor'
   | 'roles.viewer'
   | 'common.yes'
