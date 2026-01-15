@@ -20,7 +20,7 @@
       "title": "Free Trial",
       "subtitle": "No credit card required",
       "free": "FREE",
-      "daysLeft": "day{{s}} left (ends {{date}})",
+      "daysLeft": "day{s} left (ends {date})",
       "duration": "14 days full access",
       "feature1": "Full access for 14 days",
       "feature2": "Unlimited patients",

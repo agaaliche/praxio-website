@@ -560,7 +560,7 @@
     },
     "currentPlan": {
       "youreOn": "Vous êtes abonné au forfait",
-      "plan": "",
+      "plan": "forfait",
       "trialEnds": "Fin de l'essai",
       "nextBilling": "Prochaine facturation",
       "manage": "Gérer",

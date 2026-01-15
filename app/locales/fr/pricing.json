@@ -6,7 +6,7 @@
     },
     "currentPlan": {
       "youreOn": "Vous êtes abonné au forfait",
-      "plan": "",
+      "plan": "forfait",
       "trialEnds": "Fin de l'essai",
       "nextBilling": "Prochaine facturation",
       "manage": "Gérer",
@@ -20,7 +20,7 @@
       "title": "Essai gratuit",
       "subtitle": "Aucune carte de crédit requise",
       "free": "GRATUIT",
-      "daysLeft": "jour{{s}} restant{{s}} (fin le {{date}})",
+      "daysLeft": "jour{s} restant{s} (fin le {date})",
       "duration": "Accès complet pendant 14 jours",
       "feature1": "Accès complet pendant 14 jours",
       "feature2": "Patients illimités",
