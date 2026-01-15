@@ -39,19 +39,24 @@ definePageMeta({
   layout: false
 })
 
-const { $t } = useNuxtApp()
 const { locale } = useI18n()
+const { $t } = useNuxtApp()
 const route = useRoute()
 const { isAuthenticated, isLoading, getIdToken, getCurrentUser } = useAuth()
 const loading = ref(true)
 const error = ref(false)
 
-// Use proper i18n translations
-const loadingTitle = computed(() => $t('auth.sso.connecting'))
-const loadingMessage = computed(() => $t('auth.sso.generatingToken'))
-const errorTitle = computed(() => $t('auth.sso.required'))
-const errorMessage = computed(() => $t('auth.sso.pleaseSignIn'))
-const signInButtonText = computed(() => $t('auth.sso.signInToPraxio'))
+// Debug: Log what $t returns
+console.log('SSO Page - Testing translations:')
+console.log('auth.sso.connecting:', $t('auth.sso.connecting'))
+console.log('Current locale:', locale.value)
+
+// Use proper i18n translations with fallbacks
+const loadingTitle = computed(() => $t('auth.sso.connecting') || 'Connecting to Retroact...')
+const loadingMessage = computed(() => $t('auth.sso.generatingToken') || 'Generating secure access token')
+const errorTitle = computed(() => $t('auth.sso.required') || 'Authentication Required')
+const errorMessage = computed(() => $t('auth.sso.pleaseSignIn') || 'Please sign in to access Retroact')
+const signInButtonText = computed(() => $t('auth.sso.signInToPraxio') || 'Sign in to Praxio')
 
 // Get runtime config for retroact URL
 const config = useRuntimeConfig()
