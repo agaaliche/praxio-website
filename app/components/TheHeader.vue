@@ -1,4 +1,27 @@
 <template>
+  <!-- Impersonation Banner -->
+  <ClientOnly>
+    <div v-if="isImpersonating" class="bg-red-500 text-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <i class="fa-solid fa-user-secret text-lg"></i>
+            <span class="font-medium">
+              Impersonating: {{ impersonatingAs }}
+            </span>
+          </div>
+          <button
+            @click="exitImpersonation"
+            class="px-4 py-1.5 bg-white text-red-600 font-medium rounded-lg hover:bg-red-50 transition flex items-center gap-2"
+          >
+            <i class="fa-solid fa-right-from-bracket"></i>
+            Exit Impersonation
+          </button>
+        </div>
+      </div>
+    </div>
+  </ClientOnly>
+
   <header :class="[
     'bg-white sticky top-0 z-50 transition-shadow duration-200 shadow-mobile',
     showShadow && 'shadow-lg'
@@ -30,6 +53,10 @@
               {{ t('header.account') }}
               <i v-if="isTrialExpired" class="fa-solid fa-triangle-exclamation"></i>
             </NuxtLink>
+            <NuxtLink v-if="isSiteAdmin" to="/admin" class="text-red-600 hover:text-red-700 transition px-3 py-1.5 rounded-lg font-medium flex items-center gap-2" active-class="!text-red-600 font-bold border border-red-600">
+              <i class="fa-solid fa-shield"></i>
+              Admin
+            </NuxtLink>
           </ClientOnly>
         </div>
 
@@ -46,10 +73,15 @@
               <div class="relative" ref="dropdownRef">
                 <button 
                   @click="dropdownOpen = !dropdownOpen" 
-                  class="flex items-center justify-center w-10 h-10 rounded-full bg-primary-100 text-primary-600 font-semibold hover:bg-primary-200 transition focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+                  class="relative flex items-center justify-center w-10 h-10 rounded-full bg-primary-100 text-primary-600 font-semibold hover:bg-primary-200 transition focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
                   :title="user?.email || 'Account'"
                 >
                   {{ userInitial }}
+                  <!-- Notification Dot Indicator -->
+                  <span
+                    v-if="unreadCount > 0"
+                    class="absolute bottom-0 right-0 w-3 h-3 bg-red-500 border-2 border-white rounded-full"
+                  ></span>
                 </button>
                 <!-- Dropdown menu -->
                 <Transition
@@ -68,6 +100,26 @@
                         {{ userRole === 'editor' ? t('roles.editor') : t('roles.viewer') }}
                       </span>
                     </div>
+                    
+                    <!-- Notifications Button -->
+                    <button 
+                      @click="openNotifications" 
+                      class="flex items-center justify-between w-full px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition"
+                    >
+                      <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-bell text-gray-400"></i>
+                        <span>Notifications</span>
+                      </div>
+                      <span
+                        v-if="unreadCount > 0"
+                        class="flex items-center justify-center min-w-[20px] h-5 px-1.5 text-xs font-bold text-white bg-red-500 rounded-full"
+                      >
+                        {{ unreadCount > 9 ? '9+' : unreadCount }}
+                      </span>
+                    </button>
+
+                    <div class="border-t border-gray-100 my-1"></div>
+
                     <div class="px-4 py-3">
                       <button 
                         @click="navigateToRetroact" 
@@ -76,15 +128,6 @@
                         {{ t('header.openRetroact') }}
                       </button>
                     </div>
-                    <NuxtLink 
-                      v-if="isSiteAdmin"
-                      to="/admin" 
-                      @click="dropdownOpen = false"
-                      class="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition"
-                    >
-                      <i class="fa-solid fa-shield text-red-500"></i>
-                      Admin
-                    </NuxtLink>
                     <button 
                       @click="handleSignOut" 
                       class="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition text-left"
@@ -169,6 +212,19 @@
               <i class="fa-solid fa-envelope w-5 text-center text-primary-600"></i>
               {{ t('header.contact') }}
             </NuxtLink>
+            
+            <ClientOnly>
+              <NuxtLink 
+                v-if="isSiteAdmin"
+                to="/admin" 
+                @click="mobileMenuOpen = false"
+                class="flex items-center gap-3 px-3 py-2.5 text-red-600 hover:bg-red-50 rounded-lg font-medium transition"
+                active-class="!bg-red-100 !text-red-600 !font-bold border border-red-600"
+              >
+                <i class="fa-solid fa-shield w-5 text-center"></i>
+                Admin
+              </NuxtLink>
+            </ClientOnly>
             
             <div class="my-3 border-t border-gray-200"></div>
             
@@ -261,16 +317,6 @@
                   </button>
                 </template>
                 
-                <NuxtLink 
-                  v-if="isSiteAdmin"
-                  to="/admin" 
-                  @click="mobileMenuOpen = false"
-                  class="flex items-center gap-3 px-3 py-2.5 text-red-600 hover:bg-red-50 rounded-lg font-medium transition"
-                >
-                  <i class="fa-solid fa-shield w-5 text-center"></i>
-                  Admin
-                </NuxtLink>
-                
                 <button @click="handleSignOut" class="w-full flex items-center gap-3 px-3 py-2.5 text-gray-700 hover:bg-red-50 hover:text-red-700 rounded-lg font-medium transition text-left">
                   <i class="fa-solid fa-arrow-right-from-bracket w-5 text-center text-red-600"></i>
                   {{ t('header.signOut') }}
@@ -316,6 +362,15 @@
         </div>
       </Transition>
     </nav>
+
+    <!-- Notification Panel -->
+    <ClientOnly>
+      <NotificationPanel
+        :isOpen="notificationPanelOpen"
+        @close="notificationPanelOpen = false"
+        @refresh="fetchUnreadCount"
+      />
+    </ClientOnly>
   </header>
 </template>
 
@@ -325,12 +380,34 @@ const mobileLanguageOpen = ref(false)
 const isScrolled = ref(false)
 const dropdownOpen = ref(false)
 const dropdownRef = ref(null)
+const notificationPanelOpen = ref(false)
+const unreadCount = ref(0)
+const isImpersonating = ref(false)
+const impersonatingAs = ref('')
 const { isAuthenticated, user, signOutUser, isAccountOwner, getIdToken, isSiteAdmin } = useAuth()
 const { isTrialExpired, needsSubscription } = useSubscription()
 const { t, locale, locales, setLocale } = useI18n()
 const router = useRouter()
 const route = useRoute()
 const { subHeaderVisible } = useSubHeaderState()
+
+// Check impersonation status
+const checkImpersonation = () => {
+  if (typeof window !== 'undefined') {
+    isImpersonating.value = localStorage.getItem('isImpersonating') === 'true'
+    impersonatingAs.value = localStorage.getItem('impersonatingAs') || ''
+  }
+}
+
+// Exit impersonation
+const exitImpersonation = async () => {
+  if (typeof window !== 'undefined') {
+    localStorage.removeItem('isImpersonating')
+    localStorage.removeItem('impersonatingAs')
+  }
+  await signOutUser()
+  await navigateTo('/admin/impersonate')
+}
 
 // User data from API (includes correct role without stale claims)
 const userData = ref(null)
@@ -419,19 +496,20 @@ const roleChipClass = computed(() => {
 
 // Pages that have a Level 2 sub-header bar
 const hasSubHeader = computed(() => {
-  return route.path.startsWith('/account') || route.path.startsWith('/retroact')
+  return route.path.startsWith('/account') || route.path.startsWith('/admin') || route.path.startsWith('/retroact')
 })
 
 // Show shadow when:
-// - Never in account pages (level 2 nav always visible)
-// - On mobile: Always show shadow (except account pages)
+// - Never in account or admin pages (level 2 nav always visible)
+// - On mobile: Always show shadow (except account/admin pages)
 // - On desktop: Scrolled AND (no sub-header OR sub-header is hidden)
 const showShadow = computed(() => {
   const isAccount = route.path.startsWith('/account')
+  const isAdmin = route.path.startsWith('/admin')
   const isSmallScreen = typeof window !== 'undefined' && window.innerWidth < 768
   
-  // Never show shadow in account pages (level 2 nav always visible)
-  if (isAccount) return false
+  // Never show shadow in account or admin pages (level 2 nav always visible)
+  if (isAccount || isAdmin) return false
   
   // On mobile, always show shadow
   if (isSmallScreen) return true
@@ -497,11 +575,17 @@ onMounted(() => {
   window.addEventListener('scroll', handleScroll)
   document.addEventListener('click', handleClickOutside)
   handleScroll() // Check initial state
+  checkImpersonation() // Check if impersonating
   
   onUnmounted(() => {
     window.removeEventListener('scroll', handleScroll)
     document.removeEventListener('click', handleClickOutside)
   })
+})
+
+// Watch for authentication changes to update impersonation status
+watch(isAuthenticated, () => {
+  checkImpersonation()
 })
 
 const handleSignOut = async () => {
@@ -524,6 +608,41 @@ const navigateToRetroact = async () => {
     dropdownOpen.value = false
   }
 }
+
+// Open notifications panel
+const openNotifications = () => {
+  dropdownOpen.value = false
+  notificationPanelOpen.value = true
+}
+
+// Fetch unread notification count
+const fetchUnreadCount = async () => {
+  if (!isAuthenticated.value) return
+  
+  try {
+    const { getAuthHeaders } = useAuth()
+    const headers = await getAuthHeaders()
+    
+    const response = await fetch('/api/messages/inbox', { headers })
+    const data = await response.json()
+    
+    if (data.success) {
+      unreadCount.value = data.count || 0
+    }
+  } catch (error) {
+    console.error('❌ Error fetching unread count:', error)
+  }
+}
+
+// Fetch unread count on mount and when authenticated
+watch(isAuthenticated, (authenticated) => {
+  if (authenticated) {
+    fetchUnreadCount()
+    // Poll every 60 seconds
+    const interval = setInterval(fetchUnreadCount, 60000)
+    onUnmounted(() => clearInterval(interval))
+  }
+}, { immediate: true })
 </script>
 
 <style scoped>

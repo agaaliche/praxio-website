@@ -27,6 +27,17 @@
         "by": "par {email}"
       },
       "loading": "Chargement..."
+    },
+    "changelog": {
+      "title": "Journal des modifications",
+      "subtitle": "Voir l'historique des commits et les modifications récentes",
+      "search": "Rechercher des commits...",
+      "headers": {
+        "date": "Date",
+        "description": "Description"
+      },
+      "noCommits": "Aucun commit trouvé",
+      "loadError": "Échec du chargement de l'historique des commits"
     }
   }
 }

@@ -7,7 +7,7 @@
           <NuxtLink to="/" class="hover:text-primary-700 transition">{{ t('common.home') }}</NuxtLink>
         </li>
         <li class="text-primary-400">
-          <i class="fa-solid fa-chevron-right text-xs"></i>
+          <ClientOnly><i class="fa-solid fa-chevron-right text-xs"></i></ClientOnly>
         </li>
         <li class="font-medium">
           {{ t('header.products') }}
@@ -28,14 +28,14 @@
           @click="scrollToSection('feature-overview')"
           class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-600 hover:text-primary-600 transition"
         >
-          <i class="fa-solid fa-grid-2"></i>
+          <ClientOnly><i class="fa-solid fa-grid-2"></i></ClientOnly>
           {{ t('header.featureOverview') }}
         </button>
         <button 
           @click="scrollToSection('in-action')"
           class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-600 hover:text-primary-600 transition"
         >
-          <i class="fa-solid fa-play"></i>
+          <ClientOnly><i class="fa-solid fa-play"></i></ClientOnly>
           {{ t('header.inAction') }}
         </button>
       </div>
@@ -46,7 +46,7 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center max-w-3xl mx-auto">
           <h1 class="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-gray-900 leading-tight">
-            <i class="fa-kit-duotone fa-logo text-primary-600"></i>
+            <ClientOnly><i class="fa-kit-duotone fa-logo text-primary-600"></i></ClientOnly>
           </h1>
           <p class="mt-6 text-xl text-gray-600 leading-relaxed">
             <span class="text-primary-600">{{ t('retroact.hero.title') }}</span> {{ t('retroact.hero.subtitle') }}
@@ -62,14 +62,14 @@
               @click="scrollToSection('feature-overview')"
               class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-white text-primary-600 font-semibold border-2 border-primary-200 hover:border-primary-300 transition"
             >
-              <i class="fa-solid fa-grid-2 mr-2"></i>
+              <ClientOnly><i class="fa-solid fa-grid-2 mr-2"></i></ClientOnly>
               {{ t('header.featureOverview') }}
             </button>
             <button 
               @click="scrollToSection('in-action')"
               class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-white text-primary-600 font-semibold border-2 border-primary-200 hover:border-primary-300 transition"
             >
-              <i class="fa-solid fa-play mr-2"></i>
+              <ClientOnly><i class="fa-solid fa-play mr-2"></i></ClientOnly>
               {{ t('header.inAction') }}
             </button>
           </div>
@@ -130,7 +130,7 @@
               :disabled="activeFeatureIndex === 0"
               :class="{ 'opacity-50 cursor-not-allowed': activeFeatureIndex === 0 }"
             >
-              <i class="fa-solid fa-chevron-left text-sm"></i>
+              <ClientOnly><i class="fa-solid fa-chevron-left text-sm"></i></ClientOnly>
             </button>
             <button 
               @click="nextFeature"
@@ -138,7 +138,7 @@
               :disabled="activeFeatureIndex === features.length - 1"
               :class="{ 'opacity-50 cursor-not-allowed': activeFeatureIndex === features.length - 1 }"
             >
-              <i class="fa-solid fa-chevron-right text-sm"></i>
+              <ClientOnly><i class="fa-solid fa-chevron-right text-sm"></i></ClientOnly>
             </button>
           </div>
         </div>
@@ -189,7 +189,7 @@
                     @click="mobileDropdownOpen = false"
                     class="w-9 h-9 rounded-lg flex items-center justify-center text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition"
                   >
-                    <i class="fa-solid fa-xmark text-xl"></i>
+                    <ClientOnly><i class="fa-solid fa-xmark text-xl"></i></ClientOnly>
                   </button>
                 </div>
                 

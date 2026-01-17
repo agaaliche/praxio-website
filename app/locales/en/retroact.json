@@ -15,6 +15,11 @@
       "watchDemo": "Watch demo",
       "screenshotSoon": "Screenshot coming soon"
     },
+    "cta": {
+      "title": "Ready to Simplify INR Management?",
+      "subtitle": "Join healthcare professionals who chose Retroact to manage anticoagulant therapy.",
+      "button": "Start Free Trial"
+    },
     "features": {
       "results": {
         "title": "Recording INR Results",

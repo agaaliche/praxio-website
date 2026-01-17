@@ -10,6 +10,8 @@ export interface AuthenticatedUser {
   accountOwnerId?: string
   userId?: number
   dbRole?: string | null // Role from database (source of truth)
+  customClaims?: Record<string, any> // Firebase custom claims
+  isSiteAdmin?: boolean // Convenience flag for siteadmin claim
 }
 
 /**
@@ -18,7 +20,7 @@ export interface AuthenticatedUser {
  */
 export async function verifyAuth(event: H3Event): Promise<AuthenticatedUser> {
   const authHeader = getHeader(event, 'authorization')
-  
+
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     throw createError({
       statusCode: 401,
@@ -26,9 +28,9 @@ export async function verifyAuth(event: H3Event): Promise<AuthenticatedUser> {
       message: 'Missing or invalid authorization header'
     })
   }
-  
+
   const token = authHeader.substring(7)
-  
+
   try {
     const app = getFirebaseApp()
     if (!app) {
@@ -39,20 +41,22 @@ export async function verifyAuth(event: H3Event): Promise<AuthenticatedUser> {
       })
     }
     const auth = getAuth(app)
-    
+
     // Verify the Firebase ID token
     const decodedToken: DecodedIdToken = await auth.verifyIdToken(token)
-    
+
     const user: AuthenticatedUser = {
       uid: decodedToken.uid,
       email: decodedToken.email || '',
       role: decodedToken.role as string | undefined,
-      accountOwnerId: decodedToken.accountOwnerId as string | undefined
+      accountOwnerId: decodedToken.accountOwnerId as string | undefined,
+      customClaims: decodedToken,
+      isSiteAdmin: decodedToken.siteadmin === true
     }
 
     // Fetch role from database (source of truth)
     await fetchDatabaseRole(user)
-    
+
     return user
   } catch (error: any) {
     console.error('Auth verification error:', error.message || error)
@@ -75,21 +79,21 @@ async function fetchDatabaseRole(user: AuthenticatedUser): Promise<void> {
       'SELECT userId FROM users WHERE userId = ?',
       [user.uid]
     )
-    
+
     if (userRecord) {
       // Found in users table = account owner (no role)
       user.dbRole = null
       console.log('✅ Backend: User is account owner (found in users table)', user.uid)
       return
     }
-    
+
     // Not in users table, check authorized_users table
     const accountOwnerId = user.accountOwnerId || user.uid
     const authorizedUser = await queryOne<any>(
       'SELECT role FROM authorized_users WHERE account_owner_id = ? AND email = ? AND status = "active"',
       [accountOwnerId, user.email]
     )
-    
+
     if (authorizedUser) {
       // Found in authorized_users = team member with role
       user.dbRole = authorizedUser.role
@@ -123,13 +127,13 @@ export function isAccountOwner(user: AuthenticatedUser): boolean {
   // Use dbRole if available (source of truth), otherwise fall back to token role
   const effectiveRole = user.dbRole !== undefined ? user.dbRole : user.role
   const isOwner = !effectiveRole
-  console.log('🔍 Backend isAccountOwner check:', { 
-    uid: user.uid, 
+  console.log('🔍 Backend isAccountOwner check:', {
+    uid: user.uid,
     email: user.email,
-    tokenRole: user.role, 
-    dbRole: user.dbRole, 
+    tokenRole: user.role,
+    dbRole: user.dbRole,
     effectiveRole,
-    isOwner 
+    isOwner
   })
   return isOwner
 }
@@ -156,7 +160,7 @@ export function isViewer(user: AuthenticatedUser): boolean {
  */
 export async function verifySiteAdmin(event: H3Event): Promise<AuthenticatedUser> {
   const authHeader = getHeader(event, 'authorization')
-  
+
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     throw createError({
       statusCode: 401,
@@ -164,9 +168,9 @@ export async function verifySiteAdmin(event: H3Event): Promise<AuthenticatedUser
       message: 'Missing or invalid authorization header'
     })
   }
-  
+
   const token = authHeader.substring(7)
-  
+
   try {
     const app = getFirebaseApp()
     if (!app) {
@@ -177,10 +181,10 @@ export async function verifySiteAdmin(event: H3Event): Promise<AuthenticatedUser
       })
     }
     const auth = getAuth(app)
-    
+
     // Verify the Firebase ID token
     const decodedToken = await auth.verifyIdToken(token)
-    
+
     // Check if user has siteadmin claim
     if (decodedToken.siteadmin !== true) {
       throw createError({
@@ -189,7 +193,7 @@ export async function verifySiteAdmin(event: H3Event): Promise<AuthenticatedUser
         message: 'Site admin access required'
       })
     }
-    
+
     return {
       uid: decodedToken.uid,
       email: decodedToken.email || '',
@@ -198,7 +202,7 @@ export async function verifySiteAdmin(event: H3Event): Promise<AuthenticatedUser
     }
   } catch (error: any) {
     if (error.statusCode === 403) throw error
-    
+
     console.error('Auth verification error:', error.message || error)
     throw createError({
       statusCode: 401,

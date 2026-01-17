@@ -32,8 +32,8 @@ export default defineNuxtConfig({
         file: 'fr.json'
       }
     ],
-    lazy: true,
-    langDir: 'locales',
+    lazy: false,
+    langDir: '../i18n/locales',
     compilation: {
       strictMessage: false,
       escapeHtml: false

@@ -376,13 +376,13 @@ export interface I18nMessages {
     signingIn: string
     signingUp: string
     forgotPasswordQuestion: string
-  }
-  sso: {
-    connecting: string
-    generatingToken: string
-    required: string
-    pleaseSignIn: string
-    signInToPraxio: string
+    sso: {
+      connecting: string
+      generatingToken: string
+      required: string
+      pleaseSignIn: string
+      signInToPraxio: string
+    }
   }
   roles: {
     editor: string
@@ -814,6 +814,86 @@ export interface I18nMessages {
       getInTouch: string
     }
   }
+  tickets: {
+    title: string
+    submitTab: string
+    monitorTab: string
+    adminTab: string
+    changeLogTab: string
+    submitNew: string
+    titleLabel: string
+    titlePlaceholder: string
+    typeLabel: string
+    typeBug: string
+    typeFeature: string
+    priorityLabel: string
+    priorityCritical: string
+    priorityHigh: string
+    priorityMedium: string
+    priorityLow: string
+    priorityNicetohave: string
+    descriptionLabel: string
+    descriptionPlaceholder: string
+    descriptionHint: string
+    submitButton: string
+    submitting: string
+    submitSuccess: string
+    submitError: string
+    noTickets: string
+    noTicketsMessage: string
+    loading: string
+    statusSubmitted: string
+    statusReceived: string
+    statusPending: string
+    statusResolved: string
+    createdAt: string
+    updatedAt: string
+    resolvedAt: string
+    adminPanelTitle: string
+    totalTickets: string
+    newSubmissions: string
+    inProgress: string
+    pendingTickets: string
+    receivedTickets: string
+    resolvedTickets: string
+    filterAll: string
+    filterType: string
+    filterPriority: string
+    filterStatus: string
+    updateSuccess: string
+    updateError: string
+    deleteSuccess: string
+    deleteError: string
+    confirmDelete: string
+    ticketDetails: string
+    submittedBy: string
+    actions: string
+    changeStatus: string
+    delete: string
+    close: string
+    user: string
+    type: string
+    priority: string
+    status: string
+    created: string
+    noTicketsFound: string
+    fixFeedback: string
+    selectFeedback: string
+    fixWorked: string
+    fixNotWorked: string
+    notes: string
+    addNote: string
+    noNotes: string
+    addNoteTitle: string
+    notePlaceholder: string
+    cancel: string
+    send: string
+    support: string
+    you: string
+    goToAdminPanel: string
+    adminManagementInfo: string
+    failedToLoad: string
+  }
 }
 
 declare module '#app' {
@@ -1163,11 +1243,11 @@ type TranslationKey = 'account.title'
   | 'auth.signingIn'
   | 'auth.signingUp'
   | 'auth.forgotPasswordQuestion'
-  | 'sso.connecting'
-  | 'sso.generatingToken'
-  | 'sso.required'
-  | 'sso.pleaseSignIn'
-  | 'sso.signInToPraxio'
+  | 'auth.sso.connecting'
+  | 'auth.sso.generatingToken'
+  | 'auth.sso.required'
+  | 'auth.sso.pleaseSignIn'
+  | 'auth.sso.signInToPraxio'
   | 'roles.editor'
   | 'roles.viewer'
   | 'common.yes'
@@ -1480,5 +1560,83 @@ type TranslationKey = 'account.title'
   | 'home.finalCta.subtitle'
   | 'home.finalCta.tryFree'
   | 'home.finalCta.getInTouch'
+  | 'tickets.title'
+  | 'tickets.submitTab'
+  | 'tickets.monitorTab'
+  | 'tickets.adminTab'
+  | 'tickets.changeLogTab'
+  | 'tickets.submitNew'
+  | 'tickets.titleLabel'
+  | 'tickets.titlePlaceholder'
+  | 'tickets.typeLabel'
+  | 'tickets.typeBug'
+  | 'tickets.typeFeature'
+  | 'tickets.priorityLabel'
+  | 'tickets.priorityCritical'
+  | 'tickets.priorityHigh'
+  | 'tickets.priorityMedium'
+  | 'tickets.priorityLow'
+  | 'tickets.priorityNicetohave'
+  | 'tickets.descriptionLabel'
+  | 'tickets.descriptionPlaceholder'
+  | 'tickets.descriptionHint'
+  | 'tickets.submitButton'
+  | 'tickets.submitting'
+  | 'tickets.submitSuccess'
+  | 'tickets.submitError'
+  | 'tickets.noTickets'
+  | 'tickets.noTicketsMessage'
+  | 'tickets.loading'
+  | 'tickets.statusSubmitted'
+  | 'tickets.statusReceived'
+  | 'tickets.statusPending'
+  | 'tickets.statusResolved'
+  | 'tickets.createdAt'
+  | 'tickets.updatedAt'
+  | 'tickets.resolvedAt'
+  | 'tickets.adminPanelTitle'
+  | 'tickets.totalTickets'
+  | 'tickets.newSubmissions'
+  | 'tickets.inProgress'
+  | 'tickets.pendingTickets'
+  | 'tickets.receivedTickets'
+  | 'tickets.resolvedTickets'
+  | 'tickets.filterAll'
+  | 'tickets.filterType'
+  | 'tickets.filterPriority'
+  | 'tickets.filterStatus'
+  | 'tickets.updateSuccess'
+  | 'tickets.updateError'
+  | 'tickets.deleteSuccess'
+  | 'tickets.deleteError'
+  | 'tickets.confirmDelete'
+  | 'tickets.ticketDetails'
+  | 'tickets.submittedBy'
+  | 'tickets.actions'
+  | 'tickets.changeStatus'
+  | 'tickets.delete'
+  | 'tickets.close'
+  | 'tickets.user'
+  | 'tickets.type'
+  | 'tickets.priority'
+  | 'tickets.status'
+  | 'tickets.created'
+  | 'tickets.noTicketsFound'
+  | 'tickets.fixFeedback'
+  | 'tickets.selectFeedback'
+  | 'tickets.fixWorked'
+  | 'tickets.fixNotWorked'
+  | 'tickets.notes'
+  | 'tickets.addNote'
+  | 'tickets.noNotes'
+  | 'tickets.addNoteTitle'
+  | 'tickets.notePlaceholder'
+  | 'tickets.cancel'
+  | 'tickets.send'
+  | 'tickets.support'
+  | 'tickets.you'
+  | 'tickets.goToAdminPanel'
+  | 'tickets.adminManagementInfo'
+  | 'tickets.failedToLoad'
 
 export type { TranslationKey }

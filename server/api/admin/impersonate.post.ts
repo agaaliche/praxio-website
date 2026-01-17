@@ -7,34 +7,38 @@ import { getAuth } from 'firebase-admin/auth'
 import { verifySiteAdmin } from '../../utils/auth'
 import { getFirebaseApp } from '../../utils/firebase'
 import { execute } from '../../utils/database'
+import { checkRateLimit, RateLimits } from '../../utils/rateLimit'
 
 export default defineEventHandler(async (event) => {
   // Verify siteadmin access
   const admin = await verifySiteAdmin(event)
-  
+
+  // Rate limiting
+  checkRateLimit(event, admin.uid, RateLimits.DANGEROUS)
+
   const body = await readBody(event)
   const { targetEmail, reason } = body
-  
+
   if (!targetEmail || !reason) {
     throw createError({
       statusCode: 400,
       message: 'Target email and reason are required'
     })
   }
-  
+
   try {
     const app = getFirebaseApp()
     const auth = getAuth(app)
-    
+
     // Get target user
     const targetUser = await auth.getUserByEmail(targetEmail)
-    
+
     // Create a custom token for the target user (with impersonation flag)
     const customToken = await auth.createCustomToken(targetUser.uid, {
       impersonating: true,
       originalAdmin: admin.uid
     })
-    
+
     // Log the impersonation
     try {
       await execute(
@@ -46,12 +50,12 @@ export default defineEventHandler(async (event) => {
       // Table might not exist - continue anyway
       console.warn('Could not log impersonation:', logError)
     }
-    
+
     console.log(`✅ Admin ${admin.email} started impersonation of: ${targetEmail}`)
-    
-    return { 
-      success: true, 
-      impersonationToken: customToken,
+
+    return {
+      success: true,
+      token: customToken,
       targetUserId: targetUser.uid
     }
   } catch (error: any) {

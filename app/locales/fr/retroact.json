@@ -15,6 +15,11 @@
       "watchDemo": "Voir la démo",
       "screenshotSoon": "Capture d'écran à venir"
     },
+    "cta": {
+      "title": "Prêt à simplifier la gestion du RIN?",
+      "subtitle": "Rejoignez les professionnels de santé qui ont choisi Retroact pour gérer l'anticoagulothérapie.",
+      "button": "Commencer l'essai gratuit"
+    },
     "features": {
       "results": {
         "title": "Enregistrement des résultats RIN",

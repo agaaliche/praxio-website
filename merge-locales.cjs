@@ -37,9 +37,10 @@ function fixForVueI18n(obj) {
     // Fix for vue-i18n compatibility (escape @ and convert {{ to {)
     const fixed = fixForVueI18n(merged);
 
-    const targetPath = path.join(__dirname, 'locales', `${lang}.json`);
+    // Write to i18n/locales (production) - what Nuxt uses
+    const targetPath = path.join(__dirname, 'i18n/locales', `${lang}.json`);
     fs.writeFileSync(targetPath, JSON.stringify(fixed, null, 2), 'utf8');
-    console.log(`Created locales/${lang}.json (${Object.keys(merged).length} top-level keys)`);
+    console.log(`Created i18n/locales/${lang}.json (${Object.keys(merged).length} top-level keys)`);
 });
 
 console.log('\n✅ Merged translation files for @nuxtjs/i18n');

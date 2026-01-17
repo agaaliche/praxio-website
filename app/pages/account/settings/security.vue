@@ -176,8 +176,10 @@
               :disabled="revokingSession === session.sessionId"
               class="flex-shrink-0 px-4 py-2 text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-lg transition disabled:opacity-50 w-full md:w-auto flex items-center justify-center gap-2"
             >
-              <i v-if="revokingSession === session.sessionId" class="fa-solid fa-spinner-third fa-spin"></i>
-              <i v-else class="fa-solid fa-right-from-bracket"></i>
+              <SpinnerIcon v-if="revokingSession === session.sessionId" />
+              <ClientOnly v-else>
+                <i class="fa-solid fa-right-from-bracket"></i>
+              </ClientOnly>
               {{ t('account.settings.security.signOut') }}
             </button>
           </div>

@@ -27,6 +27,17 @@
         "by": "by {email}"
       },
       "loading": "Loading..."
+    },
+    "changelog": {
+      "title": "Change Log",
+      "subtitle": "View commit history and recent changes",
+      "search": "Search commits...",
+      "headers": {
+        "date": "Date",
+        "description": "Description"
+      },
+      "noCommits": "No commits found",
+      "loadError": "Failed to load commit history"
     }
   }
 }

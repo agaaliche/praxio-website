@@ -5,12 +5,16 @@
 import { defineEventHandler } from 'h3'
 import { verifySiteAdmin } from '../../utils/auth'
 import { query } from '../../utils/database'
+import { checkRateLimit, RateLimits } from '../../utils/rateLimit'
 
 export default defineEventHandler(async (event) => {
   try {
     // Verify siteadmin access
-    await verifySiteAdmin(event)
-    
+    const admin = await verifySiteAdmin(event)
+
+    // Rate limiting
+    checkRateLimit(event, admin.uid, RateLimits.READ)
+
     const rows = await query<any>(
       `SELECT 
         userId,
@@ -19,13 +23,13 @@ export default defineEventHandler(async (event) => {
        FROM users
        ORDER BY userEmail ASC`
     )
-    
+
     const users = rows.map((r: any) => ({
       userId: r.userId,
       email: r.email,
       name: r.name?.trim() || null
     }))
-    
+
     return { users }
   } catch (error: any) {
     console.error('❌ Error getting users list:', error)

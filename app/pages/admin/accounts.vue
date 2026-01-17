@@ -6,15 +6,14 @@
         <h1 class="text-2xl font-display font-bold text-gray-900">Accounts</h1>
         <p class="mt-1 text-gray-600">View all accounts and their subscription status</p>
       </div>
-      <ClientOnly>
-        <button
-          @click="loadAccounts"
-          :disabled="loading"
-          class="px-4 py-2.5 bg-gray-100 text-gray-700 font-medium rounded-xl hover:bg-gray-200 transition"
-        >
-          <i class="fa-solid fa-rotate" :class="{ 'animate-spin': loading }"></i>
-        </button>
-      </ClientOnly>
+      <button
+        @click="loadAccounts"
+        :disabled="loading"
+        class="px-4 py-2.5 bg-gray-100 text-gray-700 font-medium rounded-xl hover:bg-gray-200 transition"
+      >
+        <SpinnerIcon v-show="loading" />
+        <svg v-show="!loading" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-4 h-4 fill-current"><path d="M142.9 142.9c-17.5 17.5-30.1 38-37.8 59.8c-5.9 16.7-24.2 25.4-40.8 19.5s-25.4-24.2-19.5-40.8C55.6 150.7 73.2 122 97.6 97.6c87.2-87.2 228.3-87.5 315.8-1L455 55c6.9-6.9 17.2-8.9 26.2-5.2s14.8 12.5 14.8 22.2l0 128c0 13.3-10.7 24-24 24l-8.4 0c0 0 0 0 0 0L344 224c-9.7 0-18.5-5.8-22.2-14.8s-1.7-19.3 5.2-26.2l41.1-41.1c-62.6-61.5-163.1-61.2-225.3 1zM16 312c0-13.3 10.7-24 24-24l7.6 0 .7 0L168 288c9.7 0 18.5 5.8 22.2 14.8s1.7 19.3-5.2 26.2l-41.1 41.1c62.6 61.5 163.1 61.2 225.3-1c17.5-17.5 30.1-38 37.8-59.8c5.9-16.7 24.2-25.4 40.8-19.5s25.4 24.2 19.5 40.8c-10.8 30.6-28.4 59.3-52.9 83.8c-87.2 87.2-228.3 87.5-315.8 1L57 457c-6.9 6.9-17.2 8.9-26.2 5.2S16 449.7 16 440l0-119.6 0-.7 0-7.6z"/></svg>
+      </button>
     </div>
 
     <!-- Stats -->
@@ -41,7 +40,9 @@
     <div class="mb-4">
       <ClientOnly>
         <div class="relative max-w-md">
-          <i class="fa-solid fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+          <ClientOnly>
+            <i class="fa-solid fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+          </ClientOnly>
           <input
             v-model="searchQuery"
             type="text"
@@ -112,7 +113,9 @@
     <!-- Empty State -->
     <div v-else class="bg-white rounded-xl border border-gray-200 p-12 text-center">
       <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-        <i class="fa-solid fa-building text-gray-400 text-2xl"></i>
+        <ClientOnly>
+          <i class="fa-solid fa-building text-gray-400 text-2xl"></i>
+        </ClientOnly>
       </div>
       <h3 class="text-lg font-medium text-gray-900 mb-1">No Accounts Found</h3>
       <p class="text-gray-500">{{ searchQuery ? 'No accounts match your search' : 'No accounts have been created yet' }}</p>

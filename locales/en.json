@@ -334,6 +334,17 @@
         "by": "by {email}"
       },
       "loading": "Loading..."
+    },
+    "changelog": {
+      "title": "Change Log",
+      "subtitle": "View commit history and recent changes",
+      "search": "Search commits...",
+      "headers": {
+        "date": "Date",
+        "description": "Description"
+      },
+      "noCommits": "No commits found",
+      "loadError": "Failed to load commit history"
     }
   },
   "auth": {
@@ -664,6 +675,11 @@
       "watchDemo": "Watch demo",
       "screenshotSoon": "Screenshot coming soon"
     },
+    "cta": {
+      "title": "Ready to Simplify INR Management?",
+      "subtitle": "Join healthcare professionals who chose Retroact to manage anticoagulant therapy.",
+      "button": "Start Free Trial"
+    },
     "features": {
       "results": {
         "title": "Recording INR Results",
@@ -944,6 +960,13 @@
     "you": "You",
     "goToAdminPanel": "Go to Admin Panel",
     "adminManagementInfo": "Admin ticket management is available at:",
-    "failedToLoad": "Failed to load tickets"
+    "failedToLoad": "Failed to load tickets",
+    "adminNotes": "Admin Notes",
+    "adminNotesPlaceholder": "Add a note about this ticket...",
+    "existingNotes": "Notes History",
+    "saveNote": "Save Note",
+    "noteSaved": "Note saved successfully",
+    "noteError": "Failed to save note",
+    "updated": "Updated"
   }
 }

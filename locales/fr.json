@@ -334,6 +334,17 @@
         "by": "par {email}"
       },
       "loading": "Chargement..."
+    },
+    "changelog": {
+      "title": "Journal des modifications",
+      "subtitle": "Voir l'historique des commits et les modifications récentes",
+      "search": "Rechercher des commits...",
+      "headers": {
+        "date": "Date",
+        "description": "Description"
+      },
+      "noCommits": "Aucun commit trouvé",
+      "loadError": "Échec du chargement de l'historique des commits"
     }
   },
   "auth": {
@@ -664,6 +675,11 @@
       "watchDemo": "Voir la démo",
       "screenshotSoon": "Capture d'écran à venir"
     },
+    "cta": {
+      "title": "Prêt à simplifier la gestion du RIN?",
+      "subtitle": "Rejoignez les professionnels de santé qui ont choisi Retroact pour gérer l'anticoagulothérapie.",
+      "button": "Commencer l'essai gratuit"
+    },
     "features": {
       "results": {
         "title": "Enregistrement des résultats RIN",
@@ -944,6 +960,13 @@
     "you": "Vous",
     "goToAdminPanel": "Aller au panneau admin",
     "adminManagementInfo": "La gestion des tickets admin est disponible à :",
-    "failedToLoad": "Échec du chargement des tickets"
+    "failedToLoad": "Échec du chargement des tickets",
+    "adminNotes": "Notes admin",
+    "adminNotesPlaceholder": "Ajouter une note sur ce ticket...",
+    "existingNotes": "Historique des notes",
+    "saveNote": "Enregistrer la note",
+    "noteSaved": "Note enregistrée avec succès",
+    "noteError": "Échec de l'enregistrement de la note",
+    "updated": "Mis à jour"
   }
 }

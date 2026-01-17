@@ -5,11 +5,15 @@
 import { defineEventHandler, createError } from 'h3'
 import { verifySiteAdmin } from '../../utils/auth'
 import { query } from '../../utils/database'
+import { checkRateLimit, RateLimits } from '../../utils/rateLimit'
 
 export default defineEventHandler(async (event) => {
   // Verify siteadmin access
-  await verifySiteAdmin(event)
-  
+  const admin = await verifySiteAdmin(event)
+
+  // Rate limiting
+  checkRateLimit(event, admin.uid, RateLimits.READ)
+
   try {
     // Get users from database with all relevant fields
     const users = await query<any>(
@@ -25,7 +29,7 @@ export default defineEventHandler(async (event) => {
        FROM users u
        ORDER BY u.createdAt DESC`
     )
-    
+
     const accounts = users.map((u: any) => ({
       id: u.id,
       name: u.name?.trim() || null,
@@ -36,7 +40,7 @@ export default defineEventHandler(async (event) => {
       trial_ends_at: u.trial_ends_at,
       created_at: u.created_at
     }))
-    
+
     return { accounts }
   } catch (error: any) {
     console.error('❌ Error getting accounts:', error)

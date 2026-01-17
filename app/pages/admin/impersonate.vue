@@ -15,7 +15,9 @@
         <ClientOnly>
           <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-4 mb-6">
             <div class="flex items-start gap-3">
-              <i class="fa-solid fa-triangle-exclamation text-yellow-600 mt-0.5"></i>
+              <ClientOnly>
+                <i class="fa-solid fa-triangle-exclamation text-yellow-600 mt-0.5"></i>
+              </ClientOnly>
               <div>
                 <h4 class="font-medium text-yellow-800">{{ t('admin.impersonate.warning.title') }}</h4>
                 <p class="text-sm text-yellow-700 mt-1">
@@ -92,7 +94,9 @@
               <span class="px-3 py-1 bg-red-100 text-red-700 rounded-full text-sm flex items-center gap-2">
                 {{ targetEmail }}
                 <button type="button" @click="clearSelection" class="hover:text-red-900">
-                  <i class="fa-solid fa-times"></i>
+                  <ClientOnly>
+                    <i class="fa-solid fa-times"></i>
+                  </ClientOnly>
                 </button>
               </span>
             </div>
@@ -114,12 +118,11 @@
             :disabled="impersonating"
             class="w-full px-4 py-2.5 bg-red-600 text-white font-medium rounded-xl hover:bg-red-700 transition flex items-center justify-center gap-2"
           >
-            <ClientOnly>
-              <i v-if="impersonating" class="fa-solid fa-spinner animate-spin"></i>
-              <i v-else class="fa-solid fa-user-secret"></i>
+            <SpinnerIcon v-if="impersonating" />
+            <ClientOnly v-else>
+              <i class="fa-solid fa-user-secret"></i>
               <template #fallback>
-                <span v-if="impersonating">⟳</span>
-                <span v-else>🕵</span>
+                <span>🕵</span>
               </template>
             </ClientOnly>
             {{ t('admin.impersonate.form.startButton') }}
@@ -128,7 +131,9 @@
 
         <div v-if="impersonationToken" class="mt-6 p-4 bg-green-50 border border-green-200 rounded-xl">
           <h4 class="font-medium text-green-800 mb-2 flex items-center gap-2">
-            <i class="fa-solid fa-check-circle"></i>
+            <ClientOnly>
+              <i class="fa-solid fa-check-circle"></i>
+            </ClientOnly>
             {{ t('admin.impersonate.success.title') }}
           </h4>
           <p class="text-sm text-green-700 mb-3">
@@ -147,7 +152,9 @@
       <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
         <div class="p-4 border-b border-gray-200 flex items-center justify-between">
           <h2 class="font-medium text-gray-900 flex items-center gap-2">
-            <i class="fa-solid fa-list text-gray-500"></i>
+            <ClientOnly>
+              <i class="fa-solid fa-list text-gray-500"></i>
+            </ClientOnly>
             {{ t('admin.impersonate.log.title') }}
           </h2>
           <button
@@ -155,12 +162,8 @@
             :disabled="loadingLog"
             class="p-1.5 text-gray-500 hover:text-gray-700 rounded"
           >
-            <ClientOnly>
-              <i class="fa-solid fa-rotate text-sm" :class="{ 'animate-spin': loadingLog }"></i>
-              <template #fallback>
-                <span class="text-sm">↻</span>
-              </template>
-            </ClientOnly>
+            <SpinnerIcon v-show="loadingLog" size="xs" />
+            <svg v-show="!loadingLog" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-3.5 h-3.5 fill-current"><path d="M142.9 142.9c-17.5 17.5-30.1 38-37.8 59.8c-5.9 16.7-24.2 25.4-40.8 19.5s-25.4-24.2-19.5-40.8C55.6 150.7 73.2 122 97.6 97.6c87.2-87.2 228.3-87.5 315.8-1L455 55c6.9-6.9 17.2-8.9 26.2-5.2s14.8 12.5 14.8 22.2l0 128c0 13.3-10.7 24-24 24l-8.4 0c0 0 0 0 0 0L344 224c-9.7 0-18.5-5.8-22.2-14.8s-1.7-19.3 5.2-26.2l41.1-41.1c-62.6-61.5-163.1-61.2-225.3 1zM16 312c0-13.3 10.7-24 24-24l7.6 0 .7 0L168 288c9.7 0 18.5 5.8 22.2 14.8s1.7 19.3-5.2 26.2l-41.1 41.1c62.6 61.5 163.1 61.2 225.3-1c17.5-17.5 30.1-38 37.8-59.8c5.9-16.7 24.2-25.4 40.8-19.5s25.4 24.2 19.5 40.8c-10.8 30.6-28.4 59.3-52.9 83.8c-87.2 87.2-228.3 87.5-315.8 1L57 457c-6.9 6.9-17.2 8.9-26.2 5.2S16 449.7 16 440l0-119.6 0-.7 0-7.6z"/></svg>
           </button>
         </div>
 
@@ -187,7 +190,9 @@
 
         <!-- Empty -->
         <div v-else class="p-12 text-center">
-          <i class="fa-solid fa-shield-check text-gray-300 text-3xl mb-2"></i>
+          <ClientOnly>
+            <i class="fa-solid fa-shield-check text-gray-300 text-3xl mb-2"></i>
+          </ClientOnly>
           <p class="text-gray-500">{{ t('admin.impersonate.log.empty') }}</p>
         </div>
       </div>
@@ -341,28 +346,29 @@ const startImpersonation = async () => {
 const useImpersonationToken = async () => {
   if (!impersonationToken.value) return
   
-  // Store the impersonation token and redirect
-  // The actual implementation depends on how the app handles impersonation
-  // This could be:
-  // 1. Sign in with custom token
-  // 2. Store in localStorage and reload
-  // 3. Redirect to a special impersonation URL
-  
   try {
-    // For Firebase, we'd use signInWithCustomToken
     const { signInWithCustomToken } = await import('firebase/auth')
-    const { auth } = useFirebase()
+    const { $auth } = useNuxtApp()
     
-    await signInWithCustomToken(auth, impersonationToken.value)
+    if (!$auth) {
+      throw new Error('Firebase not initialized')
+    }
+    
+    // Sign in with the custom token
+    await signInWithCustomToken($auth, impersonationToken.value)
     
     // Store that we're impersonating
-    localStorage.setItem('isImpersonating', 'true')
-    localStorage.setItem('impersonatingAs', targetEmail.value)
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('isImpersonating', 'true')
+      localStorage.setItem('impersonatingAs', targetEmail.value)
+    }
+    
+    console.log('✅ Successfully impersonating:', targetEmail.value)
     
     // Redirect to the main app
-    navigateTo('/account')
+    await navigateTo('/account')
   } catch (error: any) {
-    console.error('Failed to use impersonation token:', error)
+    console.error('❌ Failed to use impersonation token:', error)
     alert('Failed to login as user: ' + error.message)
   }
 }

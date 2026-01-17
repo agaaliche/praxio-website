@@ -5,21 +5,25 @@
 import { defineEventHandler, readBody, createError } from 'h3'
 import { verifySiteAdmin } from '../../utils/auth'
 import { execute, query } from '../../utils/database'
+import { checkRateLimit, RateLimits } from '../../utils/rateLimit'
 
 export default defineEventHandler(async (event) => {
   // Verify siteadmin access
   const admin = await verifySiteAdmin(event)
-  
+
+  // Rate limiting
+  checkRateLimit(event, admin.uid, RateLimits.WRITE)
+
   const body = await readBody(event)
   const { uid, months, reason } = body
-  
+
   if (!uid || !months) {
     throw createError({
       statusCode: 400,
       message: 'User ID and months are required'
     })
   }
-  
+
   try {
     // Update subscription or trial end date
     await execute(
@@ -29,11 +33,11 @@ export default defineEventHandler(async (event) => {
        WHERE userId = ?`,
       [months, uid]
     )
-    
+
     // Get user email for logging
     const users = await query<any>('SELECT userEmail FROM users WHERE userId = ?', [uid])
     const userEmail = users[0]?.userEmail || uid
-    
+
     // Log the free month
     try {
       await execute(
@@ -45,9 +49,9 @@ export default defineEventHandler(async (event) => {
       // Table might not exist - continue anyway
       console.warn('Could not log free month:', logError)
     }
-    
+
     console.log(`✅ Admin gave ${months} free month(s) to: ${userEmail}`)
-    
+
     return { success: true, message: 'Free month granted' }
   } catch (error: any) {
     console.error('❌ Error giving free month:', error)

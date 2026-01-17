@@ -44,6 +44,22 @@
           Trials
         </NuxtLink>
         <NuxtLink 
+          to="/admin/tickets" 
+          class="text-sm font-medium border-b-2 h-full flex items-center transition"
+          :class="$route.path === '/admin/tickets' ? 'border-red-600 text-red-600' : 'border-transparent text-gray-600 hover:text-red-600'"
+        >
+          <i class="fa-solid fa-ticket mr-2"></i>
+          Tickets
+        </NuxtLink>
+        <NuxtLink 
+          to="/admin/changelog" 
+          class="text-sm font-medium border-b-2 h-full flex items-center transition"
+          :class="$route.path === '/admin/changelog' ? 'border-red-600 text-red-600' : 'border-transparent text-gray-600 hover:text-red-600'"
+        >
+          <i class="fa-solid fa-code-commit mr-2"></i>
+          Change Log
+        </NuxtLink>
+        <NuxtLink 
           to="/admin/impersonate" 
           class="text-sm font-medium border-b-2 h-full flex items-center transition"
           :class="$route.path === '/admin/impersonate' ? 'border-red-600 text-red-600' : 'border-transparent text-gray-600 hover:text-red-600'"
@@ -97,6 +113,20 @@
               :class="$route.path === '/admin/trials' ? 'bg-red-100 text-red-700' : 'bg-white text-gray-600 hover:bg-gray-100'"
             >
               <i class="fa-solid fa-calendar-clock mr-1.5"></i>Trials
+            </NuxtLink>
+            <NuxtLink 
+              to="/admin/tickets" 
+              class="px-3 py-2 text-sm font-medium rounded-lg transition"
+              :class="$route.path === '/admin/tickets' ? 'bg-red-100 text-red-700' : 'bg-white text-gray-600 hover:bg-gray-100'"
+            >
+              <i class="fa-solid fa-ticket mr-1.5"></i>Tickets
+            </NuxtLink>
+            <NuxtLink 
+              to="/admin/changelog" 
+              class="px-3 py-2 text-sm font-medium rounded-lg transition"
+              :class="$route.path === '/admin/changelog' ? 'bg-red-100 text-red-700' : 'bg-white text-gray-600 hover:bg-gray-100'"
+            >
+              <i class="fa-solid fa-code-commit mr-1.5"></i>Change Log
             </NuxtLink>
             <NuxtLink 
               to="/admin/impersonate" 
