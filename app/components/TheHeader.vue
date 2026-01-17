@@ -382,8 +382,7 @@ const dropdownOpen = ref(false)
 const dropdownRef = ref(null)
 const notificationPanelOpen = ref(false)
 const unreadCount = ref(0)
-const isImpersonating = ref(false)
-const impersonatingAs = ref('')
+const { isImpersonating, impersonatingAs, initializeFromStorage, clearImpersonation } = useImpersonation()
 const { isAuthenticated, user, signOutUser, isAccountOwner, getIdToken, isSiteAdmin } = useAuth()
 const { isTrialExpired, needsSubscription } = useSubscription()
 const { t, locale, locales, setLocale } = useI18n()
@@ -391,22 +390,49 @@ const router = useRouter()
 const route = useRoute()
 const { subHeaderVisible } = useSubHeaderState()
 
-// Check impersonation status
-const checkImpersonation = () => {
-  if (typeof window !== 'undefined') {
-    isImpersonating.value = localStorage.getItem('isImpersonating') === 'true'
-    impersonatingAs.value = localStorage.getItem('impersonatingAs') || ''
-  }
-}
-
 // Exit impersonation
 const exitImpersonation = async () => {
-  if (typeof window !== 'undefined') {
-    localStorage.removeItem('isImpersonating')
-    localStorage.removeItem('impersonatingAs')
+  try {
+    // Get a token for the original admin
+    const { getAuthHeaders } = useAuth()
+    const headers = await getAuthHeaders()
+    
+    const response = await $fetch('/api/admin/exit-impersonation', {
+      method: 'POST',
+      headers
+    })
+    
+    if (!response.token) {
+      throw new Error('No token returned')
+    }
+    
+    // Sign in as the original admin
+    const { signInWithCustomToken } = await import('firebase/auth')
+    const { $auth } = useNuxtApp()
+    
+    if (!$auth) {
+      throw new Error('Firebase not initialized')
+    }
+    
+    await signInWithCustomToken($auth, response.token)
+    
+    // Wait for auth state to update
+    await new Promise(resolve => setTimeout(resolve, 100))
+    
+    // Clear impersonation state
+    clearImpersonation()
+    
+    console.log('✅ Exited impersonation, logged back in as admin')
+    
+    // Navigate to impersonation page
+    await navigateTo('/admin/impersonate')
+  } catch (error) {
+    console.error('❌ Failed to exit impersonation:', error)
+    // Fallback: just clear state and sign out
+    clearImpersonation()
+    await signOutUser()
+    await navigateTo('/admin/impersonate')
   }
-  await signOutUser()
-  await navigateTo('/admin/impersonate')
 }
 
 // User data from API (includes correct role without stale claims)
@@ -428,8 +454,8 @@ const fetchUserData = async () => {
     userData.value = response
     console.log('✅ Praxio: User data fetched:', { email: response.email, role: response.role, preferences: response.preferences })
     
-    // Apply language preference from database if available
-    if (response.preferences?.language && response.preferences.language !== locale.value) {
+    // Apply language preference from database if available (but not during impersonation)
+    if (!isImpersonating.value && response.preferences?.language && response.preferences.language !== locale.value) {
       console.log(`🌍 Praxio: Loading language preference from database: ${response.preferences.language}`)
       setLocale(response.preferences.language)
     } else {
@@ -437,6 +463,7 @@ const fetchUserData = async () => {
     }
   } catch (err) {
     console.error('❌ Praxio: Failed to fetch user data:', err)
+    userData.value = null
   }
 }
 
@@ -448,6 +475,14 @@ watch(isAuthenticated, (newVal) => {
     userData.value = null
   }
 }, { immediate: true })
+
+// Watch for impersonation changes - refetch user data when impersonation state changes
+watch(isImpersonating, () => {
+  console.log('👥 Impersonation state changed, refetching user data')
+  if (isAuthenticated.value) {
+    fetchUserData()
+  }
+})
 
 // Check if user has access to account features
 const hasAccess = computed(() => !needsSubscription.value)
@@ -575,17 +610,12 @@ onMounted(() => {
   window.addEventListener('scroll', handleScroll)
   document.addEventListener('click', handleClickOutside)
   handleScroll() // Check initial state
-  checkImpersonation() // Check if impersonating
+  initializeFromStorage() // Initialize impersonation state from localStorage
   
   onUnmounted(() => {
     window.removeEventListener('scroll', handleScroll)
     document.removeEventListener('click', handleClickOutside)
   })
-})
-
-// Watch for authentication changes to update impersonation status
-watch(isAuthenticated, () => {
-  checkImpersonation()
 })
 
 const handleSignOut = async () => {

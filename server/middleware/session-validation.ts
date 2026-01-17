@@ -28,14 +28,20 @@ export default defineEventHandler(async (event) => {
     const { getFirebaseAdmin } = await import('../utils/firebase-admin')
     const admin = getFirebaseAdmin()
     const decodedToken = await admin.auth().verifyIdToken(token)
-    
+
+    // Skip session validation for impersonated users
+    if (decodedToken.impersonating) {
+      console.log(`⚠️ Skipping session validation for impersonated user: ${decodedToken.uid}`)
+      return
+    }
+
     const sessionId = decodedToken.sessionId as string | undefined
     const userId = decodedToken.uid
     const userRole = decodedToken.role as string | undefined
 
     if (!sessionId) {
       // No session ID in token - check if a recent session exists, otherwise create one
-      
+
       // Check for existing recent session (created in last 10 seconds to avoid rapid recreation)
       const existingSession = await queryOne<any>(
         `SELECT sessionId FROM sessions 
@@ -46,24 +52,24 @@ export default defineEventHandler(async (event) => {
          LIMIT 1`,
         [userId]
       )
-      
+
       if (existingSession) {
         // Use existing recent session - DON'T update claims, just return
         // The client will get the sessionId on next token refresh
         console.log(`⚠️ User ${userId} (role: ${userRole}) missing sessionId in token, but session ${existingSession.sessionId} exists. Skipping claim update to avoid loop.`)
         return
       }
-      
+
       // No recent session found - create a new one
       console.log(`Creating auto-session for existing user: ${userId}`)
-      
+
       const userAgent = getHeader(event, 'user-agent') || ''
       const forwarded = getHeader(event, 'x-forwarded-for')
       const ipAddress = forwarded ? forwarded.split(',')[0].trim() : event.node.req.socket?.remoteAddress || 'unknown'
-      
+
       const deviceInfo = parseUserAgent(userAgent)
       const newSessionId = randomBytes(32).toString('hex')
-      
+
       try {
         await execute(
           `INSERT INTO sessions 
@@ -81,19 +87,19 @@ export default defineEventHandler(async (event) => {
             userAgent
           ]
         )
-        
+
         // Set custom claim with session ID (preserve existing claims) - ONLY on first creation
         const userRecord = await admin.auth().getUser(userId)
         await admin.auth().setCustomUserClaims(userId, {
           ...userRecord.customClaims,
           sessionId: newSessionId
         })
-        
+
         console.log(`✅ Auto-created session ${newSessionId} for user ${userId}`)
       } catch (err) {
         console.error('Failed to auto-create session:', err)
       }
-      
+
       return
     }
 

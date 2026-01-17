@@ -1,5 +1,15 @@
 {
   "admin": {
+    "nav": {
+      "users": "Users",
+      "online": "Online",
+      "messaging": "Messaging",
+      "accounts": "Accounts",
+      "trials": "Trials",
+      "tickets": "Tickets",
+      "changelog": "Change Log",
+      "impersonate": "Impersonate"
+    },
     "impersonate": {
       "title": "Impersonate User",
       "subtitle": "Login as another user for support purposes",
@@ -20,6 +30,9 @@
         "title": "Impersonation Token Generated",
         "message": "The impersonation token has been generated. You can now login as the user.",
         "loginButton": "Login as {email}"
+      },
+      "errors": {
+        "cannotImpersonateSelf": "You cannot impersonate yourself!"
       },
       "log": {
         "title": "Impersonation Log",

@@ -9,7 +9,7 @@
           :class="$route.path === '/admin' ? 'border-red-600 text-red-600' : 'border-transparent text-gray-600 hover:text-red-600'"
         >
           <i class="fa-solid fa-users mr-2"></i>
-          Users
+          {{ t('admin.nav.users') }}
         </NuxtLink>
         <NuxtLink 
           to="/admin/online" 
@@ -17,7 +17,7 @@
           :class="$route.path === '/admin/online' ? 'border-red-600 text-red-600' : 'border-transparent text-gray-600 hover:text-red-600'"
         >
           <i class="fa-solid fa-circle text-xs mr-2"></i>
-          Online
+          {{ t('admin.nav.online') }}
         </NuxtLink>
         <NuxtLink 
           to="/admin/messaging" 
@@ -25,7 +25,7 @@
           :class="$route.path === '/admin/messaging' ? 'border-red-600 text-red-600' : 'border-transparent text-gray-600 hover:text-red-600'"
         >
           <i class="fa-solid fa-message mr-2"></i>
-          Messaging
+          {{ t('admin.nav.messaging') }}
         </NuxtLink>
         <NuxtLink 
           to="/admin/accounts" 
@@ -33,7 +33,7 @@
           :class="$route.path === '/admin/accounts' ? 'border-red-600 text-red-600' : 'border-transparent text-gray-600 hover:text-red-600'"
         >
           <i class="fa-solid fa-user-gear mr-2"></i>
-          Accounts
+          {{ t('admin.nav.accounts') }}
         </NuxtLink>
         <NuxtLink 
           to="/admin/trials" 
@@ -41,7 +41,7 @@
           :class="$route.path === '/admin/trials' ? 'border-red-600 text-red-600' : 'border-transparent text-gray-600 hover:text-red-600'"
         >
           <i class="fa-solid fa-calendar-clock mr-2"></i>
-          Trials
+          {{ t('admin.nav.trials') }}
         </NuxtLink>
         <NuxtLink 
           to="/admin/tickets" 
@@ -49,7 +49,7 @@
           :class="$route.path === '/admin/tickets' ? 'border-red-600 text-red-600' : 'border-transparent text-gray-600 hover:text-red-600'"
         >
           <i class="fa-solid fa-ticket mr-2"></i>
-          Tickets
+          {{ t('admin.nav.tickets') }}
         </NuxtLink>
         <NuxtLink 
           to="/admin/changelog" 
@@ -57,7 +57,7 @@
           :class="$route.path === '/admin/changelog' ? 'border-red-600 text-red-600' : 'border-transparent text-gray-600 hover:text-red-600'"
         >
           <i class="fa-solid fa-code-commit mr-2"></i>
-          Change Log
+          {{ t('admin.nav.changelog') }}
         </NuxtLink>
         <NuxtLink 
           to="/admin/impersonate" 
@@ -65,7 +65,7 @@
           :class="$route.path === '/admin/impersonate' ? 'border-red-600 text-red-600' : 'border-transparent text-gray-600 hover:text-red-600'"
         >
           <i class="fa-solid fa-user-secret mr-2"></i>
-          Impersonate
+          {{ t('admin.nav.impersonate') }}
         </NuxtLink>
         <template #fallback>
           <span class="text-sm font-medium h-full flex items-center text-gray-400">Loading...</span>
@@ -150,6 +150,8 @@
 </template>
 
 <script setup lang="ts">
+const { t } = useI18n()
+
 definePageMeta({
   middleware: ['auth', 'siteadmin']
 })

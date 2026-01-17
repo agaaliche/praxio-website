@@ -208,7 +208,7 @@
 </template>
 
 <script setup lang="ts">
-const { getAuthHeaders } = useAuth()
+const { getAuthHeaders, user } = useAuth()
 const { t } = useI18n()
 // Force reload to pick up new translations
 
@@ -251,8 +251,9 @@ const loadUsers = async () => {
   try {
     const headers = await getAuthHeaders()
     const data = await $fetch<{ users: UserOption[] }>('/api/admin/users-list', { headers })
-    allUsers.value = data.users
-    console.log('Loaded users:', data.users.length)
+    // Filter out current user from the list
+    allUsers.value = data.users.filter(u => u.email !== user.value?.email)
+    console.log('Loaded users:', allUsers.value.length, '(excluded self)')
   } catch (error: any) {
     console.error('Failed to load users:', error)
   } finally {
@@ -321,6 +322,12 @@ const loadLog = async () => {
 }
 
 const startImpersonation = async () => {
+  // Prevent impersonating yourself
+  if (targetEmail.value === user.value?.email) {
+    alert(t('admin.impersonate.errors.cannotImpersonateSelf'))
+    return
+  }
+  
   impersonating.value = true
   impersonationToken.value = null
   try {
@@ -357,11 +364,12 @@ const useImpersonationToken = async () => {
     // Sign in with the custom token
     await signInWithCustomToken($auth, impersonationToken.value)
     
-    // Store that we're impersonating
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('isImpersonating', 'true')
-      localStorage.setItem('impersonatingAs', targetEmail.value)
-    }
+    // Wait for auth state to update
+    await new Promise(resolve => setTimeout(resolve, 100))
+    
+    // Update impersonation state using composable (immediately updates banner)
+    const { setImpersonation } = useImpersonation()
+    setImpersonation(targetEmail.value)
     
     console.log('✅ Successfully impersonating:', targetEmail.value)
     

@@ -281,7 +281,7 @@
             <!-- Feature Points - Horizontal Chips -->
             <div class="flex flex-wrap gap-2">
               <span 
-                v-for="(point, index) in t(currentFeature.points)" 
+                v-for="(point, index) in currentFeature.points.value" 
                 :key="index" 
                 class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium"
                 :class="[currentFeature.iconBg, currentFeature.iconColor]"
@@ -507,7 +507,7 @@ const features = [
     title: computed(() => t('retroact.features.results.title')),
     shortDesc: computed(() => t('retroact.features.results.shortDesc')),
     description: 'retroact.features.results.description',
-    points: 'retroact.features.results.points',
+    points: computed(() => t('retroact.features.results.points')),
     iconBg: 'bg-primary-100',
     iconColor: 'text-primary-600',
     hasVideo: true,
@@ -518,7 +518,7 @@ const features = [
     title: computed(() => t('retroact.features.doses.title')),
     shortDesc: computed(() => t('retroact.features.doses.shortDesc')),
     description: 'retroact.features.doses.description',
-    points: 'retroact.features.doses.points',
+    points: computed(() => t('retroact.features.doses.points')),
     iconBg: 'bg-teal-100',
     iconColor: 'text-teal-600',
     hasVideo: false,
@@ -529,7 +529,7 @@ const features = [
     title: computed(() => t('retroact.features.prescriptions.title')),
     shortDesc: computed(() => t('retroact.features.prescriptions.shortDesc')),
     description: 'retroact.features.prescriptions.description',
-    points: 'retroact.features.prescriptions.points',
+    points: computed(() => t('retroact.features.prescriptions.points')),
     iconBg: 'bg-secondary-100',
     iconColor: 'text-secondary-600',
     hasVideo: true,
@@ -540,7 +540,7 @@ const features = [
     title: computed(() => t('retroact.features.appointments.title')),
     shortDesc: computed(() => t('retroact.features.appointments.shortDesc')),
     description: 'retroact.features.appointments.description',
-    points: 'retroact.features.appointments.points',
+    points: computed(() => t('retroact.features.appointments.points')),
     iconBg: 'bg-amber-100',
     iconColor: 'text-amber-600',
     hasVideo: true,
@@ -551,7 +551,7 @@ const features = [
     title: computed(() => t('retroact.features.patients.title')),
     shortDesc: computed(() => t('retroact.features.patients.shortDesc')),
     description: 'retroact.features.patients.description',
-    points: 'retroact.features.patients.points',
+    points: computed(() => t('retroact.features.patients.points')),
     iconBg: 'bg-purple-100',
     iconColor: 'text-purple-600',
     hasVideo: true,
@@ -562,7 +562,7 @@ const features = [
     title: computed(() => t('retroact.features.analytics.title')),
     shortDesc: computed(() => t('retroact.features.analytics.shortDesc')),
     description: 'retroact.features.analytics.description',
-    points: 'retroact.features.analytics.points',
+    points: computed(() => t('retroact.features.analytics.points')),
     iconBg: 'bg-blue-50',
     iconColor: 'text-blue-600',
     hasVideo: false,

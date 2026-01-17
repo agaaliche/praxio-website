@@ -85,9 +85,9 @@ const getApiBaseUrl = (): string => {
 
 export function useAuth() {
   // Fetch user role from database (source of truth)
-  const fetchDatabaseRole = async (showNotification = false): Promise<{success: boolean, needsSession?: boolean}> => {
+  const fetchDatabaseRole = async (showNotification = false): Promise<{ success: boolean, needsSession?: boolean }> => {
     console.log('🔎 fetchDatabaseRole called, isAuthenticated:', isAuthenticated.value)
-    
+
     if (!isAuthenticated.value) {
       dbRole.value = null
       dbRoleFetched.value = false
@@ -110,7 +110,7 @@ export function useAuth() {
       const response = await $fetch('/api/users/current', {
         headers: { Authorization: `Bearer ${token}` }
       })
-      
+
       console.log('📥 API Response received:', {
         fullResponse: response,
         hasRole: 'role' in (response || {}),
@@ -118,23 +118,23 @@ export function useAuth() {
         responseType: typeof response,
         responseKeys: response ? Object.keys(response) : []
       })
-      
+
       // Get the role from API response - null means account owner
       const newRole = (response as any).role || null
       const previousRole = dbRole.value
       const roleChanged = dbRoleFetched.value && previousRole !== newRole
-      
+
       // Update state
       dbRole.value = newRole
       dbRoleFetched.value = true
-      
+
       // Store in localStorage for persistence
       if (typeof window !== 'undefined') {
         localStorage.setItem('praxio_db_role', dbRole.value === null ? 'null' : dbRole.value)
       }
-      
-      console.log('✅ Database role fetched:', { 
-        tokenRole: userRole.value, 
+
+      console.log('✅ Database role fetched:', {
+        tokenRole: userRole.value,
         dbRole: dbRole.value,
         previousRole,
         roleChanged,
@@ -145,7 +145,7 @@ export function useAuth() {
       // If role changed and notification requested, show alert
       if (roleChanged && showNotification) {
         console.warn('🔄 Role changed from', previousRole, 'to', newRole)
-        
+
         // Dynamically import notification to avoid circular deps
         if (typeof window !== 'undefined') {
           const event = new CustomEvent('role-changed', {
@@ -154,7 +154,7 @@ export function useAuth() {
           window.dispatchEvent(event)
         }
       }
-      
+
       return { success: true, needsSession: false }
     } catch (error: any) {
       console.error('❌ Failed to fetch database role:', error)
@@ -170,14 +170,14 @@ export function useAuth() {
         errorConstructor: error?.constructor?.name
       })
       dbRoleFetched.value = false
-      
+
       // Check if error is 401 - indicates no session
-      const is401 = error?.status === 401 || 
-                    error?.statusCode === 401 || 
-                    error?.response?.status === 401 ||
-                    error?.data?.statusCode === 401 ||
-                    (error?.message && error.message.includes('401'))
-      
+      const is401 = error?.status === 401 ||
+        error?.statusCode === 401 ||
+        error?.response?.status === 401 ||
+        error?.data?.statusCode === 401 ||
+        (error?.message && error.message.includes('401'))
+
       console.log(`🔍 Is 401 error? ${is401}`)
       return { success: false, needsSession: is401 }
     }
@@ -190,12 +190,12 @@ export function useAuth() {
       return
     }
     authInitialized.value = true
-    
+
     const auth = getAuthInstance()
-    
+
     onAuthStateChanged(auth, async (firebaseUser) => {
       isLoading.value = true
-      
+
       if (firebaseUser) {
         console.log('🔐 Auth state changed - Firebase user:', {
           uid: firebaseUser.uid,
@@ -234,11 +234,20 @@ export function useAuth() {
 
           // Fetch role from database (source of truth)
           const roleResult = await fetchDatabaseRole()
-          
+
           // If session was revoked (401), dispatch event to show notification
           if (roleResult.needsSession) {
             console.log('🚪 Session was revoked (401) - dispatching session-revoked event')
-            
+
+            // Check if currently impersonating - don't auto-logout in that case
+            const isImpersonating = typeof window !== 'undefined' &&
+              localStorage.getItem('isImpersonating') === 'true'
+
+            if (isImpersonating) {
+              console.log('⚠️ Session revoked but user is impersonating - not triggering auto-logout')
+              return
+            }
+
             if (typeof window !== 'undefined') {
               const event = new CustomEvent('session-revoked', {
                 detail: { reason: 'Session signed out from another device' }
@@ -275,7 +284,7 @@ export function useAuth() {
           localStorage.removeItem('praxio_db_role')
         }
       }
-      
+
       isLoading.value = false
     })
   }
@@ -315,7 +324,7 @@ export function useAuth() {
     try {
       const auth = getAuthInstance()
       const userCredential = await signInWithEmailAndPassword(auth, email, password)
-      
+
       // Create session on server
       try {
         const token = await userCredential.user.getIdToken()
@@ -324,7 +333,7 @@ export function useAuth() {
           headers: { Authorization: `Bearer ${token}` }
         })
         console.log('✅ Session created successfully after login')
-        
+
         // Force token refresh to get updated custom claims
         await userCredential.user.getIdToken(true)
       } catch (sessionError) {
@@ -332,7 +341,7 @@ export function useAuth() {
         // Don't fail login if session creation fails, but log it prominently
         throw sessionError
       }
-      
+
       return {
         success: true,
         user: userCredential.user
@@ -352,7 +361,7 @@ export function useAuth() {
       const auth = getAuthInstance()
       const provider = new GoogleAuthProvider()
       const result = await signInWithPopup(auth, provider)
-      
+
       // Create session on server
       try {
         const token = await result.user.getIdToken()
@@ -361,14 +370,14 @@ export function useAuth() {
           headers: { Authorization: `Bearer ${token}` }
         })
         console.log('✅ Session created successfully after Google login')
-        
+
         // Force token refresh to get updated custom claims
         await result.user.getIdToken(true)
       } catch (sessionError) {
         console.error('❌ Failed to create session:', sessionError)
         throw sessionError
       }
-      
+
       return {
         success: true,
         user: result.user
@@ -386,7 +395,7 @@ export function useAuth() {
   const signOutUser = async (): Promise<AuthResult> => {
     try {
       const auth = getAuthInstance()
-      
+
       // Delete current session from database
       try {
         const token = await auth.currentUser?.getIdToken()
@@ -400,13 +409,13 @@ export function useAuth() {
         console.error('Failed to delete session:', sessionError)
         // Don't fail logout if session deletion fails
       }
-      
+
       await signOut(auth)
       user.value = null
       userRole.value = null
       userClaims.value = null
       isAuthenticated.value = false
-      
+
       // Clear subscription state
       try {
         const { clearSubscription } = useSubscription()
@@ -414,7 +423,7 @@ export function useAuth() {
       } catch (e) {
         // Ignore if subscription composable not available
       }
-      
+
       // SSO: Also logout from retroact (service app)
       // Use hidden iframe to trigger retroact logout without redirecting
       if (typeof window !== 'undefined') {
@@ -425,7 +434,7 @@ export function useAuth() {
           iframe.style.display = 'none'
           iframe.src = retroactLogoutUrl
           document.body.appendChild(iframe)
-          
+
           // Remove iframe after logout completes
           setTimeout(() => {
             document.body.removeChild(iframe)
@@ -435,7 +444,7 @@ export function useAuth() {
           // Don't fail praxio logout if retroact logout fails
         }
       }
-      
+
       return { success: true }
     } catch (error: any) {
       return {
@@ -521,7 +530,7 @@ export function useAuth() {
   const refreshUserClaims = async (): Promise<boolean> => {
     const auth = getAuthInstance()
     const currentUser = auth.currentUser
-    
+
     if (!currentUser) {
       console.log('⚠️ No user to refresh claims for')
       return false
@@ -583,13 +592,13 @@ export function useAuth() {
   const isAccountOwner = computed(() => {
     const role = effectiveRole.value
     const result = !role && isAuthenticated.value
-    console.log('🔍 isAccountOwner check:', { 
-      effectiveRole: role, 
+    console.log('🔍 isAccountOwner check:', {
+      effectiveRole: role,
       dbRoleFetched: dbRoleFetched.value,
       dbRole: dbRole.value,
       tokenRole: userRole.value,
       isAuthenticated: isAuthenticated.value,
-      result 
+      result
     })
     return result
   })

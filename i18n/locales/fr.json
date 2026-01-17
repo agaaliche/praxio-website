@@ -307,30 +307,43 @@
     }
   },
   "admin": {
+    "nav": {
+      "users": "Utilisateurs",
+      "online": "En ligne",
+      "messaging": "Messagerie",
+      "accounts": "Comptes",
+      "trials": "Essais",
+      "tickets": "Tickets",
+      "changelog": "Journal des modifications",
+      "impersonate": "Se faire passer pour"
+    },
     "impersonate": {
-      "title": "Usurper l'identité d'un utilisateur",
+      "title": "Se faire passer pour un utilisateur",
       "subtitle": "Se connecter en tant qu'un autre utilisateur à des fins de support",
       "warning": {
         "title": "Avis important",
-        "message": "L'usurpation d'identité est enregistrée à des fins de sécurité. Utilisez cette fonctionnalité uniquement pour des raisons de support légitimes."
+        "message": "Les sessions d'emprunt d'identité sont enregistrées pour des raisons de sécurité. Utilisez cette fonctionnalité uniquement pour des raisons de support légitimes."
       },
       "form": {
         "userEmail": "Courriel de l'utilisateur",
         "searchPlaceholder": "Commencez à taper pour rechercher des utilisateurs...",
         "noMatches": "Aucun utilisateur ne correspond à \"{query}\"",
         "noUsersLoaded": "Aucun utilisateur chargé. Vérifiez la console pour les erreurs.",
-        "reason": "Raison de l'usurpation d'identité",
+        "reason": "Raison de l'emprunt d'identité",
         "reasonPlaceholder": "p. ex., Débogage du problème de l'utilisateur, Demande de support #1234",
-        "startButton": "Démarrer l'usurpation"
+        "startButton": "Démarrer l'emprunt d'identité"
       },
       "success": {
-        "title": "Jeton d'usurpation généré",
-        "message": "Le jeton d'usurpation a été généré. Vous pouvez maintenant vous connecter en tant qu'utilisateur.",
+        "title": "Jeton d'emprunt d'identité généré",
+        "message": "Le jeton d'emprunt d'identité a été généré. Vous pouvez maintenant vous connecter en tant qu'utilisateur.",
         "loginButton": "Se connecter en tant que {email}"
       },
+      "errors": {
+        "cannotImpersonateSelf": "Vous ne pouvez pas vous faire passer pour vous-même !"
+      },
       "log": {
-        "title": "Journal d'usurpation",
-        "empty": "Aucun historique d'usurpation",
+        "title": "Journal des emprunts d'identité",
+        "empty": "Aucun historique d'emprunt d'identité",
         "by": "par {email}"
       },
       "loading": "Chargement..."
