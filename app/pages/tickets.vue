@@ -1,10 +1,22 @@
 <template>
-  <div class="min-h-screen bg-gray-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div class="bg-white rounded-lg shadow">
-        <!-- Tabs -->
-        <div class="border-b border-gray-200">
-          <nav class="flex space-x-8 px-6" aria-label="Tabs">
+  <div class="bg-gray-50 min-h-screen">
+    <!-- Loading state -->
+    <div v-if="isLoading" class="flex items-center justify-center py-20">
+      <i class="fa-solid fa-spinner fa-spin text-4xl text-gray-400"></i>
+    </div>
+
+    <!-- Not authenticated -->
+    <div v-else-if="!isAuthenticated" class="flex flex-col items-center justify-center py-20">
+      <i class="fa-solid fa-lock text-6xl text-gray-300 mb-4"></i>
+      <p class="text-gray-600">Please sign in to access tickets</p>
+    </div>
+
+    <!-- Authenticated - show tickets -->
+    <template v-else>
+      <!-- Tab Navigation -->
+      <div class="bg-white border-b border-gray-200">
+        <div class="px-6">
+          <div class="flex space-x-8">
             <button
               @click="currentTab = 'submit'"
               :class="[
@@ -35,34 +47,32 @@
                 {{ userTicketsCount }}
               </span>
             </button>
-          </nav>
-        </div>
-
-        <!-- Tab Content -->
-        <div class="p-6">
-          <TicketsSubmitTicket
-            v-if="currentTab === 'submit'"
-            @ticket-submitted="handleTicketSubmitted"
-          />
-          <TicketsMonitorTickets
-            v-else-if="currentTab === 'monitor'"
-            :key="refreshKey"
-            @tickets-loaded="handleTicketsLoaded"
-          />
+          </div>
         </div>
       </div>
-    </div>
+
+      <!-- Tab Content -->
+      <TicketsSubmitTicket
+        v-if="currentTab === 'submit'"
+        @ticket-submitted="handleTicketSubmitted"
+      />
+      <TicketsMonitorTickets
+        v-else-if="currentTab === 'monitor'"
+        :key="refreshKey"
+        @tickets-loaded="handleTicketsLoaded"
+      />
+    </template>
   </div>
 </template>
 
 <script setup lang="ts">
 definePageMeta({
-  middleware: 'auth',
-  layout: 'default'
+  layout: false
 });
 
+const route = useRoute();
 const { $i18n } = useNuxtApp();
-const user = useSupabaseUser();
+const { user, isAuthenticated, isLoading } = useAuth();
 
 const SUPERUSER_ID = 'wbIWGJDt0JUBF09LUphT1rlDWGS2';
 
@@ -72,7 +82,7 @@ const adminTicketsCount = ref(0);
 const refreshKey = ref(0);
 
 const isSuperuser = computed(() => {
-  return user.value?.id === SUPERUSER_ID;
+  return user.value?.uid === SUPERUSER_ID;
 });
 
 const handleTicketSubmitted = () => {

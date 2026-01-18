@@ -189,7 +189,7 @@ const emit = defineEmits<{
 }>();
 
 const { $i18n } = useNuxtApp();
-const user = useSupabaseUser();
+const { user } = useAuth();
 
 const loading = ref(true);
 const tickets = ref<any[]>([]);
@@ -264,7 +264,11 @@ const getNotes = (ticket: any) => {
 const loadTickets = async () => {
   loading.value = true;
   try {
-    const { data, error } = await useFetch('/api/tickets');
+    const { getIdToken } = useAuth();
+    const token = await getIdToken();
+    const { data, error } = await useFetch('/api/tickets', {
+      headers: { Authorization: `Bearer ${token}` }
+    });
     if (error.value) throw new Error(error.value.message);
     tickets.value = data.value || [];
     emit('ticketsLoaded', tickets.value);
@@ -279,7 +283,11 @@ const loadTickets = async () => {
 const refreshTicket = async (ticketId: number) => {
   refreshing.value = ticketId;
   try {
-    const { data, error } = await useFetch(`/api/tickets/${ticketId}`);
+    const { getIdToken } = useAuth();
+    const token = await getIdToken();
+    const { data, error } = await useFetch(`/api/tickets/${ticketId}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
     if (error.value) throw new Error(error.value.message);
     const index = tickets.value.findIndex(t => t.id === ticketId);
     if (index !== -1 && data.value) {
@@ -295,8 +303,11 @@ const refreshTicket = async (ticketId: number) => {
 const submitFeedback = async (ticket: any) => {
   submittingFeedback.value = ticket.id;
   try {
+    const { getIdToken } = useAuth();
+    const token = await getIdToken();
     const { error } = await useFetch(`/api/tickets/${ticket.id}/feedback`, {
       method: 'PUT',
+      headers: { Authorization: `Bearer ${token}` },
       body: { fixFeedback: ticket.fixFeedback }
     });
     if (error.value) throw new Error(error.value.message);
@@ -320,8 +331,11 @@ const submitNote = async () => {
 
   submittingNote.value = true;
   try {
+    const { getIdToken } = useAuth();
+    const token = await getIdToken();
     const { error } = await useFetch(`/api/tickets/${selectedTicketForNote.value.id}/notes`, {
       method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
       body: { note: newNoteText.value }
     });
     if (error.value) throw new Error(error.value.message);

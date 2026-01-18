@@ -101,6 +101,17 @@
                       </span>
                     </div>
                     
+                    <!-- Tickets Button -->
+                    <button 
+                      @click="openTickets" 
+                      class="flex items-center justify-between w-full px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition"
+                    >
+                      <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-ticket text-gray-400"></i>
+                        <span>{{ t('tickets.title') }}</span>
+                      </div>
+                    </button>
+                    
                     <!-- Notifications Button -->
                     <button 
                       @click="openNotifications" 
@@ -370,6 +381,11 @@
         @close="notificationPanelOpen = false"
         @refresh="fetchUnreadCount"
       />
+      
+      <TicketsDialog
+        :isOpen="ticketsDialogOpen"
+        @close="ticketsDialogOpen = false"
+      />
     </ClientOnly>
   </header>
 </template>
@@ -381,6 +397,7 @@ const isScrolled = ref(false)
 const dropdownOpen = ref(false)
 const dropdownRef = ref(null)
 const notificationPanelOpen = ref(false)
+const ticketsDialogOpen = ref(false)
 const unreadCount = ref(0)
 const { isImpersonating, impersonatingAs, initializeFromStorage, clearImpersonation } = useImpersonation()
 const { isAuthenticated, user, signOutUser, isAccountOwner, getIdToken, isSiteAdmin } = useAuth()
@@ -643,6 +660,12 @@ const navigateToRetroact = async () => {
 const openNotifications = () => {
   dropdownOpen.value = false
   notificationPanelOpen.value = true
+}
+
+// Open tickets dialog
+const openTickets = () => {
+  dropdownOpen.value = false
+  ticketsDialogOpen.value = true
 }
 
 // Fetch unread notification count

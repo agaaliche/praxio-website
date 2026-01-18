@@ -101,7 +101,7 @@ const emit = defineEmits<{
 }>();
 
 const { $i18n } = useNuxtApp();
-const user = useSupabaseUser();
+const { user } = useAuth();
 
 const ticket = reactive({
   title: '',
@@ -137,8 +137,11 @@ const submitTicket = async () => {
 
   submitting.value = true;
   try {
+    const { getIdToken } = useAuth();
+    const token = await getIdToken();
     const { data, error } = await useFetch('/api/tickets', {
       method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
       body: {
         title: ticket.title,
         type: ticket.type,

@@ -100,5 +100,16 @@ export default defineNuxtConfig({
       siteUrl: 'http://localhost:3000',
       retroactUrl: 'http://localhost:8081'
     }
+  },
+
+  nitro: {
+    routeRules: {
+      '/tickets': {
+        headers: {
+          'X-Frame-Options': 'ALLOWALL',
+          'Content-Security-Policy': 'frame-ancestors *'
+        }
+      }
+    }
   }
 })

@@ -1,5 +1,10 @@
 // Crisp Chat Support Plugin - runs only on client side
 export default defineNuxtPlugin(() => {
+  // Don't load Crisp on the tickets page (it's shown in an iframe)
+  if (window.location.pathname === '/tickets') {
+    return;
+  }
+
   // Initialize Crisp
   window.$crisp = [];
   window.CRISP_WEBSITE_ID = "f1ba4410-d064-4d5e-a268-e08b4fdeb989";
