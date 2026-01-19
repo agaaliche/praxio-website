@@ -25,6 +25,27 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
+    // Check if user has an active subscription
+    const users = await query<any>(
+      'SELECT userEmail, subscriptionStatus FROM users WHERE userId = ?',
+      [uid]
+    )
+    const user = users[0]
+
+    if (!user) {
+      throw createError({
+        statusCode: 404,
+        message: 'User not found'
+      })
+    }
+
+    if (user.subscriptionStatus === 'active' || user.subscriptionStatus === 'trialing') {
+      throw createError({
+        statusCode: 400,
+        message: 'Cannot extend trial for a user with an active subscription'
+      })
+    }
+
     // Update trial end date
     await execute(
       `UPDATE users 
@@ -33,9 +54,8 @@ export default defineEventHandler(async (event) => {
       [days, uid]
     )
 
-    // Get user email for logging
-    const users = await query<any>('SELECT userEmail FROM users WHERE userId = ?', [uid])
-    const userEmail = users[0]?.userEmail || uid
+    // Use already fetched user email for logging
+    const userEmail = user.userEmail || uid
 
     // Log the extension
     try {

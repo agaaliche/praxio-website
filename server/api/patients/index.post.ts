@@ -2,9 +2,10 @@
  * POST /api/patients
  * Create a new patient
  */
-import { defineEventHandler, createError, readBody } from 'h3'
+import { defineEventHandler, createError, readBody, setResponseStatus } from 'h3'
 import { transaction } from '../../utils/database'
 import { verifyAuth, getEffectiveAccountOwnerId, canEdit } from '../../utils/auth'
+import { logAudit } from '../../utils/auditLog'
 
 interface CreatePatientBody {
   name: string           // lastName
@@ -21,7 +22,7 @@ interface CreatePatientBody {
 export default defineEventHandler(async (event) => {
   try {
     const user = await verifyAuth(event)
-    
+
     // Check edit permission
     if (!canEdit(user)) {
       throw createError({
@@ -29,10 +30,10 @@ export default defineEventHandler(async (event) => {
         message: 'You do not have permission to create patients'
       })
     }
-    
+
     const accountOwnerId = getEffectiveAccountOwnerId(user)
     const body = await readBody<CreatePatientBody>(event)
-    
+
     // Validate required fields
     if (!body.name || !body.firstName || !body.gender || !body.birthDate || !body.healthInsuranceNb) {
       throw createError({
@@ -40,7 +41,7 @@ export default defineEventHandler(async (event) => {
         message: 'Missing required fields: name, firstName, gender, birthDate, healthInsuranceNb'
       })
     }
-    
+
     // Validate gender
     if (!['M', 'F'].includes(body.gender)) {
       throw createError({
@@ -48,7 +49,7 @@ export default defineEventHandler(async (event) => {
         message: 'Gender must be M or F'
       })
     }
-    
+
     // Create patient with target INR in a transaction
     const result = await transaction(async (conn) => {
       // Insert the patient
@@ -66,9 +67,9 @@ export default defineEventHandler(async (event) => {
           body.isActive !== false ? 1 : 0
         ]
       ) as any
-      
+
       const patientId = patientResult.insertId
-      
+
       // Insert target INR if provided (drugId 11 = warfarin)
       if (body.targetMin !== undefined || body.targetMax !== undefined) {
         await conn.execute(
@@ -77,7 +78,7 @@ export default defineEventHandler(async (event) => {
           [patientId, body.targetMin || null, body.targetMax || null]
         )
       }
-      
+
       return {
         id: patientId,
         userId: accountOwnerId,
@@ -92,7 +93,17 @@ export default defineEventHandler(async (event) => {
         targetMax: body.targetMax || null
       }
     })
-    
+
+    // Log audit trail
+    await logAudit({
+      patientId: result.id,
+      tableName: 'patients',
+      userId: user.uid,
+      userName: user.email || user.uid,
+      action: 'CREATE',
+      description: `Created patient ${result.firstName} ${result.name}`
+    })
+
     setResponseStatus(event, 201)
     return result
   } catch (error: any) {

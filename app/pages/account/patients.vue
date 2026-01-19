@@ -321,13 +321,24 @@
       <div class="flex-1 h-full flex flex-col bg-gray-50" :class="{ 'pt-[75px] lg:pt-0': patients.length > 0 && !isCreatingPatient }">
         <div class="max-w-4xl p-6 lg:p-6 px-0 md:px-6 flex-1 overflow-y-auto custom-scrollbar">
           <!-- Form Header (hidden on mobile) -->
-          <div class="mb-6 hidden lg:block">
-            <h2 class="text-xl font-bold text-gray-900">
-              {{ isCreatingPatient ? t('account.patients.newPatient') : (selectedPatient ? `${selectedPatient.firstName} ${selectedPatient.name}` : t('account.patients.selectPatient')) }}
-            </h2>
-            <p v-if="selectedPatient && !isCreatingPatient" class="text-sm text-gray-500 mt-1">
-              {{ t('account.patients.patientSince', { date: formatDate(selectedPatient.createdAt) }) }}
-            </p>
+          <div class="mb-6 hidden lg:flex items-start justify-between">
+            <div>
+              <h2 class="text-xl font-bold text-gray-900">
+                {{ isCreatingPatient ? t('account.patients.newPatient') : (selectedPatient ? `${selectedPatient.firstName} ${selectedPatient.name}` : t('account.patients.selectPatient')) }}
+              </h2>
+              <p v-if="selectedPatient && !isCreatingPatient" class="text-sm text-gray-500 mt-1">
+                {{ t('account.patients.patientSince', { date: formatDate(selectedPatient.createdAt) }) }}
+              </p>
+            </div>
+            <button
+              v-if="selectedPatient && !isCreatingPatient"
+              @click="showAuditLogDialog = true"
+              type="button"
+              class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition flex items-center gap-2"
+            >
+              <i class="fa-solid fa-clock-rotate-left"></i>
+              <span>{{ t('account.patients.activityLog') }}</span>
+            </button>
           </div>
 
           <!-- No Selection State -->
@@ -519,6 +530,103 @@
         </div>
       </div>
     </Teleport>
+
+    <!-- Audit Log Dialog -->
+    <Teleport to="body">
+      <Transition enter-active-class="transition ease-out duration-200" enter-from-class="opacity-0" enter-to-class="opacity-100" leave-active-class="transition ease-in duration-150" leave-from-class="opacity-100" leave-to-class="opacity-0">
+        <div v-if="showAuditLogDialog" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50" @click.self="showAuditLogDialog = false">
+          <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col" @click.stop>
+            <!-- Header -->
+            <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+              <h3 class="text-lg font-semibold text-gray-900">
+                {{ t('account.patients.activityLog') }} - {{ selectedPatient?.firstName }} {{ selectedPatient?.name }}
+              </h3>
+              <button @click="showAuditLogDialog = false" class="w-9 h-9 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 transition">
+                <i class="fa-solid fa-xmark text-xl"></i>
+              </button>
+            </div>
+
+            <!-- Content -->
+            <div class="flex-1 overflow-y-auto p-6">
+              <div v-if="loadingAuditLog" class="flex items-center justify-center py-12">
+                <SpinnerIcon class="w-8 h-8 text-primary-600" />
+              </div>
+              
+              <div v-else-if="auditLogs.length === 0" class="text-center py-12 text-gray-500">
+                <i class="fa-solid fa-clock-rotate-left text-4xl mb-4 text-gray-300"></i>
+                <p>{{ t('account.patients.noActivityYet') }}</p>
+              </div>
+
+              <div v-else class="space-y-3">
+                <div
+                  v-for="log in auditLogs"
+                  :key="log.id"
+                  class="bg-gray-50 rounded-lg p-4 border border-gray-200"
+                >
+                  <div class="flex items-start justify-between gap-4">
+                    <div class="flex-1 min-w-0">
+                      <div class="flex items-center gap-2 mb-1">
+                        <span
+                          class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium"
+                          :class="{
+                            'bg-green-100 text-green-800': log.action === 'CREATE',
+                            'bg-blue-100 text-blue-800': log.action === 'UPDATE',
+                            'bg-red-100 text-red-800': log.action === 'DELETE'
+                          }"
+                        >
+                          {{ log.action }}
+                        </span>
+                        <span class="text-sm font-medium text-gray-900">{{ log.tableName }}</span>
+                        <span v-if="log.fieldName" class="text-sm text-gray-500">- {{ log.fieldName }}</span>
+                      </div>
+                      <p v-if="log.description" class="text-sm text-gray-700 mb-2">{{ log.description }}</p>
+                      <div v-if="log.oldValue || log.newValue" class="text-xs text-gray-600 space-y-1">
+                        <div v-if="log.oldValue" class="flex gap-2">
+                          <span class="font-medium">Old:</span>
+                          <span class="truncate">{{ log.oldValue }}</span>
+                        </div>
+                        <div v-if="log.newValue" class="flex gap-2">
+                          <span class="font-medium">New:</span>
+                          <span class="truncate">{{ log.newValue }}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="text-right flex-shrink-0">
+                      <div class="text-xs text-gray-500">{{ formatDateTime(log.createdAt) }}</div>
+                      <div class="text-xs text-gray-600 mt-1">{{ log.userName || log.userId }}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Footer with Pagination -->
+            <div v-if="auditLogs.length > 0" class="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
+              <div class="text-sm text-gray-600">
+                {{ t('account.patients.showingLogs', { from: (auditLogPage - 1) * auditLogPageSize + 1, to: Math.min(auditLogPage * auditLogPageSize, auditLogTotal), total: auditLogTotal }) }}
+              </div>
+              <div class="flex items-center gap-2">
+                <button
+                  @click="loadAuditLogs(auditLogPage - 1)"
+                  :disabled="auditLogPage === 1"
+                  class="px-3 py-1 bg-gray-100 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg text-sm transition"
+                >
+                  <i class="fa-solid fa-chevron-left"></i>
+                </button>
+                <span class="text-sm text-gray-600">{{ t('account.patients.page') }} {{ auditLogPage }} / {{ Math.ceil(auditLogTotal / auditLogPageSize) }}</span>
+                <button
+                  @click="loadAuditLogs(auditLogPage + 1)"
+                  :disabled="auditLogPage >= Math.ceil(auditLogTotal / auditLogPageSize)"
+                  class="px-3 py-1 bg-gray-100 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg text-sm transition"
+                >
+                  <i class="fa-solid fa-chevron-right"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Transition>
+    </Teleport>
     </div>
   </ClientOnly>
 </template>
@@ -588,6 +696,14 @@ const showDeleteModal = ref(false)
 const searchQuery = ref('')
 const showInactive = ref(false)
 
+// Audit Log
+const showAuditLogDialog = ref(false)
+const auditLogs = ref<any[]>([])
+const loadingAuditLog = ref(false)
+const auditLogPage = ref(1)
+const auditLogPageSize = ref(20)
+const auditLogTotal = ref(0)
+
 // Mobile dropdown
 const mobileDropdownOpen = ref(false)
 
@@ -645,6 +761,44 @@ const formatDate = (dateStr: string | undefined) => {
   if (!dateStr) return ''
   return new Date(dateStr).toLocaleDateString()
 }
+
+const formatDateTime = (dateStr: string) => {
+  if (!dateStr) return ''
+  const date = new Date(dateStr)
+  return date.toLocaleString()
+}
+
+// Load audit logs
+const loadAuditLogs = async (page: number = 1) => {
+  if (!selectedPatient.value) return
+  
+  loadingAuditLog.value = true
+  auditLogPage.value = page
+  
+  try {
+    const headers = await getAuthHeaders()
+    const response = await $fetch<{ logs: any[], total: number }>(
+      `/api/patients/${selectedPatient.value.id}/audit-logs?page=${page}&limit=${auditLogPageSize.value}`,
+      { headers }
+    )
+    auditLogs.value = response.logs
+    auditLogTotal.value = response.total
+  } catch (error) {
+    console.error('Failed to load audit logs:', error)
+    auditLogs.value = []
+    auditLogTotal.value = 0
+  } finally {
+    loadingAuditLog.value = false
+  }
+}
+
+// Watch for dialog opening to load logs
+watch(showAuditLogDialog, (isOpen) => {
+  if (isOpen && selectedPatient.value) {
+    auditLogPage.value = 1
+    loadAuditLogs(1)
+  }
+})
 
 // API helpers
 const getAuthHeaders = async () => {

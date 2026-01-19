@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
 
   try {
     const trials = await query<any>(
-      `SELECT userId, userEmail, trialEndDate
+      `SELECT userId, userEmail, trialEndDate, subscriptionStatus, planType, subscriptionEndDate
        FROM users
        WHERE subscriptionStatus = 'trial' OR trialEndDate IS NOT NULL
        ORDER BY trialEndDate ASC`
@@ -25,7 +25,10 @@ export default defineEventHandler(async (event) => {
     const users = trials.map((t: any) => ({
       uid: t.userId,
       email: t.userEmail,
-      trial_ends_at: t.trialEndDate
+      trial_ends_at: t.trialEndDate,
+      subscription_status: t.subscriptionStatus,
+      plan_type: t.planType,
+      subscription_end_date: t.subscriptionEndDate
     }))
 
     return { users }

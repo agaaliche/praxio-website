@@ -99,7 +99,11 @@
       "inactiveWarning": "Les patients inactifs sont masqués de la liste mais leurs données sont conservées.",
       "errorSave": "Échec de l'enregistrement du patient",
       "errorDelete": "Échec de la suppression du patient",
-      "errorLoad": "Échec du chargement des patients"
+      "errorLoad": "Échec du chargement des patients",
+      "activityLog": "Journal d'activité",
+      "noActivityYet": "Aucune activité enregistrée",
+      "showingLogs": "Affichage de {from}-{to} sur {total}",
+      "page": "Page"
     },
     "team": {
       "title": "Équipe",

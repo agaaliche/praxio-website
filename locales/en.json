@@ -99,7 +99,11 @@
       "inactiveWarning": "Inactive patients are hidden from the list but their data is preserved.",
       "errorSave": "Failed to save patient",
       "errorDelete": "Failed to delete patient",
-      "errorLoad": "Failed to load patients"
+      "errorLoad": "Failed to load patients",
+      "activityLog": "Activity Log",
+      "noActivityYet": "No activity logged yet",
+      "showingLogs": "Showing {from}-{to} of {total}",
+      "page": "Page"
     },
     "team": {
       "title": "Team",

@@ -40,16 +40,27 @@
               <div>
                 <div class="font-medium text-gray-900">{{ user.email }}</div>
                 <div class="text-sm text-gray-500">
-                  Trial ends: {{ formatDate(user.trial_ends_at) }}
-                  <span 
-                    class="ml-2 px-2 py-0.5 text-xs rounded-full"
-                    :class="getDaysLeftClass(user.trial_ends_at)"
-                  >
-                    {{ getDaysLeft(user.trial_ends_at) }}
-                  </span>
+                  <!-- Show subscription info if active -->
+                  <template v-if="hasActiveSubscription(user)">
+                    <span class="text-green-600 font-medium">{{ user.plan_type }}</span>
+                    <span class="ml-2 px-2 py-0.5 text-xs rounded-full bg-green-100 text-green-700">
+                      Active until {{ formatDate(user.subscription_end_date) }}
+                    </span>
+                  </template>
+                  <!-- Show trial info otherwise -->
+                  <template v-else>
+                    Trial ends: {{ formatDate(user.trial_ends_at) }}
+                    <span 
+                      class="ml-2 px-2 py-0.5 text-xs rounded-full"
+                      :class="getDaysLeftClass(user.trial_ends_at)"
+                    >
+                      {{ getDaysLeft(user.trial_ends_at) }}
+                    </span>
+                  </template>
                 </div>
               </div>
-              <div class="flex gap-2">
+              <!-- Only show buttons if user does NOT have an active subscription -->
+              <div v-if="!hasActiveSubscription(user)" class="flex gap-2">
                 <button
                   @click="openExtendModal(user)"
                   class="px-3 py-1.5 text-sm bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition"
@@ -62,6 +73,12 @@
                 >
                   Free Month
                 </button>
+              </div>
+              <!-- Show "Subscribed" badge instead of buttons -->
+              <div v-else>
+                <span class="px-3 py-1.5 text-sm bg-gray-100 text-gray-500 rounded-lg">
+                  Subscribed
+                </span>
               </div>
             </div>
           </div>
@@ -239,6 +256,9 @@ interface TrialUser {
   uid: string
   email: string
   trial_ends_at: string
+  subscription_status: string | null
+  plan_type: string | null
+  subscription_end_date: string | null
 }
 
 interface HistoryItem {
@@ -268,9 +288,13 @@ const freeMonths = ref(1)
 const freeMonthReason = ref('')
 const givingFreeMonth = ref(false)
 
-const formatDate = (dateStr: string) => {
+const formatDate = (dateStr: string | null) => {
   if (!dateStr) return '-'
   return new Date(dateStr).toLocaleDateString()
+}
+
+const hasActiveSubscription = (user: TrialUser) => {
+  return user.subscription_status === 'active' || user.subscription_status === 'trialing'
 }
 
 const getDaysLeft = (dateStr: string) => {

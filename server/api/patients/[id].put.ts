@@ -5,6 +5,7 @@
 import { defineEventHandler, createError, getRouterParam, readBody } from 'h3'
 import { queryOne, transaction } from '../../utils/database'
 import { verifyAuth, getEffectiveAccountOwnerId, canEdit } from '../../utils/auth'
+import { logPatientUpdate } from '../../utils/auditLog'
 
 interface UpdatePatientBody {
   name?: string           // lastName
@@ -21,7 +22,7 @@ interface UpdatePatientBody {
 export default defineEventHandler(async (event) => {
   try {
     const user = await verifyAuth(event)
-    
+
     // Check edit permission
     if (!canEdit(user)) {
       throw createError({
@@ -29,18 +30,18 @@ export default defineEventHandler(async (event) => {
         message: 'You do not have permission to update patients'
       })
     }
-    
+
     const accountOwnerId = getEffectiveAccountOwnerId(user)
     const patientId = getRouterParam(event, 'id')
     const body = await readBody<UpdatePatientBody>(event)
-    
+
     if (!patientId) {
       throw createError({
         statusCode: 400,
         message: 'Patient ID is required'
       })
     }
-    
+
     // Validate gender if provided
     if (body.gender && !['M', 'F'].includes(body.gender)) {
       throw createError({
@@ -48,26 +49,26 @@ export default defineEventHandler(async (event) => {
         message: 'Gender must be M or F'
       })
     }
-    
+
     // Check patient exists and belongs to user
     const existing = await queryOne<any>(
-      'SELECT id FROM patients WHERE id = ? AND userId = ?',
+      'SELECT * FROM patients WHERE id = ? AND userId = ?',
       [patientId, accountOwnerId]
     )
-    
+
     if (!existing) {
       throw createError({
         statusCode: 404,
         message: 'Patient not found'
       })
     }
-    
+
     // Update patient in transaction
     await transaction(async (conn) => {
       // Build dynamic update query
       const updates: string[] = []
       const params: any[] = []
-      
+
       if (body.name !== undefined) {
         updates.push('name = ?')
         params.push(body.name)
@@ -96,17 +97,17 @@ export default defineEventHandler(async (event) => {
         updates.push('isActive = ?')
         params.push(body.isActive ? 1 : 0)
       }
-      
+
       if (updates.length > 0) {
         updates.push('updatedAt = CURRENT_TIMESTAMP')
         params.push(patientId, accountOwnerId)
-        
+
         await conn.execute(
           `UPDATE patients SET ${updates.join(', ')} WHERE id = ? AND userId = ?`,
           params
         )
       }
-      
+
       // Update target INR if provided
       if (body.targetMin !== undefined || body.targetMax !== undefined) {
         // Check if drugs_by_patients record exists
@@ -114,12 +115,12 @@ export default defineEventHandler(async (event) => {
           'SELECT id FROM drugs_by_patients WHERE patientId = ? AND drugId = 11',
           [patientId]
         ) as any
-        
+
         if (existingDrug.length > 0) {
           // Update existing record
           const drugUpdates: string[] = []
           const drugParams: any[] = []
-          
+
           if (body.targetMin !== undefined) {
             drugUpdates.push('targetMin = ?')
             drugParams.push(body.targetMin)
@@ -128,7 +129,7 @@ export default defineEventHandler(async (event) => {
             drugUpdates.push('targetMax = ?')
             drugParams.push(body.targetMax)
           }
-          
+
           if (drugUpdates.length > 0) {
             drugParams.push(patientId)
             await conn.execute(
@@ -145,7 +146,16 @@ export default defineEventHandler(async (event) => {
         }
       }
     })
-    
+
+    // Log audit trail
+    await logPatientUpdate(
+      parseInt(patientId),
+      user.uid,
+      user.email || user.uid,
+      existing,
+      body
+    )
+
     return { success: true, id: parseInt(patientId) }
   } catch (error: any) {
     console.error('PUT /api/patients/:id error:', error)
