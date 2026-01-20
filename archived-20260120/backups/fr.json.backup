@@ -1,0 +1,923 @@
+{
+  "common": {
+    "yes": "Oui",
+    "no": "Non",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "close": "Fermer",
+    "back": "Retour",
+    "next": "Suivant",
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès",
+    "home": "Accueil",
+    "showing": "Affichage de",
+    "of": "sur",
+    "editor": "Éditeur",
+    "viewer": "Observateur",
+    "active": "actif",
+    "pending": "en attente",
+    "copyInviteLink": "Copier le lien d'invitation",
+    "remove": "Retirer"
+  },
+  "header": {
+    "products": "Produits",
+    "plans": "Tarifs",
+    "contact": "Contact",
+    "account": "Compte",
+    "signIn": "Connexion",
+    "signOut": "Déconnexion",
+    "getStarted": "Démarrer",
+    "dashboard": "Tableau de bord",
+    "patients": "Patients",
+    "team": "Équipe",
+    "settings": "Paramètres",
+    "featureOverview": "Fonctionnalités",
+    "inAction": "Démo",
+    "openRetroact": "Ouvrir Retroact"
+  },
+  "footer": {
+    "products": "Produits",
+    "company": "Entreprise",
+    "legal": "Juridique",
+    "about": "À propos",
+    "contact": "Contact",
+    "privacy": "Confidentialité",
+    "terms": "Conditions générales",
+    "allRightsReserved": "Tous droits réservés",
+    "brandDescription": "Nous créons des solutions logicielles modernes pour les professionnels de la santé. Notre mission est de simplifier les flux de travail cliniques et d'améliorer les soins aux patients."
+  },
+  "home": {
+    "hero": {
+      "tagline": "Des logiciels de santé repensés",
+      "title1": "Un besoin.",
+      "title2": "Une solution.",
+      "title3": "Parfaite.",
+      "subtitle": "Nous créons des outils ciblés pour les professionnels de la santé. Sans artifice, sans complexité — simplement des logiciels qui s'adaptent à votre pratique.",
+      "seeProducts": "Découvrir nos produits",
+      "learnAbout": "En savoir plus sur nous"
+    },
+    "manifesto": {
+      "title": "On ne fait pas de DSE tous azimuts",
+      "subtitle": "Et c'est justement ça l'idée.",
+      "noLockIn": {
+        "title": "Liberté totale",
+        "description": "Abonnement mensuel sans engagement. Exportez toutes vos données en .csv quand vous voulez. C'est vous qui décidez."
+      },
+      "noFluff": {
+        "title": "L'essentiel, rien que l'essentiel",
+        "description": "Conçu par des cliniciens, pour des cliniciens. Chaque fonctionnalité s'intègre naturellement à votre routine — prise en main instantanée."
+      },
+      "affordable": {
+        "title": "Prix transparent",
+        "description": "Pas de mauvaise surprise. On développe efficacement, on facture raisonnablement, et vous en profitez."
+      }
+    },
+    "featured": {
+      "subtitle": "Gestion du RIN pour pharmacies, laboratoires et cliniques",
+      "description": "Tout pour gérer l'anticoagulothérapie — suivi des patients, ajustement des doses, ordonnances PDF, rappels automatiques — le tout dans une interface épurée.",
+      "patientManagement": "Gestion des patients",
+      "doseManagement": "Ajustement des doses",
+      "pdfPrescriptions": "Ordonnances PDF",
+      "scheduling": "Planification",
+      "aiInsights": "Analyses IA",
+      "tryItFree": "Essai gratuit",
+      "seeAllFeatures": "Toutes les fonctionnalités"
+    },
+    "difference": {
+      "title": "Conçu différemment, délibérément",
+      "subtitle": "Nous avons remis en question tout ce qui concerne la conception de logiciels de santé.",
+      "cards": {
+        "teams": {
+          "title": "Conçu pour les équipes",
+          "description": "Ajoutez des membres avec accès en lecture ou en écriture en quelques secondes."
+        },
+        "affordable": {
+          "title": "Abordable",
+          "description": "Un prix unique, tout inclus. Pas de frais par utilisateur."
+        },
+        "freedom": {
+          "title": "Partez quand vous voulez",
+          "description": "Aucun engagement obligatoire, aucun verrouillage. Exportez vos données et annulez quand vous voulez avec un abonnement mensuel."
+        },
+        "noSales": {
+          "title": "Qui a besoin de représentants?",
+          "description": "On saute le théâtre des démos. Inscrivez-vous, explorez, décidez par vous-même avec un",
+          "freeTrial": "essai gratuit"
+        }
+      }
+    },
+    "finalCta": {
+      "title": "Prêt à essayer quelque chose de différent?",
+      "subtitle": "Rejoignez les professionnels de la santé qui ont choisi des outils ciblés plutôt que la surcharge de fonctionnalités.",
+      "tryFree": "Essayer Retroact Gratuitement",
+      "getInTouch": "Nous Contacter"
+    }
+  },
+  "retroact": {
+    "hero": {
+      "title": "La gestion du RIN, enfin simple.",
+      "subtitle": "La solution complète pour les professionnels qui gèrent l'anticoagulothérapie. Découvrez comment Retroact facilite votre quotidien.",
+      "startFreeTrial": "Essai gratuit"
+    },
+    "overview": {
+      "title": "Le dosage comme il faut",
+      "subtitle": "Des outils puissants pour des décisions de dosage cohérentes"
+    },
+    "inAction": {
+      "title": "Voyez-le en action",
+      "subtitle": "Explorez chaque fonctionnalité en détail avec des démos interactives",
+      "watchDemo": "Voir la démo",
+      "screenshotSoon": "Capture d'écran à venir"
+    },
+    "features": {
+      "results": {
+        "title": "Enregistrement des résultats RIN",
+        "shortDesc": "Ajoutez rapidement les mesures RIN avec suggestions de dose automatiques.",
+        "description": "Enregistrez les valeurs RIN en quelques secondes et obtenez des recommandations de dosage intelligentes basées sur l'historique et la cible du patient.",
+        "points": [
+          "Saisie RIN en un clic avec sélecteur de date",
+          "Suggestions de calcul de dose automatiques",
+          "Indicateurs de tendance visuels",
+          "Notes et commentaires pour chaque mesure"
+        ]
+      },
+      "doses": {
+        "title": "Gestion des doses et historique",
+        "shortDesc": "Dosage flexible avec horaires hebdomadaires et ajustements ponctuels.",
+        "description": "Gérez facilement le dosage de la warfarine. Configurez des horaires hebdomadaires récurrents ou effectuez des ajustements ponctuels selon les besoins. Visualisez l'historique complet des doses en un coup d'œil.",
+        "points": [
+          "Horaires de doses hebdomadaires récurrents",
+          "Ajustements de dose ponctuels",
+          "Affichage complet de l'historique des doses",
+          "Gestion des renouvellements et rappels"
+        ]
+      },
+      "prescriptions": {
+        "title": "Ordonnances PDF",
+        "shortDesc": "Générez instantanément des ordonnances professionnelles.",
+        "description": "Créez de belles ordonnances PDF prêtes à imprimer avec des calendriers de dosage hebdomadaires faciles à suivre pour les patients.",
+        "points": [
+          "Mise en page d'ordonnance professionnelle",
+          "Vue calendrier de dosage hebdomadaire",
+          "Personnalisable avec vos informations",
+          "Imprimez ou partagez numériquement"
+        ]
+      },
+      "appointments": {
+        "title": "Planification des rendez-vous",
+        "shortDesc": "Ne manquez jamais un suivi grâce à la planification intégrée.",
+        "description": "Planifiez le prochain rendez-vous de contrôle RIN directement depuis le dossier patient. Recevez des rappels et suivez les visites à venir.",
+        "points": [
+          "Planification rapide des rendez-vous",
+          "Intégration calendrier",
+          "Rappels automatiques",
+          "Suivi de l'historique des rendez-vous"
+        ]
+      },
+      "patients": {
+        "title": "Gestion des patients",
+        "shortDesc": "Organisez tous vos patients en un seul endroit sécurisé.",
+        "description": "Gérez votre liste de patients avec une recherche et un filtrage puissants. Accédez instantanément à l'historique RIN complet et aux détails du traitement.",
+        "points": [
+          "Recherche rapide de patients",
+          "Historique de traitement complet",
+          "Paramètres de plage RIN cible",
+          "Notes et annotations patient"
+        ]
+      },
+      "analytics": {
+        "title": "Analyses RIN",
+        "shortDesc": "Visualisez les tendances avec des graphiques intuitifs.",
+        "description": "Visualisez l'évolution du RIN au fil du temps avec de beaux graphiques. Identifiez les tendances et optimisez le traitement grâce à des analyses basées sur les données.",
+        "points": [
+          "Graphiques RIN interactifs",
+          "Métriques de temps dans la plage thérapeutique",
+          "Analyse des tendances",
+          "Exportation des données pour rapports"
+        ]
+      },
+      "aiRecommendations": {
+        "title": "Recommandations alimentées par l'IA",
+        "shortDesc": "Obtenez des suggestions de dosage intelligentes basées sur les données du patient.",
+        "description": "Utilisez l'IA pour analyser l'historique RIN du patient et générer des recommandations de dose cliniques avec justification claire. Gagnez du temps tout en assurant des décisions fondées sur des données probantes.",
+        "points": [
+          "Recommandations de dose générées par l'IA",
+          "Justification clinique claire",
+          "Basé sur le TTR et l'analyse des tendances",
+          "Rapports patients complets"
+        ]
+      },
+      "userManagement": {
+        "title": "Gestion des utilisateurs",
+        "shortDesc": "Travaillez en équipe avec contrôle d'accès par rôle.",
+        "description": "Collaborez en toute transparence avec votre équipe. Ajoutez des éditeurs ou observateurs autorisés pour partager la gestion des patients tout en gardant le contrôle sur qui peut faire quoi.",
+        "points": [
+          "Accès basé sur les rôles (Propriétaire, Éditeur, Observateur)",
+          "Invitez facilement les membres de l'équipe",
+          "Contrôle granulaire des permissions",
+          "Journal d'audit des actions utilisateur"
+        ]
+      },
+      "notes": {
+        "title": "Gestionnaire de notes unifié",
+        "shortDesc": "Notes cliniques prêtes pour l'IA en un seul endroit organisé.",
+        "description": "Gardez toutes vos notes cliniques structurées et accessibles. Conçues pour l'ère de l'IA, vos notes deviennent un conteneur de données puissant qui alimente les recommandations intelligentes.",
+        "points": [
+          "Notes centralisées pour toutes les données patient",
+          "Format structuré pour l'analyse IA",
+          "Saisie rapide de notes depuis n'importe quel écran",
+          "Historique de notes consultable"
+        ]
+      },
+      "export": {
+        "title": "Exportation et sauvegardes",
+        "shortDesc": "Exportez les données des patients et créez des sauvegardes sécurisées.",
+        "description": "Prenez le contrôle de vos données. Exportez les dossiers patients complets dans des formats standard et créez des sauvegardes pour garantir la sécurité de vos précieuses données cliniques.",
+        "points": [
+          "Exportation aux formats CSV et PDF",
+          "Téléchargement complet des données patient",
+          "Sauvegardes automatiques programmées",
+          "Conformité à la portabilité des données"
+        ]
+      },
+      "security": {
+        "title": "Sécurité et confidentialité",
+        "shortDesc": "Conforme au RGPD avec sécurité de niveau entreprise.",
+        "description": "Les données de vos patients sont protégées par des mesures de sécurité de pointe. Entièrement conforme au RGPD pour les prestataires de soins de santé européens.",
+        "points": [
+          "Chiffrement de bout en bout",
+          "Conformité RGPD",
+          "Authentification sécurisée",
+          "Audits de sécurité réguliers"
+        ]
+      },
+      "dataResidency": {
+        "title": "Résidence des données et conformité",
+        "shortDesc": "Choisissez où vos données sont stockées avec des options par pays.",
+        "description": "Respectez les exigences réglementaires locales avec une résidence des données spécifique à chaque pays. Les données de vos patients restent dans votre juridiction, garantissant la conformité aux réglementations de santé régionales.",
+        "points": [
+          "Stockage de données spécifique par pays",
+          "Support de conformité régionale",
+          "Souveraineté des données garantie",
+          "Disponibilité multi-régions"
+        ]
+      }
+    }
+  },
+  "pricing": {
+    "hero": {
+      "title": "Un seul prix. Tout compris.",
+      "subtitle": "Essayez gratuitement pendant 14 jours."
+    },
+    "currentPlan": {
+      "youreOn": "Vous êtes abonné au forfait",
+      "plan": "",
+      "trialEnds": "Fin de l'essai",
+      "nextBilling": "Prochaine facturation",
+      "manage": "Gérer",
+      "annual": "Forfait annuel",
+      "monthlyFlex": "Forfait mensuel flexible",
+      "freeTrial": "Essai gratuit",
+      "noPlan": "Aucun forfait"
+    },
+    "freeTrial": {
+      "badge": "Gratuit",
+      "title": "Essai gratuit",
+      "subtitle": "Aucune carte de crédit requise",
+      "free": "GRATUIT",
+      "daysLeft": "jour{{s}} restant{{s}} (fin le {{date}})",
+      "duration": "Accès complet pendant 14 jours",
+      "feature1": "Accès complet pendant 14 jours",
+      "feature2": "Patients illimités",
+      "feature3": "Toutes les fonctionnalités incluses",
+      "feature4": "Aucune carte de crédit requise",
+      "feature5": "Passer au forfait payant en tout temps",
+      "notAvailable": "Non disponible",
+      "trialExpired": "Essai expiré",
+      "startTrial": "Commencer l'essai gratuit",
+      "starting": "Démarrage..."
+    },
+    "monthly": {
+      "badge": "Forfait actuel",
+      "title": "Mensuel flexible",
+      "subtitle": "Sans engagement",
+      "price": "45 $",
+      "perMonth": "/mois",
+      "details": "CAD · Annulation en tout temps",
+      "feature1": "Patients illimités",
+      "feature2": "Toutes les fonctionnalités incluses",
+      "feature3": "Assistance par courriel et clavardage",
+      "feature4": "Annulation en tout temps",
+      "currentPlanButton": "Forfait actuel",
+      "subscribe": "S'abonner au mois"
+    },
+    "annual": {
+      "badge": "Meilleur choix",
+      "title": "Forfait annuel",
+      "subtitle": "Engagement de 12 mois",
+      "price": "35 $",
+      "perMonth": "/mois",
+      "perYear": "/an",
+      "perMonthEquiv": "/mois en moyenne",
+      "savings": "Économisez 120 $/année (22 % de rabais)",
+      "feature1": "Tout ce qui est inclus dans le forfait mensuel",
+      "feature2": "Assistance prioritaire",
+      "feature3": "Meilleur rapport qualité-prix – 10 $/mois d'économie",
+      "feature4": "Tarif garanti",
+      "upgradeButton": "Passer au forfait annuel",
+      "subscribe": "S'abonner à l'année",
+      "upgradeScheduled": "Mise à niveau prévue"
+    },
+    "upgradeModal": {
+      "title": "Passer au forfait annuel",
+      "description": "Votre <strong>forfait annuel</strong> commencera le <strong>{{date}}</strong>, à la fin de votre cycle de facturation actuel.",
+      "cancelNote": "Vous pouvez annuler ce changement prévu en tout temps avant qu'il ne prenne effet.",
+      "newRate": "Nouveau tarif",
+      "annualSavings": "Économies annuelles",
+      "confirmButton": "Confirmer la mise à niveau"
+    },
+    "faq": {
+      "title": "Foire aux questions",
+      "q1": "Puis-je annuler en tout temps?",
+      "a1": "Oui! Le forfait mensuel n'a aucun engagement et peut être annulé en tout temps. Le forfait annuel exige un engagement de 12 mois, mais offre des économies substantielles.",
+      "q2": "Que se passe-t-il après l'essai?",
+      "a2": "Après votre essai gratuit de 14 jours, vous devrez choisir un forfait pour continuer. Vous recevrez un rappel par courriel avant la fin de votre essai.",
+      "q3": "Puis-je changer de forfait plus tard?",
+      "a3": "Oui! Vous pouvez passer du forfait mensuel au forfait annuel en tout temps. Le forfait annuel commencera à la fin de votre cycle de facturation actuel.",
+      "q4": "Y a-t-il une limite de patients?",
+      "a4": "Non! Les deux forfaits payants incluent un nombre illimité de dossiers patients."
+    },
+    "contact": {
+      "questions": "Des questions?",
+      "contactUs": "Contactez-nous"
+    }
+  },
+  "auth": {
+    "welcome": "Bienvenue",
+    "createAccount": "Créer votre compte",
+    "email": "Courriel",
+    "password": "Mot de passe",
+    "confirmPassword": "Confirmer le mot de passe",
+    "forgotPassword": "Mot de passe oublié ?",
+    "rememberMe": "Rester connecté",
+    "signInWithGoogle": "Continuer avec Google",
+    "signUpWithGoogle": "S'inscrire avec Google",
+    "dontHaveAccount": "Pas encore de compte ?",
+    "alreadyHaveAccount": "Déjà un compte ?",
+    "signUp": "S'inscrire",
+    "sso": {
+      "connecting": "Connexion à Retroact...",
+      "generatingToken": "Génération d'un jeton d'accès sécurisé",
+      "required": "Authentification requise",
+      "pleaseSignIn": "Veuillez vous connecter pour accéder à Retroact",
+      "signInToPraxio": "Se connecter à Praxio"
+    }
+  },
+  "roles": {
+    "editor": "Éditeur",
+    "viewer": "Lecteur"
+  },
+  "account": {
+    "title": "Compte",
+    "dashboard": {
+      "title": "Tableau de bord",
+      "welcomeBack": "Bienvenue",
+      "manageAccount": "Gérez votre compte Praxio et accédez à vos produits.",
+      "loading": "Chargement du tableau de bord...",
+      "activePatients": "Patients actifs",
+      "teamMembers": "Membres de l'équipe",
+      "subscriptionStatus": "Statut de l'abonnement",
+      "active": "Actif",
+      "yourProducts": "Vos produits",
+      "openApp": "Ouvrir l'application",
+      "launching": "Lancement...",
+      "retroactDescription": "Gestion du RIN pour l'anticoagulothérapie. Suivez les résultats, générez des ordonnances, gérez vos patients.",
+      "viewDetails": "Voir les détails",
+      "quickActions": "Actions rapides",
+      "managePatients": "Gérer les patients",
+      "managePatientsDesc": "Voir, ajouter et modifier les dossiers patients",
+      "manageTeam": "Gérer l'équipe",
+      "manageTeamDesc": "Inviter des membres et gérer les rôles",
+      "addPatient": "Ajouter un patient",
+      "addPatientDesc": "Créer un nouveau dossier patient",
+      "inviteTeamMember": "Inviter un membre",
+      "inviteTeamMemberDesc": "Ajouter un collègue à votre équipe",
+      "manageSubscription": "Gérer l'abonnement",
+      "manageSubscriptionDesc": "Voir les forfaits et la facturation",
+      "accountSettings": "Paramètres du compte",
+      "profile": "Profil",
+      "profileDesc": "Mettre à jour vos informations personnelles",
+      "organization": "Organisation",
+      "organizationDesc": "Gérer les détails de l'organisation",
+      "security": "Sécurité",
+      "securityDesc": "Mot de passe et paramètres d'authentification",
+      "yourPlan": "Votre forfait",
+      "billing": "Facturation",
+      "billingDesc": "Méthodes de paiement et factures"
+    },
+    "patients": {
+      "title": "Patients",
+      "selectPatient": "Sélectionner un patient",
+      "searchPatients": "Rechercher des patients...",
+      "noMatch": "Aucun patient ne correspond à votre recherche",
+      "addFirst": "Ajoutez votre premier patient",
+      "addFirstDesc": "Commencez à suivre les résultats RIN et à gérer le traitement anticoagulant de vos patients.",
+      "addYourFirst": "Ajouter votre premier patient",
+      "whatYouCanDo": "Ce que vous pouvez faire :",
+      "trackInr": "Suivre les résultats RIN et la plage thérapeutique",
+      "manageDosing": "Gérer les calendriers de dosage",
+      "generatePrescriptions": "Générer des ordonnances",
+      "monitorProgress": "Suivre les progrès du patient dans le temps",
+      "addPatient": "Ajouter un patient",
+      "editPatient": "Modifier le patient",
+      "patientDetails": "Détails du patient",
+      "patientStatus": "Statut du patient",
+      "active": "Actif",
+      "inactive": "Inactif",
+      "archived": "Archivé",
+      "firstName": "Prénom",
+      "firstNameRequired": "Prénom *",
+      "lastName": "Nom",
+      "lastNameRequired": "Nom *",
+      "dateOfBirth": "Date de naissance",
+      "birthDate": "Date de naissance",
+      "birthDateRequired": "Date de naissance *",
+      "healthInsurance": "Numéro d'assurance maladie",
+      "healthInsuranceRequired": "Numéro d'assurance maladie *",
+      "gender": "Sexe",
+      "genderRequired": "Sexe *",
+      "genderSelect": "Sélectionner...",
+      "male": "Masculin",
+      "female": "Féminin",
+      "phone": "Numéro de téléphone",
+      "email": "Courriel",
+      "address": "Adresse",
+      "indication": "Indication",
+      "indicationFull": "Indication pour l'anticoagulation",
+      "indicationPlaceholder": "ex : FA, TVP, EP",
+      "targetInr": "Plage cible de RIN",
+      "notes": "Notes",
+      "cancel": "Annuler",
+      "delete": "Supprimer",
+      "savePatient": "Enregistrer le patient",
+      "updatePatient": "Mettre à jour le patient",
+      "createPatient": "Créer le patient",
+      "saveChanges": "Enregistrer",
+      "deletePatient": "Supprimer le patient",
+      "deletePatientQuestion": "Supprimer le patient ?",
+      "confirmDelete": "Êtes-vous sûr de vouloir supprimer ce patient ?",
+      "confirmDeleteMessage": "Êtes-vous sûr de vouloir supprimer {name} ? Cette action est irréversible.",
+      "deleteWarning": "Cette action est irréversible. Toutes les données du patient, y compris les résultats RIN et l'historique de dosage, seront définitivement supprimées.",
+      "viewInRetroact": "Voir dans Retroact",
+      "showInactive": "Afficher les inactifs",
+      "patientsCount": "{count} patients",
+      "newPatient": "Nouveau patient",
+      "selectFromList": "Sélectionnez un patient dans la liste pour voir les détails",
+      "patientSince": "Patient depuis le {date}",
+      "inactiveWarning": "Les patients inactifs sont masqués de la liste mais leurs données sont conservées.",
+      "errorSave": "Échec de l'enregistrement du patient",
+      "errorDelete": "Échec de la suppression du patient",
+      "errorLoad": "Échec du chargement des patients"
+    },
+    "team": {
+      "title": "Équipe",
+      "inviteFirst": "Invitez votre premier membre",
+      "inviteFirstDesc": "Collaborez avec vos collègues pour les soins aux patients. Invitez des membres de l'équipe pour partager l'accès et travailler ensemble.",
+      "inviteYourFirst": "Inviter votre premier membre",
+      "whatTeamCanDo": "Ce que les membres de l'équipe peuvent faire :",
+      "viewPatients": "Voir et gérer les patients partagés",
+      "addInrResults": "Ajouter des résultats RIN et des notes",
+      "adjustDosing": "Ajuster les calendriers de dosage",
+      "workUnderSubscription": "Travailler sous votre abonnement",
+      "inviteManage": "Inviter et gérer les membres de l'équipe",
+      "loading": "Chargement des membres de l'équipe...",
+      "inviteMember": "Inviter un membre",
+      "email": "Courriel",
+      "emailPlaceholder": "collegue@exemple.com",
+      "role": "Rôle",
+      "editorRole": "Éditeur - Peut voir et modifier tous les patients",
+      "viewerRole": "Lecteur - Peut seulement voir les patients",
+      "sendInvite": "Envoyer l'invitation",
+      "inviteSent": "Invitation envoyée avec succès !",
+      "pending": "En attente",
+      "resendInvite": "Renvoyer l'invitation",
+      "cancelInvite": "Annuler l'invitation",
+      "editRole": "Modifier le rôle",
+      "removeFromTeam": "Retirer de l'équipe",
+      "confirmRemove": "Retirer le membre de l'équipe ?",
+      "removeWarning": "Êtes-vous sûr de vouloir retirer {name} ? Ils perdront l'accès à toutes les données des patients.",
+      "confirmRemoval": "Oui, retirer",
+      "owner": "Propriétaire",
+      "you": "Vous"
+    },
+    "settings": {
+      "title": "Paramètres",
+      "profile": {
+        "title": "Paramètres du profil",
+        "description": "Gérer vos informations personnelles",
+        "firstName": "Prénom",
+        "lastName": "Nom",
+        "emailAddress": "Adresse courriel",
+        "verified": "Vérifié",
+        "notVerified": "Non vérifié",
+        "verifyEmail": "Vérifier le courriel",
+        "changeEmail": "Changer le courriel",
+        "newEmail": "Nouvelle adresse courriel",
+        "cancelChange": "Annuler",
+        "saveEmail": "Enregistrer le courriel",
+        "phoneNumber": "Numéro de téléphone",
+        "viewOnlyAccess": "Accès en lecture seule",
+        "viewOnlyDesc": "Vous avez les permissions de lecteur. Contactez le propriétaire de l'organisation pour demander l'accès en modification.",
+        "saveChanges": "Enregistrer les modifications",
+        "savingChanges": "Enregistrement..."
+      },
+      "organization": {
+        "title": "Paramètres de l'organisation",
+        "description": "Gérer les détails de votre organisation",
+        "yourOrganization": "Votre organisation",
+        "orgName": "Nom de l'organisation",
+        "orgType": "Type d'organisation",
+        "privatePractice": "Cabinet privé",
+        "clinic": "Clinique",
+        "hospital": "Hôpital",
+        "pharmacy": "Pharmacie",
+        "laboratory": "Laboratoire",
+        "researchCenter": "Centre de recherche",
+        "other": "Autre",
+        "phoneNumber": "Numéro de téléphone",
+        "address": "Adresse",
+        "streetAddress": "Adresse civique",
+        "city": "Ville",
+        "province": "Province",
+        "postalCode": "Code postal",
+        "country": "Pays",
+        "saveChanges": "Enregistrer les modifications"
+      },
+      "profile": {
+        "title": "Paramètres du profil",
+        "description": "Gérer vos informations personnelles",
+        "personalInfo": "Informations personnelles",
+        "firstName": "Prénom",
+        "lastName": "Nom",
+        "emailAddress": "Adresse courriel",
+        "newEmail": "Nouvelle adresse courriel",
+        "enterNewEmail": "Entrez votre nouvelle adresse courriel",
+        "changeEmail": "Changer le courriel",
+        "sendVerification": "Envoyer le courriel de vérification",
+        "phoneNumber": "Numéro de téléphone",
+        "viewOnlyAccess": "Accès en lecture seule",
+        "viewOnlyMessage": "Vous avez des permissions de lecteur. Contactez un administrateur pour effectuer des modifications.",
+        "updateSuccess": "Profil mis à jour avec succès !",
+        "saving": "Enregistrement...",
+        "manageInPraxio": "Gérer votre compte",
+        "manageInPraxioDesc": "Tous les paramètres de profil sont gérés dans le tableau de bord principal Praxio",
+        "goToPraxio": "Aller au tableau de bord Praxio"
+      },
+      "organization": {
+        "title": "Paramètres de l'organisation",
+        "description": "Gérer les détails de votre organisation",
+        "details": "Détails de l'organisation",
+        "name": "Nom de l'organisation",
+        "type": "Type d'organisation",
+        "selectType": "Sélectionner un type...",
+        "clinic": "Clinique",
+        "hospital": "Hôpital",
+        "privatePractice": "Pratique privée",
+        "laboratory": "Laboratoire",
+        "pharmacy": "Pharmacie",
+        "researchCenter": "Centre de recherche",
+        "other": "Autre",
+        "phone": "Téléphone",
+        "fax": "Télécopieur",
+        "address": "Adresse",
+        "streetAddress": "Adresse civique",
+        "postalCode": "Code postal",
+        "city": "Ville",
+        "country": "Pays",
+        "ownerOnly": "Seuls les propriétaires de compte peuvent modifier les paramètres de l'organisation.",
+        "yourOrganization": "Votre organisation",
+        "notSet": "Non défini",
+        "updateSuccess": "Organisation mise à jour avec succès !",
+        "saving": "Enregistrement..."
+      },
+      "security": {
+        "title": "Paramètres de sécurité",
+        "description": "Gérer la sécurité de votre compte",
+        "password": "Mot de passe",
+        "passwordDescription": "Changez votre mot de passe pour garder votre compte sécurisé.",
+        "changePassword": "Changer le mot de passe",
+        "currentPassword": "Mot de passe actuel",
+        "newPassword": "Nouveau mot de passe",
+        "confirmPassword": "Confirmer le nouveau mot de passe",
+        "minCharacters": "Minimum 8 caractères",
+        "updatePassword": "Mettre à jour le mot de passe",
+        "passwordChangeSuccess": "Mot de passe modifié avec succès !",
+        "activeSessions": "Sessions actives",
+        "thisDevice": "Cet appareil",
+        "onlyThisDevice": "Vous êtes connecté uniquement sur cet appareil",        "signOut": "Déconnecter",        "dangerZone": "Zone de danger",
+        "deleteWarning": "Une fois votre compte supprimé, il n'y a pas de retour en arrière possible. Soyez certain de votre décision.",
+        "passwordRequirements": "Le mot de passe doit contenir au moins 6 caractères",
+        "sessions": "Sessions actives",
+        "currentSession": "Session actuelle",
+        "signOutOtherSessions": "Déconnecter les autres sessions",
+        "twoFactor": "Authentification à deux facteurs",
+        "twoFactorDesc": "Ajoutez une couche de sécurité supplémentaire à votre compte",
+        "enable": "Activer",
+        "disable": "Désactiver",
+        "comingSoon": "Bientôt disponible"
+      },
+      "subscription": {
+        "title": "Votre forfait",
+        "description": "Voir et gérer votre abonnement",
+        "accessRevoked": "Accès révoqué",
+        "accessRevokedDescription": "Votre accès a été temporairement suspendu car l'abonnement de l'organisation a expiré.",
+        "contactOwner": "Veuillez contacter le propriétaire du compte pour renouveler le forfait de l'organisation et rétablir votre accès.",
+        "sharedPlan": "Forfait d'organisation partagé",
+        "sharedPlanDescription": "Vous faites partie de cette organisation et partagez le même forfait d'abonnement que le propriétaire du compte.",
+        "currentPlan": "Forfait actuel",
+        "freeTrial": "Essai gratuit",
+        "status": "Statut",
+        "trialEnds": "Fin de l'essai",
+        "renewsOn": "Renouvellement",
+        "plan": "Forfait",
+        "nextBillingDate": "Prochaine facturation",
+        "amount": "Montant",
+        "ownerOnly": "Seul le propriétaire du compte peut gérer l'abonnement.",
+        "subscriptionDetails": "Détails de votre abonnement",
+        "trialExpired": "Essai expiré",
+        "upgradeToAnnual": "Passer au forfait annuel",
+        "cancelSubscription": "Annuler l'abonnement",
+        "choosePlan": "Choisir un forfait",
+        "subscriptionEndDate": "Votre abonnement prendra fin le {date}",
+        "continueAccess": "Vous continuerez d'avoir accès jusqu'à cette date. Après cela, vous devrez vous réabonner pour utiliser le service.",
+        "reactivate": "Réactiver l'abonnement",
+        "accessRevokedDesc": "Vous n'avez plus accès à cette organisation. Contactez le propriétaire ou créez votre propre abonnement.",
+        "startNewSubscription": "Créer un nouvel abonnement",
+        "sharedPlanDesc": "Vous utilisez l'abonnement de cette organisation",
+        "managedBy": "Géré par",
+        "canceledOn": "Annulé le",
+        "accessUntil": "Accès jusqu'au",
+        "reactivating": "Réactivation...",
+        "upcomingPlanChange": "Changement de forfait à venir",
+        "scheduledChange": "Modification prévue",
+        "scheduledChangeDesc": "Modification prévue de votre abonnement",
+        "scheduled": "Planifié",
+        "starting": "À partir du",
+        "cancelChangeInfo": "Vous pouvez annuler ce changement avant qu'il ne prenne effet",
+        "cancelChange": "Annuler le changement",
+        "upgradeToAnnualOn": "Passage au forfait annuel le",
+        "cancelScheduledChange": "Annuler la modification prévue",
+        "canceling": "Annulation...",
+        "manageBilling": "Gérer la facturation",
+        "confirmCancel": "Êtes-vous sûr de vouloir annuler ?",
+        "cancelWarning": "Vous aurez toujours accès jusqu'à la fin de votre période de facturation actuelle",
+        "confirmCancellation": "Oui, annuler l'abonnement",
+        "noSubscription": "Aucun abonnement actif",
+        "noSubscriptionDesc": "Créez un abonnement pour accéder à Retroact et gérer vos patients.",
+        "browsePlans": "Voir les forfaits",
+        "trialMessage": "Abonnez-vous maintenant pour débloquer un accès illimité à toutes les fonctionnalités et ne jamais perdre vos données.",
+        "expiredMessage": "Abonnez-vous maintenant pour restaurer l'accès à toutes les fonctionnalités et à vos données.",
+        "viewPricing": "Voir les forfaits",
+        "trialEndsInOne": "Votre essai se termine dans 1 jour",
+        "trialEndsInMany": "Votre essai se termine dans {days} jours",
+        "trialExpiredOne": "Votre essai a expiré il y a 1 jour",
+        "trialExpiredMany": "Votre essai a expiré il y a {days} jours",
+        "startSubscription": "Commencez votre abonnement aujourd'hui"
+      },
+      "trialExpiredPage": {
+        "title": "Votre essai a expiré",
+        "message": "Votre essai gratuit de 14 jours a pris fin il y a {days} jours. Abonnez-vous maintenant pour restaurer l'accès à tous vos patients et vos données.",
+        "messageSingular": "Votre essai gratuit de 14 jours a pris fin il y a {days} jour. Abonnez-vous maintenant pour restaurer l'accès à tous vos patients et vos données.",
+        "messageToday": "Votre essai gratuit de 14 jours a pris fin aujourd'hui. Abonnez-vous maintenant pour restaurer l'accès à tous vos patients et vos données.",
+        "dataSecure": "Vos données sont en sécurité",
+        "benefit1": "Tous les dossiers patients préservés",
+        "benefit2": "Historique RIN conservé",
+        "benefit3": "Accès instantané dès l'abonnement",
+        "viewPricing": "Voir les forfaits",
+        "manageSubscription": "Gérer l'abonnement",
+        "signOut": "Se déconnecter et utiliser un autre compte"
+      },
+      "billing": {
+        "title": "Facturation",
+        "description": "Gérer vos méthodes de paiement et consulter les factures",
+        "paymentMethod": "Méthode de paiement",
+        "paymentOnFile": "Méthode de paiement enregistrée",
+        "managedByStripe": "Géré via Stripe",
+        "update": "Mettre à jour",
+        "noPaymentMethod": "Aucune méthode de paiement enregistrée",
+        "addWhenSubscribe": "Ajoutez une méthode de paiement lors de votre abonnement à un forfait",
+        "nextBilling": "Prochaine facturation",
+        "active": "Actif",
+        "billingHistory": "Historique de facturation",
+        "date": "Date",
+        "invoice": "Facture",
+        "description": "Description",
+        "amount": "Montant",
+        "status": "Statut",
+        "paid": "Payé",
+        "pending": "En attente",
+        "failed": "Échoué",
+        "noInvoices": "Aucune facture pour le moment",
+        "updatePayment": "Mettre à jour la méthode de paiement",
+        "managedThroughStripe": "Géré via Stripe",
+        "loadingBilling": "Chargement des informations de facturation..."
+      }
+    }
+  },
+  "contact": {
+    "title": "Contactez-nous",
+    "subtitle": "Des questions ? Nous serions ravis de vous entendre.",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "email": "Courriel",
+    "subject": "Sujet",
+    "message": "Message",
+    "generalInquiry": "Demande générale",
+    "sales": "Ventes",
+    "support": "Assistance",
+    "partnership": "Partenariat",
+    "sendMessage": "Envoyer le message",
+    "sending": "Envoi en cours...",
+    "thankYou": "Merci ! Nous vous répondrons sous peu.",
+    "reachDirectly": "Ou contactez-nous directement :"
+  },
+  "auth": {
+    "signUp": "S'inscrire",
+    "signIn": "Se connecter",
+    "signOut": "Déconnexion",
+    "email": "Email",
+    "password": "Mot de passe",
+    "confirmPassword": "Confirmer le mot de passe",
+    "displayName": "Nom d'affichage",
+    "fullName": "Nom complet",
+    "forgotPassword": "Mot de passe oublié?",
+    "resetPassword": "Réinitialiser le mot de passe",
+    "sendResetLink": "Envoyer le lien de réinitialisation",
+    "resetEmailSent": "Email de réinitialisation envoyé! Vérifiez votre boîte de réception.",
+    "verificationEmailSent": "Un email de vérification a été envoyé à votre adresse email.",
+    "verifyYourEmail": "Vérifiez votre email",
+    "checkYourInbox": "Veuillez vérifier votre boîte de réception et cliquer sur le lien de vérification pour activer votre compte.",
+    "goToSignIn": "Aller à la connexion",
+    "emailNotVerified": "Veuillez vérifier votre email avant de vous connecter.",
+    "resendVerification": "Renvoyer l'email de vérification",
+    "signUpWithGoogle": "S'inscrire avec Google",
+    "signInWithGoogle": "Se connecter avec Google",
+    "alreadyHaveAccount": "Vous avez déjà un compte?",
+    "dontHaveAccount": "Vous n'avez pas de compte?",
+    "or": "OU",
+    "signInTitle": "Connectez-vous à votre compte",
+    "signInSubtitle": "Accédez à Retroact et tous les produits Praxio",
+    "signUpTitle": "Créez votre compte",
+    "signUpSubtitle": "Commencez votre essai gratuit aujourd'hui",
+    "emailAddress": "Adresse email",
+    "signingIn": "Connexion en cours...",
+    "signingUp": "Inscription en cours...",
+    "forgotPasswordQuestion": "Mot de passe oublié?"
+  },
+  "emails": {
+    "invitation": {
+      "subject": "Vous avez été invité à accéder au compte de {accountName}",
+      "greeting": "Bonjour {firstName},",
+      "invitedBy": "{ownerName} vous a invité à accéder au compte de {accountName}.",
+      "clickButton": "Cliquez sur le bouton ci-dessous pour accepter l'invitation. Vous recevrez vos identifiants de connexion dans un email séparé après vérification.",
+      "acceptButton": "Accepter l'invitation",
+      "linkExpires": "Ce lien d'invitation expirera dans 48 heures pour des raisons de sécurité.",
+      "ignoreIfUnexpected": "Si vous n'attendiez pas cette invitation, vous pouvez ignorer cet email en toute sécurité."
+    },
+    "credentials": {
+      "subject": "Vos identifiants de connexion pour {accountName}",
+      "greeting": "Bonjour {firstName},",
+      "welcome": "Bienvenue!",
+      "credentialsIntro": "Veuillez trouver ci-dessous vos identifiants de connexion pour accéder au compte de {accountName}.",
+      "loginCredentialsTitle": "Vos identifiants de connexion",
+      "emailLabel": "Email",
+      "passwordLabel": "Mot de passe",
+      "signInButton": "Se connecter"
+    },
+    "verification": {
+      "subject": "Bienvenue - Vérifiez votre email",
+      "greeting": "Bonjour {name},",
+      "welcome": "Bienvenue! Merci de vous être inscrit.",
+      "clickButton": "Cliquez sur le bouton ci-dessous pour vérifier votre adresse email et activer votre compte.",
+      "verifyButton": "Vérifier l'adresse email",
+      "linkExpires": "Ce lien de vérification expirera dans 24 heures pour des raisons de sécurité.",
+      "ignoreIfUnexpected": "Si vous n'avez pas créé de compte, vous pouvez ignorer cet email en toute sécurité."
+    },
+    "passwordReset": {
+      "subject": "Réinitialisez votre mot de passe",
+      "greeting": "Bonjour {name},",
+      "requestReceived": "Nous avons reçu une demande de réinitialisation de votre mot de passe.",
+      "clickButton": "Cliquez sur le bouton ci-dessous pour créer un nouveau mot de passe.",
+      "resetButton": "Réinitialiser le mot de passe",
+      "linkExpires": "Ce lien de réinitialisation expirera dans 1 heure pour des raisons de sécurité.",
+      "ignoreIfUnexpected": "Si vous n'avez pas demandé de réinitialisation de mot de passe, vous pouvez ignorer cet email en toute sécurité. Votre mot de passe restera inchangé."
+    },
+    "footer": {
+      "copyright": "© {year} Tous droits réservés."
+    }
+  },
+  "messages": {
+    "errors": {
+      "generic": "Une erreur inattendue s'est produite.",
+      "signInFailed": "Échec de la connexion. Veuillez réessayer.",
+      "signUpFailed": "Échec de l'inscription. Veuillez réessayer.",
+      "googleSignInFailed": "Échec de la connexion avec Google.",
+      "googleSignUpFailed": "Échec de l'inscription avec Google.",
+      "loadSubscriptionFailed": "Impossible de charger les informations d'abonnement",
+      "billingPortalFailed": "Impossible d'ouvrir le portail de facturation",
+      "cancelChangeFailed": "Impossible d'annuler la modification prévue",
+      "cancelSubscriptionFailed": "Impossible d'annuler l'abonnement",
+      "reactivateSubscriptionFailed": "Impossible de réactiver l'abonnement",
+      "resetPasswordFailed": "Échec de la réinitialisation du mot de passe. Veuillez réessayer.",
+      "resendVerificationFailed": "Impossible de renvoyer le courriel de vérification. Veuillez réessayer plus tard.",
+      "linkExpired": "Ce lien n'est pas valide ou a expiré. Veuillez en demander un nouveau.",
+      "actionNotRecognized": "Cette action n'est pas reconnue.",
+      "verificationExpired": "Votre lien de vérification a expiré. Cliquez ci-dessous pour recevoir un nouveau courriel de vérification.",
+      "verificationUsed": "Ce lien de vérification a déjà été utilisé. Votre courriel est peut-être déjà vérifié.",
+      "verificationFailed": "Impossible de vérifier votre adresse courriel. Veuillez réessayer ou contacter le support.",
+      "passwordResetExpired": "Votre lien de réinitialisation a expiré. Veuillez en demander un nouveau depuis la page de connexion.",
+      "passwordResetUsed": "Ce lien de réinitialisation a déjà été utilisé ou n'est pas valide.",
+      "passwordResetFailed": "Impossible de traiter votre demande de réinitialisation. Veuillez réessayer ou contacter le support.",
+      "checkoutFailed": "Impossible de démarrer le paiement. Veuillez réessayer.",
+      "upgradeScheduleFailed": "Impossible de programmer la mise à niveau. Veuillez réessayer.",
+      "startTrialFailed": "Impossible de démarrer l'essai. Veuillez réessayer.",
+      "checkoutCanceled": "Le paiement a été annulé. Vous pouvez réessayer quand vous le souhaitez."
+    },
+    "success": {
+      "accountCreated": "Compte créé ! Veuillez vérifier votre courriel pour confirmer votre compte.",
+      "emailVerified": "Votre courriel a été vérifié avec succès. Vous pouvez maintenant vous connecter à votre compte.",
+      "passwordReset": "Votre mot de passe a été réinitialisé avec succès. Vous pouvez maintenant vous connecter avec votre nouveau mot de passe.",
+      "verificationSent": "Un nouveau courriel de vérification a été envoyé. Veuillez consulter votre boîte de réception et cliquer sur le lien de vérification.",
+      "subscriptionCanceled": "Votre abonnement a été annulé. Vous continuerez d'avoir accès jusqu'au {{date}}.",
+      "subscriptionReactivated": "Votre abonnement a été réactivé ! Vous continuerez d'être facturé normalement.",
+      "trialStarted": "Votre essai gratuit de 14 jours a commencé ! Profitez de toutes les fonctionnalités."
+    },
+    "cta": {
+      "title": "Rejoignez les professionnels de la santé qui travaillent plus intelligemment.",
+      "subtitle": "Commencez votre essai gratuit — aucune carte de crédit requise.",
+      "button": "Commencer gratuitement"
+    }
+  },
+  "cookieConsent": {
+    "title": "Nous respectons votre vie privée",
+    "description": "Nous utilisons des cookies pour améliorer votre expérience de navigation, proposer du contenu personnalisé et analyser notre trafic. En cliquant sur « Tout accepter », vous consentez à l'utilisation de cookies.",
+    "customize": "Personnaliser",
+    "rejectAll": "Tout refuser",
+    "acceptAll": "Tout accepter",
+    "detailedSettings": "Préférences des cookies",
+    "required": "Toujours actif",
+    "essential": {
+      "title": "Cookies essentiels",
+      "description": "Ces cookies sont nécessaires au fonctionnement du site et ne peuvent pas être désactivés.",
+      "auth": "Authentification et gestion de session",
+      "preferences": "Préférences et paramètres utilisateur",
+      "security": "Sécurité et prévention de la fraude"
+    },
+    "functional": {
+      "title": "Cookies fonctionnels",
+      "description": "Ces cookies permettent des fonctionnalités améliorées et la personnalisation, comme les préférences linguistiques.",
+      "language": "Sélection de la langue",
+      "display": "Préférences d'affichage"
+    },
+    "analytics": {
+      "title": "Cookies analytiques",
+      "description": "Ces cookies nous aident à comprendre comment les visiteurs interagissent avec notre site en collectant des informations de manière anonyme.",
+      "performance": "Métriques de performance du site",
+      "usage": "Modèles d'utilisation et statistiques"
+    }
+  },
+  "admin": {
+    "impersonate": {
+      "title": "Usurper l'identité d'un utilisateur",
+      "subtitle": "Se connecter en tant qu'un autre utilisateur à des fins de support",
+      "warning": {
+        "title": "Avis important",
+        "message": "L'usurpation d'identité est enregistrée à des fins de sécurité. Utilisez cette fonctionnalité uniquement pour des raisons de support légitimes."
+      },
+      "form": {
+        "userEmail": "Courriel de l'utilisateur",
+        "searchPlaceholder": "Commencez à taper pour rechercher des utilisateurs...",
+        "noMatches": "Aucun utilisateur ne correspond à \"{query}\"",
+        "noUsersLoaded": "Aucun utilisateur chargé. Vérifiez la console pour les erreurs.",
+        "reason": "Raison de l'usurpation d'identité",
+        "reasonPlaceholder": "p. ex., Débogage du problème de l'utilisateur, Demande de support #1234",
+        "startButton": "Démarrer l'usurpation"
+      },
+      "success": {
+        "title": "Jeton d'usurpation généré",
+        "message": "Le jeton d'usurpation a été généré. Vous pouvez maintenant vous connecter en tant qu'utilisateur.",
+        "loginButton": "Se connecter en tant que {email}"
+      },
+      "log": {
+        "title": "Journal d'usurpation",
+        "empty": "Aucun historique d'usurpation",
+        "by": "par {email}"
+      },
+      "loading": "Chargement..."
+    }
+  }
+}
